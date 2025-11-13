@@ -68,10 +68,13 @@ function getBasename() {
 
 function App() {
   // 在开发模式下，使用 Vite 的 BASE_URL
-  // 在生产模式下，动态检测部署路径
+  // 在生产模式下：
+  // - 如果 base 是 '/'，直接使用 '/'
+  // - 如果 base 是相对路径 './'，动态检测部署路径
+  const viteBase = import.meta.env.BASE_URL
   const basename = import.meta.env.DEV 
-    ? import.meta.env.BASE_URL 
-    : getBasename()
+    ? viteBase
+    : (viteBase === '/' ? '/' : getBasename())
 
   return (
     <BrowserRouter basename={basename}>
