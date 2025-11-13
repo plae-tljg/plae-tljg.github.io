@@ -3,9 +3,6 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
-import About from './pages/About'
-import UbuntuSetup from './pages/UbuntuSetup'
-import UbuntuSetupIndex from './pages/UbuntuSetupIndex'
 
 // 动态检测当前部署路径
 // 使用相对路径 base 时，从实际加载的资源路径中提取部署路径
@@ -68,20 +65,6 @@ function getBasename() {
   return '/'
 }
 
-// 包装组件：根据路径是否以斜杠结尾来决定渲染哪个组件
-function UbuntuSetupRouter() {
-  const location = useLocation()
-  const pathname = location.pathname
-  
-  // 检查路径是否以 /ubuntu_setup/ 结尾（带斜杠）
-  // 或者路径正好是 /ubuntu_setup/（考虑 basename）
-  if (pathname === '/ubuntu_setup/' || pathname.endsWith('/ubuntu_setup/')) {
-    return <UbuntuSetupIndex />
-  }
-  // 否则渲染不带斜杠的版本（/ubuntu_setup）
-  return <UbuntuSetup />
-}
-
 function App() {
   // 在开发模式下，使用 Vite 的 BASE_URL
   // 在生产模式下：
@@ -99,8 +82,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/ubuntu_setup/*" element={<UbuntuSetupRouter />} />
         </Routes>
       </Layout>
     </BrowserRouter>

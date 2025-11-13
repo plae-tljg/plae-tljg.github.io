@@ -1,55 +1,37 @@
 import { Link } from 'react-router-dom'
 import './Home.css'
-import { getRecentPosts } from '../data/blogData'
+import { getAllPosts } from '../data/blogData'
 
 function Home() {
-  const recentPosts = getRecentPosts(3)
+  const posts = getAllPosts()
 
   return (
     <div className="home">
-      <section className="hero">
-        <div className="container">
-          <h1 className="hero-title">欢迎来到我的博客</h1>
-          <p className="hero-subtitle">
-            分享技术知识、学习心得和生活感悟
-          </p>
-          <div className="hero-buttons">
-            <Link to="/blog" className="btn">
-              查看博客
-            </Link>
-            <Link to="/ubuntu_setup" className="btn btn-secondary">
-              Ubuntu 设置
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <section className="recent-posts">
         <div className="container">
-          <h2 className="section-title">最新文章</h2>
+          <h1 className="page-title">博客</h1>
           <div className="posts-grid">
-            {recentPosts.map(post => (
+            {posts.map(post => (
               <article key={post.id} className="post-card">
                 <div className="post-meta">
                   <span className="post-date">{post.date}</span>
                   {post.tags && post.tags.length > 0 && (
-                    <span className="post-tag">{post.tags[0]}</span>
+                    <div className="post-tags">
+                      {post.tags.map(tag => (
+                        <span key={tag} className="post-tag">{tag}</span>
+                      ))}
+                    </div>
                   )}
                 </div>
-                <h3 className="post-title">
+                <h2 className="post-title">
                   <Link to={`/blog/${post.id}`}>{post.title}</Link>
-                </h3>
+                </h2>
                 <p className="post-excerpt">{post.excerpt}</p>
                 <Link to={`/blog/${post.id}`} className="post-link">
                   阅读更多 →
                 </Link>
               </article>
             ))}
-          </div>
-          <div className="view-all">
-            <Link to="/blog" className="btn btn-secondary">
-              查看所有文章
-            </Link>
           </div>
         </div>
       </section>

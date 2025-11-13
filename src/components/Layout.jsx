@@ -29,14 +29,6 @@ function Layout({ children }) {
                   博客
                 </Link>
               </li>
-              <li>
-                <Link 
-                  to="/about" 
-                  className={location.pathname === '/about' ? 'active' : ''}
-                >
-                  关于
-                </Link>
-              </li>
             </ul>
           </nav>
         </div>

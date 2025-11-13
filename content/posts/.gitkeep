@@ -1,0 +1,35 @@
+# 博客文章目录
+
+将你的 Markdown 博客文章放在这个目录下。
+
+## 文件格式
+
+每个 Markdown 文件应包含 frontmatter（元数据）和内容：
+
+```markdown
+---
+id: '文章ID'
+title: '文章标题'
+date: '2024-01-01'
+tags: ['标签1', '标签2']
+excerpt: '文章摘要'
+---
+
+这里是文章内容，支持 Markdown 格式。
+```
+
+## 添加新文章
+
+1. 在 `content/posts/` 目录下创建新的 `.md` 文件
+2. 填写 frontmatter 和内容
+3. 运行 `npm run build` 或 `npm run generate-blog` 生成数据
+4. 构建并部署到 GitHub Pages
+
+## 注意事项
+
+- 文件名可以是任意名称，但建议使用有意义的名称
+- `id` 字段用于 URL 路由，建议使用简洁的标识符
+- `date` 格式：YYYY-MM-DD
+- `tags` 是数组格式
+- `excerpt` 如果不提供，会自动从内容中提取前 150 个字符
+

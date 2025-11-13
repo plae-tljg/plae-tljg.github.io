@@ -1,35 +1,9 @@
-.hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 100px 0;
-  text-align: center;
-}
-
-.hero-title {
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.hero-subtitle {
-  font-size: 20px;
-  margin-bottom: 30px;
-  opacity: 0.9;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
 .recent-posts {
   padding: 60px 0;
 }
 
-.section-title {
-  font-size: 32px;
+.page-title {
+  font-size: 36px;
   margin-bottom: 40px;
   text-align: center;
 }
@@ -63,6 +37,12 @@
   color: var(--text-light);
 }
 
+.post-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .post-tag {
   background-color: var(--bg-light);
   padding: 4px 12px;
@@ -94,17 +74,9 @@
   font-weight: 500;
 }
 
-.view-all {
-  text-align: center;
-}
-
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 36px;
-  }
-
-  .hero-subtitle {
-    font-size: 18px;
+  .page-title {
+    font-size: 28px;
   }
 
   .posts-grid {
