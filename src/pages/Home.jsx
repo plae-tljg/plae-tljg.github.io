@@ -13,9 +13,14 @@ function Home() {
           <p className="hero-subtitle">
             分享技术知识、学习心得和生活感悟
           </p>
-          <Link to="/blog" className="btn">
-            查看博客
-          </Link>
+          <div className="hero-buttons">
+            <Link to="/blog" className="btn">
+              查看博客
+            </Link>
+            <Link to="/ubuntu_setup" className="btn btn-secondary">
+              Ubuntu 设置
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Blog from './pages/Blog'
 import BlogPost from './pages/BlogPost'
 import About from './pages/About'
+import UbuntuSetup from './pages/UbuntuSetup'
 
 // 动态检测当前部署路径
 // 使用相对路径 base 时，从实际加载的资源路径中提取部署路径
@@ -84,6 +85,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           <Route path="/about" element={<About />} />
+          <Route path="/ubuntu_setup" element={<UbuntuSetup />} />
         </Routes>
       </Layout>
     </BrowserRouter>

@@ -17,6 +17,13 @@
   opacity: 0.9;
 }
 
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .recent-posts {
   padding: 60px 0;
 }
