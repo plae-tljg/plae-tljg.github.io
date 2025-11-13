@@ -47,6 +47,16 @@ echo "🔍 检查构建目录内容..."
 ls -la "$BUILD_DIR"
 echo "📊 构建目录文件数量: $(find "$BUILD_DIR" -type f | wc -l)"
 
+# 在切换到 gh-pages 分支之前，先将构建目录复制到外部临时目录
+# 这样切换分支后仍然可以访问构建文件
+TEMP_BUILD_DIR="../plae-tljg-build-temp"
+echo "📦 将构建目录复制到临时位置..."
+if [ -d "$TEMP_BUILD_DIR" ]; then
+    rm -rf "$TEMP_BUILD_DIR"
+fi
+cp -r "$BUILD_DIR" "$TEMP_BUILD_DIR"
+echo "✅ 构建文件已保存到临时目录: $TEMP_BUILD_DIR"
+
 # 检查 gh-pages 分支是否存在
 echo "🔍 检查 gh-pages 分支状态..."
 
@@ -97,9 +107,15 @@ rm -rf node_modules 2>/dev/null || true
 rm -rf dist 2>/dev/null || true
 rm -rf .vite 2>/dev/null || true
 
-# 从构建目录复制文件
-echo "📋 从构建目录复制文件..."
-cp -r "$BUILD_DIR"/* .
+# 从临时构建目录复制文件（因为切换分支后原 dist 目录不存在）
+echo "📋 从临时构建目录复制文件..."
+if [ ! -d "$TEMP_BUILD_DIR" ]; then
+    echo "❌ 错误: 临时构建目录不存在: $TEMP_BUILD_DIR"
+    echo "🔄 切换回 main 分支..."
+    git checkout main
+    exit 1
+fi
+cp -r "$TEMP_BUILD_DIR"/* .
 
 # 检查复制后的文件
 echo "🔍 检查复制后的文件..."
@@ -145,13 +161,15 @@ git status
 # 检查是否有更改
 if [ -z "$(git status --porcelain)" ]; then
     echo "❌ 没有文件更改，这可能是构建问题"
-    echo "🔍 检查构建目录是否存在..."
-    if [ -d "$BUILD_DIR" ]; then
-        echo "构建目录仍然存在，内容："
-        ls -la "$BUILD_DIR"
+    echo "🔍 检查临时构建目录是否存在..."
+    if [ -d "$TEMP_BUILD_DIR" ]; then
+        echo "临时构建目录仍然存在，内容："
+        ls -la "$TEMP_BUILD_DIR"
     else
-        echo "构建目录不存在"
+        echo "临时构建目录不存在"
     fi
+    echo "🧹 清理临时构建目录..."
+    rm -rf "$TEMP_BUILD_DIR" 2>/dev/null || true
     echo "🔄 切换回 main 分支..."
     git checkout main
     exit 1
@@ -170,6 +188,10 @@ else
     echo "🆕 创建新的远程分支..."
     git push -u origin gh-pages
 fi
+
+# 清理临时构建目录
+echo "🧹 清理临时构建目录..."
+rm -rf "$TEMP_BUILD_DIR" 2>/dev/null || true
 
 # 切换回 main 分支
 echo "🔄 切换回 main 分支..."
