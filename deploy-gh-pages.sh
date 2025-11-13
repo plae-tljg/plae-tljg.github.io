@@ -24,6 +24,16 @@ fi
 
 echo "✅ 检查通过，开始构建..."
 
+# 同步 assets 目录到 public/assets（确保所有图片都被包含在构建中）
+echo "🖼️  同步图片资源..."
+mkdir -p public/assets
+if [ -d "assets" ]; then
+    cp -r assets/* public/assets/ 2>/dev/null || true
+    echo "✅ 图片资源已同步到 public/assets/"
+else
+    echo "ℹ️  assets 目录不存在，跳过"
+fi
+
 # 安装依赖（如果需要）
 if [ ! -d "node_modules" ]; then
     echo "📦 安装依赖..."
