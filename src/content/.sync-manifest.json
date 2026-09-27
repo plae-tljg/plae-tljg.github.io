@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-09-27T03:36:21.669Z",
+  "source": "/home/lkm/Music/blogs",
+  "preview": true,
+  "entries": [
+    {
+      "key": "why-ai-takes-over-math-00",
+      "lang": "zh",
+      "title": "合集摘要：为什么两年前我就知道 AI 会接管数学",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "drafts/v2/00-abstract.zh.md",
+      "sourceHash": "sha256:a4b276b95a65cca3",
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-00.md",
+      "outputHash": "sha256:0923fbe8ec527ad6",
+      "syncedAt": "2026-09-27T03:36:21.665Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-01",
+      "lang": "zh",
+      "title": "数学学习的三项原则",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "drafts/v2/01-three-principles.zh.md",
+      "sourceHash": "sha256:87578302d7112f02",
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-01.md",
+      "outputHash": "sha256:f65bf769b0ce14d0",
+      "syncedAt": "2026-09-27T03:36:21.666Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-02",
+      "lang": "zh",
+      "title": "准备：几种看数学的方式",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "drafts/v2/02-preparation.zh.md",
+      "sourceHash": "sha256:6db4f2f10e20cdbe",
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-02.md",
+      "outputHash": "sha256:d83b060dca9cfdb7",
+      "syncedAt": "2026-09-27T03:36:21.666Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-03",
+      "lang": "zh",
+      "title": "为什么 AI 会接管数学",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "drafts/v2/03-why-ai-takes-over.zh.md",
+      "sourceHash": "sha256:768330480ed34107",
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-03.md",
+      "outputHash": "sha256:a47f25edc10022c4",
+      "syncedAt": "2026-09-27T03:36:21.666Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-04",
+      "lang": "zh",
+      "title": "问题意识：AI 接管不了的那一层",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "drafts/v2/04-problem-consciousness.zh.md",
+      "sourceHash": "sha256:e082d9322c58e06e",
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-04.md",
+      "outputHash": "sha256:8f5dc6ab5282463d",
+      "syncedAt": "2026-09-27T03:36:21.667Z"
+    }
+  ]
+}
