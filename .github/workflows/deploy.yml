@@ -1,0 +1,55 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Publishes the build to the gh-pages branch, which the repository's
+# Pages settings already point at. No third-party actions are used.
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify synced content is untouched
+        run: npm run content:verify
+
+      - name: Build
+        run: npm run build
+        env:
+          # Change to the real domain when it exists.
+          SITE_URL: https://plae-tljg.github.io
+          # Staging guard: noindex + disallow-all robots.txt.
+          # Set to 'false' only when the launch gate is passed.
+          SITE_STAGING: 'true'
+
+      - name: Publish to gh-pages
+        run: |
+          set -euo pipefail
+          cd dist
+          touch .nojekyll
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "deploy ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,121 @@
+---
+import { SITE, LOCALES, STAGING, type LocaleCode } from '../site.mjs'
+import { absoluteUrl, withBase } from '../lib/url'
+import { HERO } from '../lib/assets'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import 'katex/dist/katex.min.css'
+import '../styles/global.css'
+
+interface Props {
+  lang: LocaleCode
+  title: string
+  description?: string
+  /** Force noindex (preview articles, staging builds). */
+  noindex?: boolean
+  /** Pages in other locales, for hreflang alternates. */
+  alternates?: Partial<Record<LocaleCode, string>>
+  active?: string
+  alternatePath?: string
+  bodyClass?: string
+  /** Absolute URL of a social card image; defaults to the site hero. */
+  ogImage?: string
+}
+
+const {
+  lang,
+  title,
+  description = SITE.description[lang],
+  noindex = false,
+  alternates,
+  active,
+  alternatePath,
+  bodyClass,
+  ogImage = new URL(HERO.src, SITE.url).href,
+} = Astro.props
+
+const locale = LOCALES.find((l) => l.code === lang)!
+const fullTitle = title === SITE.title[lang] ? title : `${title} · ${SITE.author}`
+const canonical = absoluteUrl(Astro.url.pathname)
+const blockIndexing = noindex || STAGING
+---
+
+<!doctype html>
+<html lang={locale.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {blockIndexing && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+
+    {
+      alternates &&
+        Object.entries(alternates).map(([code, path]) => (
+          <link rel="alternate" hreflang={code} href={absoluteUrl(path!)} />
+        ))
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale.ogLocale} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {
+      alternates?.zh && alternates?.en && (
+        <>
+          <meta property="og:locale:alternate" content="zh_CN" />
+          <meta property="og:locale:alternate" content="en_US" />
+        </>
+      )
+    }
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${SITE.title[lang]} RSS`}
+      href={withBase(`/${lang}/rss.xml`)}
+    />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+
+    <script is:inline>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+
+  <body class={bodyClass}>
+    <a class="skip-link" href="#content">{lang === 'zh' ? '跳到正文' : 'Skip to content'}</a>
+    <Header lang={lang} active={active} alternatePath={alternatePath} />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <script is:inline>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script>
+  </body>
+</html>

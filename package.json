@@ -1,24 +1,29 @@
 {
   "name": "plae-tljg.github.io",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "node scripts/generate-blog-data.js && vite",
-    "build": "node scripts/generate-blog-data.js && vite build",
-    "preview": "vite preview",
-    "generate-blog": "node scripts/generate-blog-data.js"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "content": "node scripts/content.mjs",
+    "content:status": "node scripts/content.mjs status",
+    "content:sync": "node scripts/content.mjs sync",
+    "content:new": "node scripts/content.mjs new",
+    "content:verify": "node scripts/content.mjs verify",
+    "deploy": "./deploy-gh-pages.sh"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@astrojs/markdown-remark": "^7.3.1",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.5",
     "gray-matter": "^4.0.3",
-    "marked": "^17.0.0",
-    "vite": "^5.0.8"
+    "katex": "^0.16.22",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
   }
 }

@@ -1,0 +1,44 @@
+---
+import { render } from 'astro:content'
+import { UI, LOCALES, type LocaleCode } from '../../site.mjs'
+import { localePath, localePaths } from '../../lib/url'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getPage } from '../../lib/content'
+import Toc from '../../components/Toc.astro'
+
+export function getStaticPaths() {
+  return localePaths()
+}
+
+const { lang } = Astro.params as { lang: LocaleCode }
+const t = UI[lang]
+const page = await getPage(lang, 'about')
+const rendered = page ? await render(page) : undefined
+const alternates = Object.fromEntries(LOCALES.map((l) => [l.code, localePath(l.code, 'about')]))
+---
+
+<BaseLayout
+  lang={lang}
+  title={page?.data.title ?? t.about}
+  description={page?.data.description}
+  alternates={alternates}
+  active="about"
+>
+  <article class="article">
+    <div class="container">
+      <div class={`article__layout ${rendered && rendered.headings.length > 2 ? 'article__layout--with-toc' : ''}`}>
+        <div>
+          <header class="article__header">
+            <h1 class="article__title">{page?.data.title ?? t.about}</h1>
+          </header>
+          <div class="prose">
+            {rendered ? <rendered.Content /> : <p>{t.notFoundNote}</p>}
+          </div>
+        </div>
+        {rendered && rendered.headings.length > 2 && (
+          <Toc headings={rendered.headings} lang={lang} />
+        )}
+      </div>
+    </div>
+  </article>
+</BaseLayout>

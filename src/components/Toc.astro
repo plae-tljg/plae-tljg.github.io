@@ -1,0 +1,34 @@
+---
+import { UI, type LocaleCode } from '../site.mjs'
+
+interface Heading {
+  depth: number
+  slug: string
+  text: string
+}
+
+interface Props {
+  headings: Heading[]
+  lang: LocaleCode
+}
+
+const { headings, lang } = Astro.props
+const t = UI[lang]
+// Only h2/h3 keep the sidebar readable on long Chinese articles.
+const items = headings.filter((h) => h.depth === 2 || h.depth === 3)
+---
+
+{
+  items.length > 2 && (
+    <nav class="toc" aria-label={t.toc}>
+      <h2>{t.toc}</h2>
+      <ol>
+        {items.map((heading) => (
+          <li class={heading.depth === 3 ? 'toc__l3' : undefined}>
+            <a href={`#${heading.slug}`}>{heading.text}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

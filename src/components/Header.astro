@@ -1,0 +1,52 @@
+---
+import { SITE, LOCALES, UI, type LocaleCode } from '../site.mjs'
+import { withBase, switchLocalePath } from '../lib/url'
+
+interface Props {
+  lang: LocaleCode
+  active?: string
+  /** Path of the equivalent page in the other locale, used by the switcher. */
+  alternatePath?: string
+}
+
+const { lang, active, alternatePath } = Astro.props
+const t = UI[lang]
+const path = Astro.url.pathname
+
+const items = [
+  { key: 'home', href: withBase(`/${lang}/`) },
+  { key: 'series', href: withBase(`/${lang}/series/`) },
+  { key: 'archive', href: withBase(`/${lang}/archive/`) },
+  { key: 'notes', href: withBase(`/${lang}/notes/`) },
+  { key: 'about', href: withBase(`/${lang}/about/`) },
+]
+
+const other = LOCALES.find((l) => l.code !== lang)!
+const otherHref = alternatePath ? withBase(alternatePath) : switchLocalePath(path, other.code)
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href={withBase(`/${lang}/`)}>{SITE.author}<span>.</span></a>
+
+    <nav class="site-nav" aria-label={lang === 'zh' ? '主导航' : 'Main'}>
+      {
+        items.map((item) => (
+          <a href={item.href} aria-current={active === item.key ? 'page' : undefined}>
+            {t[item.key]}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="header-tools">
+      <a class="chip" href={otherHref} title={t.languageSwitch} hreflang={other.code}>
+        {other.short}
+        <span class="chip--label">{other.label}</span>
+      </a>
+      <button class="chip" type="button" data-theme-toggle title={t.theme} aria-label={t.theme}>
+        ◐
+      </button>
+    </div>
+  </div>
+</header>

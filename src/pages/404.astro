@@ -1,0 +1,20 @@
+---
+import { SITE, STAGING } from '../site.mjs'
+import { withBase } from '../lib/url'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { UI } from '../site.mjs'
+
+const lang = 'zh' as const
+const t = UI[lang]
+---
+
+<BaseLayout lang={lang} title={t.notFound} noindex>
+  <div class="container empty-state">
+    <h1 style="font-size:2rem;margin-bottom:.5rem">404</h1>
+    <p>{t.notFoundNote}</p>
+    <p style="margin-top:2rem">
+      <a class="btn" href={withBase(`/${lang}/`)}>{t.backHome}</a>
+    </p>
+    {STAGING && <p style="margin-top:2rem;font-size:.85rem;color:var(--text-faint)">staging build</p>}
+  </div>
+</BaseLayout>

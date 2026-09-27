@@ -1,0 +1,38 @@
+---
+import { UI, LOCALES, type LocaleCode } from '../../../site.mjs'
+import { localePaths } from '../../../lib/url'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import PostList from '../../../components/PostList.astro'
+import { allTags, getPosts } from '../../../lib/content'
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    const posts = await getPosts(lang)
+    for (const { tag } of allTags(posts)) {
+      paths.push({ params: { lang, tag }, props: { tag } })
+    }
+  }
+  return paths
+}
+
+const { tag } = Astro.props as { tag: string }
+const lang = Astro.params.lang as LocaleCode
+const t = UI[lang]
+const posts = (await getPosts(lang)).filter((post) => post.data.tags.includes(tag))
+---
+
+<BaseLayout lang={lang} title={`${t.tags}: ${tag}`} active="archive">
+  <div class="container">
+    <header class="page-header">
+      <h1>{tag}</h1>
+      <p>
+        {posts.length} {t.posts}
+      </p>
+    </header>
+    <section class="section">
+      <PostList posts={posts} lang={lang} />
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets'
+import { HERO } from '../lib/assets'
+---
+
+<section class="hero hero--image">
+  <Image
+    class="hero__image"
+    src={HERO}
+    alt=""
+    widths={[720, 1400, 2100]}
+    sizes="100vw"
+    loading="eager"
+    decoding="async"
+  />
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="container hero__content">
+    <slot />
+  </div>
+</section>

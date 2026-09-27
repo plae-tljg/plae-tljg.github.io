@@ -1,0 +1,60 @@
+---
+import { render } from 'astro:content'
+import { LOCALES, type LocaleCode } from '../../../site.mjs'
+import { postPath } from '../../../lib/url'
+import ArticleLayout from '../../../layouts/ArticleLayout.astro'
+import { getPosts, getSeriesPosts, siblings, type Post } from '../../../lib/content'
+
+export async function getStaticPaths() {
+  const paths = []
+  const byLocale: Record<string, Post[]> = {}
+  for (const locale of LOCALES) {
+    byLocale[locale.code] = await getPosts(locale.code as LocaleCode)
+  }
+
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    const posts = byLocale[lang]
+    const otherPosts = byLocale[lang === 'zh' ? 'en' : 'zh']
+    for (const post of posts) {
+      const seriesPosts = post.data.series ? await getSeriesPosts(post.data.series, lang) : posts
+      const { previous, next } = siblings(seriesPosts, post)
+      const counterpart = otherPosts.find(
+        (p) => p.data.translationKey === post.data.translationKey
+      )
+      paths.push({
+        params: { lang, slug: post.data.slug },
+        props: {
+          post,
+          previous,
+          next,
+          translationUrl: counterpart
+            ? postPath(counterpart.data.lang as LocaleCode, counterpart.data.slug)
+            : undefined,
+        },
+      })
+    }
+  }
+  return paths
+}
+
+const { post, previous, next, translationUrl } = Astro.props as {
+  post: Post
+  previous?: Post
+  next?: Post
+  translationUrl?: string
+}
+
+const { Content, headings } = await render(post)
+---
+
+<ArticleLayout
+  post={post}
+  headings={headings}
+  lang={post.data.lang as LocaleCode}
+  previous={previous}
+  next={next}
+  translationUrl={translationUrl}
+>
+  <Content />
+</ArticleLayout>

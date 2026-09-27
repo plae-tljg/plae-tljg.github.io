@@ -1,0 +1,130 @@
+---
+import { Image } from 'astro:assets'
+import { LOCALES, UI, SERIES, IMAGE_CREDITS, type LocaleCode } from '../../../../site.mjs'
+import { postPath, seriesPath } from '../../../../lib/url'
+import { coverFor } from '../../../../lib/assets'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { formatDate, getSeriesPosts, readingTime, isPreview, type Post } from '../../../../lib/content'
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    for (const series of SERIES) {
+      const posts = await getSeriesPosts(series.id, lang)
+      if (posts.length === 0) continue
+      paths.push({ params: { lang, series: series.id }, props: { series, posts } })
+    }
+  }
+  return paths
+}
+
+const { series, posts } = Astro.props as {
+  series: (typeof SERIES)[number]
+  posts: Post[]
+}
+const lang = Astro.params.lang as LocaleCode
+const t = UI[lang]
+const cover = coverFor(series.id)
+const credit = series.cover ? IMAGE_CREDITS[series.cover as keyof typeof IMAGE_CREDITS] : undefined
+const totalMinutes = posts.reduce(
+  (sum, post) => sum + readingTime(post.body || '', lang),
+  0
+)
+---
+
+<BaseLayout
+  lang={lang}
+  title={series.title[lang]}
+  description={series.description[lang]}
+  active="series"
+>
+  <div class="container">
+    <header class="page-header">
+      <h1>{series.title[lang]}</h1>
+      <p>{series.description[lang]}</p>
+      <div class="page-meta">
+        <span>
+          {posts.length} {t.posts}
+        </span>
+        <span>·</span>
+        <span>{totalMinutes} {t.minRead}</span>
+        <span>·</span>
+        <span>{series.state === 'closed' ? t.seriesClosed : t.seriesOngoing}</span>
+      </div>
+      {
+        posts.length > 1 && (
+          <p style="margin-top:1.5rem">
+            <a class="btn" href={`${seriesPath(lang, series.id)}read/`}>
+              {t.readAll} →
+            </a>
+          </p>
+        )
+      }
+    </header>
+
+    {
+      cover && (
+        <figure class="series-cover">
+          <Image
+            src={cover}
+            alt=""
+            widths={[720, 1400]}
+            sizes="(max-width: 900px) 100vw, 900px"
+            loading="eager"
+            decoding="async"
+          />
+          {credit && (
+            <figcaption class="credit">
+              {t.photoCredit}:{' '}
+              <a href={credit.source} rel="noopener" target="_blank">
+                {credit.title}
+              </a>{' '}
+              — {credit.author} (
+              <a href={credit.licenseUrl} rel="noopener" target="_blank">
+                {credit.license}
+              </a>
+              )
+            </figcaption>
+          )}
+        </figure>
+      )
+    }
+
+    <section class="section">
+      <ol class="series-index">
+        {
+          posts.map((post) => (
+            <li class="series-index__item">
+              <span class="series-index__num">
+                {post.data.seriesOrder !== undefined
+                  ? String(post.data.seriesOrder).padStart(2, '0')
+                  : '—'}
+              </span>
+              <div>
+                {post.data.partLabel && (
+                  <div class="series-index__part">{post.data.partLabel}</div>
+                )}
+                <h2 class="series-index__title">
+                  <a href={postPath(lang, post.data.slug)}>{post.data.title}</a>
+                  {isPreview(post) && (
+                    <span class="badge badge--warn" style="margin-left:.5rem">
+                      {t.preview}
+                    </span>
+                  )}
+                </h2>
+                {post.data.summary && <p class="series-index__summary">{post.data.summary}</p>}
+                <div class="series-index__part">
+                  <time datetime={post.data.date.toISOString()}>
+                    {formatDate(post.data.date, lang)}
+                  </time>
+                  <span> · {readingTime(post.body || '', lang)} {t.minRead}</span>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </div>
+</BaseLayout>

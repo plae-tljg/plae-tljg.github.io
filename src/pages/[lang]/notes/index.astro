@@ -1,0 +1,51 @@
+---
+import { UI, type LocaleCode } from '../../../site.mjs'
+import { localePaths } from '../../../lib/url'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { getNotes } from '../../../lib/content'
+import { formatDate } from '../../../lib/content'
+import { notePath } from '../../../lib/url'
+
+export function getStaticPaths() {
+  return localePaths()
+}
+
+const { lang } = Astro.params as { lang: LocaleCode }
+const t = UI[lang]
+const notes = await getNotes(lang)
+---
+
+<BaseLayout lang={lang} title={t.notes} active="notes">
+  <div class="container">
+    <header class="page-header">
+      <h1>{t.notes}</h1>
+      <p>
+        {
+          lang === 'zh'
+            ? '站点早期写下的短文，保留在这里，不再更新。'
+            : 'Earlier short posts, kept here and no longer updated.'
+        }
+      </p>
+    </header>
+
+    <section class="section">
+      <ul class="post-list">
+        {
+          notes.map((note) => (
+            <li class="post-list__item">
+              <time class="post-list__date" datetime={note.data.date.toISOString()}>
+                {formatDate(note.data.date, lang)}
+              </time>
+              <div>
+                <h3 class="post-list__title">
+                  <a href={notePath(lang, note.data.slug)}>{note.data.title}</a>
+                </h3>
+                {note.data.summary && <p class="post-list__summary">{note.data.summary}</p>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

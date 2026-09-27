@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets'
+import { UI, type LocaleCode, type SeriesEntry } from '../site.mjs'
+import { seriesPath } from '../lib/url'
+import { coverFor } from '../lib/assets'
+import type { Post } from '../lib/content'
+
+interface Props {
+  series: SeriesEntry
+  posts: Post[]
+  lang: LocaleCode
+}
+
+const { series, posts, lang } = Astro.props
+const t = UI[lang]
+const cover = coverFor(series.id)
+---
+
+<a class="card card--series" href={seriesPath(lang, series.id)}>
+  {
+    cover && (
+      <div class="card__cover">
+        <Image
+          src={cover}
+          alt=""
+          widths={[360, 720]}
+          sizes="(max-width: 720px) 92vw, 360px"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    )
+  }
+  <div class="card__body">
+    <h3>{series.title[lang]}</h3>
+    <p>{series.description[lang]}</p>
+    <div class="card__meta">
+      <span>
+        {posts.length > 0 ? `${posts.length} ${t.posts}` : lang === 'zh' ? '尚未开始' : 'Not started'}
+      </span>
+      <span>{series.state === 'closed' ? t.seriesClosed : t.seriesOngoing}</span>
+      <span>{series.languages.length > 1 ? t.seriesBilingual : t.seriesZhOnly}</span>
+    </div>
+  </div>
+</a>

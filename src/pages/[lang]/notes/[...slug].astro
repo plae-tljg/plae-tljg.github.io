@@ -1,0 +1,53 @@
+---
+import { render } from 'astro:content'
+import { UI, LOCALES, type LocaleCode } from '../../../site.mjs'
+import { notePath } from '../../../lib/url'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { formatDate, getNotes, type Note } from '../../../lib/content'
+import Toc from '../../../components/Toc.astro'
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    for (const note of await getNotes(lang)) {
+      paths.push({ params: { lang, slug: note.data.slug }, props: { note } })
+    }
+  }
+  return paths
+}
+
+const { note } = Astro.props as { note: Note }
+const lang = note.data.lang as LocaleCode
+const t = UI[lang]
+const { Content, headings } = await render(note)
+---
+
+<BaseLayout lang={lang} title={note.data.title} description={note.data.summary} active="notes">
+  <article class="article">
+    <div class="container">
+      <div class={`article__layout ${headings.length > 2 ? 'article__layout--with-toc' : ''}`}>
+        <div>
+          <nav class="breadcrumb">
+            <a href={notePath(lang, '')}>{t.notes}</a>
+            <span aria-hidden="true">/</span>
+            <span>{note.data.title}</span>
+          </nav>
+          <header class="article__header">
+            <h1 class="article__title">{note.data.title}</h1>
+            <div class="article__meta">
+              <time datetime={note.data.date.toISOString()}>
+                {formatDate(note.data.date, lang)}
+              </time>
+            </div>
+            {note.data.summary && <p class="article__summary">{note.data.summary}</p>}
+          </header>
+          <div class="prose">
+            <Content />
+          </div>
+        </div>
+        {headings.length > 2 && <Toc headings={headings} lang={lang} />}
+      </div>
+    </div>
+  </article>
+</BaseLayout>

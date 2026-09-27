@@ -1,0 +1,71 @@
+---
+import { SITE, UI, LOCALES, type LocaleCode } from '../../site.mjs'
+import { localePath, localePaths, withBase } from '../../lib/url'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Hero from '../../components/Hero.astro'
+import PostList from '../../components/PostList.astro'
+import SeriesCard from '../../components/SeriesCard.astro'
+import { getPosts, getSeriesViews } from '../../lib/content'
+
+export function getStaticPaths() {
+  return localePaths()
+}
+
+const { lang } = Astro.params as { lang: LocaleCode }
+const t = UI[lang]
+const posts = await getPosts(lang)
+const seriesViews = (await getSeriesViews(lang)).filter((view) => view.posts.length > 0)
+const latest = posts.slice(0, 6)
+const alternates = Object.fromEntries(LOCALES.map((l) => [l.code, localePath(l.code)]))
+---
+
+<BaseLayout lang={lang} title={SITE.title[lang]} alternates={alternates} active="home">
+  <Hero>
+    <h1>{SITE.title[lang]}</h1>
+    <p>{SITE.tagline[lang]}</p>
+    <div class="hero__links">
+      <a class="btn" href={localePath(lang, 'series')}>{t.allSeries}</a>
+      <a class="btn btn--ghost" href={localePath(lang, 'archive')}>{t.allPosts}</a>
+    </div>
+  </Hero>
+
+  {
+    seriesViews.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <div class="section__head">
+            <h2>{t.series}</h2>
+            <a href={localePath(lang, 'series')}>{t.allSeries} →</a>
+          </div>
+          <div class="card-grid">
+            {seriesViews.map(({ series, posts: seriesPosts }) => (
+              <SeriesCard series={series} posts={seriesPosts} lang={lang} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <h2>{t.latest}</h2>
+        {posts.length > latest.length && <a href={localePath(lang, 'archive')}>{t.allPosts} →</a>}
+      </div>
+      {
+        latest.length > 0 ? (
+          <PostList posts={latest} lang={lang} />
+        ) : (
+          <div class="empty-state">
+            <p>{t.emptyState}</p>
+            <p style="font-size:.9rem">
+              {t.emptyStateHint.split('npm run content:sync')[0]}
+              <code>npm run content:sync</code>
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,143 @@
+---
+import { SITE, SERIES, UI, type LocaleCode } from '../site.mjs'
+import { localePath, postPath, seriesPath, tagPath } from '../lib/url'
+import { formatDate, isPreview, readingTime, type Post } from '../lib/content'
+import BaseLayout from './BaseLayout.astro'
+import Toc from '../components/Toc.astro'
+
+interface Props {
+  post: Post
+  headings: { depth: number; slug: string; text: string }[]
+  lang: LocaleCode
+  /** Set when a translation of this article exists. */
+  translationUrl?: string
+  translationLabel?: string
+  previous?: Post
+  next?: Post
+  /** True when rendered inside the continuous "read the series" page. */
+  embedded?: boolean
+}
+
+const { post, headings, lang, translationUrl, previous, next, embedded = false } = Astro.props
+const t = UI[lang]
+const series = post.data.series ? SERIES.find((s) => s.id === post.data.series) : undefined
+const minutes = post.body ? readingTime(post.body, lang) : 1
+
+const alternates: Partial<Record<LocaleCode, string>> = { [lang]: postPath(lang, post.data.slug) }
+if (translationUrl) {
+  const other: LocaleCode = lang === 'zh' ? 'en' : 'zh'
+  alternates[other] = translationUrl
+}
+---
+
+<BaseLayout
+  lang={lang}
+  title={post.data.title}
+  description={post.data.summary}
+  noindex={isPreview(post)}
+  alternates={alternates}
+  alternatePath={translationUrl}
+  active="archive"
+>
+  <article class="article">
+    <div class="container">
+      <div class={`article__layout ${headings.length > 2 && !embedded ? 'article__layout--with-toc' : ''}`}>
+        <div>
+          {
+            !embedded && (
+              <nav class="breadcrumb" aria-label="breadcrumb">
+                <a href={localePath(lang)}>{t.home}</a>
+                <span aria-hidden="true">/</span>
+                {series ? (
+                  <>
+                    <a href={seriesPath(lang, series.id)}>{series.title[lang]}</a>
+                    <span aria-hidden="true">/</span>
+                  </>
+                ) : (
+                  <>
+                    <a href={localePath(lang, 'archive')}>{t.archive}</a>
+                    <span aria-hidden="true">/</span>
+                  </>
+                )}
+                <span>{post.data.partLabel || post.data.title}</span>
+              </nav>
+            )
+          }
+
+          <header class="article__header">
+            {
+              series && post.data.partLabel && (
+                <div class="article__meta" style="margin-bottom:.85rem">
+                  <span class="badge">{post.data.partLabel}</span>
+                </div>
+              )
+            }
+            <h1 class="article__title">{post.data.title}</h1>
+            <div class="article__meta">
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>
+              <span>·</span>
+              <span>{minutes} {t.minRead}</span>
+              {isPreview(post) && <span class="badge badge--warn">{t.preview}</span>}
+              {
+                !isPreview(post) && translationUrl && (
+                  <a href={translationUrl}>
+                    {lang === 'zh' ? t.translation : t.original}
+                  </a>
+                )
+              }
+            </div>
+            {post.data.summary && <p class="article__summary">{post.data.summary}</p>}
+            {
+              post.data.tags.length > 0 && (
+                <div style="margin-top:1rem">
+                  {post.data.tags.map((tag) => (
+                    <a class="tag" href={tagPath(lang, tag)}>
+                      {tag}
+                    </a>
+                  ))}
+                </div>
+              )
+            }
+          </header>
+
+          {isPreview(post) && <p class="notice">{t.previewNote}</p>}
+
+          <div class="prose">
+            <slot />
+          </div>
+
+          {
+            !embedded && (previous || next) && (
+              <nav class="series-nav" aria-label={t.inSeries}>
+                <div class="series-nav__side">
+                  {previous && (
+                    <>
+                      <span class="series-nav__label">
+                        ← {t.prev}
+                        {previous.data.partLabel ? ` · ${previous.data.partLabel}` : ''}
+                      </span>
+                      <a href={postPath(lang, previous.data.slug)}>{previous.data.title}</a>
+                    </>
+                  )}
+                </div>
+                <div class="series-nav__side series-nav__side--next">
+                  {next && (
+                    <>
+                      <span class="series-nav__label">
+                        {t.next}
+                        {next.data.partLabel ? ` · ${next.data.partLabel}` : ''} →
+                      </span>
+                      <a href={postPath(lang, next.data.slug)}>{next.data.title}</a>
+                    </>
+                  )}
+                </div>
+              </nav>
+            )
+          }
+        </div>
+
+        {headings.length > 2 && !embedded && <Toc headings={headings} lang={lang} />}
+      </div>
+    </div>
+  </article>
+</BaseLayout>

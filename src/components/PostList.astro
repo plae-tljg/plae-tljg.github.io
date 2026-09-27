@@ -1,0 +1,33 @@
+---
+import { UI, type LocaleCode } from '../site.mjs'
+import { postPath } from '../lib/url'
+import { formatDateShort, isPreview, type Post } from '../lib/content'
+
+interface Props {
+  posts: Post[]
+  lang: LocaleCode
+  showSummary?: boolean
+}
+
+const { posts, lang, showSummary = true } = Astro.props
+const t = UI[lang]
+---
+
+<ul class="post-list">
+  {
+    posts.map((post) => (
+      <li class="post-list__item">
+        <time class="post-list__date" datetime={post.data.date.toISOString()}>
+          {formatDateShort(post.data.date)}
+        </time>
+        <div>
+          <h3 class="post-list__title">
+            <a href={postPath(lang, post.data.slug)}>{post.data.title}</a>
+            {isPreview(post) && <span class="badge badge--warn" style="margin-left:.5rem">{t.preview}</span>}
+          </h3>
+          {showSummary && post.data.summary && <p class="post-list__summary">{post.data.summary}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,25 @@
+---
+import { SITE, UI, type LocaleCode } from '../site.mjs'
+import { withBase } from '../lib/url'
+
+interface Props {
+  lang: LocaleCode
+}
+
+const { lang } = Astro.props
+const t = UI[lang]
+const year = new Date().getFullYear()
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__row">
+    <p style="margin:0">© {year} {SITE.author} · {t.footerNote}</p>
+    <p style="margin:0">
+      <a href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
+      <span aria-hidden="true"> · </span>
+      <a href={withBase(`/${lang}/rss.xml`)}>{t.rss}</a>
+      <span aria-hidden="true"> · </span>
+      <a href={withBase(`/${lang}/about/`)}>{t.about}</a>
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,62 @@
+---
+import { SITE, LOCALES } from '../site.mjs'
+import { withBase } from '../lib/url'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Hero from '../components/Hero.astro'
+import { getSeriesViews, getPosts } from '../lib/content'
+
+const lang = 'zh'
+const seriesViews = await getSeriesViews('zh')
+const latest = (await getPosts('zh')).slice(0, 5)
+const enPosts = await getPosts('en')
+
+const alternates = Object.fromEntries(
+  LOCALES.map((l) => [l.code, withBase(`/${l.code}/`)])
+)
+---
+
+<BaseLayout lang={lang} title={SITE.title.zh} alternates={alternates} active="home">
+  <Hero>
+    <h1>{SITE.author}</h1>
+    <p>{SITE.tagline.zh}</p>
+    <p class="hero__secondary" lang="en">{SITE.tagline.en}</p>
+  </Hero>
+
+  <section class="section">
+    <div class="container">
+      <div class="landing__choices">
+        <a class="landing__choice" href={withBase('/zh/')}>
+          <strong>中文</strong>
+          <span>
+            {seriesViews.reduce((n, v) => n + v.posts.length, 0)} 篇文章 ·
+            {seriesViews.filter((v) => v.posts.length).length} 个系列
+          </span>
+        </a>
+        <a class="landing__choice" href={withBase('/en/')}>
+          <strong>English</strong>
+          <span>{enPosts.length} post{enPosts.length === 1 ? '' : 's'} available</span>
+        </a>
+      </div>
+
+      {
+        latest.length > 0 && (
+          <div style="margin-top:3.5rem;max-width:46rem">
+            <h2 class="section__label">最新</h2>
+            <ul class="post-list">
+              {latest.map((post) => (
+                <li class="post-list__item">
+                  <span class="post-list__date">{post.data.date.toISOString().slice(0, 10)}</span>
+                  <div>
+                    <h3 class="post-list__title">
+                      <a href={withBase(`/zh/posts/${post.data.slug}/`)}>{post.data.title}</a>
+                    </h3>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

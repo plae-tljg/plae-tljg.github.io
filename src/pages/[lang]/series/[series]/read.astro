@@ -1,0 +1,104 @@
+---
+/**
+ * Continuous reading mode: the whole series as one page.
+ * Marked noindex — the individual articles are the canonical URLs.
+ */
+import { render } from 'astro:content'
+import { LOCALES, UI, SERIES, type LocaleCode } from '../../../../site.mjs'
+import { postPath, seriesPath } from '../../../../lib/url'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import {
+  getSeriesPosts,
+  readingTime,
+  isPreview,
+  type Post,
+} from '../../../../lib/content'
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    for (const series of SERIES) {
+      const posts = await getSeriesPosts(series.id, lang)
+      if (posts.length < 2) continue
+      paths.push({ params: { lang, series: series.id }, props: { series, posts } })
+    }
+  }
+  return paths
+}
+
+const { series, posts } = Astro.props as {
+  series: (typeof SERIES)[number]
+  posts: Post[]
+}
+const lang = Astro.params.lang as LocaleCode
+const t = UI[lang]
+
+const rendered = []
+for (const post of posts) {
+  const { Content } = await render(post)
+  rendered.push({ post, Content })
+}
+const totalMinutes = posts.reduce((sum, post) => sum + readingTime(post.body || '', lang), 0)
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${series.title[lang]} · ${t.readAll}`}
+  description={series.description[lang]}
+  noindex
+>
+  <div class="container container--narrow">
+    <header class="page-header">
+      <nav class="breadcrumb">
+        <a href={seriesPath(lang, series.id)}>{series.title[lang]}</a>
+        <span aria-hidden="true">/</span>
+        <span>{t.readAll}</span>
+      </nav>
+      <h1>{series.title[lang]}</h1>
+      <p>{series.description[lang]}</p>
+      <div class="page-meta">
+        <span>
+          {posts.length} {t.posts}
+        </span>
+        <span>·</span>
+        <span>{totalMinutes} {t.minRead}</span>
+      </div>
+    </header>
+
+    <nav class="toc" style="position:static;max-height:none;border-left:0;padding-left:0;margin:2rem 0 0">
+      <h2>{t.toc}</h2>
+      <ol>
+        {
+          posts.map((post) => (
+            <li>
+              <a href={`#${post.data.slug}`}>
+                {post.data.partLabel ? `${post.data.partLabel} · ` : ''}
+                {post.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    {
+      rendered.map(({ post, Content }) => (
+        <section class="book__part" id={post.data.slug}>
+          <div class="book__part-label">
+            {post.data.partLabel || ''}
+            {isPreview(post) ? ` · ${t.preview}` : ''}
+          </div>
+          <h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em">
+            <a href={postPath(lang, post.data.slug)} style="color:inherit">
+              {post.data.title}
+            </a>
+          </h2>
+          <div class="prose">
+            <Content />
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>
