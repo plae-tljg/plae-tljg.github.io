@@ -140,7 +140,20 @@ function resolveSeriesId(raw) {
 /** Read one source file into the normalized shape the site uses. */
 function readArticle(absPath) {
   const raw = fs.readFileSync(absPath, 'utf8')
-  const { data, content } = matter(raw)
+  let data, content
+  try {
+    ;({ data, content } = matter(raw))
+  } catch (error) {
+    // One stray character in the frontmatter used to abort the whole run with a
+    // YAML stack trace and no file name. Say which file, and why.
+    const reason = error.reason || error.message
+    const line = error.mark ? ` (line ${error.mark.line + 1}, column ${error.mark.column + 1})` : ''
+    fail(
+      `${path.relative(SOURCE_ROOT, absPath)}: frontmatter does not parse${line}\n` +
+        `  ${reason}\n` +
+        `  Fix the YAML in the writing workspace — until then this file cannot be published.`
+    )
+  }
   const base = path.basename(absPath)
   const relPath = path.relative(SOURCE_ROOT, absPath)
 
@@ -289,6 +302,12 @@ function normalizeBody(article, copies, warnings) {
 
 // ------------------------------------------------------------- output writing
 
+/** Where an article's synced copy lives — posts unless it is a track page. */
+function outputPathFor(article) {
+  const dir = article.track ? CONTENT_SYNC.pathsDir : CONTENT_SYNC.outputDir
+  return path.join(dir, article.lang, `${article.key}.md`)
+}
+
 function buildOutput(article, options, previousEntry, warnings) {
   const copies = []
   const body = normalizeBody(article, copies, warnings)
@@ -328,11 +347,7 @@ function buildOutput(article, options, previousEntry, warnings) {
   frontmatter.syncedAt = syncedAt
 
   const file = matter.stringify(body, frontmatter)
-  const outputPath = path.join(
-    isTrack ? CONTENT_SYNC.pathsDir : CONTENT_SYNC.outputDir,
-    article.lang,
-    `${article.key}.md`
-  )
+  const outputPath = outputPathFor(article)
   return {
     file,
     outputPath,
@@ -479,9 +494,7 @@ function cmdSync(args) {
   const seen = new Set()
 
   for (const article of selected) {
-    const prev = previous.get(
-      path.join(CONTENT_SYNC.outputDir, article.lang, `${article.key}.md`)
-    )
+    const prev = previous.get(outputPathFor(article))
     const built = buildOutput(article, options, prev, warnings)
     if (seen.has(built.outputPath)) {
       fail(`Two source files map to the same output: ${built.outputPath}`)
@@ -492,7 +505,7 @@ function cmdSync(args) {
     if (exists && !prev && !options.force) {
       fail(
         `Refusing to overwrite ${built.outputPath}: the file exists but is not managed by sync.\n` +
-          `Move it out of ${CONTENT_SYNC.outputDir}, or re-run with --force.`
+          `Move it out of ${path.dirname(built.outputPath)}, or re-run with --force.`
       )
     }
     const current = exists ? fs.readFileSync(path.join(ROOT, built.outputPath), 'utf8') : null
@@ -517,6 +530,23 @@ function cmdSync(args) {
     fail(
       `The last sync came from ${manifest.source}, but this run reads ${SOURCE_ROOT}.\n` +
         `That would remove ${stale.length} published article(s). Re-run with --force if this is intended.`
+    )
+  }
+
+  // Second valve: a source *directory* that disappears (moved, renamed, or
+  // wiped because it was never committed) looks exactly like "all of it was
+  // unpublished". Losing a third of the site in one run is not a status change.
+  const publishedCount = (manifest.entries || []).length
+  if (
+    !options.force &&
+    !options.dryRun &&
+    publishedCount >= 4 &&
+    stale.length > Math.floor(publishedCount / 3)
+  ) {
+    fail(
+      `${stale.length} of ${publishedCount} published file(s) would be removed.\n` +
+        `That usually means a source directory moved or was deleted, not that you unpublished them.\n` +
+        `Check the writing workspace (CONTENT_SOURCE=${SOURCE_ROOT}), or re-run with --force.`
     )
   }
 
