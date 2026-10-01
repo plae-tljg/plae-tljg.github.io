@@ -185,11 +185,16 @@ never overwriting an existing one.
 
 ---
 
-## 8. Guide / track pages
+## 8. Guide / track pages (hand-written)
 
-A **track** is a tree — stages → pages — not a linear series. Articles for the
-learning path carry a `track:` field instead of `series:` and are written to
-`src/content/paths/`, then routed to `/<lang>/docs/<track>/<stage>/<slug>/`.
+A **track** is a tree — stages → pages — not a linear series. It renders at
+`/<lang>/docs/<track>/<stage>/<slug>/`, and its pages live in
+**`src/content/docs/<lang>/` in this repository**.
+
+> These are the one content type the sync does **not** own. They were imported
+> once from the standalone `Math-Learning-Path` site, and the writing-workspace
+> copy was retired — so the site is the source now. Edit them here; nothing in
+> `scripts/content.mjs` reads or writes this directory.
 
 ```yaml
 ---
@@ -205,7 +210,7 @@ titleZh: "集合论"
 titleEn: "Set Theory"
 summaryZh: "从空集出发，探索集合的结构与运算"
 summaryEn: "Starting from the empty set"
-status: "zh draft"
+status: "zh draft"                # a non-ready status adds the preview badge
 ---
 ```
 
@@ -214,11 +219,10 @@ The track itself (title, subtitle, stage list, landing hero) lives in the
 files. A page with `slug: index` + `stageIndex: true` becomes the stage's own
 page, and the stage's other pages are listed beneath it as cards.
 
-Unlike article bodies, track bodies keep their original HTML — the pages were
-imported from the standalone `Math-Learning-Path` site, and `src/styles/path.css`
-styles their classes (`.concept-card`, `.learning-path`, `.step-num`, …) inside
-the site shell. Markdown still works; raw HTML is simply not converted.
+Unlike article bodies, track bodies keep their original HTML — concept cards,
+numbered route steps, recommended reading — and `src/styles/path.css` styles
+their classes (`.concept-card`, `.learning-path`, `.step-num`, …) inside the
+site shell. Markdown still works; raw HTML is simply not converted.
 
-`seasons/` (articles, series) and `paths/` (guide pages, tracks) are the two
-content areas of the writing workspace. Both go through the same status gate and
-the same manifest.
+The writing workspace now holds only `seasons/` (articles, series). Guide pages
+are edited here, and `content verify` deliberately ignores them.

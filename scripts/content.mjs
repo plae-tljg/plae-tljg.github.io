@@ -180,14 +180,7 @@ function readArticle(absPath) {
     seriesRaw: data.series,
     seriesOrder,
     partLabel: data.part,
-    // --- guide/track pages (see docs/CONTENT_CONVENTION.md §8) ---
-    track: data.track ? String(data.track).trim() : undefined,
-    stage: data.stage ? String(data.stage).trim() : undefined,
-    stageIndex: data.stageIndex === true,
     order: typeof data.order === 'number' ? data.order : seriesOrder,
-    level: typeof data.level === 'number' ? data.level : undefined,
-    icon: data.icon ? String(data.icon) : undefined,
-    slugOverride: data.slug ? String(data.slug) : undefined,
     title,
     summary,
     date: toDateString(data.date),
@@ -302,16 +295,18 @@ function normalizeBody(article, copies, warnings) {
 
 // ------------------------------------------------------------- output writing
 
-/** Where an article's synced copy lives — posts unless it is a track page. */
+/**
+ * Where an article's synced copy lives. Guide pages under src/content/docs are
+ * hand-written and are deliberately *not* produced here — one directory, one
+ * owner.
+ */
 function outputPathFor(article) {
-  const dir = article.track ? CONTENT_SYNC.pathsDir : CONTENT_SYNC.outputDir
-  return path.join(dir, article.lang, `${article.key}.md`)
+  return path.join(CONTENT_SYNC.outputDir, article.lang, `${article.key}.md`)
 }
 
 function buildOutput(article, options, previousEntry, warnings) {
   const copies = []
   const body = normalizeBody(article, copies, warnings)
-  const isTrack = Boolean(article.track)
   const syncedAt =
     previousEntry && previousEntry.sourceHash === article.rawHash
       ? previousEntry.syncedAt
@@ -322,24 +317,15 @@ function buildOutput(article, options, previousEntry, warnings) {
     summary: article.summary || '',
     lang: article.lang,
     translationKey: article.key,
-    slug: article.slugOverride || article.key,
+    slug: article.key,
     date: article.date || new Date().toISOString().slice(0, 10),
   }
   if (article.updated) frontmatter.updated = article.updated
-  if (isTrack) {
-    frontmatter.track = article.track
-    if (article.stage) frontmatter.stage = article.stage
-    if (article.order !== undefined && article.order !== null) frontmatter.order = article.order
-    if (article.level !== undefined) frontmatter.level = article.level
-    if (article.icon) frontmatter.icon = article.icon
-    if (article.stageIndex) frontmatter.stageIndex = true
-  } else {
-    if (article.seriesId) frontmatter.series = article.seriesId
-    if (article.seriesOrder !== undefined && article.seriesOrder !== null) {
-      frontmatter.seriesOrder = article.seriesOrder
-    }
-    if (article.partLabel) frontmatter.partLabel = article.partLabel
+  if (article.seriesId) frontmatter.series = article.seriesId
+  if (article.seriesOrder !== undefined && article.seriesOrder !== null) {
+    frontmatter.seriesOrder = article.seriesOrder
   }
+  if (article.partLabel) frontmatter.partLabel = article.partLabel
   frontmatter.tags = article.tags
   frontmatter.status = options.preview ? 'preview' : 'ready'
   if (article.canonical) frontmatter.canonical = article.canonical
@@ -357,7 +343,6 @@ function buildOutput(article, options, previousEntry, warnings) {
       lang: article.lang,
       title: article.title,
       series: article.seriesId || null,
-      track: article.track || null,
       status: frontmatter.status,
       sourcePath: article.relPath,
       sourceHash: article.rawHash,
@@ -627,7 +612,7 @@ function removeEmptyDirs(dir) {
 
 function cmdVerify() {
   const manifest = readJSON(MANIFEST_PATH, null)
-  const managedDirs = [CONTENT_SYNC.outputDir, CONTENT_SYNC.pathsDir]
+  const managedDirs = [CONTENT_SYNC.outputDir]
   const onDisk = []
   for (const managedDir of managedDirs) {
     for (const lang of LOCALE_CODES) {

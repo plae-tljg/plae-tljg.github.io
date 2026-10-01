@@ -42,11 +42,15 @@ const posts = defineCollection({
 })
 
 /**
- * Guide/track pages (frontmatter `track:`). Written by the same sync as posts,
- * but routed to /<lang>/path/<stage>/<slug>/ — a tree rather than a series.
+ * Guide/track pages, rendered at /<lang>/docs/<track>/<stage>/<slug>/ — a tree
+ * rather than a series.
+ *
+ * These are **hand-written here**, not synced: the learning path came from a
+ * standalone site, its writing-workspace copy was retired, and nothing in
+ * scripts/content.mjs reads or writes this directory.
  */
-const paths = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/paths', generateId: byPath }),
+const docs = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/docs', generateId: byPath }),
   schema: z.object({
     title: z.string(),
     summary: z.string().default(''),
@@ -100,4 +104,4 @@ const notes = defineCollection({
   }),
 })
 
-export const collections = { posts, paths, pages, notes }
+export const collections = { posts, docs, pages, notes }

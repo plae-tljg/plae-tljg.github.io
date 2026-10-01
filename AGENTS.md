@@ -23,9 +23,11 @@ output is static, hosting is GitHub Pages from `gh-pages`.
 
 ## Hard rules
 
-1. **Never hand-edit `src/content/posts/**` or `src/content/paths/**`** — both are
-   generated. Change the source in the writing workspace and run
-   `npm run content:sync`. `npm run content:verify` detects drift and runs in CI.
+1. **Never hand-edit `src/content/posts/**`** — it is generated. Change the
+   source in the writing workspace and run `npm run content:sync`.
+   `npm run content:verify` detects drift and runs in CI.
+   `src/content/docs/**` is the opposite: **hand-written here**, never synced.
+   It holds the guide/track pages (the learning path); edit them in this repo.
 2. **Never copy unpublished drafts into this repo.** The repository is public.
    Publication is controlled by the `status` field in the writing workspace; only
    `ready` (plus `--preview` statuses, clearly badged) may be synced.
@@ -51,7 +53,8 @@ output is static, hosting is GitHub Pages from `gh-pages`.
 | Learning-path track, stages, hero, pets | `src/site.mjs` (`TRACKS`) |
 | Which statuses publish | `src/site.mjs` (`CONTENT_SYNC`) |
 | Where the chatbot bundle comes from, launcher label, samples | `src/site.mjs` (`BOT_SYNC`) |
-| Post/path/page schema | `src/content.config.ts` |
+| Post/doc/page schema | `src/content.config.ts` |
+| Guide/track pages (the learning path) | `src/content/docs/**` — hand-written, not synced |
 | Layout, routes, components | `src/layouts`, `src/pages`, `src/components` |
 | The learning-path look (cards, route steps) | `src/styles/path.css` |
 | The chatbot widget (launcher, panel, sessions) | `src/components/ChatBot.astro` |
@@ -78,8 +81,9 @@ manifest. Refreshing the snapshot (`npm run repos:sync`) does need `gh auth`.
   checking that math still renders.
 - `public/.nojekyll` is required: the build emits `_astro/`, which Jekyll would
   otherwise drop on the `gh-pages` branch.
-- The chatbot's knowledge rows are **English only**, so a Chinese question gets a
-  Chinese refusal. That is the design (the refusal is the feature), and the empty
-  state says so via `chatLangNote`. `docs/CHATBOT.md` explains the whole path.
+- The chatbot answers from tables, in English: every row carries Chinese *and*
+  English phrasings, so a Chinese question reaches the same row, but the answer
+  text is written once (`knowledge.locale` is a deployment switch, not a
+  per-question one). `docs/CHATBOT.md` explains the whole path.
 - The chatbot bundle is committed because the deploy runner cannot reach the
   private compiler repository. It is generated — see hard rule 6.

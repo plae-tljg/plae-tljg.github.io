@@ -403,8 +403,6 @@ export const CONTENT_SYNC = {
   defaultLang: 'zh',
   /** Where synced articles are written, relative to the repo root. */
   outputDir: 'src/content/posts',
-  /** Where synced guide/track pages are written (frontmatter `track:`). */
-  pathsDir: 'src/content/paths',
   /** Where copied images are written, relative to the repo root. */
   assetDir: 'public/content',
   /** URL prefix for copied images. */

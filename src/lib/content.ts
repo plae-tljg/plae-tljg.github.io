@@ -4,7 +4,7 @@ import { SERIES, TRACKS, DEFAULT_LOCALE, type LocaleCode, type SeriesEntry } fro
 export type Post = CollectionEntry<'posts'>
 export type Note = CollectionEntry<'notes'>
 export type Page = CollectionEntry<'pages'>
-export type PathPage = CollectionEntry<'paths'>
+export type PathPage = CollectionEntry<'docs'>
 
 export const isPreview = (post: Post): boolean => post.data.status !== 'ready'
 
@@ -123,7 +123,7 @@ export function sortByOrder(posts: Post[]): Post[] {
 /** Every page of a track in one locale, in stage then page order. */
 export async function getTrackPages(trackId: string, lang: LocaleCode): Promise<PathPage[]> {
   const pages = await getCollection(
-    'paths',
+    'docs',
     ({ data }) => data.lang === lang && data.track === trackId
   )
   return pages.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
@@ -163,7 +163,7 @@ export async function getGuidePage(
   stage: string,
   slug: string
 ): Promise<PathPage | undefined> {
-  const pages = await getCollection('paths', ({ data }) => data.lang === lang)
+  const pages = await getCollection('docs', ({ data }) => data.lang === lang)
   return pages.find((p) => p.data.stage === stage && p.data.slug === slug)
 }
 
