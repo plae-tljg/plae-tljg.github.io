@@ -129,6 +129,30 @@ export const UI = {
     credits: 'Image credits',
     photoBy: 'by',
     footerNote: 'Opinions are the author’s own.',
+    chatOpen: 'Ask about my work',
+    chatClose: 'Close',
+    chatChats: 'Chats',
+    chatNew: 'New chat',
+    chatBack: 'Back to the chat',
+    chatAsk: 'Ask something about the work…',
+    chatSend: 'Ask',
+    chatYou: 'You',
+    chatDelete: 'Delete this chat',
+    chatNoChats: 'No chats yet',
+    chatEmptyNote: 'Answers come from tables, not a model. What it does not know, it refuses.',
+    chatDragHint: 'hold to drag',
+    chatLoading: 'Loading…',
+    chatFailed: 'Could not load the bot',
+    chatRetry: 'Retry',
+    chatTokens: '0 tokens',
+    chatSelfCheck: 'run the frozen cases here',
+    chatStatic: 'static page · no server',
+    chatRefs: 'refs',
+    chatFromTables: 'from tables',
+    chatRefused: 'question recorded',
+    chatFuzzy: 'near match',
+    chatTry: 'try',
+    chatLangNote: '',
   },
 }
 
@@ -261,4 +285,48 @@ export const CONTENT_SYNC = {
   assetUrlBase: '/content',
   /** Manifest recording what sync produced (used by `content verify`). */
   manifest: 'src/content/.sync-manifest.json',
+}
+
+/**
+ * Chatbot-sync convention.
+ *
+ * The "ask about my work" bot is compiled in a separate repository
+ * (`personal-chatbots`): its rows are data, so `pc export --bundle` writes the
+ * whole knowledge base as JSON plus the browser engine that reads it.
+ * `npm run bot:sync` runs that compiler and copies the result into
+ * `public/bot/`; `npm run bot:verify` (CI) fails if the committed bundle was
+ * edited by hand. Full walkthrough: docs/CHATBOT.md
+ */
+export const BOT_SYNC = {
+  /** Compiler repository root. Override with BOT_SOURCE=/path/to/repo */
+  source: process.env.BOT_SOURCE || '~/Music/personal-chatbots',
+  /** Where the compiled artifacts land, relative to the repo root. */
+  outDir: 'public/bot',
+  /** The files the compiler writes — the bundle, in full. */
+  files: ['data.json', 'engine.js', 'CONTRACT.md'],
+  /** Manifest recording what sync produced (used by `bot verify`). */
+  manifest: 'src/content/.bot-manifest.json',
+  /**
+   * Python that runs the compiler in `source`. Empty means: use
+   * `<source>/.venv/bin/python` if it exists, else `python3`.
+   */
+  python: process.env.BOT_PYTHON || '',
+  /** Launcher label, shown before the engine has loaded. */
+  label: {
+    zh: '问问我的作品',
+    en: 'Ask about my work',
+  },
+  /**
+   * Questions the empty state offers. These are the ones the tables actually
+   * answer — a click must never land on a refusal. The knowledge rows are
+   * English, which is why both locales show the same list.
+   */
+  samples: [
+    'what projects does LKM have?',
+    'what is dsh-review about?',
+    'which projects use Kotlin?',
+    'what have you built with finance?',
+    'what is your most starred repo?',
+    'how do i contact you?',
+  ],
 }

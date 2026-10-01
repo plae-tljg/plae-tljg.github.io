@@ -51,3 +51,12 @@ export const UI: Record<LocaleCode, Record<string, string>>
 export const SERIES: SeriesEntry[]
 export const IMAGE_CREDITS: Record<string, ImageCredit>
 export const CONTENT_SYNC: Record<string, unknown>
+export const BOT_SYNC: {
+  source: string
+  outDir: string
+  files: string[]
+  manifest: string
+  python: string
+  label: Record<LocaleCode, string>
+  samples: string[]
+}

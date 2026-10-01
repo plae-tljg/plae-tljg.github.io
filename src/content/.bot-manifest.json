@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-09-30T15:07:12.087Z",
+  "source": "/home/lkm/Music/personal-chatbots",
+  "compiler": "python -m personal_chatbots export --bundle /home/lkm/00app/05web/plae-tljg.github.io/public/bot",
+  "files": {
+    "data.json": {
+      "size": 294968,
+      "sha256": "sha256:5d15294829c1f2cc0cc965a931cc7f30625e6514723f20d8987a431893c86ed6"
+    },
+    "engine.js": {
+      "size": 27921,
+      "sha256": "sha256:0c3ccb49739811cea1b8d675a18b544b2310cb77370aa6a06a66d418a0f9484e"
+    },
+    "CONTRACT.md": {
+      "size": 2166,
+      "sha256": "sha256:1bf29ae3f7cca1bd779521ae93bacfd48387479c7c64a5ea011e2877fa8a89d5"
+    }
+  },
+  "bundle": {
+    "generatedAt": "2026-09-30T23:07:12",
+    "knowledge": 11,
+    "entities": 176,
+    "links": 251,
+    "documents": 43,
+    "tests": 25,
+    "name": "Ask LKM",
+    "level": 1
+  }
+}

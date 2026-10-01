@@ -14,7 +14,11 @@
     "content:sync": "node scripts/content.mjs sync",
     "content:new": "node scripts/content.mjs new",
     "content:verify": "node scripts/content.mjs verify",
-    "deploy": "./deploy-gh-pages.sh"
+    "deploy": "./deploy-gh-pages.sh",
+    "bot": "node scripts/bot.mjs",
+    "bot:status": "node scripts/bot.mjs status",
+    "bot:sync": "node scripts/bot.mjs sync",
+    "bot:verify": "node scripts/bot.mjs verify"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",

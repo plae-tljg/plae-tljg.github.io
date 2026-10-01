@@ -1,0 +1,636 @@
+---
+/**
+ * ChatBot — the "ask about my work" bot, as a floating, draggable chatroom.
+ *
+ * The bot is compiled in another repository (`personal-chatbots`) and copied
+ * into `public/bot/` by `npm run bot:sync`; this component is only the host.
+ * The engine and its data are imported lazily, on the first open, so a reader
+ * who never opens the widget pays nothing for it.
+ *
+ * Sessions live in `localStorage` — there is no server anywhere in this path,
+ * so a visitor's transcript is theirs. `docs/CHATBOT.md` has the whole story.
+ */
+import { BOT_SYNC, UI, type LocaleCode } from '../site.mjs'
+import { withBase } from '../lib/url'
+
+interface Props {
+  lang: LocaleCode
+}
+
+const { lang } = Astro.props
+const t = UI[lang]
+const label = BOT_SYNC.label[lang]
+
+/** Strings the script needs; the markup already carries them for the SSR pass. */
+const strings = {
+  chats: t.chatChats,
+  newChat: t.chatNew,
+  back: t.chatBack,
+  placeholder: t.chatAsk,
+  send: t.chatSend,
+  you: t.chatYou,
+  delete: t.chatDelete,
+  noChats: t.chatNoChats,
+  note: t.chatEmptyNote,
+  langNote: t.chatLangNote,
+  loading: t.chatLoading,
+  failed: t.chatFailed,
+  retry: t.chatRetry,
+  tokens: t.chatTokens,
+  selfCheck: t.chatSelfCheck,
+  static: t.chatStatic,
+  refs: t.chatRefs,
+  fromTables: t.chatFromTables,
+  refused: t.chatRefused,
+  fuzzy: t.chatFuzzy,
+  try: t.chatTry,
+}
+---
+
+<div
+  class="lkm-bot"
+  id="lkm-bot"
+  data-bot-base={withBase('/bot/')}
+  data-strings={JSON.stringify(strings)}
+  data-samples={JSON.stringify(BOT_SYNC.samples)}
+>
+  <button
+    class="lkm-bot__launcher"
+    id="lkm-bot-launcher"
+    type="button"
+    aria-expanded="false"
+    aria-controls="lkm-bot-panel"
+    title={`${label} — ${t.chatDragHint}`}
+  >
+    <svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linejoin="round"></path>
+      <circle cx="9" cy="11" r="1.15" fill="currentColor"></circle>
+      <circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle>
+      <circle cx="16" cy="11" r="1.15" fill="currentColor"></circle>
+    </svg>
+    <span class="lkm-bot__launcher-label">{label}</span>
+  </button>
+
+  <section
+    class="lkm-bot__panel"
+    id="lkm-bot-panel"
+    role="dialog"
+    aria-label={label}
+    aria-modal="false"
+    hidden
+  >
+    <header class="lkm-bot__head">
+      <button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label={t.chatChats}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M4 6h16M4 12h16M4 18h10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <div class="lkm-bot__titles">
+        <b id="lkm-bot-name">{label}</b>
+        <span id="lkm-bot-tagline">{t.chatStatic}</span>
+      </div>
+      <button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label={t.chatNew}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 5v14M5 12h14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+      <button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label={t.chatClose}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M6 6l12 12M18 6L6 18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="lkm-bot__log" id="lkm-bot-log">
+      <div class="lkm-bot__inner" id="lkm-bot-inner"></div>
+    </div>
+
+    <form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off">
+      <input
+        class="lkm-bot__input"
+        id="lkm-bot-input"
+        type="text"
+        maxlength="500"
+        placeholder={t.chatAsk}
+        aria-label={t.chatAsk}
+      />
+      <button class="lkm-bot__send" id="lkm-bot-send" type="submit">{t.chatSend}</button>
+    </form>
+
+    <div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden>
+      <div class="lkm-bot__drawer-head">
+        <b>{t.chatChats}</b>
+        <button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label={t.chatBack}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6 6l12 12M18 6L6 18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="lkm-bot__list" id="lkm-bot-list"></div>
+      <div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const root = document.getElementById('lkm-bot')
+  if (root && !root.dataset.ready) {
+    root.dataset.ready = '1'
+    boot(root)
+  }
+
+  function boot(root) {
+    const S = JSON.parse(root.dataset.strings)
+    const SAMPLES = JSON.parse(root.dataset.samples)
+    const BASE = root.dataset.botBase
+    /** The engine reads this many citations before it stops listing them. */
+    const CITE_CAP = 3
+
+    const el = (id) => document.getElementById(id)
+    const launcher = el('lkm-bot-launcher')
+    const panel = el('lkm-bot-panel')
+    const logEl = el('lkm-bot-log')
+    const inner = el('lkm-bot-inner')
+    const form = el('lkm-bot-form')
+    const input = el('lkm-bot-input')
+    const send = el('lkm-bot-send')
+    const drawer = el('lkm-bot-drawer')
+    const listEl = el('lkm-bot-list')
+    const footEl = el('lkm-bot-foot')
+
+    const POS_KEY = 'lkm.bot.pos.v1'
+    const STORE_KEY = 'lkm.bot.v1'
+
+    const esc = (s) =>
+      String(s ?? '').replace(
+        /[&<>"]/g,
+        (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]
+      )
+    const read = (key, fallback) => {
+      try {
+        return JSON.parse(localStorage.getItem(key)) ?? fallback
+      } catch {
+        return fallback
+      }
+    }
+    const write = (key, value) => {
+      try {
+        localStorage.setItem(key, JSON.stringify(value))
+      } catch {
+        /* private mode: the chat still works, it just does not survive a reload */
+      }
+    }
+
+    // ------------------------------------------------------------ placement
+
+    /* The launcher is draggable. Position is kept as an absolute left/top pair
+       and clamped to the viewport on every move and resize, so it can never be
+       dragged out of reach. Until the visitor moves it, it stays pinned to the
+       bottom-right corner. */
+    let pos = read(POS_KEY, null)
+    let pinned = !pos
+    const MARGIN = 12
+
+    function clampPos() {
+      const rect = launcher.getBoundingClientRect()
+      const maxX = Math.max(MARGIN, window.innerWidth - rect.width - MARGIN)
+      const maxY = Math.max(MARGIN, window.innerHeight - rect.height - MARGIN)
+      if (pinned || !pos) pos = { x: maxX, y: maxY }
+      else pos = { x: Math.min(Math.max(pos.x, MARGIN), maxX), y: Math.min(Math.max(pos.y, MARGIN), maxY) }
+    }
+
+    function place() {
+      clampPos()
+      launcher.style.left = `${pos.x}px`
+      launcher.style.top = `${pos.y}px`
+      launcher.style.right = 'auto'
+      launcher.style.bottom = 'auto'
+      if (!panel.hidden) placePanel()
+    }
+
+    /** Open away from the viewport edge the launcher sits nearest, and never
+        on top of it: the button has to stay grabbable for the next drag. */
+    function placePanel() {
+      const rect = launcher.getBoundingClientRect()
+      const gap = 10
+      const width = panel.offsetWidth
+      const right = rect.left + rect.width / 2 > window.innerWidth / 2
+      const x = right ? rect.right - width : rect.left
+      panel.style.left = `${Math.min(Math.max(x, MARGIN), window.innerWidth - width - MARGIN)}px`
+      panel.style.right = 'auto'
+      panel.style.bottom = 'auto'
+
+      if (window.innerWidth < 640) {
+        // The narrow layout is pinned by CSS, with a row left for the launcher.
+        panel.style.top = 'auto'
+        panel.style.maxHeight = ''
+        return
+      }
+      const above = rect.top - gap - MARGIN
+      const below = window.innerHeight - rect.bottom - gap - MARGIN
+      const placeBelow = below >= above
+      // Shrink rather than overlap: a short transcript still scrolls.
+      panel.style.maxHeight = `${Math.max(220, placeBelow ? below : above)}px`
+      const height = panel.offsetHeight
+      const y = placeBelow ? rect.bottom + gap : rect.top - gap - height
+      panel.style.top = `${Math.min(Math.max(y, MARGIN), window.innerHeight - height - MARGIN)}px`
+    }
+
+    let drag = null
+    launcher.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 && event.pointerType === 'mouse') return
+      // The flag from a previous drag is cleared here rather than on a timer, so
+      // a drag is never mistaken for a click and the next real click still opens.
+      delete launcher.dataset.dragged
+      const rect = launcher.getBoundingClientRect()
+      drag = { id: event.pointerId, dx: event.clientX - rect.left, dy: event.clientY - rect.top, moved: false }
+      launcher.setPointerCapture(event.pointerId)
+      launcher.classList.add('is-dragging')
+    })
+
+    launcher.addEventListener('pointermove', (event) => {
+      if (!drag || event.pointerId !== drag.id) return
+      const x = event.clientX - drag.dx
+      const y = event.clientY - drag.dy
+      if (!drag.moved && Math.hypot(x - pos.x, y - pos.y) < 4) return
+      drag.moved = true
+      pinned = false
+      pos = { x, y }
+      place()
+      event.preventDefault()
+    })
+
+    function endDrag(event) {
+      if (!drag || event.pointerId !== drag.id) return
+      launcher.classList.remove('is-dragging')
+      if (drag.moved) {
+        write(POS_KEY, pos)
+        // A drag is not a click: the click that follows it is swallowed.
+        launcher.dataset.dragged = '1'
+      }
+      drag = null
+    }
+    launcher.addEventListener('pointerup', endDrag)
+    launcher.addEventListener('pointercancel', endDrag)
+
+    window.addEventListener('resize', place)
+
+    // ----------------------------------------------------------------- bot
+
+    let bot = null
+    let loading = null
+    let loaded = false
+
+    function load() {
+      if (!loading) {
+        loading = (async () => {
+          const { createBot } = await import(/* @vite-ignore */ `${BASE}engine.js`)
+          const response = await fetch(`${BASE}data.json`)
+          if (!response.ok) throw new Error(`${response.status} ${response.statusText}`)
+          bot = createBot(await response.json())
+          return bot
+        })().catch((error) => {
+          loading = null
+          throw error
+        })
+      }
+      return loading
+    }
+
+    // ------------------------------------------------------------ sessions
+
+    const store = read(STORE_KEY, { current: null, sessions: {} })
+    let sessions = store.sessions || {}
+    let current = store.current || null
+    const persist = () => write(STORE_KEY, { current, sessions })
+    const newId = () =>
+      crypto.randomUUID ? crypto.randomUUID() : `s${Date.now().toString(36)}`
+
+    const turns = () => (current && sessions[current] ? sessions[current].turns : [])
+
+    // ----------------------------------------------------------- rendering
+
+    function citations(items) {
+      const all = items || []
+      const shown = all.slice(0, CITE_CAP)
+      const links = shown
+        .map((cite) =>
+          cite.url
+            ? `<a class="lkm-bot__cite" href="${esc(cite.url)}" target="_blank" rel="noopener">${esc(
+                cite.label || cite.key
+              )}</a>`
+            : `<span class="lkm-bot__badge">${esc(cite.key)}</span>`
+        )
+        .join('')
+      const rest = all.length - shown.length
+      return links + (rest > 0 ? `<span class="lkm-bot__badge">+${rest}</span>` : '')
+    }
+
+    const refBadges = (refs) =>
+      Object.entries(refs || {})
+        .map(
+          ([phrase, key]) =>
+            `<span class="lkm-bot__badge lkm-bot__badge--ref">“${esc(phrase)}” → ${esc(key)}</span>`
+        )
+        .join('')
+
+    function turnEl(question, answer, live) {
+      const box = document.createElement('div')
+      box.className = 'lkm-bot__turn'
+      const refused = answer.source === 'refuse'
+      const source = refused
+        ? S.refused
+        : answer.source === 'fallback'
+          ? 'model'
+          : S.fromTables
+      box.innerHTML =
+        `<div class="lkm-bot__q">${esc(question)}</div>` +
+        `<div class="lkm-bot__a${refused ? ' is-refuse' : ''}">${esc(answer.text)}</div>` +
+        `<div class="lkm-bot__meta">` +
+        refBadges(answer.refs) +
+        `<span class="lkm-bot__badge${refused ? ' is-refuse' : ' is-ok'}">${esc(source)}</span>` +
+        (answer.matched
+          ? `<span class="lkm-bot__badge">${esc(answer.source)}:${esc(answer.matched)}</span>`
+          : '') +
+        // A tolerated typo is shown, not hidden: the answer came from the
+        // tables, but the visitor may want to know the match was not exact.
+        (answer.fuzzy
+          ? `<span class="lkm-bot__badge">${S.fuzzy} ≈${esc(answer.fuzzy)}</span>`
+          : '') +
+        (live
+          ? `<span class="lkm-bot__badge">${esc(S.tokens)} · ${esc(answer.latency_ms)} ms</span>`
+          : '') +
+        (answer.citations && answer.citations.length
+          ? `<span class="lkm-bot__cites">${citations(answer.citations)}</span>`
+          : '') +
+        `</div>` +
+        tryRow(answer.suggestions)
+      return box
+    }
+
+    /* Follow-ups, offered rather than discovered — only questions this bot can
+       actually answer, so a click never lands on a refusal. */
+    function tryRow(list) {
+      if (!list || !list.length) return ''
+      return (
+        `<div class="lkm-bot__try"><small>${esc(S.try)}</small>` +
+        list.map((q) => `<button type="button" data-ask="${esc(q)}">${esc(q)}</button>`).join('') +
+        `</div>`
+      )
+    }
+
+    function emptyEl() {
+      const box = document.createElement('div')
+      box.className = 'lkm-bot__empty'
+      box.innerHTML =
+        `<b>${esc(bot ? bot.data.bot.name : '')}</b>` +
+        `<p>${esc(S.note)}</p>` +
+        (S.langNote ? `<p class="lkm-bot__note">${esc(S.langNote)}</p>` : '') +
+        SAMPLES.map((q) => `<button type="button" data-ask="${esc(q)}">${esc(q)}</button>`).join('')
+      return box
+    }
+
+    const scrollDown = () => {
+      logEl.scrollTop = logEl.scrollHeight
+    }
+
+    function renderTranscript() {
+      inner.innerHTML = ''
+      if (!bot) return
+      const list = turns()
+      if (!list.length) {
+        inner.appendChild(emptyEl())
+        return
+      }
+      for (const turn of list) inner.appendChild(turnEl(turn.question, turn, false))
+      scrollDown()
+    }
+
+    function renderDrawer() {
+      const entries = Object.entries(sessions).sort((a, b) => b[1].at - a[1].at)
+      listEl.innerHTML = ''
+      if (!entries.length) {
+        listEl.innerHTML = `<p class="lkm-bot__note">${esc(S.noChats)}</p>`
+      }
+      for (const [id, session] of entries) {
+        const row = document.createElement('div')
+        row.className = 'lkm-bot__row' + (id === current ? ' is-on' : '')
+        const when = new Date(session.at).toLocaleDateString(undefined, {
+          month: 'short',
+          day: 'numeric',
+        })
+        row.innerHTML =
+          `<span class="lkm-bot__row-title">${esc(session.title)}</span>` +
+          `<span class="lkm-bot__row-meta">${session.turns.length} · ${esc(when)}</span>` +
+          `<button class="lkm-bot__row-x" type="button" title="${esc(S.delete)}" aria-label="${esc(
+            S.delete
+          )}">×</button>`
+        row.addEventListener('click', (event) => {
+          if (event.target.closest('.lkm-bot__row-x')) {
+            delete sessions[id]
+            if (id === current) {
+              current = null
+              renderTranscript()
+            }
+            persist()
+            renderDrawer()
+            return
+          }
+          current = id
+          persist()
+          toggleDrawer(false)
+          renderTranscript()
+        })
+        listEl.appendChild(row)
+      }
+
+      if (bot) {
+        const dropped = bot.data.bot.ladder_dropped || []
+        footEl.innerHTML =
+          `<span>${bot.data.knowledge.length} · ${bot.data.entities.length} · ${esc(S.tokens)}</span>` +
+          (dropped.length ? `<span>${esc(dropped.join(', '))} — ${esc(S.static)}</span>` : '') +
+          `<button type="button" id="lkm-bot-selfcheck">${esc(S.selfCheck)}</button>`
+        el('lkm-bot-selfcheck').addEventListener('click', selfCheck)
+      } else {
+        footEl.innerHTML = `<span>${esc(S.static)}</span>`
+      }
+    }
+
+    /* The frozen cases ship inside data.json, so the page can run the same
+       assertions the Python runtime runs — in the visitor's browser. */
+    function selfCheck() {
+      const results = bot.selfCheck()
+      const passed = results.filter((r) => r.passed).length
+      const box = document.createElement('div')
+      box.className = 'lkm-bot__check'
+      box.innerHTML =
+        results
+          .map(
+            (r) =>
+              `<div class="lkm-bot__check-row${r.passed ? '' : ' is-bad'}"><span>${
+                r.passed ? 'ok' : 'FAIL'
+              }</span><span>${esc(r.slug)}</span></div>`
+          )
+          .join('') +
+        `<div class="lkm-bot__check-row"><span>${passed}/${results.length}</span><span>${esc(
+          S.selfCheck
+        )}</span></div>`
+      toggleDrawer(false)
+      if (inner.querySelector('.lkm-bot__empty')) inner.innerHTML = ''
+      inner.appendChild(box)
+      scrollDown()
+    }
+
+    function toggleDrawer(open) {
+      drawer.hidden = !open
+      if (open) renderDrawer()
+    }
+
+    function showStatus(html) {
+      inner.innerHTML = `<div class="lkm-bot__status">${html}</div>`
+    }
+
+    async function ask(question) {
+      question = String(question || '').trim()
+      if (!question || !bot) return
+      send.disabled = true
+      const pending = document.createElement('div')
+      pending.className = 'lkm-bot__turn'
+      pending.innerHTML = `<div class="lkm-bot__q">${esc(question)}</div><div class="lkm-bot__a is-pending">…</div>`
+      if (inner.querySelector('.lkm-bot__empty')) inner.innerHTML = ''
+      inner.appendChild(pending)
+      scrollDown()
+
+      const prior = turns()
+      const answer = bot.ask(question, prior)
+
+      if (!current) {
+        current = newId()
+        sessions[current] = {
+          title: question.length > 60 ? `${question.slice(0, 60)}…` : question,
+          at: Date.now(),
+          turns: [],
+        }
+      }
+      sessions[current].at = Date.now()
+      // `role` is what reference resolution reads back: without it the engine
+      // cannot tell "the second one" which list it means.
+      sessions[current].turns.push({ role: 'assistant', question, ...answer })
+      persist()
+
+      pending.replaceWith(turnEl(question, answer, true))
+      scrollDown()
+      send.disabled = false
+      input.focus()
+    }
+
+    // ------------------------------------------------------------- events
+
+    launcher.addEventListener('click', (event) => {
+      if (launcher.dataset.dragged) {
+        event.preventDefault()
+        return
+      }
+      setOpen(panel.hidden)
+    })
+
+    function setOpen(open) {
+      panel.hidden = !open
+      launcher.setAttribute('aria-expanded', String(open))
+      launcher.classList.toggle('is-open', open)
+      if (!open) {
+        toggleDrawer(false)
+        return
+      }
+      placePanel()
+      toggleDrawer(false)
+      if (loaded) {
+        renderTranscript()
+      } else {
+        showStatus(`<span class="lkm-bot__spin"></span>${esc(S.loading)}`)
+      }
+      load()
+        .then((instance) => {
+          loaded = true
+          el('lkm-bot-name').textContent = instance.data.bot.name
+          el('lkm-bot-tagline').textContent = instance.data.bot.tagline || S.static
+          renderTranscript()
+          input.focus()
+        })
+        .catch((error) => {
+          showStatus(
+            `${esc(S.failed)} — ${esc(error.message)} ` +
+              `<button type="button" id="lkm-bot-retry">${esc(S.retry)}</button>`
+          )
+          el('lkm-bot-retry').addEventListener('click', () => {
+            showStatus(`<span class="lkm-bot__spin"></span>${esc(S.loading)}`)
+            setOpen(true)
+          })
+        })
+    }
+
+    el('lkm-bot-close').addEventListener('click', () => {
+      setOpen(false)
+      launcher.focus()
+    })
+    el('lkm-bot-chats').addEventListener('click', () => toggleDrawer(drawer.hidden))
+    el('lkm-bot-drawer-close').addEventListener('click', () => toggleDrawer(false))
+    el('lkm-bot-new').addEventListener('click', () => {
+      current = null
+      persist()
+      toggleDrawer(false)
+      renderTranscript()
+      input.focus()
+    })
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault()
+      const value = input.value
+      input.value = ''
+      ask(value)
+    })
+
+    inner.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-ask]')
+      if (button) ask(button.dataset.ask)
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || panel.hidden) return
+      if (!drawer.hidden) {
+        toggleDrawer(false)
+        return
+      }
+      setOpen(false)
+      launcher.focus()
+    })
+
+    place()
+    window.addEventListener('load', place)
+  }
+</script>

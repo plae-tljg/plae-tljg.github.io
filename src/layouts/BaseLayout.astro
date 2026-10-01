@@ -4,6 +4,7 @@ import { absoluteUrl, withBase } from '../lib/url'
 import { HERO } from '../lib/assets'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import ChatBot from '../components/ChatBot.astro'
 import 'katex/dist/katex.min.css'
 import '../styles/global.css'
 
@@ -101,6 +102,9 @@ const blockIndexing = noindex || STAGING
       <slot />
     </main>
     <Footer lang={lang} />
+
+    {/* The bot is a static bundle in public/bot — no server, no model call. */}
+    <ChatBot lang={lang} />
 
     <script is:inline>
       document.addEventListener('click', function (event) {
