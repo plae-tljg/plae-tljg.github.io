@@ -301,7 +301,25 @@ function normalizeBody(article, copies, warnings) {
  * owner.
  */
 function outputPathFor(article) {
-  return path.join(CONTENT_SYNC.outputDir, article.lang, `${article.key}.md`)
+  // One folder per series, so the directory listing reads like the site does.
+  // Standalone articles stay at the top level.
+  const dir = article.seriesId
+    ? path.join(CONTENT_SYNC.outputDir, article.lang, article.seriesId)
+    : path.join(CONTENT_SYNC.outputDir, article.lang)
+  return path.join(dir, `${article.key}.md`)
+}
+
+/**
+ * "03 Why AI Takes Over Mathematics"
+ *
+ * A series part carries its position in its title. The series page can show an
+ * order column, but a title travels further than a page does: into the archive,
+ * the RSS feed, a search result, a browser tab, someone's notes. The number is
+ * the only part of "where am I in this series" that survives all of them.
+ */
+function numberedTitle(title, order) {
+  const number = String(order).padStart(2, '0')
+  return String(title).startsWith(number) ? String(title) : `${number} ${title}`
 }
 
 function buildOutput(article, options, previousEntry, warnings) {
@@ -312,8 +330,13 @@ function buildOutput(article, options, previousEntry, warnings) {
       ? previousEntry.syncedAt
       : new Date().toISOString()
 
+  const titled =
+    article.seriesId && article.seriesOrder !== undefined && article.seriesOrder !== null
+      ? numberedTitle(article.title, article.seriesOrder)
+      : article.title
+
   const frontmatter = {
-    title: article.title,
+    title: titled,
     summary: article.summary || '',
     lang: article.lang,
     translationKey: article.key,
@@ -341,7 +364,7 @@ function buildOutput(article, options, previousEntry, warnings) {
     entry: {
       key: article.key,
       lang: article.lang,
-      title: article.title,
+      title: titled,
       series: article.seriesId || null,
       status: frontmatter.status,
       sourcePath: article.relPath,
@@ -455,6 +478,17 @@ function statusColor(status) {
   if (status === 'ready') return c.green
   if (CONTENT_SYNC.previewStatuses.includes(status)) return c.yellow
   return c.dim
+}
+
+/** Every .md under a directory, recursively. */
+function walkMarkdown(dir) {
+  const out = []
+  for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, item.name)
+    if (item.isDirectory()) out.push(...walkMarkdown(full))
+    else if (item.name.endsWith('.md')) out.push(full)
+  }
+  return out
 }
 
 function truncate(s, n) {
@@ -618,9 +652,7 @@ function cmdVerify() {
     for (const lang of LOCALE_CODES) {
       const dir = path.join(ROOT, managedDir, lang)
       if (!fs.existsSync(dir)) continue
-      for (const f of fs.readdirSync(dir)) {
-        if (f.endsWith('.md')) onDisk.push(path.join(dir, f))
-      }
+      for (const f of walkMarkdown(dir)) onDisk.push(f)
     }
   }
 

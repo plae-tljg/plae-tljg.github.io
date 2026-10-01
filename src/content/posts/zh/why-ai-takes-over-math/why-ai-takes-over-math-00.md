@@ -1,5 +1,5 @@
 ---
-title: 合集摘要：为什么两年前我就知道 AI 会接管数学
+title: 00 合集摘要：为什么两年前我就知道 AI 会接管数学
 summary: 四篇文章的缘起：2024 年 1 月的一个判断，以及它为什么不是从 AI 的能力来的。
 lang: zh
 translationKey: why-ai-takes-over-math-00
@@ -15,7 +15,7 @@ tags:
   - 合集
 status: preview
 source: seasons/01-math/00-abstract.zh.md
-syncedAt: '2026-09-27T03:36:21.665Z'
+syncedAt: '2026-10-01T06:33:35.735Z'
 ---
 2024 年 1 月，GPT-4 还不算聪明。它连很多本科数学题都会算错，更不用说研究。但我已经确信，AI 会接管数学。
 

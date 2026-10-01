@@ -259,15 +259,15 @@ export const SERIES = [
     ],
   },
   {
-    id: 'ai-era-programming-structure',
+    id: 'ai-maintainable-systems',
     order: 2,
     title: {
-      zh: 'AI 时代的编程结构',
-      en: 'Programming Structure in the AI Era',
+      zh: 'AI 可维护的系统',
+      en: 'AI-Maintainable Systems',
     },
     description: {
-      zh: '三篇正文加一篇附录：当 AI 能大量生成和修改代码时，系统靠什么结构让改动可执行、可验证、可回滚、可累积。',
-      en: 'Three articles and an appendix: what structure lets a system absorb — executably, verifiably, reversibly — the changes an AI can now generate in bulk.',
+      zh: '让模型维护数据与结构，让确定性引擎负责执行。第一讲已展开为三篇正文加一篇附录：《AI 时代的编程结构》。',
+      en: 'Letting models maintain data and structure while deterministic engines execute. Topic one is now a three-article mini-course with an appendix: Programming Structure in the AI Era.',
     },
     state: 'ongoing',
     languages: ['zh', 'en'],
@@ -276,13 +276,13 @@ export const SERIES = [
     /** Where `content new --series` puts a new draft. */
     dir: 'seasons/02-systems',
     aliases: [
+      'AI 可维护的系统',
+      'AI-Maintainable Systems',
+      'ai-maintainable-systems',
+      // what the mini-course calls itself in its own frontmatter
       'AI 时代的编程结构',
       'AI-Era Programming Structure',
       'Programming Structure in the AI Era',
-      'ai-era-programming-structure',
-      'AI-Maintainable Systems',
-      'ai-maintainable-systems',
-      'AI 可维护的系统',
     ],
   },
 ]

@@ -1,5 +1,5 @@
 ---
-title: 快速原型之后：代码、数据与结构
+title: 01 快速原型之后：代码、数据与结构
 summary: >-
   快速做一个聊天机器人时，两条最诱人的捷径是把 agent 当后端，或者先写硬编码再让 agent
   维护。它们低流量下都能跑，问题出现在系统开始累积变化之后。但解法不是“数据比代码好”，而是找到代码与数据的正确边界：什么该声明成数据，什么必须留在代码，结构由谁来守。
@@ -7,7 +7,7 @@ lang: zh
 translationKey: rapid-prototypes-and-structure
 slug: rapid-prototypes-and-structure
 date: '2026-10-01'
-series: ai-era-programming-structure
+series: ai-maintainable-systems
 seriesOrder: 1
 tags:
   - AI
@@ -16,7 +16,7 @@ tags:
   - data
 status: preview
 source: seasons/02-systems/01-rapid-prototypes-and-structure.zh.md
-syncedAt: '2026-10-01T06:24:59.446Z'
+syncedAt: '2026-10-01T06:33:35.737Z'
 ---
 ## 1. 一个很典型的周五下午
 

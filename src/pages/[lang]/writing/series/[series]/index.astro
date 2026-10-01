@@ -96,11 +96,6 @@ const totalMinutes = posts.reduce(
         {
           posts.map((post) => (
             <li class="series-index__item">
-              <span class="series-index__num">
-                {post.data.seriesOrder !== undefined
-                  ? String(post.data.seriesOrder).padStart(2, '0')
-                  : '—'}
-              </span>
               <div>
                 {post.data.partLabel && (
                   <div class="series-index__part">{post.data.partLabel}</div>

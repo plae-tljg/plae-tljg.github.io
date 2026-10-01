@@ -4,7 +4,11 @@ How an article written in the private workspace becomes a page on this site.
 
 The tool is `scripts/content.mjs` (`npm run content:*`). It reads the writing
 workspace, normalizes what it finds, and writes this repository's
-`src/content/posts/<lang>/`. It never writes back to the workspace.
+`src/content/posts/<lang>/<series>/` — one folder per series, so the directory
+listing reads like the site does (standalone articles stay at the top level).
+It never writes back to the workspace, and it renumbers titles as it goes:
+a series part is written as `03 Why AI Takes Over Mathematics`, so the position
+travels with the title into the archive, the feed and the browser tab.
 
 The settings below live in [`src/site.mjs`](../src/site.mjs) under `CONTENT_SYNC`
 and `SERIES` — that file is the single place to change them.
@@ -80,7 +84,7 @@ Recognized keys, and what happens to them:
 | Key | Goes to the site? | Notes |
 |---|---|---|
 | `translationKey` | yes | required; becomes the URL slug |
-| `titleZh` / `titleEn` | yes | the one matching the file's language wins; `title` also works |
+| `titleZh` / `titleEn` | yes | the one matching the file's language wins; `title` also works. A part of a series gets its order prefixed at sync time (`03 …`), so do not type the number yourself |
 | `summaryZh` / `summaryEn` | yes | |
 | `date`, `updated` | yes | `YYYY-MM-DD` |
 | `series` | yes, as an id | resolved through the registry in `src/site.mjs` |

@@ -1,5 +1,5 @@
 ---
-title: 什么时候才需要一张 products 表？——数据化的边界
+title: 02 什么时候才需要一张 products 表？——数据化的边界
 summary: >-
   把行为搬到数据侧之后，一个自然追问是：为什么不彻底通用化，让商品和价格也只是实体 / 属性？本文不急着合成，而是先让通用极端真实地失败：JSON
   约定、查询变丑、校验退化；再从失败推导提升条件，并演示一次 知识模板不变的迁移。
@@ -7,7 +7,7 @@ lang: zh
 translationKey: boundary-of-datafication
 slug: boundary-of-datafication
 date: '2026-10-01'
-series: ai-era-programming-structure
+series: ai-maintainable-systems
 seriesOrder: 2
 tags:
   - AI
@@ -16,7 +16,7 @@ tags:
   - 辩证
 status: preview
 source: seasons/02-systems/02-boundary-of-datafication.zh.md
-syncedAt: '2026-10-01T06:24:59.446Z'
+syncedAt: '2026-10-01T06:33:35.738Z'
 ---
 ## 0. 上篇留下的边界问题
 

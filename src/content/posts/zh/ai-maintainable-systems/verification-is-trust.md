@@ -1,5 +1,5 @@
 ---
-title: 验证才是信任：测试、权限与唤醒成本
+title: 03 验证才是信任：测试、权限与唤醒成本
 summary: >-
   AI
   维护能不能被信任，不取决于模型判断得对不对，而取决于检查器的形状。本文从“规则和测试同源”的失败场景出发，讨论四类测试、可审核的边界、工具强制的权限，以及运行时兜底与维护轮的唤醒成本。
@@ -7,7 +7,7 @@ lang: zh
 translationKey: verification-is-trust
 slug: verification-is-trust
 date: '2026-10-01'
-series: ai-era-programming-structure
+series: ai-maintainable-systems
 seriesOrder: 3
 tags:
   - AI
@@ -16,7 +16,7 @@ tags:
   - cost
 status: preview
 source: seasons/02-systems/03-verification-is-trust.zh.md
-syncedAt: '2026-10-01T06:24:59.447Z'
+syncedAt: '2026-10-01T06:33:35.738Z'
 ---
 ## 0. 上篇留下的问题
 

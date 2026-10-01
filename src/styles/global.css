@@ -1124,18 +1124,8 @@ hr {
 }
 
 .series-index__item {
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  gap: 1rem;
   padding: 1.4rem 0.25rem;
   border-bottom: 1px solid var(--border);
-}
-
-.series-index__num {
-  color: var(--text-faint);
-  font-variant-numeric: tabular-nums;
-  font-size: 0.9rem;
-  padding-top: 0.15rem;
 }
 
 .series-index__title {

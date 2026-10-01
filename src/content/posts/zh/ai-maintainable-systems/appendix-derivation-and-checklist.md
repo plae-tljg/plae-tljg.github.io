@@ -1,5 +1,5 @@
 ---
-title: 附录：推导模板、清单与术语表
+title: 04 附录：推导模板、清单与术语表
 summary: >-
   本附录把前三篇的方法收束成一套可执行模板：目标 -> 角色 -> 意图 -> 信息形态 -> 结构 -> 列 -> IO ->
   唤醒策略；加上一个通用练习、结课清单、反模式、不适用的场景和术语表。
@@ -7,7 +7,7 @@ lang: zh
 translationKey: appendix-derivation-and-checklist
 slug: appendix-derivation-and-checklist
 date: '2026-10-01'
-series: ai-era-programming-structure
+series: ai-maintainable-systems
 seriesOrder: 4
 tags:
   - AI
@@ -16,7 +16,7 @@ tags:
   - design
 status: preview
 source: seasons/02-systems/04-appendix-derivation-and-checklist.zh.md
-syncedAt: '2026-10-01T06:24:59.447Z'
+syncedAt: '2026-10-01T06:33:35.738Z'
 ---
 这不是正文，而是前 3 篇的配套工作文档。
 

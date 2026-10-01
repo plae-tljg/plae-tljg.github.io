@@ -1,5 +1,5 @@
 ---
-title: 数学学习的三项原则
+title: 01 数学学习的三项原则
 summary: 数学是怎样被学会的：由一生多、机械化推演、概念碰撞，以及自由结构如何被约束压出新对象。
 lang: zh
 translationKey: why-ai-takes-over-math-01
@@ -15,7 +15,7 @@ tags:
   - 集合论
 status: preview
 source: seasons/01-math/01-three-principles.zh.md
-syncedAt: '2026-10-01T04:02:48.252Z'
+syncedAt: '2026-10-01T06:33:35.736Z'
 ---
 数学学习的基础是什么？不妨从一个问题出发：一个数学分支凭什么能成为独立学科？以集合论为例，它靠什么成其为一个子学科，而其他东西不是？
 

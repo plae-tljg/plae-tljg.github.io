@@ -1,5 +1,5 @@
 ---
-title: 问题意识：AI 接管不了的那一层
+title: 04 问题意识：AI 接管不了的那一层
 summary: AI 接管不了的那一层：选择、起源与诗云问题——为什么问题意识仍然在人这一侧。
 lang: zh
 translationKey: why-ai-takes-over-math-04
@@ -15,7 +15,7 @@ tags:
   - 研究文化
 status: preview
 source: seasons/01-math/04-problem-consciousness.zh.md
-syncedAt: '2026-09-27T03:36:21.667Z'
+syncedAt: '2026-10-01T06:33:35.737Z'
 ---
 第三篇的结论是：AI 会接管数学的学院层，因为学院层是操作的组合——给定问题，找证明；给定定义，展开推论；给定猜想，搜索反例。这一层的工作可以被写下来、被检查、被穷举、被规模化。AI 是前所未有的操作机器。
 

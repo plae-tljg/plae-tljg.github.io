@@ -1,5 +1,5 @@
 ---
-title: 准备：几种看数学的方式
+title: 02 准备：几种看数学的方式
 summary: 七个准备视角：楼梯、机械化推演、证明即搜索、肉身方法、操作的平等性、物理学家与学院、AI 乱说的活力。
 lang: zh
 translationKey: why-ai-takes-over-math-02
@@ -15,7 +15,7 @@ tags:
   - 词汇
 status: preview
 source: seasons/01-math/02-preparation.zh.md
-syncedAt: '2026-09-27T03:36:21.666Z'
+syncedAt: '2026-10-01T06:33:35.736Z'
 ---
 这篇文章不直接回答“AI 会不会接管数学”。它做的是准备工作：把理解那个问题所需要的几种视角摆出来。每一种视角都来自我学习数学的经验，也来自我对 AI 的观察。它们单独看可能只是经验之谈；放在一起，会指向下一篇文章要说的那个结论。
 

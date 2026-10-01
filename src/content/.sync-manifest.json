@@ -1,115 +1,115 @@
 {
-  "generatedAt": "2026-10-01T06:29:10.016Z",
+  "generatedAt": "2026-10-01T06:33:35.742Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
     {
       "key": "why-ai-takes-over-math-00",
       "lang": "zh",
-      "title": "合集摘要：为什么两年前我就知道 AI 会接管数学",
+      "title": "00 合集摘要：为什么两年前我就知道 AI 会接管数学",
       "series": "why-ai-takes-over-math",
       "status": "preview",
       "sourcePath": "seasons/01-math/00-abstract.zh.md",
       "sourceHash": "sha256:a4b276b95a65cca3",
-      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-00.md",
-      "outputHash": "sha256:e43da600cb08b052",
-      "syncedAt": "2026-09-27T03:36:21.665Z"
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-00.md",
+      "outputHash": "sha256:643286ee4ff10333",
+      "syncedAt": "2026-10-01T06:33:35.735Z"
     },
     {
       "key": "why-ai-takes-over-math-01",
       "lang": "zh",
-      "title": "数学学习的三项原则",
+      "title": "01 数学学习的三项原则",
       "series": "why-ai-takes-over-math",
       "status": "preview",
       "sourcePath": "seasons/01-math/01-three-principles.zh.md",
       "sourceHash": "sha256:0ba21543db657968",
-      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-01.md",
-      "outputHash": "sha256:38982e35985ba73d",
-      "syncedAt": "2026-10-01T04:02:48.252Z"
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-01.md",
+      "outputHash": "sha256:3655158458d9b628",
+      "syncedAt": "2026-10-01T06:33:35.736Z"
     },
     {
       "key": "why-ai-takes-over-math-02",
       "lang": "zh",
-      "title": "准备：几种看数学的方式",
+      "title": "02 准备：几种看数学的方式",
       "series": "why-ai-takes-over-math",
       "status": "preview",
       "sourcePath": "seasons/01-math/02-preparation.zh.md",
       "sourceHash": "sha256:6db4f2f10e20cdbe",
-      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-02.md",
-      "outputHash": "sha256:5d75e134da18fdd7",
-      "syncedAt": "2026-09-27T03:36:21.666Z"
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-02.md",
+      "outputHash": "sha256:006e2a949c64417c",
+      "syncedAt": "2026-10-01T06:33:35.736Z"
     },
     {
       "key": "why-ai-takes-over-math-03",
       "lang": "zh",
-      "title": "为什么 AI 会接管数学",
+      "title": "03 为什么 AI 会接管数学",
       "series": "why-ai-takes-over-math",
       "status": "preview",
       "sourcePath": "seasons/01-math/03-why-ai-takes-over.zh.md",
       "sourceHash": "sha256:768330480ed34107",
-      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-03.md",
-      "outputHash": "sha256:cf034142d3b577df",
-      "syncedAt": "2026-09-27T03:36:21.666Z"
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-03.md",
+      "outputHash": "sha256:b512baa1af17742c",
+      "syncedAt": "2026-10-01T06:33:35.737Z"
     },
     {
       "key": "why-ai-takes-over-math-04",
       "lang": "zh",
-      "title": "问题意识：AI 接管不了的那一层",
+      "title": "04 问题意识：AI 接管不了的那一层",
       "series": "why-ai-takes-over-math",
       "status": "preview",
       "sourcePath": "seasons/01-math/04-problem-consciousness.zh.md",
       "sourceHash": "sha256:e082d9322c58e06e",
-      "outputPath": "src/content/posts/zh/why-ai-takes-over-math-04.md",
-      "outputHash": "sha256:82fdf4cfde0feb3b",
-      "syncedAt": "2026-09-27T03:36:21.667Z"
+      "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-04.md",
+      "outputHash": "sha256:996489bcfa6b3c01",
+      "syncedAt": "2026-10-01T06:33:35.737Z"
     },
     {
       "key": "rapid-prototypes-and-structure",
       "lang": "zh",
-      "title": "快速原型之后：代码、数据与结构",
-      "series": "ai-era-programming-structure",
+      "title": "01 快速原型之后：代码、数据与结构",
+      "series": "ai-maintainable-systems",
       "status": "preview",
       "sourcePath": "seasons/02-systems/01-rapid-prototypes-and-structure.zh.md",
       "sourceHash": "sha256:51cd8330c223a6dd",
-      "outputPath": "src/content/posts/zh/rapid-prototypes-and-structure.md",
-      "outputHash": "sha256:7c73893b5cfbdbfc",
-      "syncedAt": "2026-10-01T06:24:59.446Z"
+      "outputPath": "src/content/posts/zh/ai-maintainable-systems/rapid-prototypes-and-structure.md",
+      "outputHash": "sha256:f6b52b012cf007d7",
+      "syncedAt": "2026-10-01T06:33:35.737Z"
     },
     {
       "key": "boundary-of-datafication",
       "lang": "zh",
-      "title": "什么时候才需要一张 products 表？——数据化的边界",
-      "series": "ai-era-programming-structure",
+      "title": "02 什么时候才需要一张 products 表？——数据化的边界",
+      "series": "ai-maintainable-systems",
       "status": "preview",
       "sourcePath": "seasons/02-systems/02-boundary-of-datafication.zh.md",
       "sourceHash": "sha256:4a6a3c8b1f9988c7",
-      "outputPath": "src/content/posts/zh/boundary-of-datafication.md",
-      "outputHash": "sha256:c6a67e5749402f50",
-      "syncedAt": "2026-10-01T06:24:59.446Z"
+      "outputPath": "src/content/posts/zh/ai-maintainable-systems/boundary-of-datafication.md",
+      "outputHash": "sha256:75a67734d18aad42",
+      "syncedAt": "2026-10-01T06:33:35.738Z"
     },
     {
       "key": "verification-is-trust",
       "lang": "zh",
-      "title": "验证才是信任：测试、权限与唤醒成本",
-      "series": "ai-era-programming-structure",
+      "title": "03 验证才是信任：测试、权限与唤醒成本",
+      "series": "ai-maintainable-systems",
       "status": "preview",
       "sourcePath": "seasons/02-systems/03-verification-is-trust.zh.md",
       "sourceHash": "sha256:6b51c58665508543",
-      "outputPath": "src/content/posts/zh/verification-is-trust.md",
-      "outputHash": "sha256:17d7568e2be3e914",
-      "syncedAt": "2026-10-01T06:24:59.447Z"
+      "outputPath": "src/content/posts/zh/ai-maintainable-systems/verification-is-trust.md",
+      "outputHash": "sha256:75d6d6db3c820240",
+      "syncedAt": "2026-10-01T06:33:35.738Z"
     },
     {
       "key": "appendix-derivation-and-checklist",
       "lang": "zh",
-      "title": "附录：推导模板、清单与术语表",
-      "series": "ai-era-programming-structure",
+      "title": "04 附录：推导模板、清单与术语表",
+      "series": "ai-maintainable-systems",
       "status": "preview",
       "sourcePath": "seasons/02-systems/04-appendix-derivation-and-checklist.zh.md",
       "sourceHash": "sha256:8660758dc48d3c2a",
-      "outputPath": "src/content/posts/zh/appendix-derivation-and-checklist.md",
-      "outputHash": "sha256:e8f69bc0dd370eb2",
-      "syncedAt": "2026-10-01T06:24:59.447Z"
+      "outputPath": "src/content/posts/zh/ai-maintainable-systems/appendix-derivation-and-checklist.md",
+      "outputHash": "sha256:50931a535e657e14",
+      "syncedAt": "2026-10-01T06:33:35.738Z"
     }
   ]
 }
