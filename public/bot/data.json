@@ -1,6 +1,6 @@
 {
  "schema_version": 4,
- "generated_at": "2026-09-30T23:07:12",
+ "generated_at": "2026-10-01T12:46:15",
  "bot": {
   "name": "Ask LKM",
   "tagline": "Ask about my public work. Answers come from tables, not from a model.",
@@ -26,7 +26,10 @@
    "patterns": [
     "who is {person}",
     "what does {person} do",
-    "tell me about {person}"
+    "tell me about {person}",
+    "{person} 是谁",
+    "{person} 是做什么的",
+    "介绍一下 {person}"
    ],
    "slots": {
     "person": "person"
@@ -48,8 +51,11 @@
     "which accounts does {person} publish under",
     "what accounts does {person} publish under",
     "what accounts does {person} have",
-    "how many github accounts do you have",
-    "where do you publish"
+    "how many github accounts does {person} have",
+    "where does {person} publish",
+    "{person} 有几个账号",
+    "你有哪些账号",
+    "在哪些账号下发布"
    ],
    "slots": {
     "person": "person"
@@ -80,7 +86,11 @@
     "can i use {repo} offline",
     "can i use the {repo} offline",
     "does {repo} work offline",
-    "does the {repo} work offline"
+    "does the {repo} work offline",
+    "{repo} 是什么",
+    "{repo} 是做什么的",
+    "{repo} 怎么样",
+    "介绍下 {repo}"
    ],
    "slots": {
     "repo": "repo"
@@ -103,7 +113,9 @@
     "who made the {repo}",
     "who created {repo}",
     "who wrote {repo}",
-    "who owns {repo}"
+    "who owns {repo}",
+    "{repo} 是谁写的",
+    "{repo} 属于谁"
    ],
    "slots": {
     "repo": "repo"
@@ -128,8 +140,11 @@
     "what projects does {person} have",
     "what repos does {person} have",
     "what repositories does {person} have",
-    "list your work",
-    "what have you built"
+    "list {person} work",
+    "what have {person} built",
+    "{person} 有哪些项目",
+    "{person} 做过什么",
+    "{person} 有哪些仓库"
    ],
    "slots": {
     "person": "person"
@@ -153,7 +168,9 @@
    "patterns": [
     "which projects use {language}",
     "what projects use {language}",
-    "what have you written in {language}"
+    "what have you written in {language}",
+    "哪些项目用 {language}",
+    "用 {language} 写的东西有哪些"
    ],
    "slots": {
     "language": "language"
@@ -177,7 +194,9 @@
    "patterns": [
     "what have you built with {topic}",
     "do you have anything for {topic}",
-    "do you have anything about {topic}"
+    "do you have anything about {topic}",
+    "有没有 {topic} 相关的东西",
+    "{topic} 方面做过什么"
    ],
    "slots": {
     "topic": "topic"
@@ -200,7 +219,9 @@
    "locale": "",
    "patterns": [
     "what is the {project} project",
-    "what is in {project}"
+    "what is in {project}",
+    "{project} 这个系列是什么",
+    "{project} 里有什么"
    ],
    "slots": {
     "project": "project"
@@ -224,7 +245,9 @@
    "patterns": [
     "how do i contact {person}",
     "how to hire {person}",
-    "how do i reach you"
+    "how do i reach {person}",
+    "怎么联系 {person}",
+    "怎么联系 {person}"
    ],
    "slots": {
     "person": "person"
@@ -240,12 +263,153 @@
    "citations": []
   },
   {
+   "slug": "site.home",
+   "locale": "",
+   "patterns": [
+    "what is {person} website",
+    "does {person} have a website",
+    "does {person} have a blog",
+    "where does {person} write",
+    "{person} 的网站是什么",
+    "{person} 有博客吗",
+    "{person} 的主页在哪"
+   ],
+   "slots": {
+    "person": "person"
+   },
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "{person.attrs.site} — {person.summary}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "site.projects",
+   "locale": "",
+   "patterns": [
+    "where can i see all {person} projects",
+    "is there a list of {person} repositories",
+    "where are {person} repos listed",
+    "{person} 的项目在哪看",
+    "{person} 有没有项目列表"
+   ],
+   "slots": {
+    "person": "person"
+   },
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "All of them, grouped by what they are and with demo links: {person.attrs.projects}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "site.writing",
+   "locale": "",
+   "patterns": [
+    "what does {person} write about",
+    "does {person} write articles",
+    "where are {person} articles",
+    "{person} 写什么",
+    "{person} 有没有文章"
+   ],
+   "slots": {
+    "person": "person"
+   },
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "Essays live at {person.attrs.writing} and the documentation at {person.attrs.docs}."
+   },
+   "citations": []
+  },
+  {
+   "slug": "account.about",
+   "locale": "",
+   "patterns": [
+    "what is the {account} account",
+    "what is {account}",
+    "{account} 是什么账号",
+    "{account} 是干什么的"
+   ],
+   "slots": {
+    "account": "account"
+   },
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "{account} — {account.summary}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "repo.url",
+   "locale": "",
+   "patterns": [
+    "where is the code for {repo}",
+    "where can i find {repo}",
+    "give me the link to {repo}",
+    "{repo} 的代码在哪",
+    "给我 {repo} 的链接"
+   ],
+   "slots": {
+    "repo": "repo"
+   },
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "{repo.url}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "license.policy",
+   "locale": "",
+   "patterns": [
+    "what license do {person} projects use",
+    "are {person} projects open source",
+    "can i use {person} code",
+    "{person} 的项目是什么许可",
+    "{person} 的代码可以拿去用吗"
+   ],
+   "slots": {
+    "person": "person"
+   },
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "{person.attrs.licenses}"
+   },
+   "citations": []
+  },
+  {
    "slug": "repo.ranked",
    "locale": "",
    "patterns": [
     "what is your most starred repo",
     "what is your most popular project",
-    "which repo has the most stars"
+    "which repo has the most stars",
+    "最受欢迎的项目是哪个",
+    "哪个仓库 star 最多"
    ],
    "slots": {},
    "match": {
@@ -267,7 +431,9 @@
    "patterns": [
     "where did you get this",
     "how do you know that",
-    "what is your source"
+    "what is your source",
+    "这些信息哪来的",
+    "你的答案从哪来"
    ],
    "slots": {},
    "match": {
@@ -277,6 +443,160 @@
    "action": {
     "kind": "answer",
     "template": "From the public GitHub metadata and READMEs of the repositories listed above."
+   },
+   "citations": []
+  },
+  {
+   "slug": "bot.intro",
+   "locale": "",
+   "patterns": [
+    "who are you",
+    "what are you",
+    "你是谁",
+    "你是什么"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "A question-answering bot for LKM's public work. Ask about a repository, an account, a language, a topic, or what I am working on."
+   },
+   "citations": []
+  },
+  {
+   "slug": "bot.how",
+   "locale": "",
+   "patterns": [
+    "how does this bot work",
+    "how do you answer",
+    "do you use an llm",
+    "do you use chatgpt",
+    "is there a server",
+    "这个机器人怎么工作的",
+    "你用大模型吗"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "No model and no server: the answers come from SQLite rows built from public GitHub metadata, hand-written judgement, and the repositories' READMEs. Answers take well under a millisecond and cost zero tokens. Anything the tables do not cover is refused and logged rather than guessed."
+   },
+   "citations": []
+  },
+  {
+   "slug": "bot.language",
+   "locale": "",
+   "patterns": [
+    "can you answer in chinese",
+    "which languages can i ask in",
+    "你会中文吗",
+    "能用中文问吗"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "kind": "answer",
+    "template": "Chinese and English both work — every row carries phrasings in both. If a question is outside the tables, it is refused rather than invented."
+   },
+   "citations": []
+  },
+  {
+   "slug": "repo.newest",
+   "locale": "",
+   "patterns": [
+    "what are you working on now",
+    "what is your latest project",
+    "what is your newest repo",
+    "最近在做什么",
+    "最新的项目是哪个"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "entity_type": "repo",
+    "kind": "list",
+    "limit": 5,
+    "order_by": "attrs.pushed_at desc",
+    "template": "{name} ({attrs.pushed_at}) — {summary}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "repo.licenses",
+   "locale": "",
+   "patterns": [
+    "list the licenses",
+    "which license does each repo use",
+    "每个仓库的许可分别是什么"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "entity_type": "repo",
+    "kind": "list",
+    "limit": 10,
+    "order_by": "name",
+    "template": "{name} — {attrs.license}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "language.list",
+   "locale": "",
+   "patterns": [
+    "what languages do you use",
+    "what languages do you code in",
+    "which programming languages do you know",
+    "你会哪些编程语言",
+    "用什么语言写代码"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "entity_type": "language",
+    "kind": "list",
+    "order_by": "name",
+    "template": "{name}"
+   },
+   "citations": []
+  },
+  {
+   "slug": "topic.list",
+   "locale": "",
+   "patterns": [
+    "what topics do you work on",
+    "what are you interested in",
+    "你做什么方向",
+    "你对什么感兴趣"
+   ],
+   "slots": {},
+   "match": {
+    "exclude": [],
+    "require": []
+   },
+   "action": {
+    "entity_type": "topic",
+    "kind": "list",
+    "order_by": "attrs.curated desc",
+    "template": "{name} — {summary}"
    },
    "citations": []
   }
@@ -373,12 +693,16 @@
    "id": 6,
    "key": "topic:web",
    "type": "topic",
-   "name": "web",
-   "summary": "Projects tagged web.",
+   "name": "Web",
+   "summary": "Small static sites and browser-side tools, including this site.",
    "aliases": [
-    "web"
+    "web",
+    "topic web",
+    "topicweb"
    ],
-   "attrs": {},
+   "attrs": {
+    "curated": 1
+   },
    "url": ""
   },
   {
@@ -539,12 +863,16 @@
    "id": 16,
    "key": "topic:android",
    "type": "topic",
-   "name": "android",
-   "summary": "Projects tagged android.",
+   "name": "Android",
+   "summary": "Android apps and on-device automation, including the MaaFramework work.",
    "aliases": [
-    "android"
+    "android",
+    "topic android",
+    "topicandroid"
    ],
-   "attrs": {},
+   "attrs": {
+    "curated": 1
+   },
    "url": ""
   },
   {
@@ -964,7 +1292,7 @@
    "key": "LKM-Repo",
    "type": "account",
    "name": "LKM-Repo",
-   "summary": "",
+   "summary": "Organization for templates and experiments: the MUSA GPU ports, the domain-ops agent, and assorted AI experiments.",
    "aliases": [
     "lkm repo",
     "lkmrepo"
@@ -1800,7 +2128,7 @@
    "key": "ellkaimu",
    "type": "account",
    "name": "ellkaimu",
-   "summary": "",
+   "summary": "Earlier, more finished Android apps: SSH and SFTP, anime downloads, image organising, and a collaborative editor.",
    "aliases": [
     "ellkaimu"
    ],
@@ -1973,12 +2301,16 @@
    "id": 99,
    "key": "topic:automation",
    "type": "topic",
-   "name": "automation",
-   "summary": "Projects tagged automation.",
+   "name": "Automation",
+   "summary": "Scripts and tools that drive something else: phones, cables, routers, terminals.",
    "aliases": [
-    "automation"
+    "automation",
+    "topic automation",
+    "topicautomation"
    ],
-   "attrs": {},
+   "attrs": {
+    "curated": 1
+   },
    "url": ""
   },
   {
@@ -2464,7 +2796,7 @@
    "key": "plae-lkm",
    "type": "account",
    "name": "plae-lkm",
-   "summary": "",
+   "summary": "Smaller projects: joke pages, terminal and cable tools, and the Ubuntu setup manual.",
    "aliases": [
     "plae lkm",
     "plaelkm"
@@ -2592,7 +2924,9 @@
     "topic finance",
     "topicfinance"
    ],
-   "attrs": {},
+   "attrs": {
+    "curated": 1
+   },
    "url": ""
   },
   {
@@ -3302,9 +3636,19 @@
    "aliases": [
     "lkm",
     "plae tljg",
-    "plaetljg"
+    "plaetljg",
+    "you",
+    "your",
+    "你",
+    "您"
    ],
-   "attrs": {},
+   "attrs": {
+    "docs": "https://plae-tljg.github.io/zh/docs/",
+    "licenses": "MIT for most of them; the MUSA voice ports keep their upstream AGPL/GPL licences, and several small repos have no licence file at all.",
+    "projects": "https://plae-tljg.github.io/zh/projects/",
+    "site": "https://plae-tljg.github.io/",
+    "writing": "https://plae-tljg.github.io/zh/writing/"
+   },
    "url": "https://github.com/plae-tljg"
   },
   {
@@ -3349,7 +3693,9 @@
     "machinelearning",
     "topicmachinelearning"
    ],
-   "attrs": {},
+   "attrs": {
+    "curated": 1
+   },
    "url": ""
   },
   {
@@ -4637,6 +4983,66 @@
    "from": 176,
    "type": "owned_by",
    "to": 1
+  },
+  {
+   "from": 107,
+   "type": "tagged",
+   "to": 16
+  },
+  {
+   "from": 153,
+   "type": "tagged",
+   "to": 99
+  },
+  {
+   "from": 116,
+   "type": "tagged",
+   "to": 16
+  },
+  {
+   "from": 98,
+   "type": "tagged",
+   "to": 16
+  },
+  {
+   "from": 151,
+   "type": "tagged",
+   "to": 99
+  },
+  {
+   "from": 121,
+   "type": "tagged",
+   "to": 16
+  },
+  {
+   "from": 14,
+   "type": "tagged",
+   "to": 99
+  },
+  {
+   "from": 20,
+   "type": "tagged",
+   "to": 16
+  },
+  {
+   "from": 165,
+   "type": "tagged",
+   "to": 99
+  },
+  {
+   "from": 112,
+   "type": "tagged",
+   "to": 6
+  },
+  {
+   "from": 91,
+   "type": "tagged",
+   "to": 16
+  },
+  {
+   "from": 147,
+   "type": "tagged",
+   "to": 99
   }
  ],
  "documents": [
@@ -5184,6 +5590,273 @@
    "question": "why is the sky blue?",
    "expect": {
     "refuses": true
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "site.home.en",
+   "question": "what is your website?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "plae-tljg.github.io"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "site.home.zh",
+   "question": "你的网站是什么",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "plae-tljg.github.io"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "site.projects.zh",
+   "question": "你的项目在哪看",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "projects"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "repo.list.you-alias",
+   "question": "what have you built?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Finance-Management-App"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "owner.accounts.you-alias",
+   "question": "where do you publish?",
+   "expect": {
+    "source": "knowledge",
+    "resolves": {
+     "person": "plae-tljg"
+    }
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "contact.you-alias",
+   "question": "how do i reach you?",
+   "expect": {
+    "source": "knowledge",
+    "resolves": {
+     "person": "plae-tljg"
+    }
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "repo.list.zh-you-alias",
+   "question": "你有哪些项目",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Finance-Management-App"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "bot.intro.en",
+   "question": "who are you?",
+   "expect": {
+    "source": "knowledge"
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "bot.intro.zh",
+   "question": "你是谁",
+   "expect": {
+    "source": "knowledge"
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "bot.how.zh",
+   "question": "这个机器人怎么工作的",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "SQLite"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "bot.language.zh",
+   "question": "你会中文吗",
+   "expect": {
+    "source": "knowledge"
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "repo.newest.en",
+   "question": "what are you working on now?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "plae-tljg.github.io"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "repo.newest.zh",
+   "question": "最近在做什么",
+   "expect": {
+    "source": "knowledge"
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "license.policy.en",
+   "question": "can i use your code?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "MIT"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "license.policy.zh",
+   "question": "你的项目是什么许可",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "MIT"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "language.list.zh",
+   "question": "你会哪些编程语言",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Python"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "topic.list.curated-first",
+   "question": "你做什么方向",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Android"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "repo.url.en",
+   "question": "where is the code for dsh-review?",
+   "expect": {
+    "source": "knowledge",
+    "resolves": {
+     "repo": "plae-tljg/dsh-review"
+    },
+    "answer_contains": [
+     "github.com/plae-tljg/dsh-review"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "repo.url.zh",
+   "question": "给我 dsh-review 的链接",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "github.com/plae-tljg/dsh-review"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "account.about.en",
+   "question": "what is LKM-Repo?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Organization"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "account.about.ellkaimu",
+   "question": "what is ellkaimu?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Android"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "confusable.site-vs-ranked",
+   "question": "what is your most starred repo?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "Finance-Management-App"
+    ]
+   },
+   "origin": "seed",
+   "status": "active"
+  },
+  {
+   "slug": "confusable.bot-intro-vs-owner",
+   "question": "who are you?",
+   "expect": {
+    "source": "knowledge",
+    "answer_contains": [
+     "bot"
+    ]
    },
    "origin": "seed",
    "status": "active"
