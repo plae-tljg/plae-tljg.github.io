@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>04 附录：推导模板、清单与术语表 · LKM</title><meta name="description" content="本附录把前三篇的方法收束成一套可执行模板：目标 -> 角色 -> 意图 -> 信息形态 -> 结构 -> 列 -> IO -> 唤醒策略；加上一个通用练习、结课清单、反模式、不适用的场景和术语表。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/appendix-derivation-and-checklist/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/appendix-derivation-and-checklist/"><meta property="og:type" content="website"><meta property="og:title" content="04 附录：推导模板、清单与术语表 · LKM"><meta property="og:description" content="本附录把前三篇的方法收束成一套可执行模板：目标 -> 角色 -> 意图 -> 信息形态 -> 结构 -> 列 -> IO -> 唤醒策略；加上一个通用练习、结课清单、反模式、不适用的场景和术语表。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/appendix-derivation-and-checklist/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BOyxqO3J.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/" aria-current="page">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><a class="chip" href="/en/writing/appendix-derivation-and-checklist/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/zh/">首页</a><span aria-hidden="true">/</span><a href="/zh/writing/series/ai-maintainable-systems/">AI 可维护的系统</a><span aria-hidden="true">/</span><span>04 附录：推导模板、清单与术语表</span></nav><header class="article__header"><h1 class="article__title">04 附录：推导模板、清单与术语表</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026 年 10 月 1 日</time><span>·</span><span>4 分钟</span><span class="badge badge--warn">草稿预览</span></div><p class="article__summary">本附录把前三篇的方法收束成一套可执行模板：目标 -&gt; 角色 -&gt; 意图 -&gt; 信息形态 -&gt; 结构 -&gt; 列 -&gt; IO -&gt; 唤醒策略；加上一个通用练习、结课清单、反模式、不适用的场景和术语表。</p><div style="margin-top:1rem"><a class="tag" href="/zh/tags/AI/">AI</a><a class="tag" href="/zh/tags/appendix/">appendix</a><a class="tag" href="/zh/tags/%E6%B8%85%E5%8D%95/">清单</a><a class="tag" href="/zh/tags/design/">design</a></div></header><p class="notice">这篇文章尚未标记为 ready，仅在预览模式下显示。</p><div class="prose"><p>这不是正文，而是前 3 篇的配套工作文档。</p>
+<h2 id="1-推导链">1. 推导链</h2>
+<p>不要从“用哪张表 / 哪个 agent”开始，而从目标和约束开始：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Goal -> Actors -> Intents -> Information shapes</span></span>
+<span class="line"><span>     -> Structures -> Columns -> IO -> Wake policy</span></span></code></pre>
+<h3 id="11-goal">1.1 Goal</h3>
+<p>一句话：为谁解决什么。包含终端用户、他们要完成什么、哪些事情必须由人接手。</p>
+<h3 id="12-actors">1.2 Actors</h3>
+<p>至少区分：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>关心什么</th></tr></thead><tbody><tr><td>终端用户</td><td>是否被回答 / 操作是否完成</td></tr><tr><td>运营 / 客户</td><td>知识是否正确、能否评审发布</td></tr><tr><td>AI 维护者</td><td>读什么、写什么、如何验证</td></tr><tr><td>开发者</td><td>引擎、表结构、迁移、权限</td></tr></tbody></table>
+<h3 id="13-intents">1.3 Intents</h3>
+<p>列真实意图：查事实、查实体属性、条件判断、多轮澄清、副作用 / 交人、未知。</p>
+<h3 id="14-information-shapes">1.4 Information shapes</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>形态</th><th>适合结构</th></tr></thead><tbody><tr><td>静态事实</td><td>知识行 / 文案</td></tr><tr><td>参数化事实</td><td>模板 + 实体行</td></tr><tr><td>条件路由</td><td>规则行 / 小 DSL</td></tr><tr><td>跨轮指代</td><td>projection，不用状态表</td></tr><tr><td>多轮收集</td><td>流程 + 状态</td></tr><tr><td>副作用</td><td>task / 外部动作</td></tr><tr><td>未知</td><td>拒答 + 收件箱</td></tr><tr><td>复合问句</td><td>解析算法，不是表</td></tr></tbody></table>
+<h3 id="15-structures">1.5 Structures</h3>
+<ul>
+<li>放配置、内容、数据还是状态？</li>
+<li>优先：配置文件 > 内容文件 > 已有表 > 新表；</li>
+<li>默认：通用实体 + link + JSON 属性 + 小词汇表；</li>
+<li>提升由真实成本触发，不由直觉触发。</li>
+</ul>
+<h3 id="16-columns">1.6 Columns</h3>
+<ul>
+<li>会查询、连接、过滤、约束、统计的字段 -> 有类型的列；</li>
+<li>领域相关、只随行携带的字段 -> JSON；</li>
+<li>需要双向关系 -> link 表；</li>
+<li>不再是实体形状 -> 独立事实表。</li>
+</ul>
+<h3 id="17-io">1.7 IO</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>读</th><th>写</th></tr></thead><tbody><tr><td>终端用户</td><td>对话</td><td>提问 / 操作</td></tr><tr><td>运营</td><td>面板、评审队列</td><td>发布决策</td></tr><tr><td>AI 维护者</td><td>只读证据、内容</td><td>内容 / 提案</td></tr><tr><td>运行时</td><td>数据投影</td><td>运行时状态</td></tr></tbody></table>
+<h3 id="18-唤醒策略">1.8 唤醒策略</h3>
+<ul>
+<li>运行时是否允许模型兜底？</li>
+<li>维护是每日、事件触发还是手动？</li>
+<li>哪些数据变化根本不需要模型？</li>
+<li>模型回答过的未命中是否保留证据？</li>
+</ul>
+<h2 id="2-一个练习预约助手">2. 一个练习：预约助手</h2>
+<p>目标：用户可以预约，复杂预约交给人工。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Intent</th><th>Shape</th><th>Structure</th></tr></thead><tbody><tr><td>营业时间</td><td>静态事实</td><td>知识行</td></tr><tr><td>有哪些服务</td><td>参数化事实</td><td>实体 + 模板</td></tr><tr><td>周末能不能约</td><td>条件规则</td><td>规则行</td></tr><tr><td>“第二个服务”</td><td>指代</td><td>上一轮引文</td></tr><tr><td>预约需要哪些信息</td><td>多轮收集</td><td>流程 + 状态</td></tr><tr><td>提交后通知工作人员</td><td>副作用</td><td>task</td></tr><tr><td>未知政策</td><td>未知</td><td>拒答 + 收件箱</td></tr></tbody></table>
+<h2 id="3-结课清单">3. 结课清单</h2>
+<h3 id="问题">问题</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 我面对的是运行时 agent 不稳定，还是硬编码维护不可验证？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 问题会持续成长，还是一次性？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 我是否把“修好一个例子”当成“变好”？</li>
+</ul>
+<h3 id="结构">结构</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 业务事实还有多少住在代码里？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 配置、内容、数据、状态是否分开？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 离线 / 在线、构建 / 运行时边界是否清楚？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 值进句子了吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 新结构有真实触发条件吗？</li>
+</ul>
+<h3 id="验证">验证</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 每个行为改动有测试吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 有正例、易混负例、拒答、歧义四类吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 有回归基线和回滚路径吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 有死行 / 歧义报告吗？</li>
+</ul>
+<h3 id="权限">权限</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> AI 的读 / 写 / 禁止集合是什么？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 权限是工具强制还是 prompt 请求？</li>
+<li class="task-list-item"><input type="checkbox" disabled> AI 能否直接写在线表、直接合并？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 评审能否在有限上下文内完成？</li>
+</ul>
+<h3 id="成本">成本</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 运行时唤醒几次？维护唤醒几次？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 哪些变化会唤醒模型？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 兜底是否仍记录 unresolved？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 覆盖率、兜底率、单位成本有记录吗？</li>
+</ul>
+<h2 id="4-反模式">4. 反模式</h2>
+<ul>
+<li>把所有逻辑塞进代码；</li>
+<li>把 agent 放在运行时；</li>
+<li>让 agent 直接改在线状态；</li>
+<li>没有测试就让 agent 维护；</li>
+<li>所有东西都塞 JSON；</li>
+<li>为未来预留空表；</li>
+<li>用模型兜底却清掉 unresolved；</li>
+<li>用模型回答来假装结构已经知道答案。</li>
+</ul>
+<h2 id="5-什么时候不该用这套东西">5. 什么时候不该用这套东西</h2>
+<p>一次性脚本、没有持续演化需求的小工具、完全没有重复决策的探索任务——简单脚本就是正确答案。</p>
+<p>结构化有成本，不值得的时候不要用它。</p>
+<h2 id="6-术语表">6. 术语表</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>术语</th><th>含义</th></tr></thead><tbody><tr><td>可维护</td><td>改动可执行、可验证、可回滚、可累积、可负担</td></tr><tr><td>结构</td><td>代码与数据之间的契约：行、表结构、词汇、校验、流程</td></tr><tr><td>Data</td><td>可声明层：知识、规则、变量、流程、测试、内容文件</td></tr><tr><td>meta-code</td><td>代码规模随词汇表增长、而不是随领域增长的解释器 / 校验器 / 运行器</td></tr><tr><td>四个家</td><td>配置 / 内容 / 数据 / 状态</td></tr><tr><td>离线 / 在线</td><td>可编辑、可比较差异的形态 vs 可索引、可查询的投影</td></tr><tr><td>构建 / 在线</td><td>构建表 vs 运行时状态表</td></tr><tr><td>重建结构</td><td>未声明、每次都要重新推导的结构</td></tr><tr><td>指代</td><td>从上一轮引文推导的跨轮引用，不需要状态表</td></tr><tr><td>流程 / 状态</td><td>只有值必须跨轮保留时才需要的运行时状态</td></tr><tr><td>唤醒</td><td>唤醒模型：运行时兜底 / 维护轮 / 构建</td></tr><tr><td>兜底（fallback）</td><td>结构答不出时的模型回答；仍记录 unresolved</td></tr><tr><td>提案</td><td>可审核、可回滚的改动；git PR 或提案表</td></tr><tr><td>κ</td><td>确定性覆盖率</td></tr><tr><td>死行</td><td>从未命中的知识行</td></tr></tbody></table>
+<h2 id="7-最后四个问题">7. 最后四个问题</h2>
+<p>如果 AI 改了一个数据 / 内容，你能回答下面四个问题，这个系统就在正确方向上：</p>
+<ol>
+<li>为什么改？证据是什么？</li>
+<li>改了什么？差异在哪里？</li>
+<li>是否变好？测试和指标是否支持？</li>
+<li>错了怎么退回去？</li>
+</ol>
+<p>能回答，结构就是可维护的；不能回答，模型再强也只是更快地在黑箱里改东西。</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="本系列"><div class="series-nav__side"><span class="series-nav__label">← 上一篇</span><a href="/zh/writing/verification-is-trust/">03 验证才是信任：测试、权限与唤醒成本</a></div><div class="series-nav__side series-nav__side--next"></div></nav></div><nav class="toc" aria-label="目录"><h2>目录</h2><ol><li><a href="#1-推导链">1. 推导链</a></li><li class="toc__l3"><a href="#11-goal">1.1 Goal</a></li><li class="toc__l3"><a href="#12-actors">1.2 Actors</a></li><li class="toc__l3"><a href="#13-intents">1.3 Intents</a></li><li class="toc__l3"><a href="#14-information-shapes">1.4 Information shapes</a></li><li class="toc__l3"><a href="#15-structures">1.5 Structures</a></li><li class="toc__l3"><a href="#16-columns">1.6 Columns</a></li><li class="toc__l3"><a href="#17-io">1.7 IO</a></li><li class="toc__l3"><a href="#18-唤醒策略">1.8 唤醒策略</a></li><li><a href="#2-一个练习预约助手">2. 一个练习：预约助手</a></li><li><a href="#3-结课清单">3. 结课清单</a></li><li class="toc__l3"><a href="#问题">问题</a></li><li class="toc__l3"><a href="#结构">结构</a></li><li class="toc__l3"><a href="#验证">验证</a></li><li class="toc__l3"><a href="#权限">权限</a></li><li class="toc__l3"><a href="#成本">成本</a></li><li><a href="#4-反模式">4. 反模式</a></li><li><a href="#5-什么时候不该用这套东西">5. 什么时候不该用这套东西</a></li><li><a href="#6-术语表">6. 术语表</a></li><li><a href="#7-最后四个问题">7. 最后四个问题</a></li></ol></nav></div></div></article></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Bc0KbyrH.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

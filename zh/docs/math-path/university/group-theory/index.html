@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>群论 · LKM</title><meta name="description" content="对称性的代数结构，四条公理掌控一切"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/docs/math-path/university/group-theory/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/docs/math-path/university/group-theory/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/docs/math-path/university/group-theory/"><meta property="og:type" content="website"><meta property="og:title" content="群论 · LKM"><meta property="og:description" content="对称性的代数结构，四条公理掌控一切"><meta property="og:url" content="https://plae-tljg.github.io/zh/docs/math-path/university/group-theory/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/path.0qta1OZl.css"><link rel="stylesheet" href="/_astro/BaseLayout.BOyxqO3J.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/">文章</a><a href="/zh/docs/" aria-current="page">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><a class="chip" href="/en/docs/math-path/university/group-theory/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><nav class="breadcrumb" style="margin-top:2rem"><a href="/zh/docs/math-path/">数学学习路径</a><span aria-hidden="true">/</span><a href="/zh/docs/math-path/university/">大学数学</a><span aria-hidden="true">/</span><span>群论</span></nav><header class="article__header"><h1 class="article__title"><span class="article__icon">⊕</span>群论</h1><div class="article__meta"><span class="badge">L3</span><span>7 分钟</span><span class="badge badge--warn">草稿预览</span></div><p class="article__summary">对称性的代数结构，四条公理掌控一切</p></header><p class="notice">这篇文章尚未标记为 ready，仅在预览模式下显示。</p><div class="prose path-content"><p class="intro">数学走到某个阶段，会发生一种视线的翻转：不再只对面前的对象做计算，而是开始把“做计算的方式本身”当作一个新对象来端详。群论就诞生在这个翻转的瞬间。</p>
+<p>这个瞬间可以从两个方向逼近。一个方向来自直观的动作——对称。另一个方向来自结构本身的抽离——当发现不同领域的内部规则惊人地相似时，决定把这些相似性本身定义下来，给它一个名字，然后研究这个名字。两条路最终会合，变成同一种东西：群，是封闭运算系统的纯形式。</p>
+<h2>一、动作的语言：从对称到拼装</h2>
+<p>最古老的群，躺在每个人的日常直觉里。正方形转九十度，还是同一个正方形。正三角形翻一面，占的仍是同一片空间。这些“动完之后看起来还一样”的操作，天然携带着一种内部纪律：动两次还是一个对称；一动不动当然也算一种对称；每个动作都可以被撤回去。</p>
+<p>这里的群，不是一堆静态元素的集合，而是一堆“动作”。运算是“先做 A 再做 B”。这个视角直接带出一个根本概念：群作用。一个抽象的群，要“做”在一个具体的舞台 $X$ 上，才看得见。舞台可以是正方形顶点，可以是多项式的根，可以是球面，可以是时空。群本身只是一个纯代数配方，只有跟 $X$ 结合起来，群才成了真正的移动者。</p>
+<p>最简单的舞台就是群自己——让群作用于自身，用左乘做移动，这就是正则作用。整个群结构被翻译成一种对集合的排列，凯莱定理无非是说：任何群就这样看得见，它总可以看作某个集合上的置换群。</p>
+<p>数论里遇见的第一个真正意义上的群，也是从这种动作视角自然出现的。ℤ/pℤ 的非零元素在乘法下构成一个有限群。指数序列 $a^1, a^2, a^3, \ldots$ 在这个有限舞台上移动，迟早撞回原点——这正是推费马小定理时用过的逻辑。</p>
+<p>但现实中的对称往往不像 ℤ/pℤ 这么干净。一个复杂的对象 $X$，它的全部对称构成的群往往很大、很杂。这时一个自然的欲望就冒出来了：这个复杂的群，能不能拆成若干个小块的简单群？</p>
+<p>这就是所谓的“建构性子群格”的问题。正规子群与商群是拆解的工具：把一个群切成一个正规子群和它对应的商群，就像把复杂的对称系统按“粗糙模式”和“细部调整”两层分开。Sylow 定理是这种拆解在有限群里的精确手术刀——它告诉你，在任何一个有限群里，你能找到多大块的“素数幂零件”，以及这些零件之间怎么相互包含和共轭。</p>
+<h2>二、形式规律的骨架：群作为理论的对象化</h2>
+<p>另一条路更隐蔽，也更深刻地解释了为什么群论最后会成为数学的通用语法。</p>
+<p>在讲集合论时提过一个画面：一个理论，起初像是一个自由群——有一些基础元素和一套操作，符号在没有约束地堆叠，每一个新组合都是一个新的表达式。然而，一旦发现某些组合之间应该有某种等式关系——也就是发现了公式——便引入约束，把原来自由扩张的符号空间压扁。压成的那个商群，就是真正的理论。</p>
+<p>如果这个故事放在数论里，ℤ/pℤ 就是这样一个被压出来的宇宙。本来整数的加法和乘法是自由的、无限的。然后强行规定：相差 $p$ 的倍数相等。这等于在所有整数上砸下一条巨力，把无尽的一维链条弯成一个环。</p>
+<p>现在把这个画面本身提取出来：有一个由生成元自由生成的群 $F$，和一组关系 $R$，取商群 $F/\langle R\rangle$，就得到一个具体的群。这不仅仅是构造群的一种方法，它就是任何一个公理系统在群论层面的形状。生成元是基本概念，关系是公理，商群是理论展开的空间。</p>
+<p>伽罗瓦理论是这种身份最辉煌的范例：一个多项式的根的置换构成一个群，而扩域的结构完美对应着这个群的子群格。代数方程的求解问题，从一个计算的死胡同，被完整翻译成群论里的拆解问题。</p>
+<h2>两条路汇合</h2>
+<p>这两条路走到深处，就不再是两条路。从对称出发的动作群，最终也要用子群格去拆解；从理论骨架出发的群，最终也要通过群作用去作用于某个具体的对象上。动作的语言和形式的语言，在同一个定义体内汇合。</p>
+<h3>群律：小宇宙的宪法</h3>
+<p>群的定义，无非是把从对称和 ℤ/pℤ 那里感受到的“封闭性”正式写下来：一个集合，上面有一种运算，怎么算都掉不出去，这个运算还满足结合律，存在一个不做任何事的中性元素，每个元素都能被撤回去。这四条就是群的宪法。它们极简，以至于刚接触时可能会觉得空洞，但正是这种极简赋予了群论那种“通用骨架”的力量——凡是满足这四条的东西，不论它原本是数、是动作、是矩阵还是空间的扭曲，整部群论的机器都可以在它身上运转。</p>
+<h3>环与域：当群长出第二只手</h3>
+<p>单独的群只有一个运算，但数论和代数里总是同时面对加法和乘法。环便是一个集合同时带着两个群的影子：加法构成一个交换群，乘法是另一个封闭运算，两者通过分配律缠绕在一起。域则更进一步，要求非零元的乘法也构成群，于是四则运算完全封闭。整数环 ℤ，模 $p$ 的域 𝔽p，还有有理数、实数、复数，都是这条线的产物。</p>
+<h3>循环群：由一生多的群论版</h3>
+<p>最单纯的群，莫过于只由一个生成元反复运算产生的群——循环群。整数的加法群是它的无限形态，ℤ/pℤ 的加法群是它的有限形态。循环群就是第一原则在群论里的直接投射：一个基础元素，一个基础操作，反复做，就生出了整个群。</p>
+<p>任何群里的单个元素，反复乘下去，都会生出一个循环子群——这是群论里最朴素也最根本的“由一推多”。</p>
+<h3>陪集：把群切成等份的刀</h3>
+<p>当面对一个群，有时它太大，想通过一个子群来观察它。子群是保留下来的一部分对称。用这个子群去“平移”自己，会在整个群里扫出多少个不同的副本？这些副本就是陪集。陪集的妙处在于，它们把群严格地切成大小相等的若干片，没有任何重叠，也没有遗漏。</p>
+<p>由此直接掉下来一个结论——拉格朗日定理：子群的阶必然整除整个群的阶。这是第二原则的经典登场：几乎不需要知道群的具体内容，只需要承认群和子群的结构，再加上“陪集划分”这个机械推理，一个普遍定理就自行走出。</p>
+<h3>正规子群与商群：强行压缩的智慧</h3>
+<p>陪集把群切成了片，但光切片还不够。这些片本身能不能再组成一个群？答案是不总是能。只有当一个子群的左右陪集完全重合——也就是正规子群——的时候，这些陪集片才在新乘法下构成群。这个新群就是商群。</p>
+<p>商群是群论里极富哲学意味的一个操作。它相当于宣布：凡是在同一片里的元素，都认为相等。把一个群内部的诸多细微差异强行压平，只保留片与片之间的粗粒度关系。商群就是结构压缩的工具，是对群施以“碰壁”之后、强行设定等式所得到的新对象。</p>
+<h3>自由群：无拘无束的生成</h3>
+<p>如果说商群是结构压缩的结果，那么自由群就是压缩之前那片未经开垦的丛林。给一组字母，允许任意正反写它们，唯一的规则就是相邻的正反字母可以抵消。这就生成了一个自由群——没有任何额外关系。任何一个群，都同构于某个自由群的商群。换言之，自由群是“随便说”的阶段，商群是“说定了”的阶段。</p>
+<h3>Sylow 定理：有限群的骨骼扫描</h3>
+<p>当一个群很大很复杂时，自然想把它拆成更小的零件。有限群的阶本身给出了一条线索：如果群的阶含有素因子 $p$，那么群里必然有 $p$ 的幂阶的子群。Sylow 定理就是对这类子群的精确刻画——存在性、数量、包含关系，一一给说清楚。</p>
+<p>任何想要拆解或拼装有限群的努力，Sylow 定理都是绕不开的地图。这里的推理依然是机器式的——群作用与计数论证自动演绎出结论，但结果却把整个有限群的拼装逻辑暴露在光天化日之下。</p>
+<h3>伽罗瓦对应：理论骨架的终极演出</h3>
+<p>伽罗瓦理论是群论作为“理论骨架”的巅峰。一个域扩张，在自同构下形成一个群；扩域的中间域，精确对应这个群的子群格。于是，多项式方程能不能用根式求解，就转化成了对应群是不是可解群的问题。</p>
+<p>一个代数的世界被完整编码进了一个群，群的结构就是那个世界的地图。这就是群论成为数学通用语法的终极原因。</p></div><nav class="path-nav" aria-label="本阶段内容"><div class="path-nav__side"><span class="path-nav__label">← 上一篇</span><a href="/zh/docs/math-path/university/number-theory/">数论</a></div><div class="path-nav__side path-nav__side--next"><span class="path-nav__label">下一篇 →</span><a href="/zh/docs/math-path/university/analysis/">数学分析</a></div></nav></div></article></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Bc0KbyrH.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

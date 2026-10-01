@@ -1,0 +1,4 @@
+# Staging build: nothing here should be indexed yet.
+# Set SITE_STAGING=false (see .github/workflows/deploy.yml) at launch.
+User-agent: *
+Disallow: /

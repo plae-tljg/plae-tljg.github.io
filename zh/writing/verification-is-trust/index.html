@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>03 验证才是信任：测试、权限与唤醒成本 · LKM</title><meta name="description" content="AI 维护能不能被信任，不取决于模型判断得对不对，而取决于检查器的形状。本文从“规则和测试同源”的失败场景出发，讨论四类测试、可审核的边界、工具强制的权限，以及运行时兜底与维护轮的唤醒成本。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/verification-is-trust/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/verification-is-trust/"><meta property="og:type" content="website"><meta property="og:title" content="03 验证才是信任：测试、权限与唤醒成本 · LKM"><meta property="og:description" content="AI 维护能不能被信任，不取决于模型判断得对不对，而取决于检查器的形状。本文从“规则和测试同源”的失败场景出发，讨论四类测试、可审核的边界、工具强制的权限，以及运行时兜底与维护轮的唤醒成本。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/verification-is-trust/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.BOyxqO3J.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/" aria-current="page">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><a class="chip" href="/en/writing/verification-is-trust/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/zh/">首页</a><span aria-hidden="true">/</span><a href="/zh/writing/series/ai-maintainable-systems/">AI 可维护的系统</a><span aria-hidden="true">/</span><span>03 验证才是信任：测试、权限与唤醒成本</span></nav><header class="article__header"><h1 class="article__title">03 验证才是信任：测试、权限与唤醒成本</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026 年 10 月 1 日</time><span>·</span><span>8 分钟</span><span class="badge badge--warn">草稿预览</span></div><p class="article__summary">AI 维护能不能被信任，不取决于模型判断得对不对，而取决于检查器的形状。本文从“规则和测试同源”的失败场景出发，讨论四类测试、可审核的边界、工具强制的权限，以及运行时兜底与维护轮的唤醒成本。</p><div style="margin-top:1rem"><a class="tag" href="/zh/tags/AI/">AI</a><a class="tag" href="/zh/tags/verification/">verification</a><a class="tag" href="/zh/tags/testing/">testing</a><a class="tag" href="/zh/tags/cost/">cost</a></div></header><p class="notice">这篇文章尚未标记为 ready，仅在预览模式下显示。</p><div class="prose"><h2 id="0-上篇留下的问题">0. 上篇留下的问题</h2>
+<p>上篇处理了代码与数据的边界：什么应该声明成数据，什么时候才值得从通用实体提升为领域表。它留下了数据侧的结构。</p>
+<p>但结构存在不等于结构正确。AI 改了数据、加了规则、提升了一张表之后，下一个问题立刻出现：</p>
+<blockquote>
+<p><strong>我们怎么知道这次改动真的让系统变好了？</strong></p>
+</blockquote>
+<p>这篇处理验证、权限与唤醒成本。</p>
+<h2 id="1-一个全绿的失败">1. 一个全绿的失败</h2>
+<p>一个 agent 接到任务：系统答不出某类问题。</p>
+<p>它看了几条未命中问题，写了一条新规则，又写了一条测试：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">rule.new_case</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"can I get a refund?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answers</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre>
+<p>CI 全绿。规则上线。</p>
+<p>但真实流量里，用户问的是：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>“What is your refund policy?”</span></span>
+<span class="line"><span>“Can I cancel and get my money back?”</span></span>
+<span class="line"><span>“How long do refunds take?”</span></span></code></pre>
+<p>系统仍然拒答。</p>
+<p>问题不是 agent 不够聪明，而是：</p>
+<blockquote>
+<p><strong>规则和测试来自同一批问句、同一个来源。测试只证明了这条规则能覆盖 agent 刚刚看过的那几句话。</strong></p>
+</blockquote>
+<p>修复一个例子，和让系统真正知道一类问题，是两件不同的事。这件事的教训可以推广成一句更锋利的话：</p>
+<blockquote>
+<p><strong>信任不来自 AI 判断得对不对，来自检查器的形状。</strong></p>
+</blockquote>
+<p>后面的测试、权限和成本，都是围绕这句话展开的。</p>
+<h2 id="2-测试是验收标准不是质量附录">2. 测试是验收标准，不是质量附录</h2>
+<p>在 AI 维护里，测试不是“验证 AI 写的代码”，而是规定什么算“变好”。</p>
+<h3 id="21-四类测试">2.1 四类测试</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>类型</th><th>断言</th><th>防什么</th></tr></thead><tbody><tr><td>正例</td><td>应该回答，且落到正确数据</td><td>规则过严、永远不命中</td></tr><tr><td>易混负例</td><td>长得像，但不应该命中</td><td>规则过松、抢别人的问题</td></tr><tr><td>拒答</td><td>没依据时拒答</td><td>编造</td></tr><tr><td>歧义</td><td>两个候选同样接近时拒答</td><td>随便挑一个</td></tr></tbody></table>
+<p>后三类最好在 AI 开始编辑之前由人种下。原因就是第 1 节的自证循环：</p>
+<blockquote>
+<p>如果测试和规则都由 AI 从同一批失败里生成，它们会一起变绿，而真实流量继续拒答。</p>
+</blockquote>
+<p>这也是为什么“测试通过”不能直接等于“维护完成”。测试只是检查器；检查器的形状决定它能发现什么、漏掉什么。</p>
+<h3 id="22-断言要粗">2.2 断言要粗</h3>
+<p>最好断言“答案包含某个事实”，而不是“等于某句完整文本”。</p>
+<p>一个改措辞就报警的测试集，人很快会学会忽略它；一旦被忽略，它就死了。这是关于人类注意力稀缺的论断：</p>
+<blockquote>
+<p><strong>验证系统的成本不只是机器时间，还包括人认真看它的意愿。</strong></p>
+</blockquote>
+<h3 id="23-测试本身也是数据">2.3 测试本身也是数据</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">confusable.price-not-a-product-question</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"what is the price of dsh-review?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    refuses</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre>
+<p>加一个问法是加模式；加一条保证是加测试。两者都应该是可比较差异的数据。</p>
+<h3 id="24-数据--git--ci-之间的账">2.4 数据 / git / CI 之间的账</h3>
+<p>这里有一个常见问题：</p>
+<blockquote>
+<p>如果测试也是数据，为什么不把它们放进数据库里，而放在 git 文件里？</p>
+</blockquote>
+<p>因为测试不是运行时知识。运行时读取的是“如何回答”；测试回答的是“什么算对”。两者生命周期不同：</p>
+<ul>
+<li>知识要被执行；</li>
+<li>测试要 gate 一次改动。</li>
+</ul>
+<p>一个程序化的发布流程其实更长：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>agent 编辑内容 -> 跑测试 -> 开 PR -> CI -> 人合并</span></span></code></pre>
+<p>核心不是 GitHub，而是：</p>
+<ul>
+<li>main 上测试全绿；</li>
+<li>分支变红就是回归；</li>
+<li><code>git revert</code> 提供回滚。</li>
+</ul>
+<p>回归证据住在 git / CI 里，这一点和“把可声明的都搬到数据侧”看起来冲突。处理方式是分清楚：</p>
+<blockquote>
+<p><strong>运行时知识必须声明进数据；验证证据可以是 gate 的一部分，但必须可追溯到具体改动。</strong></p>
+</blockquote>
+<p>如果未来的系统需要一个非 git 的评审界面，那时才需要把提案 / 测试结果变成表。不是现在。</p>
+<h3 id="25-死行与歧义报告">2.5 死行与歧义报告</h3>
+<p>除了四类测试，还需要：</p>
+<ul>
+<li>从未命中的知识行；</li>
+<li>会匹配多个候选的问法；</li>
+<li>新规则是否覆盖旧规则的范围；</li>
+<li>真实未命中问题按形状聚类。</li>
+</ul>
+<p>这些检查决定“该加规则”还是“该改结构”。</p>
+<h2 id="3-权限谁有权改什么">3. 权限：谁有权改什么</h2>
+<p>验证要成立，边界必须是真的。</p>
+<h3 id="31-请不要越界不是边界">3.1 “请不要越界”不是边界</h3>
+<p>把边界写进提示词是请求，不是约束。只要 agent 有 shell、文件系统和数据库，它就可能直接写库、改引擎、改测试来让测试通过。</p>
+<p>可维护的系统需要工具强制：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>read:  content/**, read-only projection</span></span>
+<span class="line"><span>write: content/** (or proposals)</span></span>
+<span class="line"><span>deny:  engine/**, schema, direct live writes, merge</span></span></code></pre>
+<h3 id="32-为什么">3.2 为什么</h3>
+<p>原则：</p>
+<blockquote>
+<p>回答用户和写系统状态，不应该由同一个进程同时拥有权限。</p>
+</blockquote>
+<p>如果 AI 在请求路径上既能回答又能写知识，错误答案会立刻变成“系统知识”，没有评审，没有回滚。</p>
+<p>即使不在运行时，agent 直接改在线数据库也有问题：改动不在差异里，评审看不到，重建后可能被覆盖。</p>
+<h3 id="33-两种合法写入">3.3 两种合法写入</h3>
+<p><strong>PR / 差异</strong>：改离线文件，开分支，跑测试，开 PR，人合并。评审、历史、回滚都由 git 提供。</p>
+<p><strong>提案表</strong>：当评审者不使用 git，或者需要在不合并的情况下快速学习时，才需要 <code>proposals</code> + 审核界面 + 状态机 + 发布路径。这是例外，不是默认。</p>
+<h3 id="34-允许面要足够">3.4 允许面要足够</h3>
+<p>边界太严也会失败：如果 agent 不能读数据、看统计、跑测试，它为了完成任务会去找绕路。</p>
+<p>一个可用的边界通常包括：</p>
+<ul>
+<li>只读数据查询；</li>
+<li>内容文件读写；</li>
+<li>build / test 命令；</li>
+<li>未命中问题和统计查看；</li>
+<li>明确的提交方式。</li>
+</ul>
+<h3 id="35-角色权限表">3.5 角色权限表</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>读</th><th>写</th><th>不能</th></tr></thead><tbody><tr><td>终端用户</td><td>自己的对话</td><td>提问 / 操作</td><td>看内部数据</td></tr><tr><td>运营</td><td>面板、评审队列</td><td>发布决策</td><td>改引擎</td></tr><tr><td>AI 维护者</td><td>只读投影、证据、内容</td><td>内容 / 提案</td><td>直接写在线表、合并</td></tr><tr><td>开发者</td><td>全部</td><td>引擎 /表结构/ 迁移</td><td>绕过评审</td></tr><tr><td>运行时</td><td>数据投影</td><td>运行时状态</td><td>改知识</td></tr></tbody></table>
+<h2 id="4-唤醒成本">4. 唤醒成本</h2>
+<h3 id="41-三个账本">4.1 三个账本</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>来源</th><th>次数与什么成正比</th><th>处理</th></tr></thead><tbody><tr><td>A. 运行时兜底</td><td>请求数 ×（1 − 覆盖率）</td><td>尽量不用；用了也保留证据</td></tr><tr><td>B. 维护轮</td><td>结构变化频率</td><td>批量、离线、经测试和评审</td></tr><tr><td>C. 构建 / 同步</td><td>数据量</td><td>0 次模型调用</td></tr></tbody></table>
+<p>目标：</p>
+<blockquote>
+<p>让 AI 调用与结构变化成正比，而不是与流量或数据变化成正比。</p>
+</blockquote>
+<h3 id="42-成本公式和一个警告">4.2 成本公式和一个警告</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N  = 每周期请求数</span></span>
+<span class="line"><span>c0 = 确定性解析单次成本</span></span>
+<span class="line"><span>ca = 运行时兜底单次成本</span></span>
+<span class="line"><span>κ  = 确定性覆盖率</span></span>
+<span class="line"><span>w  = 每周期维护唤醒次数</span></span>
+<span class="line"><span>cm = 单次维护成本（模型 + 上下文 + 人工评审）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>C(N, w) = N * [c0 + (1 - κ) * ca] + w * cm</span></span></code></pre>
+<p>如果一次维护把覆盖率提高 <code>Δκ</code>：</p>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>benefit = N * Δκ * ca</span></span>
+<span class="line"><span>值得做当且仅当 N * Δκ * ca > cm</span></span></code></pre>
+<p>但这个公式有几个强假设，值得写清楚：</p>
+<ul>
+<li>维护成本对 <code>w</code> 近似线性——上下文和评审摊薄后可能成立，也可能不成立；</li>
+<li><code>Δκ</code> 不递减——实际上越往后提升越难；</li>
+<li>增加结构不会抬高 <code>c0</code>——规则越多，解析可能越慢。</li>
+</ul>
+<p>所以公式不是预言，是一个用来问“这轮维护值不值”的框架。</p>
+<h3 id="43-一个示意算例">4.3 一个示意算例</h3>
+<pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N = 10,000 请求/天，ca = 0.01，cm = 0.50</span></span>
+<span class="line"><span>覆盖率从 90% 到 92%：benefit = 2 > 0.50</span></span>
+<span class="line"><span>覆盖率只提高 0.1%：benefit = 0.1 &#x3C; 0.50</span></span></code></pre>
+<p>数字仅用于说明。</p>
+<h3 id="44-唤醒策略">4.4 唤醒策略</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模式</th><th>适合场景</th><th>风险</th></tr></thead><tbody><tr><td>每请求</td><td>冷启动、首次探索</td><td>成本不可控</td></tr><tr><td>微批量</td><td>高峰后补学习</td><td>反馈延迟</td></tr><tr><td>每日 / 每周</td><td>稳定业务、批量评审</td><td>新问题多时慢</td></tr><tr><td>事件触发</td><td>新目录、新政策</td><td>阈值难调</td></tr><tr><td>手动</td><td>低流量、高敏感</td><td>长期不更新</td></tr></tbody></table>
+<h3 id="45-兜底不等于系统知道">4.5 兜底不等于系统知道</h3>
+<p>模型兜底可以是一个可选层，但必须：</p>
+<ul>
+<li>由人决定开启；</li>
+<li>回答过的问题仍记录为未解决；</li>
+<li>模型只看到相关实体，而不是全库；</li>
+<li>超时 / 报错 / key 失效时安全地拒答。</li>
+</ul>
+<p>原因：</p>
+<blockquote>
+<p><strong>回答访客，不等于系统知道。</strong></p>
+</blockquote>
+<h2 id="5-两个真实案例作为证据">5. 两个真实案例作为证据</h2>
+<h3 id="51-personal-chatbots">5.1 personal-chatbots</h3>
+<p>一个最小实现：5 张表、离线内容、运行时投影、<code>messages</code> 在线表。截至写作时：</p>
+<ul>
+<li>24 条知识行；</li>
+<li>48 条 frozen cases；</li>
+<li>单元与不变量测试；</li>
+<li>浏览器版跑同一组 frozen cases，CI 做 parity 检查。</li>
+</ul>
+<p>它证明的是：上述结构可以小到什么程度。
+它还证明了另一件更窄的事：确定性层约 0.2 ms、0 token；模型兜底约 7 秒。差的不是 token 单价，是唤醒位置。</p>
+<h3 id="52-maafwphoneai">5.2 MaaFwPhoneAI</h3>
+<p>第二个域是 Android GUI 自动化：</p>
+<ul>
+<li>workflow 是数据库里的 MaaFramework 流水线图；</li>
+<li>AI 只写提案，评审后成为在线流水线；</li>
+<li>每次执行保存后置条件与证据；</li>
+<li>已验证流程进入 0 token 回放。</li>
+</ul>
+<p>PC 原型已经验证了“AI 跑通一次，之后 0 token 回放”；Android 端仍在收敛。它证明结构逻辑不依赖文本域，也暴露了更多运行时复杂度。</p>
+<h2 id="6-说明与边界">6. 说明与边界</h2>
+<ul>
+<li>四类测试只认证已知的失败类别；它不能证明未知情况下也对。</li>
+<li>测试和规则同源的问题，本文没有完全解决。要解决它，需要让验证器的一部分独立于被验证者，这可能是下一阶段的工作。</li>
+<li>如果模型变得足够便宜、稳定、可审计，运行时 agent 的缺陷会减小；但这套结构仍然解决“可累积、可回滚”。</li>
+<li>如果一次改动的评审成本长期高于直接改代码，这套结构不划算。</li>
+<li>作者立场：我不认为“让 AI 自己判断自己”能成为长期信任机制；信任必须来自独立的检查器。</li>
+<li>这套方法最大的代价是评审带宽。自动化可以提高检查速度，但不能自动产生判断。</li>
+</ul>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="本系列"><div class="series-nav__side"><span class="series-nav__label">← 上一篇</span><a href="/zh/writing/boundary-of-datafication/">02 什么时候才需要一张 products 表？——数据化的边界</a></div><div class="series-nav__side series-nav__side--next"><span class="series-nav__label">下一篇 →</span><a href="/zh/writing/appendix-derivation-and-checklist/">04 附录：推导模板、清单与术语表</a></div></nav></div><nav class="toc" aria-label="目录"><h2>目录</h2><ol><li><a href="#0-上篇留下的问题">0. 上篇留下的问题</a></li><li><a href="#1-一个全绿的失败">1. 一个全绿的失败</a></li><li><a href="#2-测试是验收标准不是质量附录">2. 测试是验收标准，不是质量附录</a></li><li class="toc__l3"><a href="#21-四类测试">2.1 四类测试</a></li><li class="toc__l3"><a href="#22-断言要粗">2.2 断言要粗</a></li><li class="toc__l3"><a href="#23-测试本身也是数据">2.3 测试本身也是数据</a></li><li class="toc__l3"><a href="#24-数据--git--ci-之间的账">2.4 数据 / git / CI 之间的账</a></li><li class="toc__l3"><a href="#25-死行与歧义报告">2.5 死行与歧义报告</a></li><li><a href="#3-权限谁有权改什么">3. 权限：谁有权改什么</a></li><li class="toc__l3"><a href="#31-请不要越界不是边界">3.1 “请不要越界”不是边界</a></li><li class="toc__l3"><a href="#32-为什么">3.2 为什么</a></li><li class="toc__l3"><a href="#33-两种合法写入">3.3 两种合法写入</a></li><li class="toc__l3"><a href="#34-允许面要足够">3.4 允许面要足够</a></li><li class="toc__l3"><a href="#35-角色权限表">3.5 角色权限表</a></li><li><a href="#4-唤醒成本">4. 唤醒成本</a></li><li class="toc__l3"><a href="#41-三个账本">4.1 三个账本</a></li><li class="toc__l3"><a href="#42-成本公式和一个警告">4.2 成本公式和一个警告</a></li><li class="toc__l3"><a href="#43-一个示意算例">4.3 一个示意算例</a></li><li class="toc__l3"><a href="#44-唤醒策略">4.4 唤醒策略</a></li><li class="toc__l3"><a href="#45-兜底不等于系统知道">4.5 兜底不等于系统知道</a></li><li><a href="#5-两个真实案例作为证据">5. 两个真实案例作为证据</a></li><li class="toc__l3"><a href="#51-personal-chatbots">5.1 personal-chatbots</a></li><li class="toc__l3"><a href="#52-maafwphoneai">5.2 MaaFwPhoneAI</a></li><li><a href="#6-说明与边界">6. 说明与边界</a></li></ol></nav></div></div></article></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Bc0KbyrH.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>
