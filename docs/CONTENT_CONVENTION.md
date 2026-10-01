@@ -189,7 +189,7 @@ never overwriting an existing one.
 
 A **track** is a tree — stages → pages — not a linear series. Articles for the
 learning path carry a `track:` field instead of `series:` and are written to
-`src/content/paths/`, then routed to `/<lang>/path/<stage>/<slug>/`.
+`src/content/paths/`, then routed to `/<lang>/docs/<track>/<stage>/<slug>/`.
 
 ```yaml
 ---

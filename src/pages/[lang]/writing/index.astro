@@ -14,11 +14,11 @@ const t = UI[lang]
 const views = await getSeriesViews(lang)
 ---
 
-<BaseLayout lang={lang} title={t.series} active="series">
+<BaseLayout lang={lang} title={t.writing} active="writing">
   <div class="container">
     <header class="page-header">
-      <h1>{t.allSeries}</h1>
-      <p>{lang === 'zh' ? '按系列组织的长文。' : 'Long-form writing, grouped into series.'}</p>
+      <h1>{t.writing}</h1>
+      <p>{t.sectionWriting}</p>
     </header>
 
     <section class="section">

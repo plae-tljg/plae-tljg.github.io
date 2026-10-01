@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets'
-import { LOCALES, UI, SERIES, IMAGE_CREDITS, type LocaleCode } from '../../../../site.mjs'
-import { postPath, seriesPath } from '../../../../lib/url'
-import { coverFor } from '../../../../lib/assets'
-import BaseLayout from '../../../../layouts/BaseLayout.astro'
-import { formatDate, getSeriesPosts, readingTime, isPreview, type Post } from '../../../../lib/content'
+import { LOCALES, UI, SERIES, IMAGE_CREDITS, type LocaleCode } from '../../../../../site.mjs'
+import { articlePath, seriesPath } from '../../../../../lib/url'
+import { coverFor } from '../../../../../lib/assets'
+import BaseLayout from '../../../../../layouts/BaseLayout.astro'
+import { formatDate, getSeriesPosts, readingTime, isPreview, type Post } from '../../../../../lib/content'
 
 export async function getStaticPaths() {
   const paths = []
@@ -106,7 +106,7 @@ const totalMinutes = posts.reduce(
                   <div class="series-index__part">{post.data.partLabel}</div>
                 )}
                 <h2 class="series-index__title">
-                  <a href={postPath(lang, post.data.slug)}>{post.data.title}</a>
+                  <a href={articlePath(lang, post.data.slug)}>{post.data.title}</a>
                   {isPreview(post) && (
                     <span class="badge badge--warn" style="margin-left:.5rem">
                       {t.preview}

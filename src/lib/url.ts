@@ -18,35 +18,65 @@ export function localePath(lang: LocaleCode, ...segments: string[]): string {
   return withBase(`/${lang}/${tail ? tail + '/' : ''}`)
 }
 
-export function postPath(lang: LocaleCode, slug: string): string {
-  return localePath(lang, 'posts', slug)
+/* ---------------------------------------------------------------- sections */
+
+/** /<lang>/writing/ — the article section (series live inside it). */
+export function writingPath(lang: LocaleCode): string {
+  return localePath(lang, 'writing')
 }
 
+/** /<lang>/writing/<slug>/ — one article. */
+export function articlePath(lang: LocaleCode, slug: string): string {
+  return localePath(lang, 'writing', slug)
+}
+
+/** /<lang>/writing/series/<id>/ — one series. */
 export function seriesPath(lang: LocaleCode, id: string): string {
-  return localePath(lang, 'series', id)
+  return localePath(lang, 'writing', 'series', id)
 }
 
-/** /<lang>/path/ — the learning-path landing page. */
-export function trackIndexPath(lang: LocaleCode): string {
-  return localePath(lang, 'path')
+/** /<lang>/docs/ — the documentation section (tracks live inside it). */
+export function docsPath(lang: LocaleCode): string {
+  return localePath(lang, 'docs')
 }
 
-/** /<lang>/path/<stage>/ */
-export function stagePath(lang: LocaleCode, stage: string): string {
-  return localePath(lang, 'path', stage)
+/** /<lang>/docs/<track>/ — a track's landing page. */
+export function trackPath(lang: LocaleCode, trackId: string): string {
+  return localePath(lang, 'docs', trackId)
 }
 
-/** /<lang>/path/<stage>/<slug>/ */
-export function guidePath(lang: LocaleCode, stage: string, slug: string): string {
-  return localePath(lang, 'path', stage, slug)
+/** /<lang>/docs/<track>/<stage>/ — one stage of a track. */
+export function stagePath(lang: LocaleCode, trackId: string, stage: string): string {
+  return localePath(lang, 'docs', trackId, stage)
+}
+
+/** /<lang>/docs/<track>/<stage>/<slug>/ — one page of a track. */
+export function guidePath(
+  lang: LocaleCode,
+  trackId: string,
+  stage: string,
+  slug: string
+): string {
+  return localePath(lang, 'docs', trackId, stage, slug)
+}
+
+/** /<lang>/docs/notes/<slug>/ — the site's own older tutorial posts. */
+export function notePath(lang: LocaleCode, slug: string): string {
+  return localePath(lang, 'docs', 'notes', slug)
+}
+
+/** /<lang>/projects/ — the project and repository index. */
+export function projectsPath(lang: LocaleCode): string {
+  return localePath(lang, 'projects')
+}
+
+/** /<lang>/archive/ — the cross-section index. */
+export function archivePath(lang: LocaleCode): string {
+  return localePath(lang, 'archive')
 }
 
 export function tagPath(lang: LocaleCode, tag: string): string {
   return localePath(lang, 'tags', encodeURIComponent(tag))
-}
-
-export function notePath(lang: LocaleCode, slug: string): string {
-  return localePath(lang, 'notes', slug)
 }
 
 /** Swap the locale segment of the current path, keeping the rest. */

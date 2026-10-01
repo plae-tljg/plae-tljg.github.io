@@ -1,0 +1,89 @@
+---
+/**
+ * /docs/ — the documentation section: every track, plus the site's own notes.
+ * Tracks are declared in src/site.mjs (TRACKS) and their pages come from the
+ * paths collection.
+ */
+import { TRACKS, UI, type LocaleCode } from '../../../site.mjs'
+import { localePaths, notePath, trackPath } from '../../../lib/url'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { getStageViews, getNotes, formatDateShort } from '../../../lib/content'
+
+export function getStaticPaths() {
+  return localePaths()
+}
+
+const { lang } = Astro.params as { lang: LocaleCode }
+const t = UI[lang]
+
+const tracks = []
+for (const track of TRACKS) {
+  const stages = await getStageViews(track.id, lang)
+  const pages = stages.reduce((sum, s) => sum + s.items.length, 0)
+  if (pages === 0) continue
+  tracks.push({ track, stages, pages })
+}
+
+const notes = await getNotes(lang)
+---
+
+<BaseLayout lang={lang} title={t.docs} description={t.sectionDocs} active="docs">
+  <div class="container">
+    <header class="page-header">
+      <h1>{t.docs}</h1>
+      <p>{t.sectionDocs}</p>
+    </header>
+
+    <section class="section">
+      <div class="card-grid">
+        {
+          tracks.map(({ track, stages, pages }) => (
+            <a class="card card--series" href={trackPath(lang, track.id)}>
+              <div class="card__body">
+                <h3>{track.title[lang]}</h3>
+                <p>{track.description[lang]}</p>
+                <div class="card__meta">
+                  <span>{stages.length} {t.stage}</span>
+                  <span>
+                    {pages} {t.posts}
+                  </span>
+                  <span>{track.languages.length > 1 ? t.seriesBilingual : t.seriesZhOnly}</span>
+                </div>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      notes.length > 0 && (
+        <section class="section">
+          <div class="section__head">
+            <h2>{t.notes}</h2>
+          </div>
+          <p class="repo-group__description">
+            {lang === 'zh'
+              ? '本站早期写下的短文，保留在这里，不再更新。'
+              : 'Earlier short posts from this site, kept here and no longer updated.'}
+          </p>
+          <ul class="post-list">
+            {notes.map((note) => (
+              <li class="post-list__item">
+                <time class="post-list__date" datetime={note.data.date.toISOString()}>
+                  {formatDateShort(note.data.date)}
+                </time>
+                <div>
+                  <h3 class="post-list__title">
+                    <a href={notePath(lang, note.data.slug)}>{note.data.title}</a>
+                  </h3>
+                  {note.data.summary && <p class="post-list__summary">{note.data.summary}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>

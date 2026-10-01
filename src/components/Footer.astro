@@ -1,6 +1,6 @@
 ---
 import { SITE, UI, type LocaleCode } from '../site.mjs'
-import { withBase } from '../lib/url'
+import { archivePath, docsPath, projectsPath, withBase, writingPath } from '../lib/url'
 
 interface Props {
   lang: LocaleCode
@@ -15,11 +15,17 @@ const year = new Date().getFullYear()
   <div class="container site-footer__row">
     <p style="margin:0">© {year} {SITE.author} · {t.footerNote}</p>
     <p style="margin:0">
-      <a href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
+      <a href={writingPath(lang)}>{t.writing}</a>
+      <span aria-hidden="true"> · </span>
+      <a href={docsPath(lang)}>{t.docs}</a>
+      <span aria-hidden="true"> · </span>
+      <a href={projectsPath(lang)}>{t.projects}</a>
+      <span aria-hidden="true"> · </span>
+      <a href={archivePath(lang)}>{t.archive}</a>
       <span aria-hidden="true"> · </span>
       <a href={withBase(`/${lang}/rss.xml`)}>{t.rss}</a>
       <span aria-hidden="true"> · </span>
-      <a href={withBase(`/${lang}/about/`)}>{t.about}</a>
+      <a href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
     </p>
   </div>
 </footer>

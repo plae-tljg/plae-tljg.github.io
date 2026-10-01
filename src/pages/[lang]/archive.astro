@@ -1,9 +1,15 @@
 ---
+/**
+ * The cross-section index: everything published here — articles, documentation
+ * pages and older notes — newest first. This is what keeps the sections from
+ * becoming silos.
+ */
 import { UI, type LocaleCode } from '../../site.mjs'
 import { localePaths, tagPath } from '../../lib/url'
 import BaseLayout from '../../layouts/BaseLayout.astro'
-import PostList from '../../components/PostList.astro'
+import EntryList from '../../components/EntryList.astro'
 import { allTags, getPosts } from '../../lib/content'
+import { getAllEntries } from '../../lib/entries'
 
 export function getStaticPaths() {
   return localePaths()
@@ -11,8 +17,9 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: LocaleCode }
 const t = UI[lang]
-const posts = await getPosts(lang)
-const tags = allTags(posts)
+const entries = await getAllEntries(lang)
+const tags = allTags(await getPosts(lang))
+const count = (kind: string) => entries.filter((e) => e.kind === kind).length
 ---
 
 <BaseLayout lang={lang} title={t.archive} active="archive">
@@ -20,12 +27,16 @@ const tags = allTags(posts)
     <header class="page-header">
       <h1>{t.archive}</h1>
       <p>
-        {posts.length} {t.posts}
+        {
+          lang === 'zh'
+            ? `全站内容，按时间排列：文章 ${count('article')} 篇、文档 ${count('doc')} 页、旧文 ${count('note')} 篇。`
+            : `Everything on the site by date: ${count('article')} articles, ${count('doc')} doc pages, ${count('note')} notes.`
+        }
       </p>
     </header>
 
     <section class="section">
-      {posts.length > 0 && <PostList posts={posts} lang={lang} />}
+      <EntryList entries={entries} lang={lang} />
     </section>
 
     {
@@ -35,9 +46,9 @@ const tags = allTags(posts)
             <h2>{t.tags}</h2>
           </div>
           <p>
-            {tags.map(({ tag, count }) => (
+            {tags.map(({ tag, count: n }) => (
               <a class="tag" href={tagPath(lang, tag)}>
-                {tag} <span style="color:var(--text-faint)">{count}</span>
+                {tag} <span style="color:var(--text-faint)">{n}</span>
               </a>
             ))}
           </p>

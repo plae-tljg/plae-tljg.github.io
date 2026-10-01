@@ -1,6 +1,6 @@
 ---
 import { SITE, LOCALES } from '../site.mjs'
-import { withBase } from '../lib/url'
+import { articlePath, withBase } from '../lib/url'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Hero from '../components/Hero.astro'
 import { getSeriesViews, getPosts } from '../lib/content'
@@ -48,7 +48,7 @@ const alternates = Object.fromEntries(
                   <span class="post-list__date">{post.data.date.toISOString().slice(0, 10)}</span>
                   <div>
                     <h3 class="post-list__title">
-                      <a href={withBase(`/zh/posts/${post.data.slug}/`)}>{post.data.title}</a>
+                      <a href={articlePath('zh', post.data.slug)}>{post.data.title}</a>
                     </h3>
                   </div>
                 </li>

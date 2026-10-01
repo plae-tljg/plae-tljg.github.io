@@ -1,0 +1,58 @@
+---
+import { UI, type LocaleCode } from '../site.mjs'
+import { repoDescription, repoImportedAt, repoNote, type Repo } from '../lib/repos'
+
+interface Props {
+  repo: Repo
+  lang: LocaleCode
+  /** Shown with the account name (used on the featured strip). */
+  accountLabel?: string
+  featured?: boolean
+}
+
+const { repo, lang, accountLabel, featured = false } = Astro.props
+const t = UI[lang]
+const description = repoDescription(repo, lang)
+const note = repoNote(repo, lang)
+const imported = repoImportedAt(repo)
+---
+
+<article class:list={['repo-card', { 'repo-card--featured': featured }]}>
+  <header>
+    <h3>
+      <a href={repo.url} target="_blank" rel="noopener">{repo.name}</a>
+    </h3>
+    {accountLabel && <span class="repo-card__account">{accountLabel}</span>}
+  </header>
+
+  {description && <p>{description}</p>}
+  {note && <p class="repo-card__note">{note}</p>}
+
+  <div class="repo-card__badges">
+    {repo.isFork && (
+      <span class="badge" title={`fork of ${repo.parent}`}>
+        {t.repoFork}
+        {repo.parent && ` · ${repo.parent}`}
+      </span>
+    )}
+    {imported && <span class="badge badge--accent">{t.repoImported}</span>}
+    {repo.archived && <span class="badge badge--warn">archived</span>}
+  </div>
+
+  <div class="repo-card__meta">
+    {repo.language && <span class="repo-card__lang">{repo.language}</span>}
+    {repo.stars > 0 && <span>★ {repo.stars}</span>}
+    <span>
+      {t.repoUpdated} {repo.pushedAt}
+    </span>
+    <span class="repo-card__links">
+      <a href={repo.url} target="_blank" rel="noopener">{t.repoSource}</a>
+      {repo.homepage && (
+        <>
+          {' · '}
+          <a href={repo.homepage} target="_blank" rel="noopener">{t.repoDemo}</a>
+        </>
+      )}
+    </span>
+  </div>
+</article>

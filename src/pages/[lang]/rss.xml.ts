@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss'
 import type { APIRoute } from 'astro'
 import { SITE, type LocaleCode } from '../../site.mjs'
-import { localePaths, postPath } from '../../lib/url'
+import { localePaths, articlePath } from '../../lib/url'
 import { getPosts } from '../../lib/content'
 
 export function getStaticPaths() {
@@ -23,7 +23,7 @@ export const GET: APIRoute = async (context) => {
       title: post.data.title,
       description: post.data.summary,
       pubDate: post.data.date,
-      link: postPath(lang, post.data.slug),
+      link: articlePath(lang, post.data.slug),
       categories: post.data.tags,
     })),
   })

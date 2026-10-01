@@ -1,10 +1,10 @@
 ---
 import { render } from 'astro:content'
-import { UI, LOCALES, type LocaleCode } from '../../../site.mjs'
-import { notePath } from '../../../lib/url'
-import BaseLayout from '../../../layouts/BaseLayout.astro'
-import { formatDate, getNotes, type Note } from '../../../lib/content'
-import Toc from '../../../components/Toc.astro'
+import { UI, LOCALES, type LocaleCode } from '../../../../site.mjs'
+import { notePath } from '../../../../lib/url'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { formatDate, getNotes, type Note } from '../../../../lib/content'
+import Toc from '../../../../components/Toc.astro'
 
 export async function getStaticPaths() {
   const paths = []
@@ -23,7 +23,7 @@ const t = UI[lang]
 const { Content, headings } = await render(note)
 ---
 
-<BaseLayout lang={lang} title={note.data.title} description={note.data.summary} active="notes">
+<BaseLayout lang={lang} title={note.data.title} description={note.data.summary} active="docs">
   <article class="article">
     <div class="container">
       <div class={`article__layout ${headings.length > 2 ? 'article__layout--with-toc' : ''}`}>

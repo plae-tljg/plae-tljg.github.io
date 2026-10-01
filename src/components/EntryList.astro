@@ -1,0 +1,47 @@
+---
+import { UI, type LocaleCode } from '../site.mjs'
+import { formatDateShort } from '../lib/content'
+import type { Entry } from '../lib/entries'
+
+interface Props {
+  entries: Entry[]
+  lang: LocaleCode
+  showKind?: boolean
+  /** Group (series/track) line under each entry. */
+  showGroup?: boolean
+}
+
+const { entries, lang, showKind = true, showGroup = true } = Astro.props
+const t = UI[lang]
+const kindLabel = (kind: Entry['kind']) =>
+  kind === 'article' ? t.writing : kind === 'doc' ? t.docs : t.notes
+---
+
+<ul class="post-list">
+  {
+    entries.map((entry) => (
+      <li class="post-list__item">
+        <time class="post-list__date" datetime={entry.date.toISOString()}>
+          {formatDateShort(entry.date)}
+        </time>
+        <div>
+          <h3 class="post-list__title">
+            <a href={entry.href}>{entry.title}</a>
+            {showKind && <span class="badge" style="margin-left:.5rem">{kindLabel(entry.kind)}</span>}
+            {entry.preview && (
+              <span class="badge badge--warn" style="margin-left:.35rem">
+                {t.preview}
+              </span>
+            )}
+          </h3>
+          {entry.summary && <p class="post-list__summary">{entry.summary}</p>}
+          {showGroup && entry.group && (
+            <p class="post-list__group">
+              {entry.groupHref ? <a href={entry.groupHref}>{entry.group}</a> : entry.group}
+            </p>
+          )}
+        </div>
+      </li>
+    ))
+  }
+</ul>

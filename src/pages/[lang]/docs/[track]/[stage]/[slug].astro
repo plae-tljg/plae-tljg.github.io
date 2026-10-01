@@ -4,12 +4,12 @@
  * from the Math-Learning-Path site), styled by src/styles/path.css.
  */
 import { render } from 'astro:content'
-import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
-import { guidePath, localePaths, stagePath, trackIndexPath } from '../../../../lib/url'
-import BaseLayout from '../../../../layouts/BaseLayout.astro'
-import { getStageView, getStageViews, isPreview, readingTime, stageSiblings } from '../../../../lib/content'
-import type { PathPage } from '../../../../lib/content'
-import '../../../../styles/path.css'
+import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../../site.mjs'
+import { guidePath, stagePath, trackPath } from '../../../../../lib/url'
+import BaseLayout from '../../../../../layouts/BaseLayout.astro'
+import { getStageView, getStageViews, isPreview, readingTime, stageSiblings } from '../../../../../lib/content'
+import type { PathPage } from '../../../../../lib/content'
+import '../../../../../styles/path.css'
 
 export async function getStaticPaths() {
   const paths = []
@@ -20,7 +20,7 @@ export async function getStaticPaths() {
       for (const stage of stages) {
         for (const page of stage.items) {
           paths.push({
-            params: { lang, stage: stage.id, slug: page.data.slug },
+            params: { lang, track: track.id, stage: stage.id, slug: page.data.slug },
             props: { track, stageId: stage.id, page, items: stage.items },
           })
         }
@@ -49,10 +49,10 @@ const translated = (await getStageView(track.id, stageId, other.code as LocaleCo
   (p) => p.data.translationKey === page.data.translationKey
 )
 const translatedPath = translated
-  ? guidePath(other.code as LocaleCode, stageId, translated.data.slug)
+  ? guidePath(other.code as LocaleCode, track.id, stageId, translated.data.slug)
   : undefined
 const alternates: Partial<Record<LocaleCode, string>> = {
-  [lang]: guidePath(lang, stageId, page.data.slug),
+  [lang]: guidePath(lang, track.id, stageId, page.data.slug),
 }
 if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
 ---
@@ -62,16 +62,16 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
   title={page.data.title}
   description={page.data.summary}
   noindex={isPreview(page)}
-  active="path"
+  active="docs"
   alternates={alternates}
   alternatePath={translatedPath}
 >
   <article class="article">
     <div class="container">
       <nav class="breadcrumb" style="margin-top:2rem">
-        <a href={trackIndexPath(lang)}>{track.title[lang]}</a>
+        <a href={trackPath(lang, track.id)}>{track.title[lang]}</a>
         <span aria-hidden="true">/</span>
-        <a href={stagePath(lang, stageId)}>{stageMeta?.title[lang] || stageId}</a>
+        <a href={stagePath(lang, track.id, stageId)}>{stageMeta?.title[lang] || stageId}</a>
         <span aria-hidden="true">/</span>
         <span>{page.data.title}</span>
       </nav>
@@ -101,7 +101,7 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
             previous && (
               <>
                 <span class="path-nav__label">← {t.prev}</span>
-                <a href={guidePath(lang, stageId, previous.data.slug)}>{previous.data.title}</a>
+                <a href={guidePath(lang, track.id, stageId, previous.data.slug)}>{previous.data.title}</a>
               </>
             )
           }
@@ -111,7 +111,7 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
             next && (
               <>
                 <span class="path-nav__label">{t.next} →</span>
-                <a href={guidePath(lang, stageId, next.data.slug)}>{next.data.title}</a>
+                <a href={guidePath(lang, track.id, stageId, next.data.slug)}>{next.data.title}</a>
               </>
             )
           }

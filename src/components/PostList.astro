@@ -1,6 +1,6 @@
 ---
 import { UI, type LocaleCode } from '../site.mjs'
-import { postPath } from '../lib/url'
+import { articlePath } from '../lib/url'
 import { formatDateShort, isPreview, type Post } from '../lib/content'
 
 interface Props {
@@ -22,7 +22,7 @@ const t = UI[lang]
         </time>
         <div>
           <h3 class="post-list__title">
-            <a href={postPath(lang, post.data.slug)}>{post.data.title}</a>
+            <a href={articlePath(lang, post.data.slug)}>{post.data.title}</a>
             {isPreview(post) && <span class="badge badge--warn" style="margin-left:.5rem">{t.preview}</span>}
           </h3>
           {showSummary && post.data.summary && <p class="post-list__summary">{post.data.summary}</p>}

@@ -7,8 +7,19 @@ Operating notes for any AI agent working in `plae-tljg.github.io`.
 The **presentation layer only**. Articles are written in a separate private
 workspace (default `~/Music/blogs`) and copied here by `scripts/content.mjs`.
 The chatbot is compiled in a second repository (`~/Music/personal-chatbots`) and
-copied here by `scripts/bot.mjs`. The site is Astro 7, output is static, hosting
-is GitHub Pages from `gh-pages`.
+copied here by `scripts/bot.mjs`. The repository index on `/projects/` comes from
+a committed GitHub API snapshot (`scripts/repos.mjs`). The site is Astro 7,
+output is static, hosting is GitHub Pages from `gh-pages`.
+
+## Sections
+
+| URL | What it holds |
+|---|---|
+| `/<lang>/writing/` | Articles, grouped into series (`writing/series/<id>/`) |
+| `/<lang>/docs/` | Tracks (learning paths, guides) + older notes in `docs/notes/` |
+| `/<lang>/projects/` | Every public repository, grouped, with fork badges |
+| `/<lang>/archive/` | Cross-section index — keeps the sections from becoming silos |
+| `/<lang>/about/` | About |
 
 ## Hard rules
 
@@ -32,6 +43,8 @@ is GitHub Pages from `gh-pages`.
 
 | Want to change | Edit |
 |---|---|
+| Which sections exist, their labels | `src/site.mjs` (`UI`), `src/components/Header.astro` |
+| Repository groups, featured list, exclusions, per-repo text | `repos.config.mjs` |
 | Site title, taglines, author, GitHub link | `src/site.mjs` (`SITE`) |
 | Locales, UI strings | `src/site.mjs` (`LOCALES`, `UI`) |
 | Series registry, order, descriptions | `src/site.mjs` (`SERIES`) |
@@ -49,9 +62,13 @@ is GitHub Pages from `gh-pages`.
 
 ```bash
 npm run content:verify
+npm run repos:verify
 npm run bot:verify
 npx astro build      # must finish with no errors
 ```
+
+`repos:verify` needs no token: it checks the committed snapshot against its
+manifest. Refreshing the snapshot (`npm run repos:sync`) does need `gh auth`.
 
 ## Known constraints
 

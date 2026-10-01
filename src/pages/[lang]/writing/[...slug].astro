@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content'
 import { LOCALES, type LocaleCode } from '../../../site.mjs'
-import { postPath } from '../../../lib/url'
+import { articlePath } from '../../../lib/url'
 import ArticleLayout from '../../../layouts/ArticleLayout.astro'
 import { getPosts, getSeriesPosts, siblings, type Post } from '../../../lib/content'
 
@@ -29,7 +29,7 @@ export async function getStaticPaths() {
           previous,
           next,
           translationUrl: counterpart
-            ? postPath(counterpart.data.lang as LocaleCode, counterpart.data.slug)
+            ? articlePath(counterpart.data.lang as LocaleCode, counterpart.data.slug)
             : undefined,
         },
       })

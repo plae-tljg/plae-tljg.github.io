@@ -1,25 +1,35 @@
 ---
 /**
- * Learning-path landing: the track hero (title, subtitle, pets) and its stages.
- * Layout and imagery live here; the pages themselves come from the paths
- * collection (synced from the writing workspace).
+ * A documentation track's landing page: hero, stages, and what is inside each.
+ * The pages themselves come from the paths collection (synced from the writing
+ * workspace).
  */
 import { Image } from 'astro:assets'
-import { TRACKS, UI, type LocaleCode } from '../../../site.mjs'
-import { localePaths, stagePath } from '../../../lib/url'
-import BaseLayout from '../../../layouts/BaseLayout.astro'
-import { getStageViews } from '../../../lib/content'
-import heroImage from '../../../assets/paths/math-path-hero.jpeg'
-import '../../../styles/path.css'
+import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
+import { docsPath, stagePath, trackPath } from '../../../../lib/url'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { getStageViews } from '../../../../lib/content'
+import heroImage from '../../../../assets/paths/math-path-hero.jpeg'
+import '../../../../styles/path.css'
 
-export function getStaticPaths() {
-  return localePaths()
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    for (const track of TRACKS) {
+      const stages = await getStageViews(track.id, lang)
+      paths.push({ params: { lang, track: track.id }, props: { track, stages } })
+    }
+  }
+  return paths
 }
 
-const { lang } = Astro.params as { lang: LocaleCode }
+const { track, stages } = Astro.props as {
+  track: (typeof TRACKS)[number]
+  stages: Awaited<ReturnType<typeof getStageViews>>
+}
+const lang = Astro.params.lang as LocaleCode
 const t = UI[lang]
-const track = TRACKS[0]
-const stages = await getStageViews(track.id, lang)
 const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
 ---
 
@@ -27,8 +37,16 @@ const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
   lang={lang}
   title={track.title[lang]}
   description={track.description[lang]}
-  active="path"
+  active="docs"
 >
+  <div class="container">
+    <nav class="breadcrumb" style="margin-top:2rem">
+      <a href={docsPath(lang)}>{t.docs}</a>
+      <span aria-hidden="true">/</span>
+      <span>{track.title[lang]}</span>
+    </nav>
+  </div>
+
   <section class="path-hero">
     <div class="container">
       <h1>{track.title[lang]}</h1>
@@ -67,7 +85,7 @@ const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
           stages.map((stage) => (
             <a
               class:list={['nav-btn', { primary: stage.id === track.stages?.[0]?.id }]}
-              href={stagePath(lang, stage.id)}
+              href={stagePath(lang, track.id, stage.id)}
             >
               {stageMeta(stage.id)?.title[lang]} →
             </a>
@@ -85,7 +103,7 @@ const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
       <div class="path-stages">
         {
           stages.map((stage) => (
-            <a class="stage-card" href={stagePath(lang, stage.id)}>
+            <a class="stage-card" href={stagePath(lang, track.id, stage.id)}>
               <h3>{stageMeta(stage.id)?.title[lang]}</h3>
               <p>{stageMeta(stage.id)?.description[lang]}</p>
               <div class="stage-card__meta">

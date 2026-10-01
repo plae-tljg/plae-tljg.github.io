@@ -1,6 +1,6 @@
 ---
 import { SITE, SERIES, UI, type LocaleCode } from '../site.mjs'
-import { localePath, postPath, seriesPath, tagPath } from '../lib/url'
+import { articlePath, localePath, seriesPath, tagPath, writingPath } from '../lib/url'
 import { formatDate, isPreview, readingTime, type Post } from '../lib/content'
 import BaseLayout from './BaseLayout.astro'
 import Toc from '../components/Toc.astro'
@@ -23,7 +23,7 @@ const t = UI[lang]
 const series = post.data.series ? SERIES.find((s) => s.id === post.data.series) : undefined
 const minutes = post.body ? readingTime(post.body, lang) : 1
 
-const alternates: Partial<Record<LocaleCode, string>> = { [lang]: postPath(lang, post.data.slug) }
+const alternates: Partial<Record<LocaleCode, string>> = { [lang]: articlePath(lang, post.data.slug) }
 if (translationUrl) {
   const other: LocaleCode = lang === 'zh' ? 'en' : 'zh'
   alternates[other] = translationUrl
@@ -37,7 +37,7 @@ if (translationUrl) {
   noindex={isPreview(post)}
   alternates={alternates}
   alternatePath={translationUrl}
-  active="archive"
+  active="writing"
 >
   <article class="article">
     <div class="container">
@@ -55,7 +55,7 @@ if (translationUrl) {
                   </>
                 ) : (
                   <>
-                    <a href={localePath(lang, 'archive')}>{t.archive}</a>
+                    <a href={writingPath(lang)}>{t.writing}</a>
                     <span aria-hidden="true">/</span>
                   </>
                 )}
@@ -116,7 +116,7 @@ if (translationUrl) {
                         ← {t.prev}
                         {previous.data.partLabel ? ` · ${previous.data.partLabel}` : ''}
                       </span>
-                      <a href={postPath(lang, previous.data.slug)}>{previous.data.title}</a>
+                      <a href={articlePath(lang, previous.data.slug)}>{previous.data.title}</a>
                     </>
                   )}
                 </div>
@@ -127,7 +127,7 @@ if (translationUrl) {
                         {t.next}
                         {next.data.partLabel ? ` · ${next.data.partLabel}` : ''} →
                       </span>
-                      <a href={postPath(lang, next.data.slug)}>{next.data.title}</a>
+                      <a href={articlePath(lang, next.data.slug)}>{next.data.title}</a>
                     </>
                   )}
                 </div>

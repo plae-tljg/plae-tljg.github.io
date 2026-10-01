@@ -4,12 +4,12 @@
  * then the pages inside it as cards — the shape the original site used.
  */
 import { render } from 'astro:content'
-import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
-import { guidePath, localePaths, stagePath, trackIndexPath } from '../../../../lib/url'
-import BaseLayout from '../../../../layouts/BaseLayout.astro'
-import { getStageViews, isPreview } from '../../../../lib/content'
-import type { PathPage } from '../../../../lib/content'
-import '../../../../styles/path.css'
+import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../../site.mjs'
+import { guidePath, stagePath, trackPath } from '../../../../../lib/url'
+import BaseLayout from '../../../../../layouts/BaseLayout.astro'
+import { getStageViews, isPreview } from '../../../../../lib/content'
+import type { PathPage } from '../../../../../lib/content'
+import '../../../../../styles/path.css'
 
 export async function getStaticPaths() {
   const paths = []
@@ -18,7 +18,10 @@ export async function getStaticPaths() {
     for (const track of TRACKS) {
       const stages = await getStageViews(track.id, lang)
       for (const stage of stages) {
-        paths.push({ params: { lang, stage: stage.id }, props: { track, stage } })
+        paths.push({
+          params: { lang, track: track.id, stage: stage.id },
+          props: { track, stage },
+        })
       }
     }
   }
@@ -42,11 +45,11 @@ const prevStage = (track.stages || [])[stagePosition - 1]
   lang={lang}
   title={`${stageMeta?.title[lang] || stage.id} · ${track.title[lang]}`}
   description={stageMeta?.description[lang]}
-  active="path"
+  active="docs"
 >
   <div class="container">
     <nav class="breadcrumb" style="margin-top:2rem">
-      <a href={trackIndexPath(lang)}>{track.title[lang]}</a>
+      <a href={trackPath(lang, track.id)}>{track.title[lang]}</a>
       <span aria-hidden="true">/</span>
       <span>{stageMeta?.title[lang] || stage.id}</span>
     </nav>
@@ -72,7 +75,7 @@ const prevStage = (track.stages || [])[stagePosition - 1]
           </div>
           <div class="subjects-grid">
             {stage.items.map((page: PathPage) => (
-              <a class="subject-card" href={guidePath(lang, stage.id, page.data.slug)}>
+              <a class="subject-card" href={guidePath(lang, track.id, stage.id, page.data.slug)}>
                 {page.data.icon && <span class="subject-icon">{page.data.icon}</span>}
                 <div class="subject-info">
                   <h3>
@@ -102,7 +105,7 @@ const prevStage = (track.stages || [])[stagePosition - 1]
           prevStage && (
             <>
               <span class="path-nav__label">← {t.prev}</span>
-              <a href={stagePath(lang, prevStage.id)}>{prevStage.title[lang]}</a>
+              <a href={stagePath(lang, track.id, prevStage.id)}>{prevStage.title[lang]}</a>
             </>
           )
         }
@@ -114,7 +117,7 @@ const prevStage = (track.stages || [])[stagePosition - 1]
               <span class="path-nav__label">
                 {t.next} {t.stage} →
               </span>
-              <a href={stagePath(lang, nextStage.id)}>{nextStage.title[lang]}</a>
+              <a href={stagePath(lang, track.id, nextStage.id)}>{nextStage.title[lang]}</a>
             </>
           )
         }

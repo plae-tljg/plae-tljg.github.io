@@ -1,0 +1,132 @@
+---
+/**
+ * /projects/ — every public repository, grouped by what it is.
+ * Data: src/content/repos.json, a committed GitHub API snapshot produced by
+ * `npm run repos:sync`; grouping and corrections live in repos.config.mjs.
+ */
+import { UI, type LocaleCode } from '../../../site.mjs'
+import { localePaths } from '../../../lib/url'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import RepoCard from '../../../components/RepoCard.astro'
+import {
+  accounts,
+  allRepos,
+  featuredRepos,
+  generatedAt,
+  repoGroups,
+  repoStats,
+  ungroupedRepos,
+} from '../../../lib/repos'
+
+export function getStaticPaths() {
+  return localePaths()
+}
+
+const { lang } = Astro.params as { lang: LocaleCode }
+const t = UI[lang]
+const stats = repoStats()
+const featured = featuredRepos()
+const groups = repoGroups()
+const extras = ungroupedRepos()
+const snapshotDate = generatedAt.slice(0, 10)
+
+const accountLabel = (login: string) =>
+  accounts.find((a) => a.login === login)?.label[lang] || login
+const accountCount = (login: string) => allRepos.filter((r) => r.account === login).length
+---
+
+<BaseLayout lang={lang} title={t.projects} description={t.sectionProjects} active="projects">
+  <div class="container">
+    <header class="page-header">
+      <h1>{t.projects}</h1>
+      <p>{t.sectionProjects}</p>
+      <div class="page-meta">
+        <span>{stats.total} {lang === 'zh' ? '个公开仓库' : 'public repos'}</span>
+        <span>·</span>
+        <span>{accounts.length} {lang === 'zh' ? '个账号' : 'accounts'}</span>
+        <span>·</span>
+        <span>{stats.forks} forks</span>
+        <span>·</span>
+        <span>★ {stats.stars}</span>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section__head">
+        <h2>{lang === 'zh' ? '重点' : 'Featured'}</h2>
+      </div>
+      <div class="repo-grid">
+        {
+          featured.map((repo) => (
+            <RepoCard repo={repo} lang={lang} accountLabel={accountLabel(repo.account)} featured />
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      groups.map((group) => (
+        <section class="section" id={group.id}>
+          <div class="section__head">
+            <h2>{group.title[lang]}</h2>
+            <span class="repo-group__count">
+              {group.repos.length} {lang === 'zh' ? '个' : ''}
+            </span>
+          </div>
+          <p class="repo-group__description">{group.description[lang]}</p>
+          <div class="repo-grid">
+            {group.repos.map((repo) => (
+              <RepoCard repo={repo} lang={lang} accountLabel={accountLabel(repo.account)} />
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    {
+      extras.length > 0 && (
+        <section class="section">
+          <div class="section__head">
+            <h2>{lang === 'zh' ? '未分组' : 'Ungrouped'}</h2>
+          </div>
+          <div class="repo-grid">
+            {extras.map((repo) => (
+              <RepoCard repo={repo} lang={lang} accountLabel={accountLabel(repo.account)} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <section class="section">
+      <div class="section__head">
+        <h2>{lang === 'zh' ? '账号' : 'Accounts'}</h2>
+      </div>
+      <div class="path-stages">
+        {
+          accounts.map((account) => (
+            <a
+              class="stage-card"
+              href={`https://github.com/${account.login}`}
+              target="_blank"
+              rel="noopener"
+            >
+              <h3>
+                {account.login}{' '}
+                <span class="repo-card__account">{account.label[lang]}</span>
+              </h3>
+              <p>{account.note[lang]}</p>
+              <div class="stage-card__meta">
+                {accountCount(account.login)} {lang === 'zh' ? '个公开仓库' : 'public repos'}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <p class="repo-source-note">
+      {t.repoNote} <span class="dim">{snapshotDate}</span>
+    </p>
+  </div>
+</BaseLayout>

@@ -1,10 +1,10 @@
 ---
-import { UI, type LocaleCode } from '../../../site.mjs'
-import { localePaths } from '../../../lib/url'
-import BaseLayout from '../../../layouts/BaseLayout.astro'
-import { getNotes } from '../../../lib/content'
-import { formatDate } from '../../../lib/content'
-import { notePath } from '../../../lib/url'
+import { UI, type LocaleCode } from '../../../../site.mjs'
+import { localePaths } from '../../../../lib/url'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { getNotes } from '../../../../lib/content'
+import { formatDate } from '../../../../lib/content'
+import { notePath } from '../../../../lib/url'
 
 export function getStaticPaths() {
   return localePaths()
@@ -15,7 +15,7 @@ const t = UI[lang]
 const notes = await getNotes(lang)
 ---
 
-<BaseLayout lang={lang} title={t.notes} active="notes">
+<BaseLayout lang={lang} title={t.notes} active="docs">
   <div class="container">
     <header class="page-header">
       <h1>{t.notes}</h1>

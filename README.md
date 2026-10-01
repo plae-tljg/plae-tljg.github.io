@@ -113,9 +113,30 @@ docs/CHATBOT.md
 
 Routes: `/` (language landing) · `/{lang}/` · `/{lang}/posts/<slug>/` ·
 `/{lang}/series/<id>/` · `/{lang}/series/<id>/read/` (whole series on one page) ·
-`/{lang}/path/` · `/{lang}/path/<stage>/` · `/{lang}/path/<stage>/<slug>/` ·
-`/{lang}/archive/` · `/{lang}/tags/<tag>/` · `/{lang}/notes/` · `/{lang}/about/` ·
-`/{lang}/rss.xml`.
+`/{lang}/writing/` · `/{lang}/writing/<slug>/` · `/{lang}/writing/series/<id>/` ·
+`/{lang}/docs/` · `/{lang}/docs/<track>/` · `/{lang}/docs/<track>/<stage>/` ·
+`/{lang}/docs/<track>/<stage>/<slug>/` · `/{lang}/docs/notes/<slug>/` ·
+`/{lang}/projects/` · `/{lang}/archive/` · `/{lang}/tags/<tag>/` ·
+`/{lang}/about/` · `/{lang}/rss.xml`.
+
+---
+
+## The repository index
+
+`/projects/` lists every public repository across the four accounts, grouped by
+what it is (apps / AI / GPU ports / systems / docs / toys) with forks marked as
+forks. The facts come from the GitHub API, snapshotted into
+`src/content/repos.json`:
+
+```bash
+npm run repos:status   # API vs. config: ungrouped and missing repos
+npm run repos:sync     # refresh the snapshot (needs gh auth)
+npm run repos:verify   # CI: the committed snapshot matches its manifest
+```
+
+Curated text, grouping, the featured strip and the exclusions live in
+`repos.config.mjs`; a repo that appears on GitHub but not in a group renders
+under 未分组 instead of disappearing.
 
 ---
 

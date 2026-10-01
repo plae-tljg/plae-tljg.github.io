@@ -31,6 +31,9 @@ jobs:
       - name: Verify synced content is untouched
         run: npm run content:verify
 
+      - name: Verify the repository snapshot is untouched
+        run: npm run repos:verify
+
       - name: Verify the chatbot bundle is untouched
         run: npm run bot:verify
 
