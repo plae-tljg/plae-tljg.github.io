@@ -1,0 +1,100 @@
+---
+/**
+ * Learning-path landing: the track hero (title, subtitle, pets) and its stages.
+ * Layout and imagery live here; the pages themselves come from the paths
+ * collection (synced from the writing workspace).
+ */
+import { Image } from 'astro:assets'
+import { TRACKS, UI, type LocaleCode } from '../../../site.mjs'
+import { localePaths, stagePath } from '../../../lib/url'
+import BaseLayout from '../../../layouts/BaseLayout.astro'
+import { getStageViews } from '../../../lib/content'
+import heroImage from '../../../assets/paths/math-path-hero.jpeg'
+import '../../../styles/path.css'
+
+export function getStaticPaths() {
+  return localePaths()
+}
+
+const { lang } = Astro.params as { lang: LocaleCode }
+const t = UI[lang]
+const track = TRACKS[0]
+const stages = await getStageViews(track.id, lang)
+const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
+---
+
+<BaseLayout
+  lang={lang}
+  title={track.title[lang]}
+  description={track.description[lang]}
+  active="path"
+>
+  <section class="path-hero">
+    <div class="container">
+      <h1>{track.title[lang]}</h1>
+      <p class="path-hero__subtitle">{track.subtitle[lang]}</p>
+
+      {/* The joke image is Chinese-only, matching the source site. */}
+      {
+        lang === 'zh' && (
+          <Image
+            class="path-hero__image"
+            src={heroImage}
+            alt="这和坐牢有什么区别"
+            widths={[300, 600]}
+            sizes="300px"
+            loading="eager"
+          />
+        )
+      }
+
+      <div class="pet-gallery">
+        {
+          (track.hero?.pets || []).map((pet) => (
+            <img
+              class="pet-gif"
+              src={`${import.meta.env.BASE_URL}paths/${pet}`.replace('//', '/')}
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          ))
+        }
+      </div>
+
+      <div class="nav-buttons">
+        {
+          stages.map((stage) => (
+            <a
+              class:list={['nav-btn', { primary: stage.id === track.stages?.[0]?.id }]}
+              href={stagePath(lang, stage.id)}
+            >
+              {stageMeta(stage.id)?.title[lang]} →
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <h2>{t.browseStages}</h2>
+      </div>
+      <div class="path-stages">
+        {
+          stages.map((stage) => (
+            <a class="stage-card" href={stagePath(lang, stage.id)}>
+              <h3>{stageMeta(stage.id)?.title[lang]}</h3>
+              <p>{stageMeta(stage.id)?.description[lang]}</p>
+              <div class="stage-card__meta">
+                {stage.items.length + (stage.index ? 1 : 0)} {t.posts}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

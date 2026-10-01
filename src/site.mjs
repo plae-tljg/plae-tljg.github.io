@@ -47,6 +47,7 @@ export const UI = {
   zh: {
     home: '首页',
     series: '系列',
+    path: '路径',
     archive: '归档',
     about: '关于',
     notes: '旧文',
@@ -85,11 +86,41 @@ export const UI = {
     photoCredit: '图片',
     credits: '图片来源',
     photoBy: '摄影',
+    inThisStage: '本阶段内容',
+    stage: '阶段',
+    startHere: '开始学习',
+    browseStages: '全部阶段',
     footerNote: '本页内容为作者个人观点。',
+    chatOpen: '问问我的作品',
+    chatClose: '收起',
+    chatChats: '对话',
+    chatNew: '新对话',
+    chatBack: '返回对话',
+    chatAsk: '问一个关于作品的问题…',
+    chatSend: '提问',
+    chatYou: '你',
+    chatDelete: '删除这个对话',
+    chatNoChats: '还没有对话',
+    chatEmptyNote: '答案来自表格，不经过模型；不知道的会直接说不知道。',
+    chatDragHint: '按住可拖动',
+    chatLoading: '正在加载…',
+    chatFailed: '加载失败',
+    chatRetry: '重试',
+    chatTokens: '0 tokens',
+    chatSelfCheck: '在这里跑一遍冻结用例',
+    chatStatic: '静态页面 · 无需服务器',
+    chatRefs: '指代',
+    chatFromTables: '来自表格',
+    chatRefused: '已记录这次提问',
+    chatFuzzy: '近似匹配',
+    chatTry: '试试',
+    chatLangNote:
+      '问答表目前是英文的：中文提问会得到中文的“没有答案”。下面这些问题都能答上。',
   },
   en: {
     home: 'Home',
     series: 'Series',
+    path: 'Path',
     archive: 'Archive',
     about: 'About',
     notes: 'Notes',
@@ -128,6 +159,10 @@ export const UI = {
     photoCredit: 'Photo',
     credits: 'Image credits',
     photoBy: 'by',
+    inThisStage: 'In this stage',
+    stage: 'Stage',
+    startHere: 'Start here',
+    browseStages: 'All stages',
     footerNote: 'Opinions are the author’s own.',
     chatOpen: 'Ask about my work',
     chatClose: 'Close',
@@ -212,6 +247,54 @@ export const SERIES = [
 ]
 
 /**
+ * Guide/track registry.
+ *
+ * A track is a *tree*, not a linear series: stages → pages. Articles that carry
+ * `track:` in their frontmatter are synced into the paths collection and routed
+ * to /<lang>/path/<stage>/<slug>/ instead of /<lang>/posts/<slug>/.
+ *
+ * `slug: "index"` + `stageIndex: true` marks a page that is rendered *at* the
+ * stage URL, with the stage's other pages listed underneath.
+ */
+export const TRACKS = [
+  {
+    id: 'math-path',
+    order: 1,
+    title: { zh: '数学学习路径', en: 'Math Learning Path' },
+    subtitle: {
+      zh: '这跟坐牢有什么区别吗',
+      en: 'Monad Collisions, Beauty of Mathematics',
+    },
+    description: {
+      zh: '从入门到大学数学的一条路径。每个科目给出概念清单，以及一条可以照着走的推进顺序。',
+      en: 'A route from the basics into university mathematics: each subject gets a concept list and an order to work through.',
+    },
+    state: 'ongoing',
+    languages: ['zh', 'en'],
+    stages: [
+      {
+        id: 'getting-started',
+        title: { zh: '入门指南', en: 'Getting Started' },
+        description: { zh: '从哪里开始，以及高中阶段该读什么。', en: 'Where to start, and what to read first.' },
+      },
+      {
+        id: 'university',
+        title: { zh: '大学数学', en: 'University Math' },
+        description: {
+          zh: '从基础到抽象，逐步深入：集合论、数理逻辑、数论、群论、数学分析、拓扑学。',
+          en: 'From foundations to abstraction: set theory, logic, number theory, group theory, analysis, topology.',
+        },
+      },
+    ],
+    /** Shown on the landing page. */
+    hero: {
+      image: 'path-hero',
+      pets: ['pet01.gif', 'pet02.gif', 'pet03.gif', 'pet04.gif', 'pet05.gif'],
+    },
+  },
+]
+
+/**
  * Photo credits. Anything not in the public domain is attributed on the page
  * where it appears (see src/components/SeriesCard.astro and the series header)
  * and listed in CREDITS.md.
@@ -252,8 +335,8 @@ export const IMAGE_CREDITS = {
 export const CONTENT_SYNC = {
   /** Writing workspace root. Override with CONTENT_SOURCE=/path/to/workspace */
   source: process.env.CONTENT_SOURCE || '~/Music/blogs',
-  /** Directories scanned for articles, relative to `source`. */
-  include: ['drafts'],
+  /** Directories scanned for content, relative to `source`. */
+  include: ['seasons', 'paths'],
   /** Extra directories to skip while walking. */
   excludeDirs: ['v1', '_old', 'node_modules', '.git'],
   /** Non-article markdown that should never be published. */
@@ -279,6 +362,8 @@ export const CONTENT_SYNC = {
   defaultLang: 'zh',
   /** Where synced articles are written, relative to the repo root. */
   outputDir: 'src/content/posts',
+  /** Where synced guide/track pages are written (frontmatter `track:`). */
+  pathsDir: 'src/content/paths',
   /** Where copied images are written, relative to the repo root. */
   assetDir: 'public/content',
   /** URL prefix for copied images. */

@@ -14,7 +14,7 @@ tags:
   - 自动化
   - 定理证明
 status: preview
-source: drafts/v2/03-why-ai-takes-over.zh.md
+source: seasons/01-math/03-why-ai-takes-over.zh.md
 syncedAt: '2026-09-27T03:36:21.666Z'
 ---
 第一篇讲了三项原则：由一生多、机械化推演、概念碰撞。第二篇准备了七个视角：楼梯、机械化推演、证明即搜索、肉身方法、操作的平等性、物理学家与学院、以及 AI 乱说的活力。现在是第三篇，要把这些视角用在同一个问题上：

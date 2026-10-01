@@ -2,11 +2,19 @@ import { defineCollection, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
 /**
+ * Entry ids must be unique per collection, but the glob loader defaults to the
+ * frontmatter `slug` — which is deliberately the *same* for a zh/en pair. Derive
+ * the id from the path instead (`zh/my-slug`), or one locale silently replaces
+ * the other in the store.
+ */
+const byPath = ({ entry }: { entry: string }) => entry.replace(/\.md$/, '')
+
+/**
  * Synced articles. Written by `npm run content:sync` (see scripts/content.mjs):
  * do not edit files in src/content/posts by hand — sync will overwrite them.
  */
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/posts', generateId: byPath }),
   schema: z.object({
     title: z.string(),
     summary: z.string().default(''),
@@ -28,6 +36,38 @@ const posts = defineCollection({
     status: z.string().default('ready'),
     canonical: z.string().optional(),
     /** Source path inside the writing workspace, for traceability. */
+    source: z.string().optional(),
+    syncedAt: z.string().optional(),
+  }),
+})
+
+/**
+ * Guide/track pages (frontmatter `track:`). Written by the same sync as posts,
+ * but routed to /<lang>/path/<stage>/<slug>/ — a tree rather than a series.
+ */
+const paths = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/paths', generateId: byPath }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string().default(''),
+    lang: z.enum(['zh', 'en']),
+    translationKey: z.string(),
+    slug: z.string(),
+    /** Track id from the registry in src/site.mjs. */
+    track: z.string(),
+    stage: z.string().optional(),
+    /** Display order inside the stage. */
+    order: z.number().optional(),
+    /** Difficulty badge (L1–L5). */
+    level: z.number().optional(),
+    icon: z.string().optional(),
+    /** Rendered at the stage URL itself, with the stage's other pages below. */
+    stageIndex: z.boolean().default(false),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    status: z.string().default('ready'),
+    canonical: z.string().optional(),
     source: z.string().optional(),
     syncedAt: z.string().optional(),
   }),
@@ -60,4 +100,4 @@ const notes = defineCollection({
   }),
 })
 
-export const collections = { posts, pages, notes }
+export const collections = { posts, paths, pages, notes }

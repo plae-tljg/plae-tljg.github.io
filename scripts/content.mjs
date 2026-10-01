@@ -19,7 +19,7 @@ import os from 'node:os'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
-import { CONTENT_SYNC, SERIES, DEFAULT_LOCALE, LOCALES } from '../src/site.mjs'
+import { CONTENT_SYNC, SERIES, TRACKS, DEFAULT_LOCALE, LOCALES } from '../src/site.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const LOCALE_CODES = LOCALES.map((l) => l.code)
@@ -167,6 +167,14 @@ function readArticle(absPath) {
     seriesRaw: data.series,
     seriesOrder,
     partLabel: data.part,
+    // --- guide/track pages (see docs/CONTENT_CONVENTION.md §8) ---
+    track: data.track ? String(data.track).trim() : undefined,
+    stage: data.stage ? String(data.stage).trim() : undefined,
+    stageIndex: data.stageIndex === true,
+    order: typeof data.order === 'number' ? data.order : seriesOrder,
+    level: typeof data.level === 'number' ? data.level : undefined,
+    icon: data.icon ? String(data.icon) : undefined,
+    slugOverride: data.slug ? String(data.slug) : undefined,
     title,
     summary,
     date: toDateString(data.date),
@@ -179,6 +187,17 @@ function readArticle(absPath) {
     rawHash: sha256(raw),
     dir: path.dirname(relPath),
   }
+}
+
+function trackById(id) {
+  return TRACKS.find((t) => t.id === id)
+}
+
+function stageRank(trackId, stageId) {
+  const track = trackById(trackId)
+  if (!track) return 99
+  const index = (track.stages || []).findIndex((s) => s.id === stageId)
+  return index === -1 ? 99 : index
 }
 
 function scanSource() {
@@ -195,13 +214,27 @@ function scanSource() {
   }
   const articles = files.map(readArticle).filter((a) => a.title)
   const untitled = files.length - articles.length
-  articles.sort(
-    (a, b) =>
-      (seriesById(a.seriesId)?.order ?? 99) - (seriesById(b.seriesId)?.order ?? 99) ||
-      (a.seriesOrder ?? 999) - (b.seriesOrder ?? 999) ||
+  articles.sort((a, b) => {
+    // series first, then tracks; inside each, registry order then page order
+    const group = (x) => (x.track ? 1 : 0)
+    if (group(a) !== group(b)) return group(a) - group(b)
+    if (a.track && b.track) {
+      const byTrack =
+        TRACKS.findIndex((t) => t.id === a.track) - TRACKS.findIndex((t) => t.id === b.track)
+      if (byTrack) return byTrack
+      const byStage = stageRank(a.track, a.stage) - stageRank(b.track, b.stage)
+      if (byStage) return byStage
+    } else {
+      const bySeries =
+        (seriesById(a.seriesId)?.order ?? 99) - (seriesById(b.seriesId)?.order ?? 99)
+      if (bySeries) return bySeries
+    }
+    return (
+      (a.order ?? a.seriesOrder ?? 999) - (b.order ?? b.seriesOrder ?? 999) ||
       a.key.localeCompare(b.key) ||
       a.lang.localeCompare(b.lang)
-  )
+    )
+  })
   return { articles, untitled, fileCount: files.length }
 }
 
@@ -259,6 +292,7 @@ function normalizeBody(article, copies, warnings) {
 function buildOutput(article, options, previousEntry, warnings) {
   const copies = []
   const body = normalizeBody(article, copies, warnings)
+  const isTrack = Boolean(article.track)
   const syncedAt =
     previousEntry && previousEntry.sourceHash === article.rawHash
       ? previousEntry.syncedAt
@@ -269,15 +303,24 @@ function buildOutput(article, options, previousEntry, warnings) {
     summary: article.summary || '',
     lang: article.lang,
     translationKey: article.key,
-    slug: article.key,
+    slug: article.slugOverride || article.key,
     date: article.date || new Date().toISOString().slice(0, 10),
   }
   if (article.updated) frontmatter.updated = article.updated
-  if (article.seriesId) frontmatter.series = article.seriesId
-  if (article.seriesOrder !== undefined && article.seriesOrder !== null) {
-    frontmatter.seriesOrder = article.seriesOrder
+  if (isTrack) {
+    frontmatter.track = article.track
+    if (article.stage) frontmatter.stage = article.stage
+    if (article.order !== undefined && article.order !== null) frontmatter.order = article.order
+    if (article.level !== undefined) frontmatter.level = article.level
+    if (article.icon) frontmatter.icon = article.icon
+    if (article.stageIndex) frontmatter.stageIndex = true
+  } else {
+    if (article.seriesId) frontmatter.series = article.seriesId
+    if (article.seriesOrder !== undefined && article.seriesOrder !== null) {
+      frontmatter.seriesOrder = article.seriesOrder
+    }
+    if (article.partLabel) frontmatter.partLabel = article.partLabel
   }
-  if (article.partLabel) frontmatter.partLabel = article.partLabel
   frontmatter.tags = article.tags
   frontmatter.status = options.preview ? 'preview' : 'ready'
   if (article.canonical) frontmatter.canonical = article.canonical
@@ -286,7 +329,7 @@ function buildOutput(article, options, previousEntry, warnings) {
 
   const file = matter.stringify(body, frontmatter)
   const outputPath = path.join(
-    CONTENT_SYNC.outputDir,
+    isTrack ? CONTENT_SYNC.pathsDir : CONTENT_SYNC.outputDir,
     article.lang,
     `${article.key}.md`
   )
@@ -299,6 +342,7 @@ function buildOutput(article, options, previousEntry, warnings) {
       lang: article.lang,
       title: article.title,
       series: article.seriesId || null,
+      track: article.track || null,
       status: frontmatter.status,
       sourcePath: article.relPath,
       sourceHash: article.rawHash,
@@ -351,24 +395,46 @@ function cmdStatus(args) {
   )
   console.log()
 
-  const bySeries = new Map()
+  const groups = new Map()
   for (const a of articles) {
-    const id = a.seriesId || '(no series)'
-    if (!bySeries.has(id)) bySeries.set(id, [])
-    bySeries.get(id).push(a)
+    const id = a.track
+      ? `${a.track}/${a.stage || '-'}`
+      : a.seriesId || '(no series)'
+    if (!groups.has(id)) groups.set(id, [])
+    groups.get(id).push(a)
   }
 
-  for (const [seriesId, list] of [...bySeries.entries()].sort(
-    (a, b) => (seriesById(a[0])?.order ?? 99) - (seriesById(b[0])?.order ?? 99)
+  const groupOrder = (key) => {
+    const [trackId] = key.split('/')
+    const track = trackById(trackId)
+    if (track) return track.order ?? TRACKS.findIndex((t) => t.id === trackId)
+    return 50 + (seriesById(key)?.order ?? 99)
+  }
+
+  for (const [groupId, list] of [...groups.entries()].sort(
+    (a, b) => groupOrder(a[0]) - groupOrder(b[0])
   )) {
-    const series = seriesById(seriesId)
-    console.log(c.bold(series ? `${series.title.zh}  ${c.dim(`[${series.id}]`)}` : c.dim(seriesId)))
+    const [trackId, stageId] = groupId.split('/')
+    const track = trackById(trackId)
+    const series = seriesById(groupId)
+    let heading
+    if (track) {
+      const stage = (track.stages || []).find((s) => s.id === stageId)
+      heading =
+        `${track.title.zh}` +
+        (stage ? ` · ${stage.title.zh}` : '') +
+        `  ${c.dim(`[${groupId}]`)}`
+    } else {
+      heading = series ? `${series.title.zh}  ${c.dim(`[${series.id}]`)}` : c.dim(groupId)
+    }
+    console.log(c.bold(heading))
     for (const a of list) {
       const mark = published.has(`${a.lang}:${a.key}`) ? c.green('●') : c.dim('○')
-      const order = a.seriesOrder === undefined ? '  ' : pad(a.seriesOrder) + ''
+      const order = a.order ?? a.seriesOrder
+      const orderLabel = order === undefined ? '  ' : pad(order) + ''
       const status = statusColor(a.status)(a.status.padEnd(10))
       const lang = c.cyan(a.lang)
-      console.log(`  ${mark} ${order}  ${lang}  ${status}  ${truncate(a.title, 46)}`)
+      console.log(`  ${mark} ${orderLabel}  ${lang}  ${status}  ${truncate(a.title, 46)}`)
     }
     console.log()
   }
@@ -531,13 +597,15 @@ function removeEmptyDirs(dir) {
 
 function cmdVerify() {
   const manifest = readJSON(MANIFEST_PATH, null)
-  const managedDir = path.join(ROOT, CONTENT_SYNC.outputDir)
+  const managedDirs = [CONTENT_SYNC.outputDir, CONTENT_SYNC.pathsDir]
   const onDisk = []
-  for (const lang of LOCALE_CODES) {
-    const dir = path.join(managedDir, lang)
-    if (!fs.existsSync(dir)) continue
-    for (const f of fs.readdirSync(dir)) {
-      if (f.endsWith('.md')) onDisk.push(path.join(dir, f))
+  for (const managedDir of managedDirs) {
+    for (const lang of LOCALE_CODES) {
+      const dir = path.join(ROOT, managedDir, lang)
+      if (!fs.existsSync(dir)) continue
+      for (const f of fs.readdirSync(dir)) {
+        if (f.endsWith('.md')) onDisk.push(path.join(dir, f))
+      }
     }
   }
 

@@ -1,9 +1,10 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
-import { SERIES, DEFAULT_LOCALE, type LocaleCode, type SeriesEntry } from '../site.mjs'
+import { SERIES, TRACKS, DEFAULT_LOCALE, type LocaleCode, type SeriesEntry } from '../site.mjs'
 
 export type Post = CollectionEntry<'posts'>
 export type Note = CollectionEntry<'notes'>
 export type Page = CollectionEntry<'pages'>
+export type PathPage = CollectionEntry<'paths'>
 
 export const isPreview = (post: Post): boolean => post.data.status !== 'ready'
 
@@ -115,6 +116,64 @@ export function sortByOrder(posts: Post[]): Post[] {
       b.data.date.valueOf() - a.data.date.valueOf()
     )
   })
+}
+
+/* ------------------------------------------------------- guide / path pages */
+
+/** Every page of a track in one locale, in stage then page order. */
+export async function getTrackPages(trackId: string, lang: LocaleCode): Promise<PathPage[]> {
+  const pages = await getCollection(
+    'paths',
+    ({ data }) => data.lang === lang && data.track === trackId
+  )
+  return pages.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+}
+
+export interface StageView {
+  id: string
+  /** The page rendered at the stage URL itself, if the stage has one. */
+  index?: PathPage
+  items: PathPage[]
+}
+
+export async function getStageView(
+  trackId: string,
+  stageId: string,
+  lang: LocaleCode
+): Promise<StageView> {
+  const pages = (await getTrackPages(trackId, lang)).filter((p) => p.data.stage === stageId)
+  return {
+    id: stageId,
+    index: pages.find((p) => p.data.stageIndex),
+    items: pages.filter((p) => !p.data.stageIndex),
+  }
+}
+
+export async function getStageViews(trackId: string, lang: LocaleCode): Promise<StageView[]> {
+  const track = TRACKS.find((t) => t.id === trackId)
+  const views: StageView[] = []
+  for (const stage of track?.stages || []) {
+    views.push(await getStageView(trackId, stage.id, lang))
+  }
+  return views
+}
+
+export async function getGuidePage(
+  lang: LocaleCode,
+  stage: string,
+  slug: string
+): Promise<PathPage | undefined> {
+  const pages = await getCollection('paths', ({ data }) => data.lang === lang)
+  return pages.find((p) => p.data.stage === stage && p.data.slug === slug)
+}
+
+/** Prev/next inside a stage, following `order`. */
+export function stageSiblings(items: PathPage[], current: PathPage) {
+  const index = items.findIndex((p) => p.id === current.id)
+  return {
+    previous: index > 0 ? items[index - 1] : undefined,
+    next: index >= 0 && index < items.length - 1 ? items[index + 1] : undefined,
+  }
 }
 
 export { DEFAULT_LOCALE }

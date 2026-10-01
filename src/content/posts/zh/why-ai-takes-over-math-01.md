@@ -14,8 +14,8 @@ tags:
   - 基础
   - 集合论
 status: preview
-source: drafts/v2/01-three-principles.zh.md
-syncedAt: '2026-09-27T03:36:21.666Z'
+source: seasons/01-math/01-three-principles.zh.md
+syncedAt: '2026-10-01T04:02:48.252Z'
 ---
 数学学习的基础是什么？不妨从一个问题出发：一个数学分支凭什么能成为独立学科？以集合论为例，它靠什么成其为一个子学科，而其他东西不是？
 

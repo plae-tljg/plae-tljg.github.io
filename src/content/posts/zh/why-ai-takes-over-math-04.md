@@ -14,7 +14,7 @@ tags:
   - 问题意识
   - 研究文化
 status: preview
-source: drafts/v2/04-problem-consciousness.zh.md
+source: seasons/01-math/04-problem-consciousness.zh.md
 syncedAt: '2026-09-27T03:36:21.667Z'
 ---
 第三篇的结论是：AI 会接管数学的学院层，因为学院层是操作的组合——给定问题，找证明；给定定义，展开推论；给定猜想，搜索反例。这一层的工作可以被写下来、被检查、被穷举、被规模化。AI 是前所未有的操作机器。

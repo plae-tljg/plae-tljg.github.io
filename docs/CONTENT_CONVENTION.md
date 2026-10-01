@@ -15,15 +15,21 @@ and `SERIES` — that file is the single place to change them.
 
 ```text
 ~/Music/blogs/                 ← writing workspace (CONTENT_SYNC.source)
-  drafts/                      ← scanned (CONTENT_SYNC.include)
-    wake-the-ai-less.zh.md
-    v2/
+  seasons/                     ← scanned (CONTENT_SYNC.include)
+    01-math/
       00-abstract.zh.md
       01-three-principles.zh.md
       ...
+    02-systems/
+      wake-the-ai-less.zh.md
+  paths/                       ← scanned — guide/track pages, see §8
+    math-path/
+      getting-started/index.zh.md
+      university/set-theory.zh.md
+      ...
 ```
 
-- Every `.md` file under `drafts/` is scanned, recursively.
+- Every `.md` file under `seasons/` and `paths/` is scanned, recursively.
 - These are skipped: `v1/`, `_old/`, dot-directories, any file starting with `_`,
   and the housekeeping files (`README.md`, `AGENTS.md`, `CONTENT_PLAN.md`,
   `ARTICLE_TEMPLATE.md`, `collection-plan.md`, `plan-proposal.md`,
@@ -123,7 +129,7 @@ A series is registered once in `src/site.mjs`:
   description: { zh: '…', en: '…' },
   state: 'closed',                         // 'closed' | 'ongoing'
   languages: ['zh'],                       // shown as a badge
-  dir: 'drafts/v2',                        // where `content new --series` writes
+  dir: 'seasons/01-math',                  // where `content new --series` writes
   aliases: ['Why I Already Knew AI Would Take Over Mathematics'],
 }
 ```
@@ -158,8 +164,8 @@ npm run content:new -- --key <key> [--lang zh|en] [--series <id>] [--order 3] [-
 npm run content:verify                     # repo still matches the manifest (CI)
 ```
 
-`content:new` creates the file in the series' `dir` (or `drafts/`), never
-overwriting an existing one.
+`content:new` creates the file in the series' `dir` (or `paths/` for a track),
+never overwriting an existing one.
 
 ---
 
@@ -176,3 +182,43 @@ overwriting an existing one.
    removed from the site on the next sync.
 6. `content:verify` also flags files in the managed directory that sync does not
    know about.
+
+---
+
+## 8. Guide / track pages
+
+A **track** is a tree — stages → pages — not a linear series. Articles for the
+learning path carry a `track:` field instead of `series:` and are written to
+`src/content/paths/`, then routed to `/<lang>/path/<stage>/<slug>/`.
+
+```yaml
+---
+translationKey: path-university-set-theory
+slug: set-theory                  # URL segment under the stage
+track: math-path                  # registry id in src/site.mjs (TRACKS)
+stage: university                 # stage id inside the track
+order: 1                          # position inside the stage
+level: 1                          # difficulty badge L1–L5 (optional)
+icon: "∅"                         # shown beside the title (optional)
+stageIndex: false                 # true → rendered at the stage URL itself
+titleZh: "集合论"
+titleEn: "Set Theory"
+summaryZh: "从空集出发，探索集合的结构与运算"
+summaryEn: "Starting from the empty set"
+status: "zh draft"
+---
+```
+
+The track itself (title, subtitle, stage list, landing hero) lives in the
+`TRACKS` registry in `src/site.mjs`; the stages are declared there, not in the
+files. A page with `slug: index` + `stageIndex: true` becomes the stage's own
+page, and the stage's other pages are listed beneath it as cards.
+
+Unlike article bodies, track bodies keep their original HTML — the pages were
+imported from the standalone `Math-Learning-Path` site, and `src/styles/path.css`
+styles their classes (`.concept-card`, `.learning-path`, `.step-num`, …) inside
+the site shell. Markdown still works; raw HTML is simply not converted.
+
+`seasons/` (articles, series) and `paths/` (guide pages, tracks) are the two
+content areas of the writing workspace. Both go through the same status gate and
+the same manifest.

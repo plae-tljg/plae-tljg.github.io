@@ -12,9 +12,9 @@ is GitHub Pages from `gh-pages`.
 
 ## Hard rules
 
-1. **Never hand-edit `src/content/posts/**`** — it is generated. Change the draft
-   in the writing workspace and run `npm run content:sync`. `npm run content:verify`
-   detects drift and runs in CI.
+1. **Never hand-edit `src/content/posts/**` or `src/content/paths/**`** — both are
+   generated. Change the source in the writing workspace and run
+   `npm run content:sync`. `npm run content:verify` detects drift and runs in CI.
 2. **Never copy unpublished drafts into this repo.** The repository is public.
    Publication is controlled by the `status` field in the writing workspace; only
    `ready` (plus `--preview` statuses, clearly badged) may be synced.
@@ -35,10 +35,12 @@ is GitHub Pages from `gh-pages`.
 | Site title, taglines, author, GitHub link | `src/site.mjs` (`SITE`) |
 | Locales, UI strings | `src/site.mjs` (`LOCALES`, `UI`) |
 | Series registry, order, descriptions | `src/site.mjs` (`SERIES`) |
+| Learning-path track, stages, hero, pets | `src/site.mjs` (`TRACKS`) |
 | Which statuses publish | `src/site.mjs` (`CONTENT_SYNC`) |
-| Post/page schema | `src/content.config.ts` |
 | Where the chatbot bundle comes from, launcher label, samples | `src/site.mjs` (`BOT_SYNC`) |
+| Post/path/page schema | `src/content.config.ts` |
 | Layout, routes, components | `src/layouts`, `src/pages`, `src/components` |
+| The learning-path look (cards, route steps) | `src/styles/path.css` |
 | The chatbot widget (launcher, panel, sessions) | `src/components/ChatBot.astro` |
 | Typography, dark mode, table/KaTeX styling | `src/styles/global.css` |
 | Deploy behaviour, site URL, staging flag | `.github/workflows/deploy.yml` |

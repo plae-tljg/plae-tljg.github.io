@@ -1,0 +1,124 @@
+---
+/**
+ * A stage of a learning path: renders the stage's own page (if it has one),
+ * then the pages inside it as cards — the shape the original site used.
+ */
+import { render } from 'astro:content'
+import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
+import { guidePath, localePaths, stagePath, trackIndexPath } from '../../../../lib/url'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { getStageViews, isPreview } from '../../../../lib/content'
+import type { PathPage } from '../../../../lib/content'
+import '../../../../styles/path.css'
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    for (const track of TRACKS) {
+      const stages = await getStageViews(track.id, lang)
+      for (const stage of stages) {
+        paths.push({ params: { lang, stage: stage.id }, props: { track, stage } })
+      }
+    }
+  }
+  return paths
+}
+
+const { track, stage } = Astro.props as {
+  track: (typeof TRACKS)[number]
+  stage: Awaited<ReturnType<typeof getStageViews>>[number]
+}
+const lang = Astro.params.lang as LocaleCode
+const t = UI[lang]
+const stageMeta = (track.stages || []).find((s) => s.id === stage.id)
+const rendered = stage.index ? await render(stage.index) : undefined
+const stagePosition = (track.stages || []).findIndex((s) => s.id === stage.id)
+const nextStage = (track.stages || [])[stagePosition + 1]
+const prevStage = (track.stages || [])[stagePosition - 1]
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${stageMeta?.title[lang] || stage.id} · ${track.title[lang]}`}
+  description={stageMeta?.description[lang]}
+  active="path"
+>
+  <div class="container">
+    <nav class="breadcrumb" style="margin-top:2rem">
+      <a href={trackIndexPath(lang)}>{track.title[lang]}</a>
+      <span aria-hidden="true">/</span>
+      <span>{stageMeta?.title[lang] || stage.id}</span>
+    </nav>
+
+    <header class="path-stage__head">
+      <h1>{stageMeta?.title[lang] || stage.id}</h1>
+      <p>{stageMeta?.description[lang]}</p>
+    </header>
+
+    {
+      rendered && (
+        <div class="prose path-content">
+          <rendered.Content />
+        </div>
+      )
+    }
+
+    {
+      stage.items.length > 0 && (
+        <section class="section">
+          <div class="section__head">
+            <h2>{t.inThisStage}</h2>
+          </div>
+          <div class="subjects-grid">
+            {stage.items.map((page: PathPage) => (
+              <a class="subject-card" href={guidePath(lang, stage.id, page.data.slug)}>
+                {page.data.icon && <span class="subject-icon">{page.data.icon}</span>}
+                <div class="subject-info">
+                  <h3>
+                    {page.data.title}
+                    {isPreview(page) && (
+                      <span class="badge badge--warn" style="margin-left:.5rem">
+                        {t.preview}
+                      </span>
+                    )}
+                  </h3>
+                  {page.data.summary && <p>{page.data.summary}</p>}
+                </div>
+                {page.data.level !== undefined && (
+                  <span class="subject-level">L{page.data.level}</span>
+                )}
+                <span class="subject-arrow">→</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <nav class="path-nav" aria-label={t.browseStages}>
+      <div class="path-nav__side">
+        {
+          prevStage && (
+            <>
+              <span class="path-nav__label">← {t.prev}</span>
+              <a href={stagePath(lang, prevStage.id)}>{prevStage.title[lang]}</a>
+            </>
+          )
+        }
+      </div>
+      <div class="path-nav__side path-nav__side--next">
+        {
+          nextStage && (
+            <>
+              <span class="path-nav__label">
+                {t.next} {t.stage} →
+              </span>
+              <a href={stagePath(lang, nextStage.id)}>{nextStage.title[lang]}</a>
+            </>
+          )
+        }
+      </div>
+    </nav>
+  </div>
+</BaseLayout>

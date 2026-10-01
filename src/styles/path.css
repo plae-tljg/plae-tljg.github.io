@@ -1,0 +1,626 @@
+/* ===========================================================================
+   Guide / learning-path section.
+
+   Ported from the Math-Learning-Path site so the content keeps its own visual
+   language (indigo→violet gradients, numbered route steps, concept cards) while
+   living inside this site's shell. Structural neutrals are mapped to the site
+   theme variables so light and dark both work; the accent colours are kept.
+   ========================================================================= */
+
+/* The palette has to live on :root: the landing hero and the nav buttons are
+   not inside .path-content, and a var() that resolves to nothing makes
+   gradient-painted text (background-clip: text) disappear entirely. */
+:root {
+  --path-primary: #4f46e5;
+  --path-secondary: #7c3aed;
+  --path-accent: #db2777;
+  --path-warm: #f97316;
+  --path-tint: rgba(99, 102, 241, 0.09);
+  --path-line: rgba(99, 102, 241, 0.24);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --path-accent: #f472b6;
+    --path-tint: rgba(129, 140, 248, 0.14);
+    --path-line: rgba(129, 140, 248, 0.3);
+  }
+}
+
+:root[data-theme='dark'] {
+  --path-accent: #f472b6;
+  --path-tint: rgba(129, 140, 248, 0.14);
+  --path-line: rgba(129, 140, 248, 0.3);
+}
+
+/* ------------------------------------------------------------- track landing */
+
+.path-hero {
+  text-align: center;
+  padding: 3.5rem 0 2.5rem;
+}
+
+.path-hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--path-primary), var(--path-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--path-primary);
+}
+
+.path-hero__subtitle {
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  margin: 0 0 1.5rem;
+}
+
+.path-hero__image {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.pet-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.pet-gif {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--path-line);
+  background: var(--bg-sunken);
+}
+
+.nav-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.nav-btn {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  text-decoration: none;
+  background: var(--path-tint);
+  color: var(--text);
+  border: 1px solid var(--path-line);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--path-primary);
+  color: var(--text);
+}
+
+.nav-btn.primary {
+  background: linear-gradient(135deg, var(--path-primary), var(--path-secondary));
+  color: #fff;
+  border-color: transparent;
+}
+
+.nav-btn.primary:hover {
+  color: #fff;
+}
+
+/* --------------------------------------------------------------- track index */
+
+.path-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.stage-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.stage-card:hover {
+  border-color: var(--path-primary);
+  transform: translateY(-2px);
+  color: var(--text);
+}
+
+.stage-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.stage-card p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.925rem;
+}
+
+.stage-card__meta {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+/* --------------------------------------------------------------- stage index */
+
+.subjects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.subject-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.subject-card:hover {
+  transform: translateX(5px);
+  border-color: var(--path-primary);
+  color: var(--text);
+}
+
+.subject-icon {
+  min-width: 60px;
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--path-primary), var(--path-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--path-primary);
+}
+
+.subject-info {
+  flex: 1;
+}
+
+.subject-info h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.subject-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.subject-level {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: var(--path-tint);
+  color: var(--path-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.subject-arrow {
+  font-size: 1.5rem;
+  color: var(--path-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.subject-card:hover .subject-arrow {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------- ported page content */
+
+.path-content .intro {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.path-content .section-intro {
+  margin-bottom: 1.5rem;
+}
+
+.path-content h2 {
+  /* their heading marker, on top of the site heading style */
+  padding-left: 1rem;
+}
+
+.path-content h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 1.4rem;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--path-primary), var(--path-secondary));
+}
+
+.path-content h2 {
+  position: relative;
+}
+
+/* panels: their `.card`, minus the site's link-card hover lift */
+.path-content .card {
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+  transform: none;
+}
+
+.path-content .concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.path-content .concept-card {
+  margin-bottom: 2rem;
+}
+
+.path-content .concept-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.path-content .concept-card p {
+  margin: 0;
+}
+
+.path-content .theorem-card {
+  margin-bottom: 1.5rem;
+  background: rgba(249, 115, 22, 0.08);
+  border-color: rgba(249, 115, 22, 0.32);
+}
+
+.path-content .theorem-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.path-content .theorem-card p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.path-content .two-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.path-content .five-equivalents {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.path-content .equiv-item {
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--path-primary);
+  background: var(--path-tint);
+}
+
+.path-content .equiv-item h3 {
+  margin: 0 0 0.5rem;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.path-content .equiv-item p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.path-content .connections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.path-content .connection-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.05);
+  color: var(--text-soft);
+}
+
+.path-content .conn-icon {
+  font-size: 1.25rem;
+  color: #ec4899;
+}
+
+.path-content .learning-path {
+  margin-bottom: 2rem;
+}
+
+.path-content .path-step {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--path-line);
+}
+
+.path-content .path-step:last-child {
+  border-bottom: 0;
+}
+
+.path-content .step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--path-warm), #f43f5e);
+}
+
+.path-content .step-content h3 {
+  margin: 0 0 0.25rem;
+  color: var(--text);
+}
+
+.path-content .step-content p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.path-content .tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.path-content .tip-card {
+  text-align: center;
+}
+
+.path-content .tip-icon {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+.path-content .tip-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.path-content .tip-card p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.path-content .topics-table,
+.path-content .resources {
+  margin-bottom: 2rem;
+}
+
+.path-content .resource-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.path-content .resource-link:hover {
+  color: var(--text);
+  border-color: var(--path-primary);
+}
+
+.path-content .resource-icon {
+  font-size: 2rem;
+}
+
+.path-content .resource-content {
+  flex: 1;
+}
+
+.path-content .resource-content h3 {
+  margin: 0 0 0.25rem;
+  color: var(--text);
+}
+
+.path-content .resource-content p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.path-content .resource-arrow {
+  font-size: 1.5rem;
+  color: var(--path-primary);
+  transition: transform 0.2s ease;
+}
+
+.path-content .resource-link:hover .resource-arrow {
+  transform: translateX(5px);
+}
+
+.path-content .book-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.path-content .book-list li {
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid var(--path-line);
+  border-left: 3px solid var(--path-primary);
+  border-radius: 8px;
+  color: var(--text-soft);
+}
+
+.path-content .next-step {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.path-content .next-step p {
+  margin: 0 0 0.5rem;
+}
+
+.path-content .next-link {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background: var(--path-primary);
+  color: #fff;
+  text-decoration: none;
+}
+
+.path-content .next-link:hover {
+  background: var(--path-secondary);
+  color: #fff;
+}
+
+.path-content .end-mark {
+  font-size: 0.9rem;
+  color: var(--text-faint);
+}
+
+/* ------------------------------------------------------------- path chrome */
+
+.article__icon {
+  display: inline-block;
+  margin-right: 0.4rem;
+  background: linear-gradient(135deg, var(--path-primary), var(--path-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--path-primary);
+}
+
+.path-stage__head {
+  padding: 2.5rem 0 1rem;
+}
+
+.path-stage__head h1 {
+  margin: 0 0 0.5rem;
+}
+
+.path-stage__head p {
+  margin: 0;
+  color: var(--text-soft);
+  max-width: 42rem;
+}
+
+.path-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.925rem;
+}
+
+.path-nav__side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-width: 45%;
+}
+
+.path-nav__side--next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.path-nav__label {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+@media (max-width: 768px) {
+  .path-hero h1 {
+    font-size: 2rem;
+  }
+
+  .pet-gif {
+    width: 80px;
+    height: 80px;
+  }
+
+  .nav-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .subject-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .subject-level {
+    order: -1;
+  }
+
+  .subject-arrow {
+    display: none;
+  }
+
+  .path-nav__side {
+    max-width: 100%;
+  }
+
+  .path-nav__side--next {
+    margin-left: 0;
+    text-align: left;
+  }
+}

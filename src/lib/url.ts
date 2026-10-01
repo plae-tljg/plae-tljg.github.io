@@ -26,6 +26,21 @@ export function seriesPath(lang: LocaleCode, id: string): string {
   return localePath(lang, 'series', id)
 }
 
+/** /<lang>/path/ — the learning-path landing page. */
+export function trackIndexPath(lang: LocaleCode): string {
+  return localePath(lang, 'path')
+}
+
+/** /<lang>/path/<stage>/ */
+export function stagePath(lang: LocaleCode, stage: string): string {
+  return localePath(lang, 'path', stage)
+}
+
+/** /<lang>/path/<stage>/<slug>/ */
+export function guidePath(lang: LocaleCode, stage: string, slug: string): string {
+  return localePath(lang, 'path', stage, slug)
+}
+
 export function tagPath(lang: LocaleCode, tag: string): string {
   return localePath(lang, 'tags', encodeURIComponent(tag))
 }

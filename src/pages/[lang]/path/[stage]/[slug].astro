@@ -1,0 +1,122 @@
+---
+/**
+ * One page of a learning path. The body is the author's original HTML (ported
+ * from the Math-Learning-Path site), styled by src/styles/path.css.
+ */
+import { render } from 'astro:content'
+import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
+import { guidePath, localePaths, stagePath, trackIndexPath } from '../../../../lib/url'
+import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { getStageView, getStageViews, isPreview, readingTime, stageSiblings } from '../../../../lib/content'
+import type { PathPage } from '../../../../lib/content'
+import '../../../../styles/path.css'
+
+export async function getStaticPaths() {
+  const paths = []
+  for (const locale of LOCALES) {
+    const lang = locale.code as LocaleCode
+    for (const track of TRACKS) {
+      const stages = await getStageViews(track.id, lang)
+      for (const stage of stages) {
+        for (const page of stage.items) {
+          paths.push({
+            params: { lang, stage: stage.id, slug: page.data.slug },
+            props: { track, stageId: stage.id, page, items: stage.items },
+          })
+        }
+      }
+    }
+  }
+  return paths
+}
+
+const { track, stageId, page, items } = Astro.props as {
+  track: (typeof TRACKS)[number]
+  stageId: string
+  page: PathPage
+  items: PathPage[]
+}
+const lang = Astro.params.lang as LocaleCode
+const t = UI[lang]
+const stageMeta = (track.stages || []).find((s) => s.id === stageId)
+const { Content, headings } = await render(page)
+const { previous, next } = stageSiblings(items, page)
+const minutes = page.body ? readingTime(page.body, lang) : 1
+
+// The other-language URL for this same page, when it exists.
+const other = LOCALES.find((l) => l.code !== lang)!
+const translated = (await getStageView(track.id, stageId, other.code as LocaleCode)).items.find(
+  (p) => p.data.translationKey === page.data.translationKey
+)
+const translatedPath = translated
+  ? guidePath(other.code as LocaleCode, stageId, translated.data.slug)
+  : undefined
+const alternates: Partial<Record<LocaleCode, string>> = {
+  [lang]: guidePath(lang, stageId, page.data.slug),
+}
+if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
+---
+
+<BaseLayout
+  lang={lang}
+  title={page.data.title}
+  description={page.data.summary}
+  noindex={isPreview(page)}
+  active="path"
+  alternates={alternates}
+  alternatePath={translatedPath}
+>
+  <article class="article">
+    <div class="container">
+      <nav class="breadcrumb" style="margin-top:2rem">
+        <a href={trackIndexPath(lang)}>{track.title[lang]}</a>
+        <span aria-hidden="true">/</span>
+        <a href={stagePath(lang, stageId)}>{stageMeta?.title[lang] || stageId}</a>
+        <span aria-hidden="true">/</span>
+        <span>{page.data.title}</span>
+      </nav>
+
+      <header class="article__header">
+        <h1 class="article__title">
+          {page.data.icon && <span class="article__icon">{page.data.icon}</span>}
+          {page.data.title}
+        </h1>
+        <div class="article__meta">
+          {page.data.level !== undefined && <span class="badge">L{page.data.level}</span>}
+          <span>{minutes} {t.minRead}</span>
+          {isPreview(page) && <span class="badge badge--warn">{t.preview}</span>}
+        </div>
+        {page.data.summary && <p class="article__summary">{page.data.summary}</p>}
+      </header>
+
+      {isPreview(page) && <p class="notice">{t.previewNote}</p>}
+
+      <div class="prose path-content">
+        <Content />
+      </div>
+
+      <nav class="path-nav" aria-label={t.inThisStage}>
+        <div class="path-nav__side">
+          {
+            previous && (
+              <>
+                <span class="path-nav__label">← {t.prev}</span>
+                <a href={guidePath(lang, stageId, previous.data.slug)}>{previous.data.title}</a>
+              </>
+            )
+          }
+        </div>
+        <div class="path-nav__side path-nav__side--next">
+          {
+            next && (
+              <>
+                <span class="path-nav__label">{t.next} →</span>
+                <a href={guidePath(lang, stageId, next.data.slug)}>{next.data.title}</a>
+              </>
+            )
+          }
+        </div>
+      </nav>
+    </div>
+  </article>
+</BaseLayout>

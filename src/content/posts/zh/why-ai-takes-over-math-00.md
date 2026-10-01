@@ -14,7 +14,7 @@ tags:
   - 问题意识
   - 合集
 status: preview
-source: drafts/v2/00-abstract.zh.md
+source: seasons/01-math/00-abstract.zh.md
 syncedAt: '2026-09-27T03:36:21.665Z'
 ---
 2024 年 1 月，GPT-4 还不算聪明。它连很多本科数学题都会算错，更不用说研究。但我已经确信，AI 会接管数学。

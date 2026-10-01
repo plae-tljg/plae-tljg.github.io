@@ -14,7 +14,7 @@ tags:
   - AI
   - 词汇
 status: preview
-source: drafts/v2/02-preparation.zh.md
+source: seasons/01-math/02-preparation.zh.md
 syncedAt: '2026-09-27T03:36:21.666Z'
 ---
 这篇文章不直接回答“AI 会不会接管数学”。它做的是准备工作：把理解那个问题所需要的几种视角摆出来。每一种视角都来自我学习数学的经验，也来自我对 AI 的观察。它们单独看可能只是经验之谈；放在一起，会指向下一篇文章要说的那个结论。
