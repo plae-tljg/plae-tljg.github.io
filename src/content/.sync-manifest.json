@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T04:02:48.262Z",
+  "generatedAt": "2026-10-01T06:24:59.452Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
@@ -69,17 +69,56 @@
       "syncedAt": "2026-09-27T03:36:21.667Z"
     },
     {
-      "key": "wake-the-ai-less",
+      "key": "rapid-prototypes-and-structure",
       "lang": "zh",
-      "title": "少唤醒 AI：让模型维护数据，而不是接住每一次请求",
-      "series": "ai-maintainable-systems",
+      "title": "快速原型之后：代码、数据与结构",
+      "series": "ai-era-programming-structure",
       "track": null,
       "status": "preview",
-      "sourcePath": "seasons/02-systems/wake-the-ai-less.zh.md",
-      "sourceHash": "sha256:9cfa8493ec099253",
-      "outputPath": "src/content/posts/zh/wake-the-ai-less.md",
-      "outputHash": "sha256:f68f38c76a13a265",
-      "syncedAt": "2026-10-01T04:02:48.255Z"
+      "sourcePath": "seasons/02-systems/01-rapid-prototypes-and-structure.zh.md",
+      "sourceHash": "sha256:51cd8330c223a6dd",
+      "outputPath": "src/content/posts/zh/rapid-prototypes-and-structure.md",
+      "outputHash": "sha256:7c73893b5cfbdbfc",
+      "syncedAt": "2026-10-01T06:24:59.446Z"
+    },
+    {
+      "key": "boundary-of-datafication",
+      "lang": "zh",
+      "title": "什么时候才需要一张 products 表？——数据化的边界",
+      "series": "ai-era-programming-structure",
+      "track": null,
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/02-boundary-of-datafication.zh.md",
+      "sourceHash": "sha256:4a6a3c8b1f9988c7",
+      "outputPath": "src/content/posts/zh/boundary-of-datafication.md",
+      "outputHash": "sha256:c6a67e5749402f50",
+      "syncedAt": "2026-10-01T06:24:59.446Z"
+    },
+    {
+      "key": "verification-is-trust",
+      "lang": "zh",
+      "title": "验证才是信任：测试、权限与唤醒成本",
+      "series": "ai-era-programming-structure",
+      "track": null,
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/03-verification-is-trust.zh.md",
+      "sourceHash": "sha256:6b51c58665508543",
+      "outputPath": "src/content/posts/zh/verification-is-trust.md",
+      "outputHash": "sha256:17d7568e2be3e914",
+      "syncedAt": "2026-10-01T06:24:59.447Z"
+    },
+    {
+      "key": "appendix-derivation-and-checklist",
+      "lang": "zh",
+      "title": "附录：推导模板、清单与术语表",
+      "series": "ai-era-programming-structure",
+      "track": null,
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/04-appendix-derivation-and-checklist.zh.md",
+      "sourceHash": "sha256:8660758dc48d3c2a",
+      "outputPath": "src/content/posts/zh/appendix-derivation-and-checklist.md",
+      "outputHash": "sha256:e8f69bc0dd370eb2",
+      "syncedAt": "2026-10-01T06:24:59.447Z"
     },
     {
       "key": "path-getting-started-index",
