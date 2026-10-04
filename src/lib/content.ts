@@ -171,6 +171,7 @@ export interface DocsTreeStage {
   id: string
   title: string
   items: PathPage[]
+  index?: PathPage
 }
 
 export interface DocsTreeTrack {
@@ -196,12 +197,15 @@ export async function getDocsTree(lang: LocaleCode): Promise<DocsTreeTrack[]> {
       title:
         (track.stages || []).find((s) => s.id === stage.id)?.title[lang] || stage.id,
       items: stage.items,
+      // A stage whose landing page *is* its only page still counts: otherwise a
+      // short track (the Android one, in Chinese) vanishes from the sidebar.
+      index: stage.index,
     }))
     out.push({
       id: track.id,
       title: track.title[lang],
-      stages: tree.filter((s) => s.items.length > 0),
-      total: tree.reduce((n, s) => n + s.items.length, 0),
+      stages: tree.filter((s) => s.items.length + (s.index ? 1 : 0) > 0),
+      total: tree.reduce((n, s) => n + s.items.length + (s.index ? 1 : 0), 0),
     })
   }
   return out.filter((t) => t.total > 0)

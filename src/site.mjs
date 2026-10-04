@@ -382,6 +382,39 @@ export const TRACKS = [
     ],
   },
   {
+    id: 'android',
+    order: 4,
+    title: { zh: 'Linux 上的安卓游戏', en: 'Android Games on Linux' },
+    subtitle: {
+      zh: '两天，十二个死胡同，一个版本号',
+      en: 'Two days, twelve dead ends, one version number',
+    },
+    description: {
+      zh: '把 FGO 国服和明日方舟跑在 Ubuntu 上的实测方案：能用的配置、每一步怎么自检，以及每一个走不通的方向和它为什么走不通——死胡同也写下来，因为下一个撞上去的人会先搜到这里。',
+      en: 'A working recipe for FGO 国服 and Arknights on Ubuntu, how to check each step, and every direction that did not work and why. The dead ends are documented too: whoever hits them next will search first.',
+    },
+    state: 'ongoing',
+    languages: ['zh', 'en'],
+    stages: [
+      {
+        id: 'solution',
+        title: { zh: '方案与配置', en: 'Solution' },
+        description: {
+          zh: '系统镜像、AVD 参数、安装与自检命令，以及明日方舟这条对照组。',
+          en: 'The system image, the AVD settings, install and self-check commands, and Arknights as the control case.',
+        },
+      },
+      {
+        id: 'trouble',
+        title: { zh: '排错', en: 'Troubleshooting' },
+        description: {
+          zh: '按症状查：每一条都是"现象 → 层次 → 原因 → 处理"，包括十一个假警报。',
+          en: 'Look up by symptom: each entry is symptom → layer → cause → fix, including eleven false alarms.',
+        },
+      },
+    ],
+  },
+  {
     id: 'homelab',
     order: 3,
     title: { zh: '家庭网络与自托管', en: 'Homelab & Self-hosting' },

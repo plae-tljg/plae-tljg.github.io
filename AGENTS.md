@@ -57,6 +57,7 @@ output is static, hosting is GitHub Pages from `gh-pages`.
 | Guide/track pages (the learning path, the Ubuntu manual) | `src/content/docs/**` — hand-written, not synced |
 | The docs shell: sidebar tree, TOC, prev/next across a track | `src/layouts/DocsLayout.astro`, `src/components/DocsNav.astro` |
 | The docs tree itself (what the sidebar shows) | `src/lib/content.ts` (`getDocsTree`, `trackSequence`) |
+| The Android track's pages | `scripts/import/android-gaming.mjs` (one-shot, redacts as it copies) |
 | Layout, routes, components | `src/layouts`, `src/pages`, `src/components` |
 | The learning-path look (cards, route steps) | `src/styles/path.css` |
 | The chatbot widget (launcher, panel, sessions) | `src/components/ChatBot.astro` |

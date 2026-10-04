@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T11:25:25.088Z",
+  "generatedAt": "2026-10-04T11:31:22.858Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
@@ -110,6 +110,42 @@
       "outputPath": "src/content/posts/zh/ai-maintainable-systems/appendix-derivation-and-checklist.md",
       "outputHash": "sha256:50931a535e657e14",
       "syncedAt": "2026-10-01T06:33:35.738Z"
+    },
+    {
+      "key": "nvidia-drivers",
+      "lang": "zh",
+      "title": "01 驱动装好了，但没有渲染：NVIDIA 在这台机器上的三种坏法",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/01-nvidia-drivers.zh.md",
+      "sourceHash": "sha256:2eb64e20a32040d7",
+      "outputPath": "src/content/posts/zh/tinkering-notes/nvidia-drivers.md",
+      "outputHash": "sha256:497584e33bcf8763",
+      "syncedAt": "2026-10-04T11:31:22.855Z"
+    },
+    {
+      "key": "android-games",
+      "lang": "zh",
+      "title": "02 把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/02-android-games.zh.md",
+      "sourceHash": "sha256:870bde8e52653246",
+      "outputPath": "src/content/posts/zh/tinkering-notes/android-games.md",
+      "outputHash": "sha256:ffa61991e9836bb2",
+      "syncedAt": "2026-10-04T11:31:22.855Z"
+    },
+    {
+      "key": "houdini-timebomb",
+      "lang": "zh",
+      "title": "03 libhoudini 的「定时炸弹」不是炸弹，是一个版本号",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/03-houdini-timebomb.zh.md",
+      "sourceHash": "sha256:cacc41c1f04f7aa9",
+      "outputPath": "src/content/posts/zh/tinkering-notes/houdini-timebomb.md",
+      "outputHash": "sha256:ca709d66dd929e65",
+      "syncedAt": "2026-10-04T11:31:22.855Z"
     },
     {
       "key": "tinkering-image-fit",
