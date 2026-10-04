@@ -9,6 +9,7 @@
 import BaseLayout from './BaseLayout.astro'
 import DocsNav from '../components/DocsNav.astro'
 import Toc from '../components/Toc.astro'
+import ViewerScripts from '../components/ViewerScripts.astro'
 import { UI, type LocaleCode } from '../site.mjs'
 
 interface Heading {
@@ -65,6 +66,7 @@ const withToc = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 
       {withToc && <Toc headings={headings} lang={lang} />}
     </div>
   </div>
+  <ViewerScripts />
 </BaseLayout>
 
 <style is:global>

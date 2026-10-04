@@ -37,8 +37,7 @@ sox input.wav -r 8000 -c 1 -s output.wav
 
 对于批量转换为 `.ulaw` 等格式，参考脚本：
 
-**批量转换脚本**（`/lib/asterisk_scripts/convert_all_ulaw.sh`）
-
+<!--code:title=批量转换脚本 · /lib/asterisk_scripts/convert_all_ulaw.sh collapse-->
 ```bash
 #!/bin/bash
 

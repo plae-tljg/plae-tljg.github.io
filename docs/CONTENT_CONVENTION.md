@@ -230,3 +230,46 @@ site shell. Markdown still works; raw HTML is simply not converted.
 
 The writing workspace now holds only `seasons/` (articles, series). Guide pages
 are edited here, and `content verify` deliberately ignores them.
+
+---
+
+## 9. Two block conventions the docs use
+
+Both exist because Astro's markdown pipeline will not carry metadata a plugin
+could read: the fence info string is dropped by the parser, and `data.hProperties`
+set from a remark plugin does not survive highlighting. Raw HTML does, so both
+conventions are comments or elements in the markdown itself.
+
+### A code panel
+
+```markdown
+<!--code:title=根证书配置（CA 配置） · /lib/https/ca.conf collapse-->
+```conf
+[req]
+…
+```
+```
+
+- `title=` is shown in the panel's header; omit it and the language name is used.
+- `collapse` starts the panel folded (also automatic past 26 lines).
+- The comment applies to the *next* fence in the same block and renders as
+  nothing. `scripts/import/ubuntu-setup.mjs` emits it for every inlined
+  `<CodeViewer>`.
+- Copy and expand are handled by one delegated script in
+  `src/components/ViewerScripts.astro`; no JavaScript means a plain (readable)
+  code block.
+
+### A third-party archive
+
+```html
+<figure class="archive-viewer" data-src="/archives/…/page.html"
+        data-title="Official CUDA Installation Guide" data-origin="https://…">
+  …
+</figure>
+```
+
+Collapsed by default; expanding creates a `<iframe sandbox>` so a saved page
+cannot execute its own scripts inside this origin. Always cite the original URL
+in the header — the snapshot is a copy, not the source. Anything published under
+`public/archives/**` must carry the noindex/attribution banner: see
+`AGENTS.md` → Known constraints.

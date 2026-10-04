@@ -200,13 +200,19 @@ function expandCodeViewers(body, srcFile) {
       return `> \`${filePath}\` — 私钥文件，未随站点发布。\n`
     }
     const content = fs.readFileSync(abs, 'utf8').replace(/\s+$/, '')
-    const head = title ? `**${title}**（\`${filePath}\`）\n\n` : `\`${filePath}\`\n\n`
     // Some of the inlined files are themselves markdown full of ``` fences.
     // A three-backtick fence around them would end at the first one and swallow
     // everything after it — including the 延伸阅读 link at the bottom.
     const longest = Math.max(0, ...[...content.matchAll(/`{3,}/g)].map((m) => m[0].length))
     const fence = '`'.repeat(Math.max(3, longest + 1))
-    return `${head}${fence}${language}\n${content}\n${fence}\n`
+    // A titled, collapsible panel: the site's stand-in for the old <CodeViewer>.
+    const label = (title ? title + ' · ' : '') + filePath
+    const lines = content.split('\n').length
+    const collapse = lines > 26 ? ' collapse' : ''
+    // The site reads the title from a `:::code` directive line: Astro 7's
+    // native markdown parser drops the fence info string before any plugin can
+    // see it. `:::` is also the syntax this material was written in (VuePress).
+    return `<!--code:title=${label}${collapse ? ' collapse' : ''}-->\n${fence}${language}\n${content}\n${fence}\n`
   })
 }
 
@@ -232,10 +238,24 @@ function expandReferenceViewers(body, srcFile) {
         warnings.push(`${srcFile}: ReferenceViewer target missing: ${htmlPath}`)
       }
     }
-    // The marker lets the archive pass add the local copy without touching prose.
-    const marker = `<!--ref:${htmlPath}-->`
-    const link = origin ? `[${title}](${origin})` : title
-    return `${marker}\n> 参考（第三方页面）：${link}\n`
+    const local = `/archives/ubuntu-setup/${encodeURI(htmlPath.replace(/^\//, ''))}`
+    const safe = (value) => String(value).replace(/"/g, '&quot;')
+    const parts = [
+      `<figure class="archive-viewer" data-src="${safe(local)}" data-title="${safe(title)}"${origin ? ` data-origin="${safe(origin)}"` : ''}>`,
+      '  <figcaption class="archive-viewer__head">',
+      '    <span class="archive-viewer__label">第三方页面存档</span>',
+      origin ? `    <a href="${safe(origin)}" rel="noopener" target="_blank">${title}</a>` : `    <span>${title}</span>`,
+      '    <span class="archive-viewer__actions">',
+      '      <button type="button" data-archive-open>展开存档</button>',
+      `      <a href="${safe(local)}" target="_blank" rel="noopener">新窗口</a>`,
+      '    </span>',
+      '  </figcaption>',
+      '  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>',
+      '  <div class="archive-viewer__body"></div>',
+      '</figure>',
+      '',
+    ]
+    return parts.join('\n')
   })
 }
 

@@ -43,8 +43,7 @@ The config files are on `/etc/postgresql/<version>/main`,
 
 `pghba.conf`:  
 
-**pghba.conf**（`/lib/psql/pghba.conf`）
-
+<!--code:title=pghba.conf · /lib/psql/pghba.conf collapse-->
 ```conf
 # PostgreSQL Client Authentication Configuration File
 # ===================================================
@@ -237,8 +236,7 @@ DBeaver 是许多开发者和数据库管理员推荐的替代方案：
 
 For further allowing accessing remotely and easily, we can do more:  
 
-**AI chat for modifying config**（`/lib/psql/chat-PostgreSQL Network Access Setup.txt`）
-
+<!--code:title=AI chat for modifying config · /lib/psql/chat-PostgreSQL Network Access Setup.txt collapse-->
 ````conf
 ### USER
 in my ubutnu vm, i want the pgsql be accessible by any machine on same network, tell me how to change the conf

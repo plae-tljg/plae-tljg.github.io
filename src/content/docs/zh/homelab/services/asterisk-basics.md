@@ -37,8 +37,7 @@ sudo gedit /etc/asterisk/extensions.conf # 拨号计划配置
 
 ### 配置文件示例
 
-**pjsip.conf 示例**（`/lib/asterisk_scripts/pjsip.conf`）
-
+<!--code:title=pjsip.conf 示例 · /lib/asterisk_scripts/pjsip.conf collapse-->
 ```bash
 [transport-udp]
 type=transport
@@ -12637,8 +12636,7 @@ type=aor
 max_contacts=1
 ```
 
-**extensions.conf 示例**（`/lib/asterisk_scripts/extensions.conf`）
-
+<!--code:title=extensions.conf 示例 · /lib/asterisk_scripts/extensions.conf collapse-->
 ```bash
 [from-internal]
 ;exten => s,1,NoOp(Call received on incoming-calls context)

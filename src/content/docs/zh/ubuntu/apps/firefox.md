@@ -57,8 +57,18 @@ source: plae-lkm/ubuntu_setup:docs/apps/common/firefox.md
 
 ## 参考链接
 
-<!--ref:/assets/apt_firefox/Completely Remove Snap from Ubuntu Linux [Tutorial].html-->
-> 参考（第三方页面）：[Remove Snap from Ubuntu](https://www.debugpoint.com/remove-snap-ubuntu/)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/apt_firefox/Completely%20Remove%20Snap%20from%20Ubuntu%20Linux%20%5BTutorial%5D.html" data-title="Remove Snap from Ubuntu" data-origin="https://www.debugpoint.com/remove-snap-ubuntu/">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://www.debugpoint.com/remove-snap-ubuntu/" rel="noopener" target="_blank">Remove Snap from Ubuntu</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/apt_firefox/Completely%20Remove%20Snap%20from%20Ubuntu%20Linux%20%5BTutorial%5D.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ---
 

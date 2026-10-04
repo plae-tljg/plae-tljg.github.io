@@ -91,8 +91,7 @@ qemu-img convert -f vdi -O qcow2 /path/to/your/virtualbox_vm.vdi /path/to/new_vm
 
 编辑 netplan 配置文件（例如 `/etc/netplan/01-netcfg.yaml`），内容如下：  
 
-**Bridged Networking**（`/lib/kvm_qemu/01-netcfg.yaml`）
-
+<!--code:title=Bridged Networking · /lib/kvm_qemu/01-netcfg.yaml-->
 ```yaml
   version: 2
   renderer: NetworkManager  # Change this if you need GUI management

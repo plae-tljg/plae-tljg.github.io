@@ -46,8 +46,7 @@ bind "set show-all-if-ambiguous on"
 
 将 `.bashrc` 拆分为多个模块文件，便于管理：
 
-**环境变量文件示例**（`/lib/bash/bash_env_vars_example.sh`）
-
+<!--code:title=环境变量文件示例 · /lib/bash/bash_env_vars_example.sh collapse-->
 ```bash
 #!/usr/bin/env bash
 # ~/.bash_env_vars
@@ -80,8 +79,7 @@ export LD_LIBRARY_PATH=$HOME/.local/lib:$SYSTEM_USER_LIB:$LD_LIBRARY_PATH
 
 在 `~/.bashrc` 中加载：
 
-**.bashrc 加载示例**（`/lib/bash/bashrc_loading_example.sh`）
-
+<!--code:title=.bashrc 加载示例 · /lib/bash/bashrc_loading_example.sh-->
 ```bash
 # ~/.bashrc 中的模块化加载示例
 
@@ -110,8 +108,7 @@ fi
 
 为 `python -m` 提供 Tab 补全功能：
 
-**Python 模块补全脚本**（`/lib/bash/python_module_completion.sh`）
-
+<!--code:title=Python 模块补全脚本 · /lib/bash/python_module_completion.sh collapse-->
 ```bash
 _python_module_completion() {
   local cur prev base_dir prefix

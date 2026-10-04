@@ -43,5 +43,15 @@ sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack-7.0.14.vbox-
 
 <br />
 
-<!--ref:/assets/virtualbox/How to Install VirtualBox on Ubuntu.html-->
-> 参考（第三方页面）：[Install Virtualbox on Ubuntu](https://phoenixnap.com/kb/install-virtualbox-on-ubuntu)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/virtualbox/How%20to%20Install%20VirtualBox%20on%20Ubuntu.html" data-title="Install Virtualbox on Ubuntu" data-origin="https://phoenixnap.com/kb/install-virtualbox-on-ubuntu">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://phoenixnap.com/kb/install-virtualbox-on-ubuntu" rel="noopener" target="_blank">Install Virtualbox on Ubuntu</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/virtualbox/How%20to%20Install%20VirtualBox%20on%20Ubuntu.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>

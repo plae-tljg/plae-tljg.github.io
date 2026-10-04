@@ -23,8 +23,18 @@ spd-say "mu ka de ku lun no ka"
 
 Try install espeak and do TTS:  
 
-<!--ref:/assets/espeak/解决espeak编译的一些问题 - inss!w! - 博客园.html-->
-> 参考（第三方页面）：[Compile for Espeak](https://www.cnblogs.com/Hfolsvh/p/15057694.html)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/espeak/%E8%A7%A3%E5%86%B3espeak%E7%BC%96%E8%AF%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%20-%20inss!w!%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD.html" data-title="Compile for Espeak" data-origin="https://www.cnblogs.com/Hfolsvh/p/15057694.html">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://www.cnblogs.com/Hfolsvh/p/15057694.html" rel="noopener" target="_blank">Compile for Espeak</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/espeak/%E8%A7%A3%E5%86%B3espeak%E7%BC%96%E8%AF%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%20-%20inss!w!%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ```bash
 espeak -v en-us -s 150 -p 50 -w my_speech.wav "This is a custom voice with adjusted speed and pitch."

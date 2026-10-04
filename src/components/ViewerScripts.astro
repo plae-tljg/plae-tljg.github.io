@@ -1,0 +1,214 @@
+---
+/**
+ * One delegated script for both viewers.
+ *
+ * Copy and expand act on whatever is on the page, including content rendered
+ * from markdown, so this is event delegation rather than per-element wiring —
+ * a code panel and an archive frame are produced by the build, not by a
+ * component that could attach its own handler.
+ */
+---
+
+<script>
+  document.addEventListener('click', async (event) => {
+    const target = event.target as HTMLElement | null
+    if (!target) return
+
+    // ---- code viewer: copy ------------------------------------------------
+    const copy = target.closest<HTMLElement>('[data-copy]')
+    if (copy) {
+      const panel = copy.closest('.code-viewer')
+      const code = panel?.querySelector('pre code')?.textContent ?? ''
+      const original = copy.textContent
+      try {
+        await navigator.clipboard.writeText(code)
+        copy.textContent = '已复制'
+      } catch {
+        copy.textContent = '复制失败'
+      }
+      setTimeout(() => {
+        copy.textContent = original
+      }, 1400)
+      return
+    }
+
+    // ---- code viewer: expand ---------------------------------------------
+    const expand = target.closest<HTMLElement>('[data-expand]')
+    if (expand) {
+      const panel = expand.closest('.code-viewer')
+      const collapsed = panel?.classList.toggle('is-collapsed')
+      expand.setAttribute('aria-expanded', String(!collapsed))
+      expand.textContent = collapsed ? '展开' : '收起'
+      return
+    }
+
+    // ---- archive viewer: embed a third-party snapshot on demand ----------
+    const open = target.closest<HTMLElement>('[data-archive-open]')
+    if (open) {
+      const figure = open.closest<HTMLElement>('.archive-viewer')
+      const src = figure?.dataset.src
+      const body = figure?.querySelector('.archive-viewer__body')
+      if (!figure || !src || !body) return
+
+      if (figure.classList.contains('is-open')) {
+        figure.classList.remove('is-open')
+        body.replaceChildren()
+        open.textContent = '展开存档'
+        return
+      }
+
+      const frame = document.createElement('iframe')
+      frame.src = src
+      frame.loading = 'lazy'
+      frame.title = figure.dataset.title || '第三方页面存档'
+      // No scripts from a saved page: it is evidence, not an app.
+      frame.setAttribute('sandbox', '')
+      frame.setAttribute('referrerpolicy', 'no-referrer')
+      body.replaceChildren(frame)
+      figure.classList.add('is-open')
+      open.textContent = '收起存档'
+    }
+  })
+</script>
+
+<style is:global>
+  /* ---- code viewer ----------------------------------------------------- */
+  .code-viewer {
+    margin: 1.75rem 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .code-viewer__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.7rem;
+    background: var(--surface-soft, rgba(127 127 127 / 7%));
+    border-bottom: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-soft);
+  }
+
+  .code-viewer__title {
+    font-weight: 600;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .code-viewer__lang {
+    padding: 0.05rem 0.4rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  .code-viewer__spacer {
+    flex: 1;
+  }
+
+  .code-viewer__button {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-soft);
+    font: inherit;
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .code-viewer__button:hover {
+    color: var(--link, var(--accent));
+    border-color: currentColor;
+  }
+
+  .code-viewer pre {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .code-viewer.is-collapsed pre {
+    max-height: 15rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .code-viewer.is-collapsed pre::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4rem;
+    background: linear-gradient(transparent, var(--bg, #fff));
+    pointer-events: none;
+  }
+
+  /* ---- archive viewer -------------------------------------------------- */
+  .archive-viewer {
+    margin: 1.75rem 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-soft, rgba(127 127 127 / 5%));
+    padding: 0.7rem 0.9rem;
+  }
+
+  .archive-viewer__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+
+  .archive-viewer__label {
+    color: var(--text-faint);
+  }
+
+  .archive-viewer__actions {
+    margin-left: auto;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .archive-viewer__actions button,
+  .archive-viewer__actions a {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-soft);
+    font: inherit;
+    font-size: 0.8rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .archive-viewer__actions button:hover,
+  .archive-viewer__actions a:hover {
+    color: var(--link, var(--accent));
+    border-color: currentColor;
+  }
+
+  .archive-viewer__note {
+    margin: 0.35rem 0 0;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  .archive-viewer__body:not(:empty) {
+    margin-top: 0.75rem;
+  }
+
+  .archive-viewer__body iframe {
+    width: 100%;
+    height: 32rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+  }
+</style>

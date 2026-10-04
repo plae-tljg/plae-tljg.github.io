@@ -18,8 +18,7 @@ source: plae-lkm/ubuntu_setup:docs/dev/https.md
 
 请先准备如下 `conf` 配置文件：  
 
-**根证书配置（CA 配置）**（`/lib/https/ca.conf`）
-
+<!--code:title=根证书配置（CA 配置） · /lib/https/ca.conf-->
 ```conf
 [req]
 default_bits = 2048
@@ -43,8 +42,7 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always,issuer
 ```
 
-**服务器证书配置**（`/lib/https/server.conf`）
-
+<!--code:title=服务器证书配置 · /lib/https/server.conf-->
 ```conf
 [req]
 default_bits = 2048

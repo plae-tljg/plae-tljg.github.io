@@ -14,8 +14,7 @@ source: plae-lkm/ubuntu_setup:docs/utils/common_cmd/send_email.md
 ---
 Automated scripts for sending emails:  
 
-**Send Email**（`/lib/common_scripts/sendEmail.sh`）
-
+<!--code:title=Send Email · /lib/common_scripts/sendEmail.sh collapse-->
 ```shell
 #!/bin/bash
 

@@ -16,8 +16,18 @@ source: plae-lkm/ubuntu_setup:docs/apps/common/ide.md
 
 Just get its `.deb` file and `dpkg -i` install it.  
 
-<!--ref:/assets/vs_code/Visual Studio Code on Linux.html-->
-> 参考（第三方页面）：[Official VS Code Installation](https://code.visualstudio.com/docs/setup/linux)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/vs_code/Visual%20Studio%20Code%20on%20Linux.html" data-title="Official VS Code Installation" data-origin="https://code.visualstudio.com/docs/setup/linux">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://code.visualstudio.com/docs/setup/linux" rel="noopener" target="_blank">Official VS Code Installation</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/vs_code/Visual%20Studio%20Code%20on%20Linux.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ## Android Studio
 
@@ -27,8 +37,7 @@ Just execute the `android-studio/bin/studio.sh`.
 
 To create `.dsektop` entry to make it appear in app deck, follow:  
 
-**Android Studio Desktop File**（`/lib/desktop_file/android_studio.desktop`）
-
+<!--code:title=Android Studio Desktop File · /lib/desktop_file/android_studio.desktop-->
 ```text
 [Desktop Entry]
 Type=Application
@@ -42,15 +51,24 @@ Terminal=false
 
 <br />
 
-<!--ref:/assets/android_studio/Install Android Studio _ Android Developers.html-->
-> 参考（第三方页面）：[Official Android Studio Installation](https://developer.android.com/studio/install)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/android_studio/Install%20Android%20Studio%20_%20Android%20Developers.html" data-title="Official Android Studio Installation" data-origin="https://developer.android.com/studio/install">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://developer.android.com/studio/install" rel="noopener" target="_blank">Official Android Studio Installation</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/android_studio/Install%20Android%20Studio%20_%20Android%20Developers.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ## Anaconda
 
 To install anaconda, it is easy, no effort to write here.  
 
-**Anaconda Desktop File**（`/lib/desktop_file/anaconda.desktop`）
-
+<!--code:title=Anaconda Desktop File · /lib/desktop_file/anaconda.desktop-->
 ```text
 [Desktop Entry]
 Type=Application
@@ -66,8 +84,7 @@ Terminal=false
 
 To install arduino, it is easy, no effort to write here.  
 
-**Arduino Desktop File**（`/lib/desktop_file/arduino.desktop`）
-
+<!--code:title=Arduino Desktop File · /lib/desktop_file/arduino.desktop-->
 ```text
 [Desktop Entry]
 Type=Application
@@ -83,8 +100,7 @@ Terminal=false
 
 To install AI IDE like cursor,  
 
-**Cursor Launcher File**（`/lib/cursor_ai/cursor_launcher.sh`）
-
+<!--code:title=Cursor Launcher File · /lib/cursor_ai/cursor_launcher.sh-->
 ```text
 #!/bin/bash
 appimage=$(find /home/fit/.app -name "cursor*.AppImage" -print -quit)
@@ -96,8 +112,7 @@ else
 fi
 ```
 
-**Cursor Desktop File**（`/lib/desktop_file/cursor_ai.desktop`）
-
+<!--code:title=Cursor Desktop File · /lib/desktop_file/cursor_ai.desktop-->
 ```text
 [Desktop Entry]
 Type=Application

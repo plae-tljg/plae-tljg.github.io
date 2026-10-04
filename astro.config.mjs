@@ -3,6 +3,7 @@ import sitemap from '@astrojs/sitemap'
 import { unified } from '@astrojs/markdown-remark'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import rehypeCodeViewer from './src/lib/rehype-code-viewer.mjs'
 import { SITE_URL, STAGING } from './src/site.mjs'
 
 // https://astro.build/config
@@ -20,7 +21,12 @@ export default defineConfig({
     // authored for the remark/rehype pipeline because they carry inline TeX.
     processor: unified({
       remarkPlugins: [remarkMath],
-      rehypePlugins: [[rehypeKatex, { throwOnError: false, strict: false }]],
+      rehypePlugins: [
+        [rehypeKatex, { throwOnError: false, strict: false }],
+        // A fenced block with `title="…"` becomes a titled panel (the old
+        // site's <CodeViewer>). Runs after katex so it only sees code fences.
+        [rehypeCodeViewer, { label: '复制' }],
+      ],
     }),
     shikiConfig: {
       themes: { light: 'github-light', dark: 'github-dark' },

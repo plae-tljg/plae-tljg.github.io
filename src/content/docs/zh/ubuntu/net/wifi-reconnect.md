@@ -66,8 +66,7 @@ netsh wlan connect name="你的WiFi名称"
 
 ---
 
-**reconnect wifi in window**（`/lib/wifi_reconnect/reconnect_wifi_window.py`）
-
+<!--code:title=reconnect wifi in window · /lib/wifi_reconnect/reconnect_wifi_window.py collapse-->
 ```python
 import subprocess
 import time

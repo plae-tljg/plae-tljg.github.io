@@ -47,11 +47,31 @@ nvidia-smi  # 验证安装
 
 ### 官方安装指南
 
-<!--ref:/assets/cuda/CUDA Installation Guide for Linux — Installation Guide for Linux 13.0 documentation.html-->
-> 参考（第三方页面）：[Official CUDA Installation Guide for Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/cuda/CUDA%20Installation%20Guide%20for%20Linux%20%E2%80%94%20Installation%20Guide%20for%20Linux%2013.0%20documentation.html" data-title="Official CUDA Installation Guide for Linux" data-origin="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/" rel="noopener" target="_blank">Official CUDA Installation Guide for Linux</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/cuda/CUDA%20Installation%20Guide%20for%20Linux%20%E2%80%94%20Installation%20Guide%20for%20Linux%2013.0%20documentation.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
-<!--ref:/assets/cuda/CUDA Toolkit 13.0 - Release Notes — Release Notes 13.0 documentation.html-->
-> 参考（第三方页面）：[Official CUDA Release Note](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/cuda/CUDA%20Toolkit%2013.0%20-%20Release%20Notes%20%E2%80%94%20Release%20Notes%2013.0%20documentation.html" data-title="Official CUDA Release Note" data-origin="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html" rel="noopener" target="_blank">Official CUDA Release Note</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/cuda/CUDA%20Toolkit%2013.0%20-%20Release%20Notes%20%E2%80%94%20Release%20Notes%2013.0%20documentation.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ### 安装步骤（以 CUDA 13.0 为例）
 
@@ -87,8 +107,18 @@ export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 source ~/.bashrc
 ```
 
-<!--ref:/assets/cuda/CUDA Toolkit 13.0 Downloads _ NVIDIA Developer.html-->
-> 参考（第三方页面）：[CUDA Download and Installation](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/cuda/CUDA%20Toolkit%2013.0%20Downloads%20_%20NVIDIA%20Developer.html" data-title="CUDA Download and Installation" data-origin="https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local" rel="noopener" target="_blank">CUDA Download and Installation</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/cuda/CUDA%20Toolkit%2013.0%20Downloads%20_%20NVIDIA%20Developer.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ## CUDA 安装测试
 
@@ -116,8 +146,7 @@ pip install transformers
 
 简单测试：
 
-**Simple model**（`/lib/test_cuda/test_cuda_simple.py`）
-
+<!--code:title=Simple model · /lib/test_cuda/test_cuda_simple.py collapse-->
 ```python
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -169,8 +198,7 @@ if __name__ == "__main__":
 
 更完整的测试（QWEN3）：
 
-**QWEN3**（`/lib/test_cuda/test_cuda_qwen.py`）
-
+<!--code:title=QWEN3 · /lib/test_cuda/test_cuda_qwen.py collapse-->
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -257,8 +285,18 @@ sudo reboot
 
 > 这实际上是一个常见问题，与 iGPU 配置无关，而是因为驱动需要在每个新内核上重新编译。
 
-<!--ref:/assets/cuda/What's the process for fixing NVIDIA drivers after kernel updates in Ubuntu 20.04 - Graphics _ Linux _ Linux - NVIDIA Developer Forums.html-->
-> 参考（第三方页面）：[What's the process for fixing NVIDIA drivers after kernel updates in Ubuntu 20.04](https://forums.developer.nvidia.com/t/whats-the-process-for-fixing-nvidia-drivers-after-kernel-updates-in-ubuntu-20-04/208870/3)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/cuda/What's%20the%20process%20for%20fixing%20NVIDIA%20drivers%20after%20kernel%20updates%20in%20Ubuntu%2020.04%20-%20Graphics%20_%20Linux%20_%20Linux%20-%20NVIDIA%20Developer%20Forums.html" data-title="What's the process for fixing NVIDIA drivers after kernel updates in Ubuntu 20.04" data-origin="https://forums.developer.nvidia.com/t/whats-the-process-for-fixing-nvidia-drivers-after-kernel-updates-in-ubuntu-20-04/208870/3">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://forums.developer.nvidia.com/t/whats-the-process-for-fixing-nvidia-drivers-after-kernel-updates-in-ubuntu-20-04/208870/3" rel="noopener" target="_blank">What's the process for fixing NVIDIA drivers after kernel updates in Ubuntu 20.04</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/cuda/What's%20the%20process%20for%20fixing%20NVIDIA%20drivers%20after%20kernel%20updates%20in%20Ubuntu%2020.04%20-%20Graphics%20_%20Linux%20_%20Linux%20-%20NVIDIA%20Developer%20Forums.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>
 
 ## 历史问题参考
 

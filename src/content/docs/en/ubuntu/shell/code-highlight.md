@@ -18,8 +18,7 @@ Example: consider the case of asterisk conf file at like `/etc/asterisk/`, its c
 
 Remember the file name has to be same as its `id` inside, if not, will not be recognized.  
 
-**Lang Setting**（`/assets/code_highlight/ast_dialplan.lang`）
-
+<!--code:title=Lang Setting · /assets/code_highlight/ast_dialplan.lang collapse-->
 ```conf
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -439,5 +438,15 @@ Remember the file name has to be same as its `id` inside, if not, will not be re
 </language>
 ```
 
-<!--ref:/assets/code_highlight/Asterisk dialplan syntax highlighting for gedit.html-->
-> 参考（第三方页面）：[Asterisk dialplan syntax highlighting for gedit](https://www.frigon.info/posts/asterisk/asterisk-dialplan-highlight/)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/code_highlight/Asterisk%20dialplan%20syntax%20highlighting%20for%20gedit.html" data-title="Asterisk dialplan syntax highlighting for gedit" data-origin="https://www.frigon.info/posts/asterisk/asterisk-dialplan-highlight/">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://www.frigon.info/posts/asterisk/asterisk-dialplan-highlight/" rel="noopener" target="_blank">Asterisk dialplan syntax highlighting for gedit</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/code_highlight/Asterisk%20dialplan%20syntax%20highlighting%20for%20gedit.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>

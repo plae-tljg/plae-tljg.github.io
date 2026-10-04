@@ -23,5 +23,15 @@ calc 123*123    # calculator
 
 ## Reference
 
-<!--ref:/assets/interesting_cmd/24 Hilarious Linux Commands That Will Make You Laugh.html-->
-> 参考（第三方页面）：[Funny Linux Commands](https://www.tecmint.com/funny-linux-commands/)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/interesting_cmd/24%20Hilarious%20Linux%20Commands%20That%20Will%20Make%20You%20Laugh.html" data-title="Funny Linux Commands" data-origin="https://www.tecmint.com/funny-linux-commands/">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://www.tecmint.com/funny-linux-commands/" rel="noopener" target="_blank">Funny Linux Commands</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/interesting_cmd/24%20Hilarious%20Linux%20Commands%20That%20Will%20Make%20You%20Laugh.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>

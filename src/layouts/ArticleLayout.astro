@@ -4,6 +4,7 @@ import { articlePath, localePath, seriesPath, tagPath, writingPath } from '../li
 import { formatDate, isPreview, readingTime, type Post } from '../lib/content'
 import BaseLayout from './BaseLayout.astro'
 import Toc from '../components/Toc.astro'
+import ViewerScripts from '../components/ViewerScripts.astro'
 
 interface Props {
   post: Post
@@ -140,4 +141,5 @@ if (translationUrl) {
       </div>
     </div>
   </article>
+  <ViewerScripts />
 </BaseLayout>
