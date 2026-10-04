@@ -200,7 +200,3 @@ fi
 - 激活虚拟环境：`source venv/bin/activate` 或 `. venv/bin/activate`
 - 加载配置：`source ~/.bash_env_vars`
 - 执行独立脚本：`./backup.sh`（不影响当前环境）
-
----
-
-> **延伸阅读**：[Ubuntu 的 Tab 补全不如 PuTTY](/zh/writing/tinkering-bash-completion/)——同一件事的来龙去脉，收在《折腾笔记》里。

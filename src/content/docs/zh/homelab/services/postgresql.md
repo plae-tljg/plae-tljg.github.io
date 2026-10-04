@@ -939,7 +939,3 @@ RESET ROLE;            -- go back to original
 
 Let me know if you want to script this (e.g., auto-show user in prompt), or verify remote connections.
 ````
-
----
-
-> **延伸阅读**：[pgAdmin 4 把整个桌面拖慢了](/zh/writing/tinkering-pgadmin-too-heavy/)——同一件事的来龙去脉，收在《折腾笔记》里。

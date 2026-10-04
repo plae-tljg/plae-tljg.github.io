@@ -8,6 +8,7 @@ not public domain is attributed on the page where it appears as well.
 | Home hero | `src/assets/hero-formulas.jpg` | Pure mathematics formulæ blackboard | Wallpoper | Public domain | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Pure-mathematics-formul%C3%A6-blackboard.jpg) |
 | Series: Why I Already Knew AI Would Take Over Mathematics | `src/assets/series-math.jpg` | Einstein's theory of relative blackboard | thepatrick | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [Flickr](https://www.flickr.com/photos/93529274@N00/1508924823) |
 | Series: AI-Maintainable Systems | `src/assets/series-systems.jpg` | edifício acal, são paulo, april 2006 | seier+seier | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [Flickr](https://www.flickr.com/photos/94852245@N00/866397659) |
+| Series: Tinkering Notes | `src/assets/series-tinkering.jpg` | Soldering bench | Windell Oskay | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Soldering_workbench.jpg) |
 
 ## Adding a new image
 

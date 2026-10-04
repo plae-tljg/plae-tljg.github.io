@@ -69,7 +69,3 @@ source: plae-lkm/ubuntu_setup:docs/apps/common/firefox.md
   <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
   <div class="archive-viewer__body"></div>
 </figure>
-
----
-
-> **延伸阅读**：[Snap 版 Firefox 的问题](/zh/writing/tinkering-snap-firefox/)——同一件事的来龙去脉，收在《折腾笔记》里。

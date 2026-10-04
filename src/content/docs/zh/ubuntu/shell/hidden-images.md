@@ -1,26 +1,17 @@
 ---
-title: 02 图种：把文件藏进图片里
-summary: >-
-  Sometimes you receive large files of small pictures of short videos, there is
-  possiblity that it is a 图种.
+title: "图种：把文件藏进图片里"
+summary: "Sometimes you receive large files of small pictures of short videos, there is possiblity that it is a 图种."
 lang: zh
-translationKey: tinkering-hidden-images
-slug: tinkering-hidden-images
-date: '2026-10-01'
-series: tinkering-notes
-seriesOrder: 2
-tags:
-  - 折腾
-  - Ubuntu
-status: preview
-source: seasons/03-tinkering/02-hidden-images.zh.md
-syncedAt: '2026-10-04T10:26:34.592Z'
+translationKey: "ubuntu-shell-hidden-images"
+slug: hidden-images
+track: ubuntu
+stage: shell
+order: 11
+date: 2026-01-04
+tags: []
+status: zh draft
+source: plae-lkm/ubuntu_setup:docs/utils/interesting_cmd/hidden_img.md
 ---
-<!-- 草稿：从 plae-lkm/ubuntu_setup 的 docs/utils/interesting_cmd/hidden_img.md 导入，等待重写。
-     原文的示例图片有 31 MB，没有随站点发布。文章里要换成一张小图或直接给命令与判断方法。
-     命令与截图先不删，重写时再决定留哪些。 -->
-# 图种
-
 Sometimes you receive large files of small pictures of short videos, there is possiblity that it is a 图种.  
 
 Try rename it to `.zip`, `.rar`, `.7z` and on ubuntu unzip it in nautilus or terminal with `uzip`, `unzip`, `urar`, `unrar` (dont remember which is correct).  
@@ -92,5 +83,15 @@ for decrypting:
 steghide info mooeow_secret.wav -p mewbies
 ```
 
-<!--ref:/assets/image_seeds/How To Conceal Data in An Audio Or Image File Using Steghide.html-->
-> 参考（第三方页面）：[Steghide](https://mewbies.com/steganography/steghide/how_to_conceal_data_in_audio_or_image_file.htm)
+<figure class="archive-viewer" data-src="/archives/ubuntu-setup/assets/image_seeds/How%20To%20Conceal%20Data%20in%20An%20Audio%20Or%20Image%20File%20Using%20Steghide.html" data-title="Steghide" data-origin="https://mewbies.com/steganography/steghide/how_to_conceal_data_in_audio_or_image_file.htm">
+  <figcaption class="archive-viewer__head">
+    <span class="archive-viewer__label">第三方页面存档</span>
+    <a href="https://mewbies.com/steganography/steghide/how_to_conceal_data_in_audio_or_image_file.htm" rel="noopener" target="_blank">Steghide</a>
+    <span class="archive-viewer__actions">
+      <button type="button" data-archive-open>展开存档</button>
+      <a href="/archives/ubuntu-setup/assets/image_seeds/How%20To%20Conceal%20Data%20in%20An%20Audio%20Or%20Image%20File%20Using%20Steghide.html" target="_blank" rel="noopener">新窗口</a>
+    </span>
+  </figcaption>
+  <p class="archive-viewer__note">他人页面的本地快照，版权归原作者；存档不会执行其中的脚本。</p>
+  <div class="archive-viewer__body"></div>
+</figure>

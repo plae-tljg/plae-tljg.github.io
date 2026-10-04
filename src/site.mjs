@@ -299,11 +299,13 @@ export const SERIES = [
       en: 'Tinkering Notes',
     },
     description: {
-      zh: '那些不属于手册的部分：把 Git 从 GitHub 上拿下来、图片里藏一个文件、pgAdmin 为什么这么重。手册说该敲什么，这里说事情为什么会变成这样。',
-      en: 'The parts that are not a manual: taking Git off GitHub, hiding a file inside a picture, why pgAdmin feels so heavy. The guides say what to type; these say why it went that way.',
+      zh: '过程比结论值钱的那些：两天把安卓游戏搬上 Linux 的十二个死胡同，一个前端布局的小 bug。手册说该敲什么，这里说事情为什么会变成这样。',
+      en: 'The ones where the process is worth more than the result: twelve dead ends across two days of getting Android games running on Linux, and one small layout bug. The guides say what to type; these say why it went that way.',
     },
     state: 'ongoing',
     languages: ['zh', 'en'],
+    /** Key into IMAGE_CREDITS for the cover photo. */
+    cover: 'series-tinkering',
     /** Where `content new --series` puts a new draft. */
     dir: 'seasons/03-tinkering',
     aliases: ['折腾笔记', 'Tinkering Notes', 'tinkering-notes', 'tinkering'],
@@ -376,7 +378,7 @@ export const TRACKS = [
       { id: 'gpu', title: { zh: 'GPU 与 CUDA', en: 'GPU & CUDA' }, description: { zh: '驱动、CUDA 工具链，以及内核升级把驱动打回原形的复盘。', en: 'Drivers, the CUDA toolchain, and the post-mortem of a kernel update breaking them.' } },
       { id: 'remote', title: { zh: '远程访问', en: 'Remote Access' }, description: { zh: 'SSH 的认证、跳板、SFTP，以及从 Ubuntu 访问手机文件。', en: 'SSH authentication, jump hosts, SFTP, and reaching a phone from the desktop.' } },
       { id: 'net', title: { zh: '网络', en: 'Networking' }, description: { zh: '静态 IP、本地 HTTPS，以及一个 Windows 端的重连问题。', en: 'Static IPs, local HTTPS, and one Windows reconnection problem.' } },
-      { id: 'shell', title: { zh: '命令行与配置', en: 'Shell & Config' }, description: { zh: '补全、输入法、光标主题、目录约定，以及一些没用的有趣命令。', en: 'Completion, TTS, cursor themes, directory conventions, and a few useless fun commands.' } },
+      { id: 'shell', title: { zh: '终端与 Shell', en: 'Terminal & Shell' }, description: { zh: 'bash、补全、模块化 .bashrc，以及一批敲命令时用得上（和用不上）的小工具。', en: 'Bash, completion, a modular .bashrc, and the small tools that are (and are not) useful at a prompt.' } },
     ],
   },
   {
@@ -420,6 +422,13 @@ export const IMAGE_CREDITS = {
     license: 'CC BY 2.0',
     licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
     source: 'https://www.flickr.com/photos/93529274@N00/1508924823',
+  },
+  'series-tinkering': {
+    title: 'Soldering bench',
+    author: 'Windell Oskay',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0/',
+    source: 'https://commons.wikimedia.org/wiki/File:Soldering_workbench.jpg',
   },
   'series-systems': {
     title: 'edifício acal, são paulo, april 2006',

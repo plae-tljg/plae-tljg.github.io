@@ -1,26 +1,17 @@
 ---
-title: 03 两个仓库，一个域名：一次 GitHub Pages 路径实验
-summary: >-
-  There is an interesting problem, a github user can serve github pages per
-  repository. Like I have a repository ubuntusetup, I can access its github p…
+title: "两个仓库，一个域名：GitHub Pages 路径实验"
+summary: "There is an interesting problem, a github user can serve github pages per repository. Like I have a repository ubuntusetup, I can access its github p…"
 lang: zh
-translationKey: tinkering-github-pages-paths
-slug: tinkering-github-pages-paths
-date: '2026-10-01'
-series: tinkering-notes
-seriesOrder: 3
-tags:
-  - 折腾
-  - Ubuntu
-status: preview
-source: seasons/03-tinkering/03-github-pages-paths.zh.md
-syncedAt: '2026-10-04T10:26:34.592Z'
+translationKey: "homelab-services-github-pages-paths"
+slug: github-pages-paths
+track: homelab
+stage: services
+order: 7
+date: 2026-01-04
+tags: []
+status: zh draft
+source: plae-lkm/ubuntu_setup:docs/dev/git/github_pages.md
 ---
-<!-- 草稿：从 plae-lkm/ubuntu_setup 的 docs/dev/git/github_pages.md 导入，等待重写。
-     六张截图还在原仓库的 assets/github_pages/ 里，写文章时再挑两张搬过来。
-     命令与截图先不删，重写时再决定留哪些。 -->
-# Github Pages
-
 ## Conflicting Endpoints
 
 There is an interesting problem, a github user can serve github pages per repository. Like I have a repository [ubuntu_setup](https://github.com/plae-tljg/ubuntu_setup), I can access its github page by [https://plae-tljg.github.io/ubuntu_setup/](https://plae-tljg.github.io/ubuntu_setup/).  

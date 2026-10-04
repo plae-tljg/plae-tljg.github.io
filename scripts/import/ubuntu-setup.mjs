@@ -57,7 +57,7 @@ const MAP = [
   ['utils/structure/README.md', 'ubuntu', 'apps', 'index', 0, { index: true, title: 'Ubuntu 应用清单' }],
   ['apps/common/quick_apps.md', 'ubuntu', 'apps', 'quick-install', 1, {}],
   ['apps/common/browsers.md', 'ubuntu', 'apps', 'browsers', 2, {}],
-  ['apps/common/firefox.md', 'ubuntu', 'apps', 'firefox', 3, { related: { url: '/zh/writing/tinkering-snap-firefox/', title: 'Snap 版 Firefox 的问题' } }],
+  ['apps/common/firefox.md', 'ubuntu', 'apps', 'firefox', 3, {}],
   ['apps/common/editors.md', 'ubuntu', 'apps', 'editors', 4, {}],
   ['apps/common/ide.md', 'ubuntu', 'apps', 'ide', 5, {}],
   ['apps/common/image_editors.md', 'ubuntu', 'apps', 'image-editors', 6, {}],
@@ -95,7 +95,7 @@ const MAP = [
 
   // ---- ubuntu · shell: commands and configuration ------------------------
   ['utils/structure/common_dir.md', 'ubuntu', 'shell', 'common-dirs', 1, {}],
-  ['utils/common_cmd/bash_tricks.md', 'ubuntu', 'shell', 'bash-tricks', 2, { related: { url: '/zh/writing/tinkering-bash-completion/', title: 'Ubuntu 的 Tab 补全不如 PuTTY' } }],
+  ['utils/common_cmd/bash_tricks.md', 'ubuntu', 'shell', 'bash-tricks', 2, {}],
   ['utils/common_cmd/README.md', 'ubuntu', 'shell', 'systemd', 3, { title: 'systemd 常用命令' }],
   ['utils/common_cmd/audio_cmd.md', 'ubuntu', 'shell', 'audio-cmd', 4, {}],
   ['utils/common_cmd/reboot_router.md', 'ubuntu', 'shell', 'reboot-router', 5, {}],
@@ -104,14 +104,17 @@ const MAP = [
   ['utils/user_config/cursor_style.md', 'ubuntu', 'shell', 'cursor-style', 8, {}],
   ['utils/interesting_cmd/README.md', 'ubuntu', 'shell', 'fun-commands', 9, {}],
   ['utils/useful_links.md', 'ubuntu', 'shell', 'links', 10, {}],
+  ['utils/interesting_cmd/hidden_img.md', 'ubuntu', 'shell', 'hidden-images', 11, { title: '图种：把文件藏进图片里' }],
 
   // ---- homelab · services ------------------------------------------------
   ['dev/asterisk/README.md', 'homelab', 'services', 'index', 0, { index: true }],
   ['dev/asterisk/basics.md', 'homelab', 'services', 'asterisk-basics', 1, {}],
   ['dev/asterisk/trunk_config.md', 'homelab', 'services', 'asterisk-trunk', 2, {}],
   ['dev/asterisk/audio.md', 'homelab', 'services', 'asterisk-audio', 3, {}],
-  ['apps/db/psql.md', 'homelab', 'services', 'postgresql', 4, { related: { url: '/zh/writing/tinkering-pgadmin-too-heavy/', title: 'pgAdmin 4 把整个桌面拖慢了' } }],
-  ['dev/git/local_git_server.md', 'homelab', 'services', 'local-git', 5, { related: { url: '/zh/writing/tinkering-local-git-server/', title: 'Git 不需要 GitHub：局域网上的服务器' } }],
+  ['apps/db/psql.md', 'homelab', 'services', 'postgresql', 4, {}],
+  ['dev/git/local_git_server.md', 'homelab', 'services', 'local-git', 5, {}],
+  ['dev/git/breaking_change.md', 'homelab', 'services', 'git-rewrite', 6, { title: '有意识地重写仓库历史' }],
+  ['dev/git/github_pages.md', 'homelab', 'services', 'github-pages-paths', 7, { title: '两个仓库，一个域名：GitHub Pages 路径实验' }],
 
   // ---- homelab · home ----------------------------------------------------
   ['household/ip_cam/ip_cam.md', 'homelab', 'home', 'ip-cam', 1, {}],
@@ -121,10 +124,8 @@ const MAP = [
 
 /** Published as articles in the writing workspace instead (see the plan). */
 const ARTICLE_ONLY = [
-  'dev/git/github_pages.md',
-  'dev/git/breaking_change.md',
+  // The one piece with no home in a manual: a visual bug in a dashboard.
   'dev/web_dev/html.md',
-  'utils/interesting_cmd/hidden_img.md',
 ]
 
 // --------------------------------------------------------------- utilities
@@ -558,68 +559,13 @@ const SERIES_DIR = path.join(WORKSPACE, 'seasons/03-tinkering')
 
 const ARTICLES = [
   {
-    src: 'dev/git/local_git_server.md',
-    slug: 'local-git-server',
-    titleZh: 'Git 不需要 GitHub：局域网上的服务器',
-    titleEn: 'Git Does Not Need GitHub: A Server on the LAN',
-    summaryEn: 'Bare versus normal repositories, cloning over the local network, and the test cases that proved it worked.',
-    note: '命令部分已经作为文档页保留（/zh/docs/homelab/services/local-git/）。文章要留的是"我为什么要把 Git 从 GitHub 上拿下来"和踩坑过程。',
-  },
-  {
-    src: 'utils/interesting_cmd/hidden_img.md',
-    slug: 'hidden-images',
-    titleZh: '图种：把文件藏进图片里',
-    titleEn: 'A File Hidden Inside a Picture',
-    summaryEn: '图种 and polyglot files: spotting a smuggled archive by doing the byte arithmetic, then binwalk, unzip and steghide.',
-    note: '原文的示例图片有 31 MB，没有随站点发布。文章里要换成一张小图或直接给命令与判断方法。',
-  },
-  {
-    src: 'dev/git/github_pages.md',
-    slug: 'github-pages-paths',
-    titleZh: '两个仓库，一个域名：一次 GitHub Pages 路径实验',
-    titleEn: 'Two Repositories, One Domain: A GitHub Pages Routing Experiment',
-    summaryEn: 'A project page shadowed by a personal-site repository, with and without a trailing slash, and what the browser actually did.',
-    note: '六张截图还在原仓库的 assets/github_pages/ 里，写文章时再挑两张搬过来。',
-  },
-  {
     src: 'dev/web_dev/html.md',
     slug: 'image-fit',
     titleZh: '仪表盘上的脸为什么会变形',
     titleEn: 'Why the Faces in My Dashboard Looked Swollen',
-    summaryEn: 'Three attempts at an image cell in an HTML table, and why constraining width and height distorts a photograph until you reach object-fit.',
+    summaryEn:
+      'Three attempts at an image cell in an HTML table, and why constraining width and height distorts a photograph until you reach object-fit.',
     note: '纯叙事，没有对应的文档页。',
-  },
-  {
-    src: 'utils/common_cmd/bash_tricks.md',
-    slug: 'bash-completion',
-    titleZh: 'Ubuntu 的 Tab 补全不如 PuTTY',
-    titleEn: "Ubuntu's Tab Completion Is Worse Than PuTTY's",
-    summaryEn: 'menu-complete, a modular .bashrc, Python module completion, and what source versus . versus ./ actually does.',
-    note: '命令已作为文档页保留（/zh/docs/ubuntu/shell/bash-tricks/）。文章里留"为什么 PuTTY 的补全更好用"这条线。',
-  },
-  {
-    src: 'apps/db/psql.md',
-    slug: 'pgadmin-too-heavy',
-    titleZh: 'pgAdmin 4 把整个桌面拖慢了',
-    titleEn: 'pgAdmin 4 Dragged My Desktop Down',
-    summaryEn: 'A desktop-class GUI shipped as a web app, why it feels heavy, and the lighter clients I compared instead.',
-    note: '安装与 pg_hba 部分保留在文档页（/zh/docs/homelab/services/postgresql/）。文章只写 GUI 客户端的比较与取舍，不要重复安装步骤。',
-  },
-  {
-    src: 'apps/common/firefox.md',
-    slug: 'snap-firefox',
-    titleZh: 'Snap 版 Firefox 的问题',
-    titleEn: 'The Snap Firefox Problem',
-    summaryEn: 'Input-method and cursor bugs under snap, why the package comes back after updates, and the pin that stops it.',
-    note: '安装命令保留在文档页（/zh/docs/ubuntu/apps/firefox/）。文章写"为什么 snap 版会这样"，以及 apt 版与 pin 的取舍。',
-  },
-  {
-    src: 'dev/git/breaking_change.md',
-    slug: 'rewrite-history',
-    titleZh: '有意识地重写仓库历史',
-    titleEn: 'Rewriting a Repository History on Purpose',
-    summaryEn: 'Three steps to wipe and force-rewrite a branch, and the question you should answer first: is anyone else holding this history?',
-    note: '原文开头写着"AI 推荐的可行步骤"。写文章时要把前提条件补上：什么时候可以重写、什么时候不可以。',
   },
 ]
 
