@@ -71,9 +71,13 @@ const withToc = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 
 
 <style is:global>
   /* Docs are wider than the article column: sidebar + prose + TOC do not fit in
-     68rem without wrapping every code block. */
-  .container--docs {
-    max-width: 82rem;
+     68rem without wrapping every code block, and on a large screen the old 82rem
+     left ~600px of margin unused while the prose column stayed at ~780px. */
+  /* Two classes on purpose: `.container` sets --wide-width and wins on order
+     alone, which is how the shell ended up 68rem wide with 600px of empty
+     margin on a large screen. */
+  .container.container--docs {
+    max-width: 90rem;
   }
 
   .docs-shell {
@@ -86,7 +90,7 @@ const withToc = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 
   @media (min-width: 1024px) {
     .docs-shell {
       grid-template-columns: 15rem minmax(0, 1fr);
-      gap: 3rem;
+      gap: 2.5rem;
     }
   }
 
@@ -98,5 +102,27 @@ const withToc = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 
 
   .docs-main {
     min-width: 0;
+  }
+
+  /*
+   * Reading measure, not column width.
+   *
+   * With the shell widened, a full-width paragraph would run ~55 Chinese
+   * characters and get hard to track. Prose stops at a comfortable measure;
+   * code panels, tables and figures keep the whole column, because that is
+   * exactly what needs the room.
+   */
+  .docs-main .article__header,
+  .docs-main .notice,
+  .docs-main .prose > p,
+  .docs-main .prose > ul,
+  .docs-main .prose > ol,
+  .docs-main .prose > blockquote,
+  .docs-main .prose > h2,
+  .docs-main .prose > h3,
+  .docs-main .prose > h4,
+  .docs-main .prose > h5,
+  .docs-main .prose > h6 {
+    max-width: 46rem;
   }
 </style>
