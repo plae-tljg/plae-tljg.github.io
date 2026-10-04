@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T11:34:23.875Z",
+  "generatedAt": "2026-10-04T11:40:53.366Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
@@ -118,10 +118,10 @@
       "series": "tinkering-notes",
       "status": "preview",
       "sourcePath": "seasons/03-tinkering/01-nvidia-drivers.zh.md",
-      "sourceHash": "sha256:2eb64e20a32040d7",
+      "sourceHash": "sha256:69a388377c78e13b",
       "outputPath": "src/content/posts/zh/tinkering-notes/nvidia-drivers.md",
-      "outputHash": "sha256:497584e33bcf8763",
-      "syncedAt": "2026-10-04T11:31:22.855Z"
+      "outputHash": "sha256:affff1b3d41bddd3",
+      "syncedAt": "2026-10-04T11:40:53.362Z"
     },
     {
       "key": "android-games",
@@ -130,22 +130,10 @@
       "series": "tinkering-notes",
       "status": "preview",
       "sourcePath": "seasons/03-tinkering/02-android-games.zh.md",
-      "sourceHash": "sha256:870bde8e52653246",
+      "sourceHash": "sha256:4987c6153500b2d9",
       "outputPath": "src/content/posts/zh/tinkering-notes/android-games.md",
-      "outputHash": "sha256:ffa61991e9836bb2",
-      "syncedAt": "2026-10-04T11:31:22.855Z"
-    },
-    {
-      "key": "houdini-timebomb",
-      "lang": "zh",
-      "title": "03 libhoudini 的「定时炸弹」不是炸弹，是一个版本号",
-      "series": "tinkering-notes",
-      "status": "preview",
-      "sourcePath": "seasons/03-tinkering/03-houdini-timebomb.zh.md",
-      "sourceHash": "sha256:cacc41c1f04f7aa9",
-      "outputPath": "src/content/posts/zh/tinkering-notes/houdini-timebomb.md",
-      "outputHash": "sha256:ca709d66dd929e65",
-      "syncedAt": "2026-10-04T11:31:22.855Z"
+      "outputHash": "sha256:96c52bbc5808772d",
+      "syncedAt": "2026-10-04T11:40:53.363Z"
     }
   ]
 }

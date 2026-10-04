@@ -1,8 +1,9 @@
 ---
 title: 01 驱动装好了，但没有渲染：NVIDIA 在这台机器上的三种坏法
 summary: >-
-  同一块显卡、同一台机器，坏过三次：一次是内核更新后模块没重编，一次是驱动装成了计算专用所以客人用 llvmpipe
-  画图，还有一次根本找错了方向。三次的共同点是——nvidia-smi 一直是好的。
+  同一块 RTX 5060 Ti、同一个 Ubuntu 22.04，坏过三次：内核更新后模块没重编（nvidia-smi
+  直接报错）、驱动装成计算专用所以一切正常但画面走 CPU、以及把 iGPU 当成元凶找了几个月。三种坏法的共同点是：判断「谁在渲染」的那条命令不是
+  nvidia-smi。
 lang: zh
 translationKey: nvidia-drivers
 slug: nvidia-drivers
@@ -15,55 +16,67 @@ tags:
   - GPU
 status: preview
 source: seasons/03-tinkering/01-nvidia-drivers.zh.md
-syncedAt: '2026-10-04T11:31:22.855Z'
+syncedAt: '2026-10-04T11:40:53.362Z'
 ---
-<!-- 草稿：合并三处素材——ubuntu_setup 的《旧版 iGPU 问题记录（复盘）》、同一份手册里 CUDA 页的
-     “内核更新后驱动失效”一节，以及 android_gaming 里发现的两个宿主机缺陷。
-     命令留在手册页，这里只写判断与误判。 -->
+<!-- 草稿：素材来自 ubuntu_setup 的《旧版 iGPU 问题记录（复盘）》《NVIDIA GPU 与 CUDA 环境配置》，
+     以及 android_gaming 里记录的两个宿主机缺陷。命令留在手册页，这里写判断过程。 -->
 
 # 驱动装好了，但没有渲染
 
-`nvidia-smi` 能打印出那张表格，只能说明一件事：内核模块加载了，驱动能和卡说话。它**不能**说明 GLX 和 EGL 能用，也不能说明任何程序真的在用这张卡画图。
+这台机器是 Ubuntu 22.04、i5-13500、31 GB 内存、RTX 5060 Ti，驱动是 NVIDIA 595.91.07 的开源内核模块。同样一块卡，我遇到过三种完全不同的坏法，而它们需要的排查方向完全不一样。
 
-我这台机器上，三种坏法都从这句误判开始。
+完整的环境配置和命令在手册里：[GPU 与 CUDA](/zh/docs/ubuntu/gpu/cuda/)。
 
-## 一、内核更新之后，模块没跟着重编
+## 一、内核更新之后：报错很直接
 
-NVIDIA 的 `.run` 安装包是把模块编进**当前那个内核版本**的。内核一升级，模块目录还在，`/dev/nvidia*` 甚至还在，但新的内核里没有对应的 `.ko`——于是图形栈悄悄退回软件渲染，或者干脆黑屏。
+从 `6.8.0-85` 升到 `6.8.0-87` 之后，症状是明摆着的：
 
-症状出现得毫无规律：昨天还好，重启之后就变了。查法是看模块是否属于正在运行的内核：
+```console
+$ nvidia-smi
+NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver.
 
-```bash
-uname -r
-modinfo nvidia | grep ^filename
+$ sudo modprobe nvidia
+modprobe: FATAL: Module nvidia not found in directory /lib/modules/6.8.0-87-generic
 ```
 
-两行里的版本号不一致，就是它。修法只有一条：用 DKMS，或者在每次内核更新后重跑安装包。
+`ls /lib/modules` 里新内核的目录是有的，里面就是没有 `nvidia.ko`。
 
-## 二、装成了“计算专用”，于是客人用 CPU 画图
+原因不神秘：NVIDIA 的 `.run` 安装包是把模块编进**当时那个内核**的，内核一换，目录还在，模块不在。修法是重新安装驱动让它针对当前内核重编，或者一开始就用 DKMS 托管。
 
-这一条是在做安卓模拟器时发现的，代价最大：`nvidia-smi` 正常、CUDA 能跑、`torch.cuda.is_available()` 是 `True`——**只有渲染是坏的**。
+这一段的具体步骤（含回滚）在 [CUDA 环境配置 § 内核更新后驱动问题](/zh/docs/ubuntu/gpu/cuda/) 里。
 
-安装包里那几项如果不勾，`libGLX_nvidia.so` / `libEGL_nvidia.so` 就不会装。系统于是回落到 `llvmpipe`：CPU 软件光栅化，能出图，慢到没法用。模拟器里的表现尤其迷惑——安卓起来了、界面能点、游戏一加载资源就卡死在启动画面。
+## 二、真正难查的那种：一切正常，但没有渲染
 
-判断只需要一条：
+第二种是在做安卓模拟器时才暴露出来的，也是这三种里最贵的。
 
-```bash
-glxinfo -B | grep -E "OpenGL renderer|OpenGL vendor"
+当时 `nvidia-smi` 输出完全正常，CUDA 能跑，`torch.cuda.is_available()` 返回 `True`——**只有渲染是坏的**。安装 `.run` 包时如果没勾 GLX/EGL 那几项，`libGLX_nvidia.so` 和 `libEGL_nvidia.so` 根本不会装上，系统于是回落到 `llvmpipe`：CPU 软件光栅化，能出画面，慢到不能用。
+
+表现极具误导性：安卓系统起来了、界面能点、游戏一加载资源就停在启动画面。看起来像翻译层的问题，实际是根本没有 GPU。
+
+一条命令就能定性：
+
+```console
+$ glxinfo -B | grep -E "OpenGL renderer|OpenGL vendor"
+OpenGL vendor string: Mesa
+OpenGL renderer string: llvmpipe (LLVM 15.0.7, 256 bits)
 ```
 
-看到 `llvmpipe` 就是没在用卡。`nvidia-smi` 在这里帮不上任何忙，这是我后来才接受的。
+看到 `llvmpipe` 就是没在用卡。相关的症状和处置记在 [Linux 上的安卓游戏 § 排错](/zh/docs/android/trouble/) 里。
 
-## 三、找错方向：iGPU 背了几个月的锅
+## 三、最贵的不是修，是判断
 
-最费时间的不是修，是判断。屏幕上出现撕裂、闪烁、分辨率不对时，我的第一反应是“核显和独显打架”——于是去黑名单 nouveau、去改 xorg.conf、去反复重装驱动，甚至把显示器插到主板输出上试。这些都留下了记录，也都没有解决问题。
+第三种严格说不是新的故障，是同一个故障被我诊断错了方向。
 
-真正的结论最后只有一句：**驱动没有为当时的内核重新编译**。也就是说，症状一和症状三是同一件事，只是我在一个错误的方向上找了很久。
+屏幕出现撕裂、闪烁、分辨率不对的时候，我的第一反应是"核显和独显在打架"。于是：把 nouveau 加进黑名单、改 `xorg.conf`、反复重装驱动、把显示器换到主板输出口上试。这些都留下了记录，也都没有解决问题。
 
-事后看，能省下那几个月的是一个很笨的习惯：先把“现在到底谁在渲染”问清楚，再动配置。
+最后的结论只有一句：**驱动没有针对当时的内核重新编译**——也就是第一种。见 [旧版 iGPU 问题记录（复盘）](/zh/docs/ubuntu/gpu/igpu-postmortem/)。
 
-## 三条留给自己
+## 顺带一个更隐蔽的：工具来自另一个分支
 
-1. **不要用 `nvidia-smi` 当作渲染可用的证据。** 它证明的是模块和卡在通话。
-2. **`glxinfo -B` 才是渲染的证据。** 一行输出，比任何日志都直接。
-3. **内核更新之后先怀疑模块，再怀疑配置。** 大部分“突然坏了”都发生在升级之后，而升级改变的是模块，不是你的 `xorg.conf`。
+这台机器上还有个没收拾干净的地方：`nvidia-settings` 的版本是 615.71.09，而驱动是 595.91.07。它们不是一条分支上的东西，工具会给出和实际驱动对不上的报错。它不致命，但足够让下一个人（包括三个月后的我）往错误方向走一段。
+
+## 判断顺序
+
+1. **先问"现在谁在渲染"**：`glxinfo -B`。`llvmpipe` 就直接说明没有 GPU 参与。
+2. **再看模块属于哪个内核**：`uname -r` 对 `modinfo nvidia | grep ^filename`。
+3. **最后才动配置**：`xorg.conf`、黑名单、显示器接线，这些在模块那一步就对不上的时候，改了也白改。

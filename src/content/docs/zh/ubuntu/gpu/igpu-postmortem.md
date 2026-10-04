@@ -206,3 +206,7 @@ NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Ma
 问题的根本原因是驱动没有针对新内核编译。这实际上与 iGPU 无关。
 
 解决方案是重新安装驱动，这样它就会针对当前的内核进行编译。
+
+---
+
+> **延伸阅读**：[驱动装好了，但没有渲染](/zh/writing/nvidia-drivers/)——同一件事的来龙去脉，收在《折腾笔记》里。

@@ -266,3 +266,7 @@ adb install -r fatego.apk
 adb logcat -d -s berberis:* | grep Initialized     # 应为 16.0.0
 adb logcat -d | grep -cE "restore sp|Fatal signal" # 应为 0
 ```
+
+---
+
+> **来龙去脉**：[把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号](/zh/writing/android-games/)——这一步为什么是这样，以及当时卡在哪里。

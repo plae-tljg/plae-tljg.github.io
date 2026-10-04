@@ -235,3 +235,7 @@ is still on disk, the hash check above matters: `fbadc774…` = good, `af88b2c1�
 ~/Music/test/android_gaming/evidence/fgo-attempts/armprobe/FINDINGS-C.md        ← houdini-on-AVD results
 ~/.android/avd/api36.avd/                        ← the working AVD (Android 16.0)
 ```
+
+---
+
+> **来龙去脉**：[把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号](/zh/writing/android-games/)——这一步为什么是这样，以及当时卡在哪里。

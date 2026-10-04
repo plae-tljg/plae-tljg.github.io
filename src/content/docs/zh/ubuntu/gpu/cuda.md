@@ -301,3 +301,7 @@ sudo reboot
 ## 历史问题参考
 
 如果之前遇到过 iGPU 相关的问题，可以参考 [旧版 iGPU 问题记录](/zh/docs/ubuntu/gpu/igpu-postmortem/)。
+
+---
+
+> **延伸阅读**：[驱动装好了，但没有渲染](/zh/writing/nvidia-drivers/)——同一件事的来龙去脉，收在《折腾笔记》里。

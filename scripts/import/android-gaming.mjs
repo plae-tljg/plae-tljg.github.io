@@ -38,8 +38,8 @@ const IMPORT_DATE = '2026-10-04'
 /** Source file → destination. Anything not listed is not published. */
 const MAP = [
   // The recipe itself: English and Chinese, one translationKey so they pair.
-  ['docs/01-SOLUTION.md', 'android', 'solution', 'solution', 1, { index: true, lang: 'en', title: 'Running FGO 国服 on Ubuntu' }],
-  ['docs/01-SOLUTION.zh-CN.md', 'android', 'solution', 'solution', 1, { index: true, lang: 'zh', title: '在 Ubuntu 上玩 FGO 国服' }],
+  ['docs/01-SOLUTION.md', 'android', 'solution', 'solution', 1, { index: true, lang: 'en', title: 'Running FGO 国服 on Ubuntu', related: { url: '/zh/writing/android-games/', title: '把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号' } }],
+  ['docs/01-SOLUTION.zh-CN.md', 'android', 'solution', 'solution', 1, { index: true, lang: 'zh', title: '在 Ubuntu 上玩 FGO 国服', related: { url: '/zh/writing/android-games/', title: '把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号' } }],
   ['docs/05-ARKNIGHTS.md', 'android', 'solution', 'arknights', 2, { lang: 'en', title: 'Arknights on the same machine' }],
   ['docs/03-TROUBLESHOOTING.md', 'android', 'trouble', 'troubleshooting', 1, { index: true, lang: 'en', title: 'Troubleshooting' }],
 ]
@@ -130,6 +130,10 @@ for (const [src, track, stage, slug, order, opts] of flag('articles') ? [] : MAP
     '---',
     '',
   ]
+  if (opts.related) {
+    body = `${body.trim()}\n\n---\n\n> **来龙去脉**：[${opts.related.title}](${opts.related.url})——这一步为什么是这样，以及当时卡在哪里。\n`
+  }
+
   const outPath = path.join(OUT_DOCS, opts.lang, track, stage, `${slug}.md`)
   if (!DRY) {
     fs.mkdirSync(path.dirname(outPath), { recursive: true })

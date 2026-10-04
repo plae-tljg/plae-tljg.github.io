@@ -75,10 +75,10 @@ const MAP = [
   ['apps/common/old/sogou_input.md', 'ubuntu', 'apps', 'sogou-input', 18, { note: '已过时' }],
 
   // ---- ubuntu · gpu ------------------------------------------------------
-  ['apps/gpu/cuda.md', 'ubuntu', 'gpu', 'cuda', 1, {}],
+  ['apps/gpu/cuda.md', 'ubuntu', 'gpu', 'cuda', 1, { related: { url: '/zh/writing/nvidia-drivers/', title: '驱动装好了，但没有渲染' } }],
   // Kept in the docs as well as queued as an article: cuda.md links to it, and
   // the post-mortem is the operational half of that story.
-  ['apps/gpu/old_igpu_problems.md', 'ubuntu', 'gpu', 'igpu-postmortem', 2, { title: '旧版 iGPU 问题记录（复盘）' }],
+  ['apps/gpu/old_igpu_problems.md', 'ubuntu', 'gpu', 'igpu-postmortem', 2, { title: '旧版 iGPU 问题记录（复盘）', related: { url: '/zh/writing/nvidia-drivers/', title: '驱动装好了，但没有渲染' } }],
 
   // ---- ubuntu · remote: getting into the machine -------------------------
   ['dev/ssh/README.md', 'ubuntu', 'remote', 'index', 0, { index: true }],

@@ -707,7 +707,5 @@
       "to": "/en/docs/homelab/home/ip-cam-old-install/"
     }
   ],
-  "articleOnly": [
-    "dev/web_dev/html.md"
-  ]
+  "articleOnly": []
 }
