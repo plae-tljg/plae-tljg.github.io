@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>方案与配置 · Linux 上的安卓游戏 · LKM</title><meta name="description" content="系统镜像、AVD 参数、安装与自检命令，以及明日方舟这条对照组。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/docs/android/solution/"><meta property="og:type" content="website"><meta property="og:title" content="方案与配置 · Linux 上的安卓游戏 · LKM"><meta property="og:description" content="系统镜像、AVD 参数、安装与自检命令，以及明日方舟这条对照组。"><meta property="og:url" content="https://plae-tljg.github.io/zh/docs/android/solution/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/path.0qta1OZl.css"><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+.docs-nav{font-size:.86rem;line-height:1.5}.docs-nav__toggle{background:var(--surface,transparent);border:1px solid var(--border);border-radius:var(--radius);width:100%;color:inherit;font:inherit;cursor:pointer;justify-content:space-between;align-items:center;gap:1rem;padding:.7rem .9rem;display:none}.docs-nav__track>summary,.docs-nav__stage>summary{cursor:pointer;align-items:baseline;gap:.5rem;padding:.4rem 0;list-style:none;display:flex}.docs-nav__track>summary::-webkit-details-marker,.docs-nav__stage>summary::-webkit-details-marker{display:none}.docs-nav__track>summary{color:var(--text);font-weight:620}.docs-nav__track>summary:before,.docs-nav__stage>summary:before{content:"▸";color:var(--text-faint);margin-right:.35rem;font-size:.7em;transition:transform .15s;display:inline-block}.docs-nav__track[open]>summary:before,.docs-nav__stage[open]>summary:before{transform:rotate(90deg)}.docs-nav__lang{border:1px solid var(--border);color:var(--text-faint);vertical-align:.05em;border-radius:3px;margin-left:.35rem;padding:0 .25rem;font-size:.62rem}.docs-nav__count{color:var(--text-faint);font-variant-numeric:tabular-nums;margin-left:auto;font-size:.78em}.docs-nav__stage{border-left:1px solid var(--border);margin-left:.55rem;padding-left:.7rem}.docs-nav__stage>summary{color:var(--text-soft);font-size:.95em}.docs-nav ul{margin:.1rem 0 .5rem;padding:0 0 0 1.1rem;list-style:none}.docs-nav li{margin:.1rem 0}.docs-nav a{color:var(--text-soft);border-left:2px solid #0000;border-radius:4px;padding:.12rem .4rem;text-decoration:none;display:block}.docs-nav a:hover{color:var(--link,var(--accent));background:var(--surface-soft,#7f7f7f14)}.docs-nav a.is-current{color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent);font-weight:650}.docs-nav__track>summary>a.is-current,.docs-nav__stage>summary>a.is-current{border-radius:4px;margin-left:-.4rem;padding:.05rem .4rem;display:inline-block}.docs-nav__foot{border-top:1px solid var(--border);margin:1rem 0 0;padding-top:.75rem}@media (width>=1024px){.docs-nav{border-right:1px solid var(--border);align-self:start;max-height:calc(100vh - 7rem);padding-right:.75rem;position:sticky;top:5rem;overflow-y:auto}}@media (width<=1023px){.docs-nav__toggle{display:flex}.docs-nav__body{border:1px solid var(--border);border-radius:var(--radius);margin-top:.75rem;padding:.75rem .9rem 1rem;display:none}.docs-nav[data-open] .docs-nav__body{display:block}}.container.container--docs{max-width:90rem}.docs-shell{grid-template-columns:minmax(0,1fr);gap:2rem;padding-top:2rem;display:grid}@media (width>=1024px){.docs-shell{grid-template-columns:15rem minmax(0,1fr);gap:2.5rem}}@media (width>=1280px){.docs-shell--with-toc{grid-template-columns:15rem minmax(0,1fr) 12rem}}.docs-main{min-width:0}.docs-main .article__header,.docs-main .notice,.docs-main .prose>p,.docs-main .prose>ul,.docs-main .prose>ol,.docs-main .prose>blockquote,.docs-main .prose>h2,.docs-main .prose>h3,.docs-main .prose>h4,.docs-main .prose>h5,.docs-main .prose>h6{max-width:46rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/">文章</a><a href="/zh/docs/" aria-current="page">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/docs/android/solution/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><div class="container container--docs"><div class="docs-shell docs-shell--with-toc"><nav class="docs-nav" aria-label="文档" data-docs-nav><button class="docs-nav__toggle" type="button" aria-expanded="false" data-docs-nav-toggle><span>目录</span><span aria-hidden="true">▾</span></button><div class="docs-nav__body"><details class="docs-nav__track" data-nav-key="track:math-path"><summary><a href="/zh/docs/math-path/">数学学习路径</a><span class="docs-nav__count">9</span></summary><details class="docs-nav__stage" data-nav-key="stage:math-path/getting-started"><summary><a href="/zh/docs/math-path/getting-started/">入门指南</a></summary><ul><li><a href="/zh/docs/math-path/getting-started/high-school-books/">高中时读的书</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:math-path/university"><summary><a href="/zh/docs/math-path/university/">大学数学</a></summary><ul><li><a href="/zh/docs/math-path/university/set-theory/"><span aria-hidden="true">∅ </span>集合论</a></li><li><a href="/zh/docs/math-path/university/math-logic/"><span aria-hidden="true">⟂ </span>数理逻辑</a></li><li><a href="/zh/docs/math-path/university/number-theory/"><span aria-hidden="true">ℕ </span>数论</a></li><li><a href="/zh/docs/math-path/university/group-theory/"><span aria-hidden="true">⊕ </span>群论</a></li><li><a href="/zh/docs/math-path/university/analysis/"><span aria-hidden="true">∫ </span>数学分析</a></li><li><a href="/zh/docs/math-path/university/topology/"><span aria-hidden="true">◈ </span>拓扑学</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:ubuntu"><summary><a href="/zh/docs/ubuntu/">Ubuntu 环境</a><span class="docs-nav__count">44</span></summary><details class="docs-nav__stage" data-nav-key="stage:ubuntu/base"><summary><a href="/zh/docs/ubuntu/base/">安装与磁盘</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/ubuntu/base/headless/">以无头模式运行 Linux</a></li><li><a href="/zh/docs/ubuntu/base/multiple-ssds/">多 SSD 存储管理与快捷访问</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/apps"><summary><a href="/zh/docs/ubuntu/apps/">应用</a></summary><ul><li><a href="/zh/docs/ubuntu/apps/quick-install/">常用软件安装</a></li><li><a href="/zh/docs/ubuntu/apps/browsers/">浏览器</a></li><li><a href="/zh/docs/ubuntu/apps/firefox/">Firefox</a></li><li><a href="/zh/docs/ubuntu/apps/editors/">编辑器与 IDE</a></li><li><a href="/zh/docs/ubuntu/apps/ide/">IDE 安装</a></li><li><a href="/zh/docs/ubuntu/apps/image-editors/">图像编辑工具</a></li><li><a href="/zh/docs/ubuntu/apps/audio/">音频工具</a></li><li><a href="/zh/docs/ubuntu/apps/multimedia/">多媒体工具</a></li><li><a href="/zh/docs/ubuntu/apps/office/">办公软件</a></li><li><a href="/zh/docs/ubuntu/apps/games/">游戏</a></li><li><a href="/zh/docs/ubuntu/apps/network-tools/">网络工具</a></li><li><a href="/zh/docs/ubuntu/apps/database-tools/">数据库工具</a></li><li><a href="/zh/docs/ubuntu/apps/dev-tools/">开发工具</a></li><li><a href="/zh/docs/ubuntu/apps/system-tools/">系统工具</a></li><li><a href="/zh/docs/ubuntu/apps/user-config/">用户配置工具</a></li><li><a href="/zh/docs/ubuntu/apps/virtual-machines/">虚拟机</a></li><li><a href="/zh/docs/ubuntu/apps/kvm-qemu/">KVM/QEMU 虚拟机配置与迁移</a></li><li><a href="/zh/docs/ubuntu/apps/sogou-input/">Sogou Input</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/gpu"><summary><a href="/zh/docs/ubuntu/gpu/">GPU 与 CUDA</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/ubuntu/gpu/cuda/">NVIDIA GPU 与 CUDA 环境配置</a></li><li><a href="/zh/docs/ubuntu/gpu/igpu-postmortem/">旧版 iGPU 问题记录（复盘）</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/remote"><summary><a href="/zh/docs/ubuntu/remote/">远程访问</a></summary><ul><li><a href="/zh/docs/ubuntu/remote/basics/">SSH 基础命令</a></li><li><a href="/zh/docs/ubuntu/remote/authentication/">SSH 认证问题解决</a></li><li><a href="/zh/docs/ubuntu/remote/sftp/">SFTP 使用</a></li><li><a href="/zh/docs/ubuntu/remote/proxy-jump/">SSH 跳板和代理</a></li><li><a href="/zh/docs/ubuntu/remote/android-access/">Android 本地文件访问</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/net"><summary><a href="/zh/docs/ubuntu/net/">网络</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/ubuntu/net/static-ip/">Ubuntu 设置静态 IP（临时与永久方法）说明</a></li><li><a href="/zh/docs/ubuntu/net/local-https/">HTTPS 配置</a></li><li><a href="/zh/docs/ubuntu/net/wifi-reconnect/">Windows 下无法自动重连 Wi-Fi 的问题与解决方法</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/shell"><summary><a href="/zh/docs/ubuntu/shell/">终端与 Shell</a></summary><ul><li><a href="/zh/docs/ubuntu/shell/common-dirs/">Ubuntu 的常用目录</a></li><li><a href="/zh/docs/ubuntu/shell/bash-tricks/">Bash 技巧</a></li><li><a href="/zh/docs/ubuntu/shell/systemd/">systemd 常用命令</a></li><li><a href="/zh/docs/ubuntu/shell/audio-cmd/">Common Command for Audio</a></li><li><a href="/zh/docs/ubuntu/shell/reboot-router/">Reboot Router</a></li><li><a href="/zh/docs/ubuntu/shell/send-email/">发送邮件的脚本</a></li><li><a href="/zh/docs/ubuntu/shell/code-highlight/">代码高亮</a></li><li><a href="/zh/docs/ubuntu/shell/cursor-style/">光标样式</a></li><li><a href="/zh/docs/ubuntu/shell/fun-commands/">有趣的命令</a></li><li><a href="/zh/docs/ubuntu/shell/links/">常用链接</a></li><li><a href="/zh/docs/ubuntu/shell/hidden-images/">图种：把文件藏进图片里</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:android" open><summary><a href="/zh/docs/android/">Linux 上的安卓游戏</a><span class="docs-nav__count">3</span></summary><details class="docs-nav__stage" data-nav-key="stage:android/solution" open><summary><a href="/zh/docs/android/solution/" aria-current="page" class="is-current">方案与配置</a></summary><ul><li><a href="/zh/docs/android/solution/arknights/">同一台机器上的明日方舟</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:android/trouble"><summary><a href="/zh/docs/android/trouble/">排错</a></summary><ul></ul></details></details><details class="docs-nav__track" data-nav-key="track:homelab"><summary><a href="/zh/docs/homelab/">家庭网络与自托管</a><span class="docs-nav__count">11</span></summary><details class="docs-nav__stage" data-nav-key="stage:homelab/services"><summary><a href="/zh/docs/homelab/services/">自托管服务</a></summary><ul><li><a href="/zh/docs/homelab/services/asterisk-basics/">Asterisk 基础命令和配置</a></li><li><a href="/zh/docs/homelab/services/asterisk-trunk/">SIP Trunk 配置指南</a></li><li><a href="/zh/docs/homelab/services/asterisk-audio/">Asterisk 音频处理</a></li><li><a href="/zh/docs/homelab/services/postgresql/">PostgreSQL</a></li><li><a href="/zh/docs/homelab/services/local-git/">Git 本地和局域网服务器使用</a></li><li><a href="/zh/docs/homelab/services/git-rewrite/">有意识地重写仓库历史</a></li><li><a href="/zh/docs/homelab/services/github-pages-paths/">两个仓库，一个域名：GitHub Pages 路径实验</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:homelab/home"><summary><a href="/zh/docs/homelab/home/">家居设备</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/homelab/home/ip-cam/">IP Camera - CameraLink App</a></li><li><a href="/zh/docs/homelab/home/ip-cam-old/">IP Camera</a></li><li><a href="/zh/docs/homelab/home/ip-cam-old-install/">IP Camera 项目 - 安装指南</a></li></ul></details></details><p class="docs-nav__foot"><a href="/zh/archive/">索引</a></p></div></nav><script type="module">var e=`docs-nav:open`,t=document.querySelector(`[data-docs-nav]`);if(t){let n=JSON.parse(localStorage.getItem(e)||`{}`),r=Array.from(t.querySelectorAll(`details[data-nav-key]`));for(let t of r){let r=t.dataset.navKey||``;r in n&&!t.querySelector(`[aria-current="page"]`)&&(t.open=n[r]),t.addEventListener(`toggle`,()=>{n[r]=t.open,localStorage.setItem(e,JSON.stringify(n))})}t.querySelector(`[data-docs-nav-toggle]`)?.addEventListener(`click`,e=>{let n=t.toggleAttribute(`data-open`);e.currentTarget.setAttribute(`aria-expanded`,String(n))}),t.querySelector(`[aria-current="page"]`)?.scrollIntoView({block:`center`})}</script><div class="docs-main" data-pagefind-body><div class="docs-page"><nav class="breadcrumb" style="margin-top:2rem"><a href="/zh/docs/android/">Linux 上的安卓游戏</a><span aria-hidden="true">/</span><span>方案与配置</span></nav><header class="path-stage__head"><h1>方案与配置</h1><p>系统镜像、AVD 参数、安装与自检命令，以及明日方舟这条对照组。</p></header><div class="prose path-content"><blockquote>
+<p><strong>一句话结论</strong>
+别去折腾容器、libhoudini、改翻译层。<strong>把模拟器系统镜像换成 Android 16（API 36.0）</strong>，问题就没了。
+原始镜像、<strong>零修改</strong>，FGO 国服能正常安装、启动、下载资源、进入游戏。</p>
+</blockquote>
+<p>本文记录一套<strong>已经跑通</strong>的方案，包含：为什么以前都失败、完整复现步骤、验证方法、以及踩过的坑。
+文中的路径都是示例，请按自己的环境替换。</p>
+<hr>
+<h2 id="一为什么以前各种方法都失败">一、为什么以前各种方法都失败</h2>
+<p>以前大家（包括各种教程）几乎都用 <strong>API 35 及更早</strong>的系统镜像。这些镜像里的 ARM 翻译层
+<code>/system/lib64/libndk_translation.so</code>（Google 的 “berberis”，版本 <strong>0.2.3</strong>）有一个致命 bug：</p>
+<p>它要求每一次「翻译执行的 ARM64 调用」返回时，guest 的栈指针必须<strong>一模一样</strong>，
+而 FGO 的代码会差 <strong>0x10（16 字节）</strong>，于是 0.2.3 直接判定为致命错误并 <code>abort</code>：</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>F berberis: Guest call didn't restore sp: expected 0x……fd0, actual 0x……fc0</span></span>
+<span class="line"><span>F libc    : Fatal signal 6 (SIGABRT) …… (bilibili.fatego)</span></span></code></pre></figure>
+<p>表现就是：<strong>游戏大约 51 秒左右必崩</strong>（不管你怎么配、加多少内存、换哪个模拟器版本）。</p>
+<blockquote>
+<p>关键认知：这<strong>不是</strong>模拟器配置问题，<strong>不是</strong>显卡问题，<strong>不是</strong> FGO 封杀模拟器，
+<strong>也不是</strong> ACE 反作弊拦你 —— 是<strong>那个版本的 Google 翻译层本身有 bug</strong>。</p>
+</blockquote>
+<p>Android 16 镜像里带的是<strong>更新版的翻译层</strong>（berberis <strong>16.0.0</strong>，
+<code>sha256 fbadc774c989534a567e6af8fd16d2c00727b1f1d9cc778bf538d6b59ed9776d</code>，5,403,704 字节），
+它在这段代码上不再触发该断言。<strong>一切问题随之消失。</strong></p>
+<p>另外两点也很重要：</p>
+<ul>
+<li><strong>必须用 36.0（rev 7），不要用 36.1。</strong> 36.1 的 SurfaceFlinger 每开机崩 48～72 次
+（<code>Assertion failed: !rcEnc->featureInfo()->hasReadColorBufferDma</code>），装大 APK 时
+<code>system_server</code> 还会重启，根本没法用。</li>
+<li>镜像选对之后，<strong>NVIDIA 显卡加速是正常的</strong>，guest 内会显示：
+<code>GLES: Google (NVIDIA Corporation), … (NVIDIA GeForce RTX 5060 Ti/PCIe/SSE2), OpenGL ES 3.1</code></li>
+</ul>
+<hr>
+<h2 id="二实测通过的参考环境">二、实测通过的参考环境</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>项目</th><th>实测值</th></tr></thead><tbody><tr><td>系统</td><td>Ubuntu 22.04.5（X11 / GNOME 均可）</td></tr><tr><td>CPU</td><td>Intel i5-13500（<strong>需要支持 VT-x 且 <code>/dev/kvm</code> 可用</strong>）</td></tr><tr><td>内存</td><td>31 GB（给模拟器 8 GB）</td></tr><tr><td>显卡</td><td>NVIDIA RTX 5060 Ti，驱动 <strong>595.91.07</strong>（<code>nvidia-smi</code> 正常、<code>glxinfo -B</code> 显示 NVIDIA 而非 llvmpipe）</td></tr><tr><td>Android SDK</td><td>Android Studio 自带的 SDK 即可（示例路径 <code>$HOME/android-sdk</code>）</td></tr><tr><td>模拟器</td><td><strong>37.3.2</strong>（实测版本；建议用当前最新，旧版 37.2.12 在主机 GPU 路径上更容易崩）</td></tr><tr><td>系统镜像</td><td><strong><code>system-images;android-36;google_apis;x86_64</code>（Android 16.0，rev 7，userdebug）</strong></td></tr><tr><td>AVD</td><td>名称随意（示例 <code>api36</code>），<strong>8 GB 内存 / 6 核 / 32 GB 数据分区</strong>，设备档 <code>pixel_7</code></td></tr><tr><td>游戏</td><td><code>com.bilibili.fatego</code>（B 服官服，实测 v2.129.0，APK 约 1.99 GB）</td></tr><tr><td>分辨率</td><td>1080×2400（游戏横屏后为 2400×1080）</td></tr></tbody></table>
+<p>先自检两件事：</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 1) KVM 是否可用</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">emulator</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -accel-check</span><span style="color:#6A737D;--shiki-dark:#6A737D">        # 期望：KVM (version 12) is installed and usable.</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">ls</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -l</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> /dev/kvm</span><span style="color:#6A737D;--shiki-dark:#6A737D">               # 若权限不足：sudo usermod -aG kvm $USER 后重新登录</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 2) 显卡驱动是否是真正的 NVIDIA（不是软件渲染 llvmpipe）</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">glxinfo</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -B</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "OpenGL renderer"</span></span></code></pre></figure>
+<hr>
+<h2 id="三完整复现步骤">三、完整复现步骤</h2>
+<h3 id="1-准备-sdk-与模拟器">1) 准备 SDK 与模拟器</h3>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ANDROID_HOME</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$HOME/android-sdk</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> ANDROID_SDK_ROOT</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$ANDROID_HOME</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">export</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> JAVA_HOME</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$HOME/android-studio/jbr        </span><span style="color:#6A737D;--shiki-dark:#6A737D"># 用 Android Studio 自带 JBR 最省事</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 模拟器（想用最新的可以加 --channel=3）</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"emulator"</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "platform-tools"</span></span></code></pre></figure>
+<h3 id="2-下载-android-160-系统镜像">2) 下载 Android 16.0 系统镜像</h3>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"system-images;android-36;google_apis;x86_64"</span></span></code></pre></figure>
+<blockquote>
+<p>如果 <code>sdkmanager</code> 卡住不动（实测遇到过），就<strong>直接下 zip</strong>：</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">curl</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -L</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -o</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> a36.zip</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> https://dl.google.com/android/repository/sys-img/google_apis/x86_64-36_r07.zip</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">mkdir</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -p</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> $ANDROID_HOME</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/system-images/android-36/google_apis</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">unzip</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -o</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> a36.zip</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> $ANDROID_HOME</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/system-images/android-36/google_apis/</span></span></code></pre></figure>
+</blockquote>
+<h3 id="3-建-avd并把它调大">3) 建 AVD，并把它调大</h3>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">echo</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> no</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> $ANDROID_HOME</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/cmdline-tools/latest/bin/avdmanager</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> create</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> avd</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">    -n</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> api36</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -k</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "system-images;android-36;google_apis;x86_64"</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> pixel_7</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> --force</span></span></code></pre></figure>
+<p><strong>默认配置只有 2 GB 内存 / 2 GB 数据分区，装不下 2 GB 的 APK，必须改：</strong></p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">CFG</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$HOME</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/.android/avd/api36.avd/config.ini</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sed</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 's/^hw.ramSize=.*/hw.ramSize=8192/; s/^hw.cpu.ncore=.*/hw.cpu.ncore=6/; s/^disk.dataPartition.size=.*/disk.dataPartition.size=32G/'</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> $CFG</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -E</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'ramSize|ncore|dataPartition'</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> $CFG    </span><span style="color:#6A737D;--shiki-dark:#6A737D"># 确认改完</span></span></code></pre></figure>
+<h3 id="4-启动模拟器">4) 启动模拟器</h3>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ANDROID_HOME/emulator/emulator -avd api36 -gpu host -accel on -no-boot-anim</span></span></code></pre></figure>
+<blockquote>
+<p>也可以在 <strong>Android Studio → Device Manager</strong> 里点 ▶ 启动，效果一样。
+<strong>不要</strong>加 <code>-writable-system</code>，<strong>不要</strong>改 <code>/system</code> —— 这套方案完全不需要。</p>
+</blockquote>
+<h3 id="5-安装游戏">5) 安装游戏</h3>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -r</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> fatego.apk</span><span style="color:#6A737D;--shiki-dark:#6A737D">        # 约 2 GB，耐心等</span></span></code></pre></figure>
+<p>如果报 <code>Broken pipe</code> 或 <code>not enough space</code>：</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> push</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> fatego.apk</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> /data/local/tmp/</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> shell</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> pm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -r</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -g</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> /data/local/tmp/fatego.apk</span></span></code></pre></figure>
+<p>（<code>not enough space</code> = 第 3 步的数据分区没改成功；<code>Broken pipe</code> 多见于镜像不稳定，比如 36.1。）</p>
+<h3 id="6-首次进游戏点两个地方">6) 首次进游戏：点两个地方</h3>
+<p>启动后（图标「命运-冠位指定」，或 <code>adb shell am start -n com.bilibili.fatego/.EmptyClass</code>）：</p>
+<ol>
+<li>系统弹出 <strong>“Viewing full screen”</strong> → 点 <strong><code>Got it</code></strong>，约在 <strong>(1697, 500)</strong></li>
+<li>弹出 <strong>bilibili 用户协议与隐私政策</strong> → 点 <strong><code>同意</code></strong>，约在 <strong>(1411, 828)</strong>
+⚠️ 不要点「拒绝」</li>
+</ol>
+<blockquote>
+<p>坐标基于 2400×1080 横屏。如果是别的分辨率，自己按比例换算，或先用
+<code>adb shell uiautomator dump</code> 找按钮位置。</p>
+</blockquote>
+<h3 id="7-等资源下载然后就能玩了">7) 等资源下载，然后就能玩了</h3>
+<p>游戏会显示 <code>连接中.</code>，然后开始下载资源（界面左下角会显示
+<code>下载中 (x.xx MB/秒)  已下载/总量  百分比</code>），一共 <strong>约 1.9 GB</strong>。
+下完自动进入游戏：序章剧情 → 需要账号时再拉起 bilibili 登录。</p>
+<hr>
+<h2 id="四怎么确认真的成了">四、怎么确认「真的成了」</h2>
+<figure class="code-viewer" data-lines="11"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 1) 翻译层版本：应该是 16.0.0（失败的那些是 0.2.3）</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -s</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> berberis:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">*</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -m1</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> Initialized</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 2) 全程不该出现这两行（出现即失败）</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -E</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "restore sp|Fatal signal"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 3) 显卡是否真的在加速</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> shell</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> dumpsys</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> SurfaceFlinger</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -m1</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> '^GLES'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 4) 资源是否在下</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> shell</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> du</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -sm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> /sdcard/Android/data/com.bilibili.fatego</span></span></code></pre></figure>
+<p>跑通时可以看到：</p>
+<ul>
+<li><code>berberis: Initialized Berberis (aarch64), version 16.0.0</code></li>
+<li><code>restore sp</code> 与 <code>Fatal signal</code> <strong>都是 0 次</strong></li>
+<li>数据目录涨到 <strong>约 1,920 MB</strong></li>
+<li>游戏内正常显示 UI（从者介绍页、序章剧情画面等）</li>
+</ul>
+<h3 id="实测性能战斗中实测用-surfaceflinger-帧时间戳">实测性能（<strong>战斗中</strong>实测，用 SurfaceFlinger 帧时间戳）</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>指标</th><th>数值</th></tr></thead><tbody><tr><td>帧率</td><td><strong>稳定 30.0 fps</strong> —— 这是 <strong>FGO 自己的上限</strong>，不是模拟器的限制</td></tr><tr><td>帧间隔</td><td>平均 33.3 ms，最差 36–54 ms，丢帧（missed vsync）<strong>0–6%</strong></td></tr><tr><td>模拟器 CPU</td><td>约 100%（≈ 一个宿主核心）</td></tr><tr><td>模拟器内存</td><td>约 13 GB（宿主 31 GB，AVD 配置 8 GB）</td></tr><tr><td>显卡</td><td>占用 19%，显存约 1.4 GB</td></tr><tr><td>客体可用内存</td><td>8 GB 中约 4 GB 空闲，Android 的 lmkd 从不触发</td></tr></tbody></table>
+<p><strong>真正有用的一步：把模拟器钉在 P-core（大核）上。</strong>
+本机 i5-13500：6 个 P-core 跑 4.8 GHz，8 个 E-core 只有 3.5 GHz。默认情况下模拟器线程可以跑在所有
+20 个 CPU 上，于是被调度到慢核上。同一个战斗场景、其他条件不变：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>帧率</th><th>平均帧</th><th>最差帧</th><th>丢帧</th></tr></thead><tbody><tr><td>默认（20 个 CPU 随便跑）</td><td>17–23 fps</td><td>42–59 ms</td><td>101–117 ms</td><td><strong>30–35%</strong></td></tr><tr><td><strong>钉在 P-core</strong></td><td><strong>30.0 fps</strong></td><td>33.3 ms</td><td>50–52 ms</td><td><strong>2–7%</strong></td></tr></tbody></table>
+<p>现在 <code>avd</code> / <code>avdbg</code> 已自动这么做（<code>~/.bash_env_vars</code> 里的 <code>_avd_pcpu</code>，用 <code>AVD_NO_PIN=1</code> 可关掉）。</p>
+<p><strong>所以：加内存没用。</strong> 客体还空着 4 GB，从不触发 OOM；真正紧张的是宿主（31 GB、<strong>没有 swap</strong>、已用约
+20 GB），把客体加到 16 GB 反而可能把宿主压出 OOM —— 那正是”莫名闪退”的来源。
+而且 FGO 本来就锁 30 fps，也没有更高的帧率可追：<strong>看丢帧率，别看帧率。</strong></p>
+<hr>
+<h2 id="五踩过的坑照抄避雷">五、踩过的坑（照抄避雷）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>现象 / 做法</th><th>说明</th></tr></thead><tbody><tr><td><strong>千万别把其他版本的 <code>libnbaio.so</code> / <code>libnblog.so</code> 拷进 <code>/system/lib64</code></strong></td><td>会让 <code>audioserver</code> 每 5 秒段错误一次，<strong>开机永远完不成</strong>。恢复方法：删掉 <code>~/.android/avd/&#x3C;名字>.avd/system.img.qcow2</code>（会自动重建为原始镜像）</td></tr><tr><td>模拟器崩溃，日志里全是 <code>error null ctx</code> / gfxstream</td><td>主机 GPU 路径不稳定。重开一次；仍不行就换 <code>-gpu swiftshader_indirect</code>（慢但稳）</td></tr><tr><td>用了 Android <strong>36.1</strong> 镜像</td><td>SurfaceFlinger 疯狂重启、<code>system_server</code> 在装 APK 时重启 → 一律失败。<strong>用 36.0 rev 7</strong></td></tr><tr><td><code>adb remount</code> 报 <code>Device must be bootloader unlocked</code></td><td>说明启动时没加 <code>-writable-system</code>。<strong>本方案不需要</strong>，忽略即可</td></tr><tr><td>第一次装完启动就闪退</td><td>实测在「全新安装后的第一次启动」偶发一次旧报错，<strong>重新启动游戏</strong>、让它把资源下完即可</td></tr><tr><td>同时开多个模拟器</td><td>别这么干。FGO 给 8 GB 内存够用，但主机总共就那么多内存</td></tr><tr><td>容器方案（redroid / Waydroid）</td><td>NVIDIA 上 Waydroid 源码层直接不支持；redroid 的 <code>gpu_mode=host</code> 会让 SurfaceFlinger 崩溃循环，只能 <code>guest</code>（无 GPU 加速），游戏能跑但一直卡在标题</td></tr><tr><td>用 16 KB 页大小镜像（ps16k）</td><td><code>dlopen failed: … DT_HASH/DT_GNU_HASH in libtersafe2.so</code>，ACE 的加固库不兼容</td></tr><tr><td>ARM64 镜像 / Genymotion 本地 ARM64</td><td>模拟器策略直接拒绝 arm64 guest；Genymotion 本地 ARM64 仅 Apple Silicon</td></tr></tbody></table>
+<hr>
+<h2 id="六其他方案为什么不推荐一览">六、其他方案为什么不推荐（一览）</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>方案</th><th>结果</th><th>原因</th></tr></thead><tbody><tr><td>API 35 镜像 + 原版翻译层</td><td>✗</td><td>berberis 0.2.3 在 ~51 秒 <code>SIGABRT</code></td></tr><tr><td>API 35 + 换三个不同的 libndk 版本</td><td>✗</td><td>三个版本都含同一个致命断言</td></tr><tr><td>API 35 + 注入 Intel libhoudini</td><td>✗</td><td>houdini 自己加载库时就段错误（<code>s_000067+1227</code>, <code>ID:0x01900158</code>）</td></tr><tr><td>redroid 容器 + libhoudini</td><td>△</td><td>Unity 真能跑起来，但没有 GPU 加速、Unity 只看到 1 核，一直忙等卡住</td></tr><tr><td>Android 16.1 镜像</td><td>✗</td><td>SurfaceFlinger 断言崩溃循环，装 APK 时 system_server 重启</td></tr><tr><td>把 16.1 的翻译层移植到旧系统</td><td>△</td><td>致命崩溃变成 <code>Trying to restore sp and continue</code>（只警告不崩），但游戏随后死锁</td></tr><tr><td>模拟器 37.2.12 + <code>-gpu host</code></td><td>✗</td><td>gfxstream 报错风暴后模拟器自己段错误（37.3.2 好一些）</td></tr><tr><td><strong>Android 16.0 镜像 + 原版翻译层</strong></td><td><strong>✓</strong></td><td><strong>berberis 16.0.0 不再触发该断言，图形栈也稳定</strong></td></tr></tbody></table>
+<hr>
+<h2 id="七注意事项请务必看一眼">七、注意事项（请务必看一眼）</h2>
+<ul>
+<li><strong>模拟器不在 FGO 官方支持列表内</strong>，游戏内置的腾讯 ACE 反作弊会检测模拟器特征
+（<code>TssSDKCmd_IsEmulator</code>、<code>emulator_name</code> 等）并且<strong>判定在服务器侧</strong>。
+也就是说：能不能封、封不封，不是你本地能控制的。
+<strong>请用你输得起的账号玩，别用主号，也别做自动化脚本刷本。</strong></li>
+<li>性能是「能玩」级别，不如真机：毕竟是在 x86 上翻译执行 ARM64 代码。</li>
+<li>这是一次<strong>实测快照</strong>。以后镜像/翻译层更新，判断方法很简单：
+<strong>先看 <code>berberis</code> 版本号</strong>（<code>adb logcat -d -s berberis:* | grep Initialized</code>）。</li>
+<li>打游戏过程中如果突然闪退，先把当次日志抓下来：
+<code>adb logcat -d > fgo.log</code>，再搜 <code>restore sp</code> / <code>Fatal signal</code> 即可确认是不是老问题复发。</li>
+</ul>
+<hr>
+<h2 id="八速查卡最短路径">八、速查卡（最短路径）</h2>
+<figure class="code-viewer" data-lines="14"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 镜像</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sdkmanager</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "system-images;android-36;google_apis;x86_64"</span><span style="color:#6A737D;--shiki-dark:#6A737D">      # 36.0，不要 36.1</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># AVD</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">avdmanager</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> create</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> avd</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -n</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> api36</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -k</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "system-images;android-36;google_apis;x86_64"</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> pixel_7</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sed</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 's/^hw.ramSize=.*/hw.ramSize=8192/; s/^hw.cpu.ncore=.*/hw.cpu.ncore=6/; s/^disk.dataPartition.size=.*/disk.dataPartition.size=32G/'</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">    ~/.android/avd/api36.avd/config.ini</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 启动</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">emulator</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -avd</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> api36</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -gpu</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> host</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -accel</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> on</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -no-boot-anim</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 装游戏</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -r</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> fatego.apk</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 首次进游戏：点 "Got it"(≈1697,500) → 点 "同意"(≈1411,828) → 等约 1.9 GB 下载</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 自检</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -s</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> berberis:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">*</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> Initialized</span><span style="color:#6A737D;--shiki-dark:#6A737D">     # 应为 16.0.0</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -cE</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "restore sp|Fatal signal"</span><span style="color:#6A737D;--shiki-dark:#6A737D"> # 应为 0</span></span></code></pre></figure>
+<hr>
+<blockquote>
+<p><strong>来龙去脉</strong>：<a href="/zh/writing/android-games/">把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号</a>——这一步为什么是这样，以及当时卡在哪里。</p>
+</blockquote></div><section class="section"><div class="section__head"><h2>本阶段内容</h2></div><div class="subjects-grid"><a class="subject-card" href="/zh/docs/android/solution/arknights/"><div class="subject-info"><h3>同一台机器上的明日方舟<span class="badge badge--warn" style="margin-left:.5rem">草稿预览</span></h3><p>根本没问题。它跑在自己的 AVD 上，并没有迁移到 Android 16 基础环境——这份文档原样记录下当前可用的配置，留给以后用。</p></div><span class="subject-arrow">→</span></a></div></section><nav class="path-nav" aria-label="全部阶段"><div class="path-nav__side"></div><div class="path-nav__side path-nav__side--next"><span class="path-nav__label">下一篇 阶段 →</span><a href="/zh/docs/android/trouble/">排错</a></div></nav></div></div><nav class="toc" aria-label="目录"><h2>目录</h2><ol><li><a href="#一为什么以前各种方法都失败">一、为什么以前各种方法都失败</a></li><li><a href="#二实测通过的参考环境">二、实测通过的参考环境</a></li><li><a href="#三完整复现步骤">三、完整复现步骤</a></li><li class="toc__l3"><a href="#1-准备-sdk-与模拟器">1) 准备 SDK 与模拟器</a></li><li class="toc__l3"><a href="#2-下载-android-160-系统镜像">2) 下载 Android 16.0 系统镜像</a></li><li class="toc__l3"><a href="#3-建-avd并把它调大">3) 建 AVD，并把它调大</a></li><li class="toc__l3"><a href="#4-启动模拟器">4) 启动模拟器</a></li><li class="toc__l3"><a href="#5-安装游戏">5) 安装游戏</a></li><li class="toc__l3"><a href="#6-首次进游戏点两个地方">6) 首次进游戏：点两个地方</a></li><li class="toc__l3"><a href="#7-等资源下载然后就能玩了">7) 等资源下载，然后就能玩了</a></li><li><a href="#四怎么确认真的成了">四、怎么确认「真的成了」</a></li><li class="toc__l3"><a href="#实测性能战斗中实测用-surfaceflinger-帧时间戳">实测性能（战斗中实测，用 SurfaceFlinger 帧时间戳）</a></li><li><a href="#五踩过的坑照抄避雷">五、踩过的坑（照抄避雷）</a></li><li><a href="#六其他方案为什么不推荐一览">六、其他方案为什么不推荐（一览）</a></li><li><a href="#七注意事项请务必看一眼">七、注意事项（请务必看一眼）</a></li><li><a href="#八速查卡最短路径">八、速查卡（最短路径）</a></li></ol></nav></div></div><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

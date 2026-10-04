@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>01 快速原型之后：代码、数据与结构 · LKM</title><meta name="description" content="快速做一个聊天机器人时，两条最诱人的捷径是把 agent 当后端，或者先写硬编码再让 agent 维护。它们低流量下都能跑，问题出现在系统开始累积变化之后。但解法不是“数据比代码好”，而是找到代码与数据的正确边界：什么该声明成数据，什么必须留在代码，结构由谁来守。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/rapid-prototypes-and-structure/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/rapid-prototypes-and-structure/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/writing/rapid-prototypes-and-structure/"><meta property="og:type" content="website"><meta property="og:title" content="01 快速原型之后：代码、数据与结构 · LKM"><meta property="og:description" content="快速做一个聊天机器人时，两条最诱人的捷径是把 agent 当后端，或者先写硬编码再让 agent 维护。它们低流量下都能跑，问题出现在系统开始累积变化之后。但解法不是“数据比代码好”，而是找到代码与数据的正确边界：什么该声明成数据，什么必须留在代码，结构由谁来守。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/rapid-prototypes-and-structure/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/" aria-current="page">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/writing/rapid-prototypes-and-structure/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/zh/">首页</a><span aria-hidden="true">/</span><a href="/zh/writing/series/ai-maintainable-systems/">AI 可维护的系统</a><span aria-hidden="true">/</span><span>01 快速原型之后：代码、数据与结构</span></nav><header class="article__header"><h1 class="article__title">01 快速原型之后：代码、数据与结构</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026 年 10 月 1 日</time><span>·</span><span>6 分钟</span><span class="badge badge--warn">草稿预览</span></div><p class="article__summary">快速做一个聊天机器人时，两条最诱人的捷径是把 agent 当后端，或者先写硬编码再让 agent 维护。它们低流量下都能跑，问题出现在系统开始累积变化之后。但解法不是“数据比代码好”，而是找到代码与数据的正确边界：什么该声明成数据，什么必须留在代码，结构由谁来守。</p><div style="margin-top:1rem"><a class="tag" href="/zh/tags/AI/">AI</a><a class="tag" href="/zh/tags/structure/">structure</a><a class="tag" href="/zh/tags/prototype/">prototype</a><a class="tag" href="/zh/tags/data/">data</a></div></header><p class="notice">这篇文章尚未标记为 ready，仅在预览模式下显示。</p><div class="prose" data-pagefind-body><h2 id="1-一个很典型的周五下午">1. 一个很典型的周五下午</h2>
+<p>假设你想快速做一个聊天机器人，或者任何会用上 AI 的小应用。你想验证的是“有没有人用”，不是“能不能写成教科书架构”。于是你很自然地不想写数据访问层、迁移、权限、渠道、读写模块和评审流程。</p>
+<p>然后你看到两条捷径。</p>
+<p><strong>捷径一：把 agent 当后端。</strong></p>
+<figure class="code-viewer" data-lines="13"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 伪代码：把 agent 命令包成一个 API</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> fastapi </span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">app </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">@app.post</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"/chat"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">def</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> chat</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(question: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">str</span><span style="color:#24292E;--shiki-dark:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    result </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess.run(</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"claude"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"-p"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, question],   </span><span style="color:#6A737D;--shiki-dark:#6A737D"># 或 opencode -c、其他 agent 命令</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">        capture_output</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#E36209;--shiki-dark:#FFAB70">text</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"answer"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: result.stdout}</span></span></code></pre></figure>
+<p>用户请求进来，直接转给 agent。你不写表结构、权限、渠道、读写模块，一个下午就能演示。这不是在写系统，是在让 agent 临时扮演整个系统。</p>
+<p><strong>捷径二：先写硬编码，再让 agent 维护。</strong></p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "price"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question </span><span style="color:#D73A49;--shiki-dark:#F97583">and</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iphone"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iPhone is $999."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "refund"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "Refunds are available within 14 days."</span></span></code></pre></figure>
+<p>它运行时更稳定、更便宜。快速原型阶段，这是合理选择。问题是之后：价格变了改分支，问法变了加分支，错误丢给 agent 改代码；重复几十次后，没有人能完整说出系统现在知道什么。</p>
+<h2 id="2-低流量下两条捷径都可能是对的">2. 低流量下，两条捷径都可能是对的</h2>
+<p>必须承认一个反例：</p>
+<blockquote>
+<p>如果原型只活三天，流量很低，模型便宜到可以忽略，系统几乎不变化——两条捷径都是理智的。</p>
+</blockquote>
+<p>短路原型不是罪，把一次性原型当成会持续成长的系统才是。</p>
+<p>所以真正要判断的是：</p>
+<ul>
+<li>它会不会持续变化？</li>
+<li>变化时需不需要被验证？</li>
+<li>除了作者，还有没有人需要评审 / 理解它？</li>
+<li>出错时，损失只是一次 demo，还是客户已经依赖它？</li>
+</ul>
+<p>只要有一个答案是“是”，捷径就会开始变贵。但它们共同的问题不是“用了 agent”或“用了硬编码”，而是：</p>
+<blockquote>
+<p><strong>系统没有给变化一个可验证的落点。</strong></p>
+</blockquote>
+<p>Agent 当后端，落点不存在；硬编码 + agent 维护，落点是最难验证的代码。</p>
+<h2 id="3-一个太快得出的结论">3. 一个太快得出的结论</h2>
+<p>到这里，很容易得出结论：</p>
+<blockquote>
+<p>那就让 AI 改数据，不要改代码。数据比代码更适合 AI 维护。</p>
+</blockquote>
+<p>这个结论走得太快了，而且会把整季带向一个错误前提。</p>
+<p>它错在两点：</p>
+<ol>
+<li><strong>代码不是坏的。</strong> 算法、副作用、性能、安全边界、事务、外部系统交互，本来就应该由代码表达。</li>
+<li><strong>数据不是自动可维护的。</strong> 一堆没有词汇、没有表结构、没有校验的 JSON，只会把结构藏进约定里，比代码更难验证。</li>
+</ol>
+<p>真正的问题不是“代码还是数据”，而是：</p>
+<blockquote>
+<p><strong>哪些东西应该被声明成数据，哪些必须留在代码，边界在哪里，谁负责守边界。</strong></p>
+</blockquote>
+<p>“数据比代码高级”是一种偷懒的说法；正确的问题是结构放在哪里。</p>
+<h2 id="4-代码和数据是两种材料">4. 代码和数据是两种材料</h2>
+<p>可以把代码和数据当成两种材料，而不是两个等级。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>代码</th><th>数据</th></tr></thead><tbody><tr><td>擅长</td><td>算法、副作用、I/O、性能、安全、不变量</td><td>事实、规则、文案、配置、内容</td></tr><tr><td>可验证性</td><td>依赖测试、运行路径、边界</td><td>可寻址、可比较差异、可校验</td></tr><tr><td>爆炸半径</td><td>调用链、时序、异常路径</td><td>通常限制在行 / 实体 / 规则</td></tr><tr><td>修改者</td><td>开发者 + AI（高风险）</td><td>人和 AI（可评审）</td></tr><tr><td>失败方式</td><td>运行到某条路径才发现</td><td>写入时可以被拒绝</td></tr></tbody></table>
+<p>数据更适合 AI 维护，不是因为数据更高贵，而是因为：</p>
+<ul>
+<li>它可以有稳定标识；</li>
+<li>改动通常是局部的；</li>
+<li>上下文可以裁剪；</li>
+<li>可以被幂等重建；</li>
+<li>可以在写入时校验。</li>
+</ul>
+<p>但这些性质只对<strong>有结构的数据</strong>成立。自由文本和乱放 JSON 不具备它们。</p>
+<p>代码仍然承担它擅长的工作：定义 原语、执行算法、处理副作用、守住安全边界。代码不是被“搬掉”，而是退到更少、更稳定的位置：</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>System = Code + Data</span></span></code></pre></figure>
+<p>代码负责解释、校验、执行、审查；数据负责承载知识、规则、变量、流程和状态。</p>
+<p>当代码只解释词汇表、不逐条实现业务时，它接近 <strong>meta-code（元代码）</strong>：</p>
+<blockquote>
+<p>如果代码规模随领域对象数量增长，它是业务代码；
+如果代码规模只随词汇表大小增长，它才配叫 meta-code。</p>
+</blockquote>
+<h2 id="5-什么时候应该把行为放进数据">5. 什么时候应该把行为放进数据</h2>
+<p>不是所有东西都应该数据化。一个判断清单比口号有用：</p>
+<ul>
+<li><strong>变化频率</strong>：它经常变吗？经常变的事实更适合数据。</li>
+<li><strong>可寻址性</strong>：能给它一个稳定标识吗？价格、规则、文案可以；一段控制流通常不行。</li>
+<li><strong>评审需求</strong>：改动需不需要被非程序员看懂？</li>
+<li><strong>验证方式</strong>：能不能写测试 / 校验，而不是只能靠运行？</li>
+<li><strong>爆炸半径</strong>：改错了影响一行，还是一条调用链？</li>
+<li><strong>上下文大小</strong>：AI 能不能只读一小块就完成修改？</li>
+</ul>
+<p>反过来，以下通常应该留在代码：</p>
+<ul>
+<li>算法和性能敏感路径；</li>
+<li>外部副作用和 I/O；</li>
+<li>并发、事务、安全边界；</li>
+<li>无法用数据词汇表达的原语。</li>
+</ul>
+<p>这不是“把代码搬空”，而是把<strong>可声明的知识</strong>从代码里拿出来，让代码只保留它最擅长的部分。</p>
+<h3 id="51-一个最小规则值不进句子">5.1 一个最小规则：值不进句子</h3>
+<p>变化速度比句子更快的东西，不要写进句子里。</p>
+<p>价格、版本、库存、日期、star 数属于数据；句子属于模板。这样一次数据变化只需要改一行、做一次重建，而不是改 N 条答案，更不需要唤醒模型。</p>
+<h2 id="6-结构是边界不是口号">6. 结构是边界，不是口号</h2>
+<p>当你说“用结构”，具体指的是什么？至少包含五件事：</p>
+<ol>
+<li>数据用什么词汇表达（实体类型、关系类型、动作类型）；</li>
+<li>数据用什么形态承载（行、JSON、文件、列）；</li>
+<li>哪些字段被声明、哪些留着自由；</li>
+<li>谁来校验、谁来评审、怎么回滚；</li>
+<li>状态和构建产物怎么分开。</li>
+</ol>
+<p>结构不是“表越多越好”，也不是“代码越少越好”。它是一份关于边界的契约。</p>
+<p>这个契约里最困难的一条是：</p>
+<blockquote>
+<p><strong>通用化到哪一步，领域特定化到哪一步？</strong></p>
+</blockquote>
+<h2 id="7-核心张力通用数据-vs-领域表">7. 核心张力：通用数据 vs 领域表</h2>
+<p>一个具体例子会让这个张力变清楚。</p>
+<p>商品可以写成通用实体：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"stock"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>好处是扩展便宜：新增领域不用迁移，AI 加数据就行。</p>
+<p>但三个月后，你可能会看到：</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>命名开始漂移；价格可以是负数；库存可以是字符串；“上架但无价格”没人知道是否合法。查询也变丑：每次都要写 <code>json_extract</code>，性能依赖约定。</p>
+<p>另一个极端是建 <code>products</code> 表：类型、约束、查询都强，但每次领域变化都要迁移，AI 不能再靠“加数据”扩展。</p>
+<p>于是问题不是“数据化还是代码化”，而是：</p>
+<ul>
+<li>通用数据用<strong>扩展性</strong>换<strong>结构强度</strong>；</li>
+<li>领域表用<strong>结构强度</strong>换<strong>演化成本</strong>；</li>
+<li>选择取决于当前哪种成本更痛。</li>
+</ul>
+<p>这就是数据与代码的辩证：<strong>不是谁更高级，而是结构放在哪一层。</strong></p>
+<h2 id="8-失败条件与作者立场">8. 失败条件与作者立场</h2>
+<p>这套方法什么时候不成立？</p>
+<ul>
+<li>如果系统几乎不变化，结构投入收不回来；</li>
+<li>如果模型便宜、稳定、可审计到可以接受运行时 agent，临界点会移动；</li>
+<li>如果每次变化都需要新增 原语，而不是新增数据，通用结构就失败了；</li>
+<li>如果维护成本长期高于直接改代码，结构就是不划算的。</li>
+</ul>
+<p>作者立场：我不认为“数据比代码好”或“代码比数据好”是有意义的争论。有意义的问题是：</p>
+<blockquote>
+<p><strong>这部分行为的变化频率、验证需求和爆炸半径，决定了它应该住在代码还是数据；而边界必须被明确声明，而不是靠约定维持。</strong></p>
+</blockquote>
+<h2 id="9-下一个问题">9. 下一个问题</h2>
+<p>现在框架有了：代码和数据是两种材料，结构是两者的边界契约，核心张力是通用数据 vs 领域表。</p>
+<p>但边界具体怎么划？什么时候一个“可以有通用实体”的项目，真的需要一张 <code>products</code> 表？为什么不是永远不需要？</p>
+<p>下一篇专门处理这个问题：<strong>数据化的边界</strong>。</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="本系列"><div class="series-nav__side"></div><div class="series-nav__side series-nav__side--next"><span class="series-nav__label">下一篇 →</span><a href="/zh/writing/boundary-of-datafication/">02 什么时候才需要一张 products 表？——数据化的边界</a></div></nav></div><nav class="toc" aria-label="目录"><h2>目录</h2><ol><li><a href="#1-一个很典型的周五下午">1. 一个很典型的周五下午</a></li><li><a href="#2-低流量下两条捷径都可能是对的">2. 低流量下，两条捷径都可能是对的</a></li><li><a href="#3-一个太快得出的结论">3. 一个太快得出的结论</a></li><li><a href="#4-代码和数据是两种材料">4. 代码和数据是两种材料</a></li><li><a href="#5-什么时候应该把行为放进数据">5. 什么时候应该把行为放进数据</a></li><li class="toc__l3"><a href="#51-一个最小规则值不进句子">5.1 一个最小规则：值不进句子</a></li><li><a href="#6-结构是边界不是口号">6. 结构是边界，不是口号</a></li><li><a href="#7-核心张力通用数据-vs-领域表">7. 核心张力：通用数据 vs 领域表</a></li><li><a href="#8-失败条件与作者立场">8. 失败条件与作者立场</a></li><li><a href="#9-下一个问题">9. 下一个问题</a></li></ol></nav></div></div></article><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

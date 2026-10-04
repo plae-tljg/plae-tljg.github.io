@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>04 Appendix: Derivation Template, Checklist, and Glossary · LKM</title><meta name="description" content="This appendix condenses the method from the four articles into an executable template: Goal -> Actors -> Intents -> Shapes -> Structures -> Columns -> IO -> Wake, plus a general exercise, final checklist, anti-patterns, when not to use it, and a glossary."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/writing/appendix-derivation-and-checklist/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/writing/appendix-derivation-and-checklist/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/appendix-derivation-and-checklist/"><meta property="og:type" content="website"><meta property="og:title" content="04 Appendix: Derivation Template, Checklist, and Glossary · LKM"><meta property="og:description" content="This appendix condenses the method from the four articles into an executable template: Goal -> Actors -> Intents -> Shapes -> Structures -> Columns -> IO -> Wake, plus a general exercise, final checklist, anti-patterns, when not to use it, and a glossary."><meta property="og:url" content="https://plae-tljg.github.io/en/writing/appendix-derivation-and-checklist/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/" aria-current="page">Writing</a><a href="/en/docs/">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/writing/appendix-derivation-and-checklist/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/en/">Home</a><span aria-hidden="true">/</span><a href="/en/writing/series/ai-maintainable-systems/">AI-Maintainable Systems</a><span aria-hidden="true">/</span><span>04 Appendix: Derivation Template, Checklist, and Glossary</span></nav><header class="article__header"><h1 class="article__title">04 Appendix: Derivation Template, Checklist, and Glossary</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026-10-01</time><span>·</span><span>5 min read</span><span class="badge badge--warn">Draft preview</span></div><p class="article__summary">This appendix condenses the method from the four articles into an executable template: Goal -&gt; Actors -&gt; Intents -&gt; Shapes -&gt; Structures -&gt; Columns -&gt; IO -&gt; Wake, plus a general exercise, final checklist, anti-patterns, when not to use it, and a glossary.</p><div style="margin-top:1rem"><a class="tag" href="/en/tags/AI/">AI</a><a class="tag" href="/en/tags/appendix/">appendix</a><a class="tag" href="/en/tags/%E6%B8%85%E5%8D%95/">清单</a><a class="tag" href="/en/tags/design/">design</a></div></header><p class="notice">This article is not marked ready yet and only shows in preview mode.</p><p class="notice notice--ai">This article was translated from the Chinese original by an AI. Wording and terminology may be off.</p><div class="prose" data-pagefind-body><p>This is not the main text; it is the companion working document for the first 3 articles.</p>
+<h2 id="1-derivation-chain">1. Derivation Chain</h2>
+<p>Do not start from “which table / which agent” — start from the goal and the constraints:</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Goal -> Actors -> Intents -> Information shapes</span></span>
+<span class="line"><span>     -> Structures -> Columns -> IO -> Wake policy</span></span></code></pre></figure>
+<h3 id="11-goal">1.1 Goal</h3>
+<p>One sentence: for whom, solving what. Include the end users, what they need to get done, and which things a human must take over.</p>
+<h3 id="12-actors">1.2 Actors</h3>
+<p>Distinguish at least:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Role</th><th>What they care about</th></tr></thead><tbody><tr><td>End user</td><td>Whether they were answered / whether the action completed</td></tr><tr><td>Operations / customer</td><td>Whether the knowledge is correct, whether they can review and publish it</td></tr><tr><td>AI maintainer</td><td>What to read, what to write, how to verify</td></tr><tr><td>Developer</td><td>Engine, table structure, migrations, permissions</td></tr></tbody></table>
+<h3 id="13-intents">1.3 Intents</h3>
+<p>List the real intents: look up a fact, look up an entity attribute, conditional judgement, multi-turn clarification, side effects / hand off to a human, unknown.</p>
+<h3 id="14-information-shapes">1.4 Information shapes</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Shape</th><th>Suitable structure</th></tr></thead><tbody><tr><td>Static fact</td><td>Knowledge row / copy</td></tr><tr><td>Parameterised fact</td><td>Template + entity row</td></tr><tr><td>Conditional routing</td><td>Rule row / small DSL</td></tr><tr><td>Cross-turn reference</td><td>Projection, not a state table</td></tr><tr><td>Multi-turn collection</td><td>Flow + state</td></tr><tr><td>Side effect</td><td>task / external action</td></tr><tr><td>Unknown</td><td>Refusal + inbox</td></tr><tr><td>Compound question</td><td>Parsing algorithm, not a table</td></tr></tbody></table>
+<h3 id="15-structures">1.5 Structures</h3>
+<ul>
+<li>Configuration, content, data, or state?</li>
+<li>Preference order: config file > content file > existing table > new table;</li>
+<li>Default: generic entity + link + JSON attributes + a small vocabulary;</li>
+<li>Promotion is triggered by real cost, not by intuition.</li>
+</ul>
+<h3 id="16-columns">1.6 Columns</h3>
+<ul>
+<li>Fields that get queried, joined, filtered, constrained, aggregated -> typed columns;</li>
+<li>Fields that are domain-specific and travel only with the row -> JSON;</li>
+<li>Fields that need a bidirectional relationship -> link table;</li>
+<li>Fields that are no longer of an entity shape -> a separate fact table.</li>
+</ul>
+<h3 id="17-io">1.7 IO</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Role</th><th>Read</th><th>Write</th></tr></thead><tbody><tr><td>End user</td><td>Conversation</td><td>Question / action</td></tr><tr><td>Operations</td><td>Console, review queue</td><td>Publish decision</td></tr><tr><td>AI maintainer</td><td>Read-only evidence, content</td><td>Content / proposal</td></tr><tr><td>Runtime</td><td>Data projection</td><td>Runtime state</td></tr></tbody></table>
+<h3 id="18-wake-policy">1.8 Wake policy</h3>
+<ul>
+<li>Is the model allowed to fall back at runtime?</li>
+<li>Is maintenance daily, event-triggered, or manual?</li>
+<li>Which data changes never need the model at all?</li>
+<li>Do the misses the model has answered keep their evidence?</li>
+</ul>
+<h2 id="2-an-exercise-the-booking-assistant">2. An exercise: the booking assistant</h2>
+<p>Goal: the user can book, and complex bookings get handed to a human.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Intent</th><th>Shape</th><th>Structure</th></tr></thead><tbody><tr><td>Opening hours</td><td>Static fact</td><td>Knowledge row</td></tr><tr><td>What services are there</td><td>Parameterised fact</td><td>Entity + template</td></tr><tr><td>Can I book on a weekend</td><td>Conditional rule</td><td>Rule row</td></tr><tr><td>“the second service”</td><td>Anaphora</td><td>Previous-turn quote</td></tr><tr><td>What information does a booking need</td><td>Multi-turn collection</td><td>Flow + state</td></tr><tr><td>Notify staff after submission</td><td>Side effect</td><td>task</td></tr><tr><td>Unknown policy</td><td>Unknown</td><td>Refusal + inbox</td></tr></tbody></table>
+<h2 id="3-course-completion-checklist">3. Course-completion checklist</h2>
+<h3 id="problem">Problem</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Am I facing an unstable runtime agent, or unverifiable hardcoded maintenance?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Does the problem keep growing, or is it one-off?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Am I treating “fixing one example” as “getting better”?</li>
+</ul>
+<h3 id="structure">Structure</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> How many business facts still live in the code?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are configuration, content, data and state separate?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are the offline / online and build / runtime boundaries clear?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Do values go into the sentences?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Does the new structure have a real trigger?</li>
+</ul>
+<h3 id="verification">Verification</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Is there a test for every behaviour change?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are there the four categories: positive cases, confusable negatives, refusals, ambiguity?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Is there a regression baseline and a rollback path?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Is there a dead-row / ambiguity report?</li>
+</ul>
+<h3 id="permissions">Permissions</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> What is the AI’s read / write / forbidden set?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are permissions enforced by tools or requested by prompt?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Can the AI write directly to the online table, or merge directly?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Can review be completed within a limited context?</li>
+</ul>
+<h3 id="cost">Cost</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> How many runtime wake-ups? How many maintenance wake-ups?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Which changes wake the model?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Does the fallback still log <code>unresolved</code>?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are coverage, fallback rate and unit cost recorded?</li>
+</ul>
+<h2 id="4-anti-patterns">4. Anti-patterns</h2>
+<ul>
+<li>Putting all logic into code;</li>
+<li>Putting the agent in the runtime;</li>
+<li>Letting the agent directly modify online state;</li>
+<li>Letting the agent maintain without tests;</li>
+<li>Stuffing everything into JSON;</li>
+<li>Reserving empty tables for the future;</li>
+<li>Using the model as fallback but clearing unresolved;</li>
+<li>Using model answers to pretend the structure already knows the answers.</li>
+</ul>
+<h2 id="5-when-not-to-use-this">5. When Not to Use This</h2>
+<p>One-off scripts, small tools with no ongoing evolution needs, exploratory tasks with no repeated decisions—simple scripts are the correct answer.</p>
+<p>Structure has a cost; don’t use it when it’s not worth it.</p>
+<h2 id="6-glossary">6. Glossary</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Maintainable</td><td>Changes are executable, verifiable, rollbackable, accumulable, affordable</td></tr><tr><td>Structure</td><td>The contract between code and data: rows, table structure, vocabulary, validation, process</td></tr><tr><td>Data</td><td>Declarable layer: knowledge, rules, variables, processes, tests, content files</td></tr><tr><td>meta-code</td><td>Interpreter/validator/runner whose code scale grows with vocabulary, not with domain</td></tr><tr><td>Four Homes</td><td>Config / Content / Data / State</td></tr><tr><td>Offline / Online</td><td>Editable, diff-comparable form vs indexable, queryable projection</td></tr><tr><td>Build / Online</td><td>Build tables vs runtime state tables</td></tr><tr><td>Rebuild Structure</td><td>Undeclared structure that must be re-derived every time</td></tr><tr><td>Reference</td><td>Cross-turn reference derived from previous turn’s citation, no state table needed</td></tr><tr><td>Process / State</td><td>Runtime state needed only when values must persist across turns</td></tr><tr><td>Wake</td><td>Wake the model: runtime fallback / maintenance turn / build</td></tr><tr><td>Fallback</td><td>Model answer when structure can’t answer; still records unresolved</td></tr><tr><td>Proposal</td><td>Auditable, rollbackable change; git PR or proposal table</td></tr><tr><td>κ</td><td>Deterministic coverage rate</td></tr><tr><td>Dead Row</td><td>Knowledge row never hit</td></tr></tbody></table>
+<h2 id="7-the-final-four-questions">7. The Final Four Questions</h2>
+<p>If AI changed a data/content item, and you can answer the four questions below, the system is on the right track:</p>
+<ol>
+<li>Why change? What’s the evidence?</li>
+<li>What changed? Where’s the diff?</li>
+<li>Did it improve? Do tests and metrics support it?</li>
+<li>How to roll back if wrong?</li>
+</ol>
+<p>Can answer, structure is maintainable; can’t answer, no matter how strong the model, it’s just changing things faster in a black box.</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="In this series"><div class="series-nav__side"><span class="series-nav__label">← Previous</span><a href="/en/writing/verification-is-trust/">03 Verification Is Trust: Tests, Authority, and Wake Cost</a></div><div class="series-nav__side series-nav__side--next"></div></nav></div><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#1-derivation-chain">1. Derivation Chain</a></li><li class="toc__l3"><a href="#11-goal">1.1 Goal</a></li><li class="toc__l3"><a href="#12-actors">1.2 Actors</a></li><li class="toc__l3"><a href="#13-intents">1.3 Intents</a></li><li class="toc__l3"><a href="#14-information-shapes">1.4 Information shapes</a></li><li class="toc__l3"><a href="#15-structures">1.5 Structures</a></li><li class="toc__l3"><a href="#16-columns">1.6 Columns</a></li><li class="toc__l3"><a href="#17-io">1.7 IO</a></li><li class="toc__l3"><a href="#18-wake-policy">1.8 Wake policy</a></li><li><a href="#2-an-exercise-the-booking-assistant">2. An exercise: the booking assistant</a></li><li><a href="#3-course-completion-checklist">3. Course-completion checklist</a></li><li class="toc__l3"><a href="#problem">Problem</a></li><li class="toc__l3"><a href="#structure">Structure</a></li><li class="toc__l3"><a href="#verification">Verification</a></li><li class="toc__l3"><a href="#permissions">Permissions</a></li><li class="toc__l3"><a href="#cost">Cost</a></li><li><a href="#4-anti-patterns">4. Anti-patterns</a></li><li><a href="#5-when-not-to-use-this">5. When Not to Use This</a></li><li><a href="#6-glossary">6. Glossary</a></li><li><a href="#7-the-final-four-questions">7. The Final Four Questions</a></li></ol></nav></div></div></article><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

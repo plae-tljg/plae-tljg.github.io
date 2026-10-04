@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>折腾笔记 · 连续阅读整个系列 · LKM</title><meta name="description" content="过程比结论值钱的那些：两天把安卓游戏搬上 Linux 的十二个死胡同，一个前端布局的小 bug。手册说该敲什么，这里说事情为什么会变成这样。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/series/tinkering-notes/read/"><meta property="og:type" content="website"><meta property="og:title" content="折腾笔记 · 连续阅读整个系列 · LKM"><meta property="og:description" content="过程比结论值钱的那些：两天把安卓游戏搬上 Linux 的十二个死胡同，一个前端布局的小 bug。手册说该敲什么，这里说事情为什么会变成这样。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/series/tinkering-notes/read/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/writing/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><div class="container container--narrow"><header class="page-header"><nav class="breadcrumb"><a href="/zh/writing/series/tinkering-notes/">折腾笔记</a><span aria-hidden="true">/</span><span>连续阅读整个系列</span></nav><h1>折腾笔记</h1><p>过程比结论值钱的那些：两天把安卓游戏搬上 Linux 的十二个死胡同，一个前端布局的小 bug。手册说该敲什么，这里说事情为什么会变成这样。</p><div class="page-meta"><span>2 篇</span><span>·</span><span>10 分钟</span></div></header><nav class="toc" style="position:static;max-height:none;border-left:0;padding-left:0;margin:2rem 0 0"><h2>目录</h2><ol><li><a href="#nvidia-drivers">01 驱动装好了，但没有渲染：NVIDIA 在这台机器上的三种坏法</a></li><li><a href="#android-games">02 把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号</a></li></ol></nav><section class="book__part" id="nvidia-drivers"><div class="book__part-label"> · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/nvidia-drivers/" style="color:inherit">01 驱动装好了，但没有渲染：NVIDIA 在这台机器上的三种坏法</a></h2><div class="prose"><!-- 草稿：素材来自 ubuntu_setup 的《旧版 iGPU 问题记录（复盘）》《NVIDIA GPU 与 CUDA 环境配置》，
+     以及 android_gaming 里记录的两个宿主机缺陷。命令留在手册页，这里写判断过程。 -->
+<h1 id="驱动装好了但没有渲染">驱动装好了，但没有渲染</h1>
+<p>这台机器是 Ubuntu 22.04、i5-13500、31 GB 内存、RTX 5060 Ti，驱动是 NVIDIA 595.91.07 的开源内核模块。同样一块卡，我遇到过三种完全不同的坏法，而它们需要的排查方向完全不一样。</p>
+<p>完整的环境配置和命令在手册里：<a href="/zh/docs/ubuntu/gpu/cuda/">GPU 与 CUDA</a>。</p>
+<h2 id="一内核更新之后报错很直接">一、内核更新之后：报错很直接</h2>
+<p>从 <code>6.8.0-85</code> 升到 <code>6.8.0-87</code> 之后，症状是明摆着的：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="console"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ nvidia-smi</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ sudo modprobe nvidia</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">modprobe: FATAL: Module nvidia not found in directory /lib/modules/6.8.0-87-generic</span></span></code></pre></figure>
+<p><code>ls /lib/modules</code> 里新内核的目录是有的，里面就是没有 <code>nvidia.ko</code>。</p>
+<p>原因不神秘：NVIDIA 的 <code>.run</code> 安装包是把模块编进<strong>当时那个内核</strong>的，内核一换，目录还在，模块不在。修法是重新安装驱动让它针对当前内核重编，或者一开始就用 DKMS 托管。</p>
+<p>这一段的具体步骤（含回滚）在 <a href="/zh/docs/ubuntu/gpu/cuda/">CUDA 环境配置 § 内核更新后驱动问题</a> 里。</p>
+<h2 id="二真正难查的那种一切正常但没有渲染">二、真正难查的那种：一切正常，但没有渲染</h2>
+<p>第二种是在做安卓模拟器时才暴露出来的，也是这三种里最贵的。</p>
+<p>当时 <code>nvidia-smi</code> 输出完全正常，CUDA 能跑，<code>torch.cuda.is_available()</code> 返回 <code>True</code>——<strong>只有渲染是坏的</strong>。安装 <code>.run</code> 包时如果没勾 GLX/EGL 那几项，<code>libGLX_nvidia.so</code> 和 <code>libEGL_nvidia.so</code> 根本不会装上，系统于是回落到 <code>llvmpipe</code>：CPU 软件光栅化，能出画面，慢到不能用。</p>
+<p>表现极具误导性：安卓系统起来了、界面能点、游戏一加载资源就停在启动画面。看起来像翻译层的问题，实际是根本没有 GPU。</p>
+<p>一条命令就能定性：</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="console"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ glxinfo -B </span><span style="color:#D73A49;--shiki-dark:#F97583">|</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -E</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "OpenGL renderer|OpenGL vendor"</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">OpenGL vendor string: Mesa</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">OpenGL renderer string: llvmpipe (LLVM 15.0.7, 256 bits)</span></span></code></pre></figure>
+<p>看到 <code>llvmpipe</code> 就是没在用卡。相关的症状和处置记在 <a href="/zh/docs/android/trouble/">Linux 上的安卓游戏 § 排错</a> 里。</p>
+<h2 id="三最贵的不是修是判断">三、最贵的不是修，是判断</h2>
+<p>第三种严格说不是新的故障，是同一个故障被我诊断错了方向。</p>
+<p>屏幕出现撕裂、闪烁、分辨率不对的时候，我的第一反应是”核显和独显在打架”。于是：把 nouveau 加进黑名单、改 <code>xorg.conf</code>、反复重装驱动、把显示器换到主板输出口上试。这些都留下了记录，也都没有解决问题。</p>
+<p>最后的结论只有一句：<strong>驱动没有针对当时的内核重新编译</strong>——也就是第一种。见 <a href="/zh/docs/ubuntu/gpu/igpu-postmortem/">旧版 iGPU 问题记录（复盘）</a>。</p>
+<h2 id="顺带一个更隐蔽的工具来自另一个分支">顺带一个更隐蔽的：工具来自另一个分支</h2>
+<p>这台机器上还有个没收拾干净的地方：<code>nvidia-settings</code> 的版本是 615.71.09，而驱动是 595.91.07。它们不是一条分支上的东西，工具会给出和实际驱动对不上的报错。它不致命，但足够让下一个人（包括三个月后的我）往错误方向走一段。</p>
+<h2 id="判断顺序">判断顺序</h2>
+<ol>
+<li><strong>先问”现在谁在渲染”</strong>：<code>glxinfo -B</code>。<code>llvmpipe</code> 就直接说明没有 GPU 参与。</li>
+<li><strong>再看模块属于哪个内核</strong>：<code>uname -r</code> 对 <code>modinfo nvidia | grep ^filename</code>。</li>
+<li><strong>最后才动配置</strong>：<code>xorg.conf</code>、黑名单、显示器接线，这些在模块那一步就对不上的时候，改了也白改。</li>
+</ol></div></section><section class="book__part" id="android-games"><div class="book__part-label"> · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/android-games/" style="color:inherit">02 把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号</a></h2><div class="prose"><!-- 草稿：英文长稿在 android_gaming/docs/02-STORY.md。这一版只留主线 + 可核对的细节，
+     命令、参数、自检与 60 条症状索引都在手册里：
+     /zh/docs/android/solution/ 与 /zh/docs/android/trouble/ -->
+<h1 id="把-fgo-国服搬上-ubuntu">把 FGO 国服搬上 Ubuntu</h1>
+<p>目标很具体：在这台 Ubuntu 22.04（i5-13500 / 31 GB / RTX 5060 Ti / X11）上跑 FGO 国服 <code>com.bilibili.fatego</code> v2.129.0。之前已经失败过三轮：Genymotion、Bliss OS、Android Studio 自带模拟器。</p>
+<p>两天后它跑起来了，而且<strong>没有改任何系统文件</strong>：原始镜像、零补丁、不装 houdini。完整配置、命令和自检方法在手册的 <a href="/zh/docs/android/solution/">方案与配置</a>；按症状查在 <a href="/zh/docs/android/trouble/">排错</a>。</p>
+<h2 id="先修宿主机否则后面每一步的结论都是假的">先修宿主机，否则后面每一步的结论都是假的</h2>
+<p>动手之前宿主机自己有两个坑：</p>
+<ol>
+<li><strong>当前用户不在 <code>kvm</code> 组。</strong> <code>kvm_intel</code> 已加载、<code>/dev/kvm</code> 也在，但当前用户读不到，模拟器退化成纯软件模拟。这一条不修，后面所有”卡”都分不清是翻译层的问题还是根本没有硬件加速。</li>
+<li><strong>NVIDIA 驱动装成了计算专用。</strong> <code>nvidia-smi</code> 正常、CUDA 能跑，但 <code>libGLX_nvidia</code> / <code>libEGL_nvidia</code> 没装，客人实际用 <code>llvmpipe</code> 画图。表现是：安卓能启动、能点，游戏一加载资源就停在启动页。</li>
+</ol>
+<p>第二条尤其值得写下来，因为它会让所有实验的结论失真——你会以为是翻译层不行，其实是根本没有 GPU。判断只要一行 <code>glxinfo -B</code>，详见另一篇：<a href="/zh/writing/nvidia-drivers/">驱动装好了，但没有渲染</a>。</p>
+<h2 id="对照组明日方舟先跑起来了">对照组：明日方舟先跑起来了</h2>
+<p>修完这两处，先用 API 35 的 <code>pixel_gaming</code> AVD（<code>google_apis_playstore</code>，16 GB 内存 / 100 GB 数据分区）试明日方舟：下载 15 GB 资源、打完一场、<strong>0 崩溃</strong>。</p>
+<p>这条对照的价值在于它把结论收窄了：同一套机制能用，那问题就只可能在 FGO 这一侧，而不是”Linux 跑不了安卓游戏”。后面每次失败我都拿它校准——这也是为什么我没有继续在容器方案上投入。</p>
+<h2 id="51-秒">51 秒</h2>
+<p>FGO 在同样的 AVD 上，每次都在 51 秒左右死掉，稳定复现：</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="console"><code><span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">F berberis: Guest call didn't restore sp: expected 0x…fd0, actual 0x…fc0</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">F libc    : Fatal signal 6 (SIGABRT) … pid … (bilibili.fatego)</span></span></code></pre></figure>
+<p><code>berberis</code> 是这套镜像里的 ARM 翻译层。它的 <code>ExecuteGuestCall</code> 要求客人返回时栈指针<strong>逐字节还原</strong>，而 FGO 差了整整 <code>0x10</code>。这不是配置问题，是一条断言；当时能拿到的三个 API 35 的 libndk 构建都带这条检查。</p>
+<h2 id="走过的地方以及它们各自的签名">走过的地方，以及它们各自的签名</h2>
+<ul>
+<li><strong>容器</strong>：redroid（Docker 里跑 Android 13）配 Intel houdini，Unity 起来了，但 <code>UnityMain</code> 忙等吃满一个核，画面停在启动页——容器在 NVIDIA 上拿不到 GPU。Waydroid 更直接，源码里写死了 <code>unsupported = ["nvidia"]</code>（<code>tools/helpers/gpu.py</code>），原因是 ABI：Android 是 bionic libc，NVIDIA 的用户态驱动栈只有 glibc 版。</li>
+<li><strong>移植翻译层</strong>：把 houdini 塞进 AVD，它自己的 loader 里就 <code>SIGSEGV</code>（<code>s_000067+1227</code>，<code>Fatal error (ID:0x01900158)</code>），换另一个 libndk 构建也一样。</li>
+<li><strong>改二进制</strong>：给那条断言打一字节补丁，打进了 <code>int3</code> 填充；把 16.1 的 berberis 换进来，报错变成警告 <code>Trying to restore sp and continue...</code>，但游戏卡在 ACE/登录交接处。</li>
+<li><strong>换镜像</strong>：Android 16.1 在开机时 SurfaceFlinger 断言循环（<code>!rcEnc->featureInfo()->hasReadColorBufferDma</code>）；16 KB page 的镜像让 ACE 的 <code>libtersafe2.so</code> 直接 <code>dlopen failed: empty/missing DT_HASH/DT_GNU_HASH</code>；往 <code>/system</code> 里拷 <code>libnbaio.so</code> / <code>libnblog.so</code> 会让系统起不来。</li>
+</ul>
+<p>还有一类是<strong>方向性错误</strong>：Wine / Proton / box64 / FEX 都帮不上忙。它们翻译的是 Windows API 或别的指令集，而这里需要的是一个实现了 <code>NativeBridgeItf</code> 的安卓 ARM 翻译层——Android 的模拟器还明确拒绝在 x86_64 主机上跑 <code>arm64</code> 客人（<code>PANIC: Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator on x86_64 host</code>），这是策略，不是 bug。</p>
+<h2 id="起作用的那一个变量">起作用的那一个变量</h2>
+<p>把系统镜像换成 <strong><code>system-images;android-36;google_apis;x86_64</code>（Android 16.0 rev 7，userdebug）</strong>，原版、零修改。它的翻译层是 berberis <strong>16.0.0</strong>（<code>libndk_translation.so</code>，sha256 <code>fbadc774c989534a…</code>，5,403,704 字节），不触发那条断言。</p>
+<p>配置：AVD <code>api36</code>，8 GB 内存 / 6 核 / 32 GB 数据分区，设备 profile <code>pixel_7</code>，模拟器 37.3.2，启动参数 <code>-gpu host -accel on -no-boot-anim</code>，并且<strong>不加</strong> <code>-writable-system</code>——加了会激活上一次拷进 <code>/system</code> 的东西（这台机器上恰好是失败的 16.1 移植，<code>af88b2c1…</code>，会让游戏卡在登录）。</p>
+<p>有个怪癖值得先知道：全新安装、还没有游戏数据时，首启可能仍然崩一次（同样的 <code>restore sp</code>，同样的 51 秒）。重开让它继续下载就好，之后几小时运行里 0 次 <code>restore sp</code>、0 次致命信号。<strong>一次早崩是首启现象，不是死胡同。</strong></p>
+<h2 id="让它更顺不是内存的问题">让它更顺：不是内存的问题</h2>
+<p>跑起来之后我做的第一件事是问：能不能更顺，比如把 AVD 加到 16 GB？这个问题本身是个弯路，答案也不在内存上。</p>
+<p><strong>内存不是这里的杠杆。</strong> 客人侧 8 GB 里还剩约 4 GB，Android 的 <code>lmkd</code> 一次都没触发过；紧张的是宿主机（31 GB、没有 swap、已经用掉约 20 GB）。把客人加到 16 GB 会把宿主机推向 OOM，而那种崩溃看起来像随机闪退。何况 FGO 自己锁 30 fps，本来也没有更多帧可追。</p>
+<p>真正有用的一步是把模拟器<strong>钉在 P-core（大核）上</strong>。这台 i5-13500 是 6 个 P-core（4.8 GHz）加 8 个 E-core（3.5 GHz），而 qemu 默认的亲和性是 <code>0-19</code>：全部 20 个 CPU 都能用。同一场战斗，其他条件不变：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>fps</th><th>平均帧</th><th>最差</th><th>丢 vsync</th></tr></thead><tbody><tr><td>默认（20 个 CPU）</td><td>17–23</td><td>42–59 ms</td><td>101–117 ms</td><td><strong>30–35%</strong></td></tr><tr><td>钉在 P-core</td><td><strong>30.0</strong></td><td>33.3 ms</td><td>50–52 ms</td><td><strong>2–7%</strong></td></tr></tbody></table>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">P</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$(</span><span style="color:#6F42C1;--shiki-dark:#B392F0">lscpu</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -e=CPU,MAXMHZ</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> awk</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'NR>1 &#x26;&#x26; $2+0>4000{printf "%s,",$1}'</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> sed</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 's/,$//'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">taskset</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -c</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$P</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> emulator</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -avd</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> api36</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -gpu</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> host</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -accel</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> on</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -no-boot-anim</span></span></code></pre></figure>
+<p>已经在跑的模拟器不用重启：<code>taskset -apc 0-11 $(pgrep -f '[q]emu-system-x86_64' | head -1)</code>。</p>
+<p><strong>证据的边界要说清楚</strong>：钉住更快是量出来的；<strong>“因为线程落在了 E-core 上”是推断</strong>——整个过程没有采过每核占用（没有 <code>mpstat</code>、没有 <code>perf</code>），唯一的放置证据是一次 <code>ps -o psr</code> 快照，而那还是在钉住之后取的。同样没试过的还有 governor（全程 <code>powersave</code>）和 <code>isolcpus</code> / <code>nohz_full</code>。</p>
+<p>还有一件事必须纠正，因为它很容易被后来的我引用：<strong><code>dumpsys gfxinfo</code> 对 FGO 没有意义</strong>。Unity 在自己的 surface 上画，这条命令读到过 66 帧、据此算出过”39% 卡顿”——那是一个完全误导的数字，也读到过 0 帧和 4950 ms 的”百分位”。要量帧就用 <code>dumpsys SurfaceFlinger --latency '&#x3C;BLAST layer>'</code>。</p>
+<p>钉核也救不了所有卡顿：跑一段时间会突然掉到 19.1 fps（丢 41%），客人侧 <code>top</code> 显示是 ACE 的 <code>memscan</code> 在扫内存（翻译后约 204% 的 CPU）。那是反外挂自身的周期性开销，改配置解决不了。</p>
+<p>完整的性能表格与自检命令在<a href="/zh/docs/android/solution/">方案与配置</a>，两条相关故障在<a href="/zh/docs/android/trouble/">排错</a>的 2.9 与 2.12。</p>
+<h2 id="反外挂不是原因">反外挂不是原因</h2>
+<p>FGO 国服带腾讯 ACE（<code>libtersafe2.so</code> 5,608,784 字节 + <code>libtprt.so</code>）。动手之前我几乎认定它就是拦路的那一个。结果它没有拦任何东西，而且删不掉——静态 <code>&#x3C;clinit></code> 一开始就会跑。</p>
+<p>但有一句要写在明处：<strong>判定在服务端</strong>。本地跑起来不等于账号安全，这条路上没有”确认没问题”这回事。</p>
+<h2 id="附注libhoudini-的定时炸弹1">附注：libhoudini 的「定时炸弹」<sup><a href="#user-content-fn-houdini" id="user-content-fnref-houdini" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></h2>
+<p>社区里的说法是”houdini 到 9.1 以后就不能用”，听起来像过期检查。实际是 hpe-14 构建里一个硬编码的计数器比较，附近没有任何取时间的调用：</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="asm"><code><span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">83</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 3d</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> bf ac </span><span style="color:#005CC5;--shiki-dark:#79B8FF">76</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 00</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 02</span><span style="color:#D73A49;--shiki-dark:#F97583">      cmp</span><span style="color:#D73A49;--shiki-dark:#F97583"> DWORD</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> PTR [</span><span style="color:#005CC5;--shiki-dark:#79B8FF">rip</span><span style="color:#24292E;--shiki-dark:#E1E4E8">+</span><span style="color:#005CC5;--shiki-dark:#79B8FF">0x76acbf</span><span style="color:#24292E;--shiki-dark:#E1E4E8">], </span><span style="color:#005CC5;--shiki-dark:#79B8FF">0x2</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">0f </span><span style="color:#005CC5;--shiki-dark:#79B8FF">83</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 68</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0d</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 00</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 00</span><span style="color:#D73A49;--shiki-dark:#F97583">         jae</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0xe6df3</span></span></code></pre></figure>
+<p>修法是把这条 <code>jae</code> 六字节 NOP 掉（64 位偏移 <code>0xe6085</code>，32 位 <code>0x8a29a</code>）——<strong>但这两个偏移只对那一个构建有效</strong>，套到别的构建上会改坏别的地方。这也是我没有在这台机器上打这个补丁的原因：这里的 houdini 不是 hpe-14。</p>
+<p>另外还有一段没被广泛记录的：houdini 会用 <code>tkill(gettid(), SIGILL)</code> 主动杀掉自己（signal 4、<code>SI_USER</code>，即人为发送）。触发条件是<strong>符号链接拓扑</strong>被动过——逐字节相同的内容摊成四个普通文件就崩，恢复成原版符号链接布局就正常。<strong>拓扑，不是内容。</strong> 任何把它打包成 Magisk 模块或 overlay 的做法，只要顺手把符号链接解成普通文件，就会得到一个必然崩溃的 houdini，而文件内容上看不出任何问题。</p>
+<h2 id="为什么把死胡同也写下来">为什么把死胡同也写下来</h2>
+<p>这两天里省时间最多的不是哪个成功步骤，而是别人早就记录过的失败方向——Waydroid 在 NVIDIA 上不支持、ARM64 客人会被拒绝、16.1 的 SurfaceFlinger 有问题。所以手册里那页<a href="/zh/docs/android/trouble/">排错</a>是刻意做长的：<strong>现象 → 层次 → 原因 → 处理</strong>，外加十一个假警报。</p>
+<section data-footnotes="" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-houdini">
+<p>依据两份公开的逆向工作（<code>itstaftaf/houdini-timebomb-fix</code>、<code>Vvamp/Libhoudini-hpe-14-timebomb-patch</code>），以及本项目在 <code>docs/02-STORY.md</code> §3.2 与 <code>docs/research/</code> 里的复现记录。 <a href="#user-content-fnref-houdini" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section></div></section></div></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

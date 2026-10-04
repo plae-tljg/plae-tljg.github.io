@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>03 为什么 AI 会接管数学 · LKM</title><meta name="description" content="为什么在 2024 年 1 月就能确信 AI 会接管数学：数学的哪一部分是操作的组合，而操作可以被机器接管。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/why-ai-takes-over-math-03/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/why-ai-takes-over-math-03/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/writing/why-ai-takes-over-math-03/"><meta property="og:type" content="website"><meta property="og:title" content="03 为什么 AI 会接管数学 · LKM"><meta property="og:description" content="为什么在 2024 年 1 月就能确信 AI 会接管数学：数学的哪一部分是操作的组合，而操作可以被机器接管。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/why-ai-takes-over-math-03/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/" aria-current="page">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/writing/why-ai-takes-over-math-03/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/zh/">首页</a><span aria-hidden="true">/</span><a href="/zh/writing/series/why-ai-takes-over-math/">为什么两年前我就知道 AI 会接管数学</a><span aria-hidden="true">/</span><span>第三篇 — 操作</span></nav><header class="article__header"><div class="article__meta" style="margin-bottom:.85rem"><span class="badge">第三篇 — 操作</span></div><h1 class="article__title">03 为什么 AI 会接管数学</h1><div class="article__meta"><time datetime="2026-09-24T00:00:00.000Z">2026 年 9 月 24 日</time><span>·</span><span>19 分钟</span><span class="badge badge--warn">草稿预览</span></div><p class="article__summary">为什么在 2024 年 1 月就能确信 AI 会接管数学：数学的哪一部分是操作的组合，而操作可以被机器接管。</p><div style="margin-top:1rem"><a class="tag" href="/zh/tags/AI/">AI</a><a class="tag" href="/zh/tags/%E6%95%B0%E5%AD%A6/">数学</a><a class="tag" href="/zh/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/">自动化</a><a class="tag" href="/zh/tags/%E5%AE%9A%E7%90%86%E8%AF%81%E6%98%8E/">定理证明</a></div></header><p class="notice">这篇文章尚未标记为 ready，仅在预览模式下显示。</p><div class="prose" data-pagefind-body><p>第一篇讲了三项原则：由一生多、机械化推演、概念碰撞。第二篇准备了七个视角：楼梯、机械化推演、证明即搜索、肉身方法、操作的平等性、物理学家与学院、以及 AI 乱说的活力。现在是第三篇，要把这些视角用在同一个问题上：</p>
+<blockquote>
+<p>AI 会接管数学的哪一部分？为什么？</p>
+</blockquote>
+<p>先把“接管”这个词说清楚。它在日常用法里滑来滑去，至少能指四件事：</p>
+<ol>
+<li>机器<strong>能做</strong>这件事；</li>
+<li>机器<strong>在做</strong>这件事；</li>
+<li>机器<strong>替代了</strong>原来做这件事的人；</li>
+<li>这件事<strong>完全不需要人</strong>了。</li>
+</ol>
+<p>这四个意思的强度差很远，需要的证据也完全不同。这一篇说的“接管”取的是最弱的那一档：**某一层的边际产出主要由机器完成，人不再逐件参与。**它不意味着这一层消失，也不意味着人停止参与；它意味着这一层的产量不再由人的时间决定。</p>
+<p>为什么取最弱的一档？因为它是能被证据支持的版本。第七节列出的那些事实，支持的是“机器能做，而且已经有人在做”，而不是“数学家失业了”。把结论说成后者，就超出了证据。</p>
+<p>这一篇的答案分四步。先回到 2024 年 1 月，说明那个判断到底基于什么；再用楼梯和机械化推演说明 AI 的结构性优势；然后用操作平等性说明这种优势可以覆盖学院层的哪一部分；最后把 2024 到 2026 的证据只当作旁证，而不是当论证本身。</p>
+<h2 id="一2024-年-1-月判断来自数学的结构">一、2024 年 1 月：判断来自数学的结构</h2>
+<p>2024 年 1 月，GPT-4 发布不到一年，GPT-3.5 仍然被大量使用。它们作为聊天机器人已经相当自然，但数学能力很有限：本科习题经常出错，研究级数学基本无从谈起。用当时的模型能力看，“AI 会接管数学”是一个夸张的判断。</p>
+<p>但那个判断本来就不是从模型能力来的。</p>
+<p>如果它依赖“AI 现在已经很聪明”，那我就应该在它变聪明之后再下结论。我的判断来自另一个方向：数学本身的结构。数学的很大一部分——定义、推导、验证、组合、检索——是机械化的。机械化的工作可以被逐步自动化；只要模型规模、数据、算力和验证手段到位，机器就会在这些部分追上并超过人类。2024 年的 GPT-4 不够聪明，只说明还需要时间，不说明方向有问题。</p>
+<p>这个判断还有一个更早的根。我是在 2021 年前后听说 EYE 的——全名是 Euler Yet another proof Engine，一个从 2006 年起就一直在维护的语义网推理引擎，做的是 forward / backward chaining。它不是一个数学定理证明器，处理的也不是数学分析，而是 N3/RDF 规则。我未必记得这个名字是否准确，但它让我第一次意识到：推理不只是人的事情，它可以被机器执行、被搜索、被验证。2024 年的 GPT-4 只是把这件事从逻辑和语义网的小圈子，带到了自然语言和数学。换句话说，我不是在 GPT-4 之后才开始相信“证明可以被机器执行”；这个信念比 GPT-4 更早。</p>
+<p>更准确地说：<strong>我不是在预测 AI 会变聪明；我是在观察数学的哪一部分不需要聪明。</strong></p>
+<p>那么，这条判断在什么情况下算错？一个不能被推翻的预测没有内容，所以这一节必须把话说死。下面三条里任何一条成立，“AI 会接管学院层”就要打折扣：</p>
+<ul>
+<li><strong>形式化的成本始终降不下来</strong>，以至于机器能检查的数学永远只占很小一块；</li>
+<li><strong>组合深度大的问题在实践中搜不收敛</strong>，机器只能处理那些人类早就做完的部分；</li>
+<li><strong>在机器已经能做的那些层里，人的时间仍然是产量的瓶颈</strong>——不是因为人做得更好，而是因为流程、责任或制度要求有人经手。</li>
+</ul>
+<p>这一篇没有能力判定这三条。第七节的证据只到“旁证”为止，不足以证实，也不足以证伪；它只能说明方向。</p>
+<p>不过，上面那段话里也埋着一个必须现在就承认的问题：**“只要模型规模、数据、算力和验证手段到位”是一个无法证伪的句式。**做到了就是判断正确，没做到就是条件还没到位。我在第四节会把这个句式拆成两个不同的断言，一个结构性、一个资源性；2024 年的那个判断只依赖前者。</p>
+<p>这个观察来自第二篇的楼梯比喻。</p>
+<h2 id="二楼梯再访ai-不需要走它可以跑">二、楼梯再访：AI 不需要走，它可以跑</h2>
+<p>第二篇的第一节已经讲过这条楼梯：梯级很矮，梯面很宽，消耗的不是天才，而是时间、记忆和熟练度。这里只取它的一个后果。</p>
+<p>人类必须“走”楼梯：每一步都要在时间里经历，身体会累，记忆有限，一个人一生能走的长度是有限的。AI 不需要走。它可以在每一步上高速尝试、验证、再尝试。它不需要拥有和人类相同的理解方式，也不需要经历人类的时间；它需要的是两件事：</p>
+<ol>
+<li><strong>每一步都有明确的规则</strong>：定义、类型、语法、形式化系统；</li>
+<li><strong>每一步都能被廉价地检查</strong>：Lean 内核、代码执行。</li>
+</ol>
+<p>第二条值得强调：它不是“盲审人类”或“基准测试”。那些是评估，不是验证——它们缓慢、统计、事后发生，没法给搜索过程中的每一步反馈。真正让“跑”成为可能的，只有那种能对单步立刻给出对错的检查器。这笔账在下一节还要再算一次。</p>
+<p>有了这两件事，AI 就可以把“走楼梯”变成“跑楼梯”：用算力换时间，用搜索换灵感，用验证换信心。第二篇的牙签比喻说的也是同一件事——证明是双向搜索，AI 可以并行地长出成千上万根牙签，再用验证器逐根检查；人类一次只能在脑子里追踪几根。</p>
+<p>这条楼梯并不止于数分 III。一旦 AI 掌握了数分 I 的基本操作，它就可以把这些操作组合到数分 II、数分 III、实分析、复分析，甚至 PDE 和 NS 方程。2024 年我对同学说“哪怕 AI 看起来很傻也要学”，依据就是这个：它可能走得很慢，但只要每一级都是可执行的，它最终会跑完整条楼梯。</p>
+<p>这里必须先划一条界线：这条楼梯描述的是<strong>已经被整理成教材的那条路径</strong>，不是数学被创造出来的过程。教材会把历史抹平——一次真正的突破，事后被写成一节顺理成章的课，看起来就像上一节的微小延伸。所以“楼梯可以被跑”说的是整理之后的数学，不是正在被创造的数学。这个区别在第六节会变得关键。</p>
+<p>而数学的学院层，恰好主要由“每一步都有明确规则”的工作构成：公理、定义、定理、证明、符号操作。所以问题不是“AI 能不能理解数学”，而是“数学的哪些部分不需要理解，只需要执行”。答案比人们想象的多得多。</p>
+<h2 id="三机械化推演为什么不需要灵感的部分这么大">三、机械化推演：为什么“不需要灵感”的部分这么大</h2>
+<p>第一篇的第二项原则和第二篇的第二节都说过：一旦对象被生成，很多工作就不再需要“理解实质”，只需要按规则摆弄符号。这里只补充两点，都是关于规模的。</p>
+<p>第一，AI 不怕术语。人类学习一个学科时容易被大词压住，AI 不会：它会把术语拼在一起，直到验证器把它拦下来。敬畏是一种人类成本，机器不付这笔钱。</p>
+<p>第二，也是更要紧的一点：机械推演要能跑起来，前提是这一步<strong>已经被形式化</strong>。而形式化本身是昂贵的人类劳动——AlphaProof 在 IMO 上的题目，就是人类专家手工翻译成 Lean 的。所以“机械化”不是一个免费的开关，而是一条流水线：人先把命题写成机器能检查的形式，机器才能在上面高速搜索。</p>
+<p>这带来一个必须说清楚的限制：<strong>验证并不便宜</strong>。Lean 内核只能检查已经被形式化的陈述，代码只能检查已经被写成程序的东西。凡是还没有被形式化的数学——也就是绝大部分正在被创造的数学——验证仍然要靠人，靠一个读得懂它的数学家。这个成本在第七节会以最直白的方式出现。</p>
+<h2 id="四操作平等性为什么这种优势可以覆盖学院层的大部分">四、操作平等性：为什么这种优势可以覆盖学院层的大部分</h2>
+<p>第二篇的第五节给过一个视角：数学能力的一大部分，是基本操作的组合；而在操作层上，数学家的思维操作和普通人的思维操作属于同一类——区别在认识论地位，不在操作类型。</p>
+<p>这里只取它的一个推论：</p>
+<p><strong>如果数学能力的一大部分是“基本操作的组合”，那么一个学会了这些操作的机器，就可以在组合空间里高速搜索。</strong></p>
+<p>它甚至可以比人组合得更快、更多、更不怕犯错。人类学者在几个可能的证明路径之间犹豫；AI 可以同时尝试几百条路径，让验证器筛掉错的。人类需要几十年才能熟练掌握的操作组合，AI 可以通过训练和搜索大规模覆盖。</p>
+<p>学院层的工作，绝大部分就是这样的组合：定义的操作、证明的操作、验证的操作、文献检索的操作、符号计算的操作。AI 不需要理解每个操作背后的“本质”；它只需要知道哪些操作是合法的、哪些组合能通过验证。这就是“跑楼梯”的准确含义——它不是跳过楼梯，而是把楼梯的每一级都变成高速可执行的步骤。</p>
+<p>不过这一步有一个缺口，必须写出来：<strong>“可组合”不等于“可覆盖”。</strong> 组合空间的规模是指数级的，能高速搜索不等于能搜完。上面那句“覆盖整个学院层”因此要收窄：它严格成立于组合深度有限、并且每一步都能被廉价检查的那部分。对组合深度大的部分，搜索能不能收敛是一个算力问题，不是结构问题。</p>
+<p>所以这一篇给出的首先是一个<strong>结构判断</strong>：这一层在原理上是可机械化的。它是否会在某一年被机械化完，是另一个问题，需要另一类证据——第七节只提供旁证，不提供结论。</p>
+<h2 id="五关键转折机械性不在证明而在起源">五、关键转折：机械性不在证明，而在起源</h2>
+<p>到这里，有一个必须说清楚的区分。否则，“AI 会接管数学”就会变成一个太粗的结论。</p>
+<p>学院的证明，其实可以每一步都很聪明。很多分析理论，你读的时候会感觉作者在每一步都很厉害：一个估计、一个紧性、一个扰动，把看似要散掉的东西重新收拢。那不是蛮力，是恰到好处的安排。局部证明不但不机械，甚至可以很有灵性。</p>
+<p>这里要说明我用“灵性”这个词是什么意思，因为它很容易被读成另一种东西。它不是在形容某个人聪明，也不是一种天赋。它是一个<strong>判断</strong>：读完一段推理，你会不会觉得它是活的——它背后是不是有一个真的问题在推着它走。这个判断是对着数学做的，不是对着人做的；换一个人写同样的东西，判断也一样。所以“灵性”和身份、天赋、学科高低都无关，它只和那段推理有没有一个活的起源有关。</p>
+<p>那么“机械”到底在哪里？</p>
+<p><strong>机械性不在证明，而在理论的起源。</strong></p>
+<p>一篇论文可以证明一个技术很难的定理，但如果它的问题是继承来的，如果它之所以存在只是因为传统里的大词还在那里，那么它的总体议程就是机械的。证明越聪明，这个反差有时越明显：每一步都很聪明，但整体证明的东西很无聊。</p>
+<p>这就是学院层的真正特征：它不是“证明机械”，而是“<strong>问题意识继承</strong>”。它擅长的是：给定一个已经选定的问题，把它展开、验证、组合、推广。它不需要重新决定“什么问题值得问”；它只需要在已有的问题空间里工作。</p>
+<p>AI 恰恰是这种工作的极致执行者。它是学院内部最强的“第一个我”：接受既定框架，跟着证明走，把局部工作做到极致。它不需要起源，也不需要判断这个游戏值不值得玩；它只需要规则和验证器。</p>
+<p>所以“AI 会接管数学”这个说法必须精确化：</p>
+<blockquote>
+<p>AI 会接管的是<strong>继承问题 + 机械化展开 + 验证</strong>这一层，也就是学院层。它不接管的是<strong>问题的起源</strong>——什么问题值得问、什么对象值得发明、哪个方向值得投入。</p>
+</blockquote>
+<p>学院层的证明可以很聪明；AI 的接管不是因为聪明不重要，而是因为<strong>在问题已经被选定之后，聪明可以被搜索、验证和规模化地替代</strong>。真正不能被替代的，是选择问题的那一步。</p>
+<h2 id="六学院与问题意识">六、学院与问题意识</h2>
+<p>现在可以把这两个词正式定下来。</p>
+<p><strong>学院</strong>是已经经典化的数学：定义、定理、证明、方法、论文、形式化库。它确实在积累——把零散的洞察变成可传承、可教学的东西。但它同时是一台靠惯性运转的机器：学院层的“大词”——同调、表示、Yang–Mills、上同调——本身可以成为继续工作的理由，即使最初的问题起源早就模糊了。</p>
+<p>这里要交代一个语气问题，因为它决定了这一篇为什么写成这样：**我不觉得学院是一桩值得赞颂的事业。**学院内部发展出来的新工具，外面的人大多不用。你把物理学里一个 2 维的结果推广到 n 维，物理学家不会因此感动——他们有自己的奇点概念和近似方法，几步就处理掉了。他们不在意你的严格性，不是因为你不够严格，而是因为你的问题不在他们的传统里。</p>
+<p>这不是在贬低学院。它是一台必要的机器，也是唯一能把洞察存下来的机器。但“必要”不等于“值得歌颂”，而一台靠大词运转的机器，在操作的边际成本降到接近零之后，是最容易被接管的。</p>
+<p><strong>问题意识</strong>是起源的那一面：什么问题值得问，什么对象值得发明，哪个方向值得投入，哪条路径会在事后看起来是必然的。它的问题来自外部——物理、几何、经验、别的学科、以及数学家个人的困惑。它不能靠继承得到，必须被重新提出。它产生的不是更多同一类定理，而是新的问题、新的概念、新的论证方向。</p>
+<p>在往下走之前，得先承认一件事：上面对学院层的刻画，其实用了两把不同的尺子。</p>
+<ul>
+<li>一把量的是<strong>问题的来源</strong>：它是继承来的，还是被重新提出来的？</li>
+<li>另一把量的是<strong>工作能不能被形式化</strong>：它能不能写进形式系统，能不能被机器检查？</li>
+</ul>
+<p>这两把尺子并不重合。一个继承来的问题如果没法形式化，按第一把尺子它属于学院层，但 AI 未必吃得下；一个刚起源、还热着的问题如果恰好形式化得很干净，按第二把尺子它就该被机器接手，可它明明属于问题意识那一侧。</p>
+<p>它们在这篇文章里之所以指向同一个结论，是因为历史上两者高度相关：一个数学分支被经典化的过程，本身就把它的语言磨成了可形式化的形状。所以“学院层”应当理解为<strong>已经典化、因而大体上可形式化的那一层</strong>，而不是两把尺子各自划出的并集。</p>
+<p>不重合的那条地带是真实存在的。它是这篇文章覆盖不到的地方，也是机器接管最慢的地方——那里堆着大量继承来的、却始终没有被形式化的数学。</p>
+<p>AI 会先接管学院层，原因很清楚：</p>
+<ul>
+<li>学院层的工作可以被形式化，AI 可以在形式系统里搜索和验证；</li>
+<li>学院层的工作可以被基准化，AI 公司有强烈的动机去优化；</li>
+<li>学院层的成功可以被度量，模型可以自我改进；</li>
+<li>学院层的问题大多是“给定设定，找证明”，这正是生成器加验证器最擅长的。</li>
+</ul>
+<p>问题意识很难被这样处理：</p>
+<ul>
+<li>“什么问题值得问”没有基准；</li>
+<li>“这个方向有没有意义”没有 Lean 内核；</li>
+<li>“哪条路径会在十年后看起来是必然的”需要共同体的历史判断；</li>
+<li>“这个起源是不是活的”需要生活、经验、别的学科的实际问题。</li>
+</ul>
+<p>这就是为什么 AI 是终极圈内人，而不是天然的闯入者。它在学院层的走廊里走得比任何人都快，但走廊本身不是它建的；它可以在已有的问题空间里高速移动，但“选择哪个问题空间”仍然是一个外部动作。</p>
+<p>第一篇里的那个问题，在这里有了现实版本：</p>
+<blockquote>
+<p>谁来挑选有意义的那一首？还是需要人。</p>
+</blockquote>
+<p>第一原则（由一生多）和第三原则（概念碰撞）可以生成无数候选；第二原则（机械化推演）可以把候选展开、验证、组合。但<strong>哪一个候选值得留下</strong>，不是生成和推演能回答的。学院擅长展开已经被选中的东西；问题意识负责在选择还没有发生之前，选出一个值得问的问题。</p>
+<p>所以，“AI 接管数学”这个说法必须拆开：</p>
+<ul>
+<li>学院层：接管，而且已经在接管。</li>
+<li>问题意识：没有被接管，而且暂时看不到被接管的路径。</li>
+</ul>
+<h2 id="七20242026只作为旁证">七、2024→2026：只作为旁证</h2>
+<p>结构判断是一回事，证据是另一回事。但这一节只写必要的旁证，不展开成一篇新闻综述。</p>
+<p>从 2024 年 1 月到现在，最相关的事实有四件：</p>
+<ol>
+<li><strong>AlphaProof（2024 年 7 月公布，Nature 论文 2025 年 11 月）</strong>：把大模型预训练、Mathlib 监督微调、Lean 定理证明器中的强化学习和树搜索结合起来，在 2024 年 IMO 中解出三道非几何题（P1、P2、P6），加上 AlphaGeometry 2 解出的 P4，合计四题、28/42 分，达到银牌水平（当年金牌线是 29 分）。证明由 Lean 内核逐步验证。代价是主强化学习阶段约 8 万 TPU-days、巨大的推理计算量，以及人类专家对竞赛题的手工形式化。</li>
+<li><strong>IMO 2025</strong>：DeepMind 和 OpenAI 的模型都拿到 35/42，越过金牌分数线。但两者的性质不同：DeepMind 的成绩由 IMO 官方评分确认，OpenAI 的成绩由三位前奖牌得主评分，未经官方认证；两者都不是正式参赛者，而当年的人类选手仍然拿到满分 42。所以准确的说法是“达到金牌分数线”，还不是“进入人类顶尖选手的区间”。</li>
+<li><strong>First Proof（2026）</strong>：一个独立评测项目。数学家提供十道尚未公开、来自自己研究过程的问题；四个 AI 系统在无人干预的条件下各作答一次，再由人类数学家盲审。第二批的结果是：十道题中有七道至少被一个系统评为“毫无瑕疵”或“只需小改”——这是四个系统合计的结果，不是单个模型的成绩。成本量级是每题几十到几百美元（Tao 的估计）。</li>
+<li><strong>OpenAI 的十项进展与 Navier–Stokes 声明（2026）</strong>：2026 年 8 月，公司宣称内部模型 Astra 在十个长期开放问题上取得结果或重大进展——包括非 sofic 群的具体构造、Connes 刚性猜想的否证——并配有 Lean 证书，十项合计约两千美元。9 月，公司又宣称用约一万个协同工作的智能体、约 88 小时、约 1300 亿输出 token 产生了一个 Navier–Stokes 有限时间奇点证明，并用 Lean 形式化，同时表示不会去主张千禧奖。这些都是公司声明，尚未完成学界验证，并且已经出现优先权争议。</li>
+</ol>
+<p>这些事实共同指向同一个机制：</p>
+<blockquote>
+<p><strong>生成 → 搜索 → 验证 → 重复</strong>。
+一个不可靠的生成器，配上一个可靠的验证器，再加上大量计算和人类的脚手架。</p>
+</blockquote>
+<p>Tao 的说法最清楚。他写道，生成式 AI</p>
+<blockquote>
+<p>本质上是无所依凭的（inherently ungrounded），因为它优化的是一份令人满意的输出的“外表”，而不是这份输出本应指示的那个底层属性。</p>
+</blockquote>
+<p>他接着指出，在几乎所有其他领域，AI 最大的软肋是“会犯无法验证的错误”，但在数学里几乎独一无二地，“你可以自动检查输出”。所以真正有效的用法，是把生成模型与更传统、更可靠的验证方法结合起来，滤掉那些本来会让输出变得毫无价值的幻觉。</p>
+<p>由此可以说：真正做出东西的系统，不是一个“理解数学的模型”，而是一个不可靠但强有力的随机生成器，加上一层可靠的过滤器。<strong>这最后一句是我的概括，不是 Tao 的原话。</strong></p>
+<p>这正好印证了本篇的结构判断：AI 在学院层先赢，因为学院层的工作可以被形式化、验证、搜索和基准化。越靠近起源、选题、意义和共同体接受，验证器越难发挥作用。</p>
+<p>对账表可以写得很短：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>2024 年的隐含判断</th><th>2026 年的证据</th><th>判定</th></tr></thead><tbody><tr><td>AI 会做本科数学</td><td>竞赛题和本科题大量解决；但一项受控研究显示，改动数值、加入无关条件会显著掉分（该研究测的是小学应用题，且模型不带工具）</td><td>基本成立，但脆</td></tr><tr><td>AI 会进入研究级数学</td><td>First Proof 第二批 7/10（四个系统合计）【同行评审中】；OpenAI 十项进展【公司声明】；Navier–Stokes【公司声明】</td><td>方向成立，条件很多</td></tr><tr><td>AI 会接管数学</td><td>在可形式化、可验证、可基准化的学院层已经出现胜利</td><td>学院层成立，问题意识未成立</td></tr><tr><td>AI 会理解数学</td><td>Lean 验证的是形式陈述，不是它是否符合原意；起源与选题没有证据</td><td>未成立</td></tr></tbody></table>
+<h2 id="八结论接管的是操作不是选择">八、结论：接管的是操作，不是选择</h2>
+<p>回到标题：<strong>为什么 AI 会接管数学？</strong></p>
+<p>因为数学有一个巨大的学院层，它的工作是操作的组合：给定问题，找到证明；给定定义，展开推论；给定猜想，搜索反例；给定文献，组合工具。这些操作可以被形式化、验证、搜索和规模化。AI 是一种前所未有的操作机器；它不需要“理解”每个操作背后的本质，只需要规则和验证器。</p>
+<p>但数学还有一个问题意识层，它的工作是起源、选择、垂直跳跃、意义叙述、共同体接受。这一层没有基准，没有 Lean 内核，没有清晰的奖励信号。AI 目前不是这一层的行动者；它是这一层的工具、加速器，以及——如果训练得当的话——一个借来的闯入者。</p>
+<p>所以 2024 年那个判断应该被精确化：</p>
+<blockquote>
+<p><strong>AI 会接管数学的学院层；数学的问题意识不会被自动接管。</strong></p>
+</blockquote>
+<p>这不是一个令人绝望的结论，也不是一个令人狂喜的结论。它是一个结构事实。第一篇的机械化推演、第二篇的楼梯和操作平等性，都指向同一个方向：<strong>操作可以被机器接管，选择不能。</strong></p>
+<p>剩下的问题就是：如果接管的是操作，那么选择发生在哪里？问题意识到底是什么？它为什么不能被形式化、被基准化、被搜索？人还能做什么？</p>
+<p>这就是第四篇要回答的。</p>
+<h2 id="说明与边界">说明与边界</h2>
+<ul>
+<li>这一篇主张的是一个结构性判断：数学里有一层工作可以被形式化、被验证、被规模化。它不是能力时间表，也不预测哪一年会发生什么。<strong>什么情况算这个判断失败</strong>，本篇没有回答——这是它最大的缺口。</li>
+<li>第七节的事实分三档：已复核的、仍在同行评审中的、以及公司的公开声明。公司声明没有被当作证据，只被当作迹象。</li>
+<li>验证并不便宜。Lean 只能检查已经被形式化的陈述，而形式化本身是昂贵的人类劳动——AlphaProof 在 IMO 上的题目就是人类专家手工形式化的。这一篇没有把这项成本算进“跑楼梯”的速度里。</li>
+<li>这一篇不主张 AI 理解数学。“理解”这个词在整篇里只出现在被否定的位置。</li>
+<li>反过来也成立：如果形式化成本降不下来，那么学院层被接管的快慢取决于人类形式化的供给，而不是机器的搜索能力。</li>
+</ul>
+<!-- CTA-PLACEHOLDER: 发布前替换为真实链接（GitHub / newsletter / 联系邮箱）。
+     阻塞于 AGENTS.md §4 的 launch gate：域名、newsletter 与仓库审计均未决定。 --></div><nav class="series-nav" aria-label="本系列"><div class="series-nav__side"><span class="series-nav__label">← 上一篇 · 第二篇 — 准备</span><a href="/zh/writing/why-ai-takes-over-math-02/">02 准备：几种看数学的方式</a></div><div class="series-nav__side series-nav__side--next"><span class="series-nav__label">下一篇 · 第四篇 — 选择 →</span><a href="/zh/writing/why-ai-takes-over-math-04/">04 问题意识：AI 接管不了的那一层</a></div></nav></div><nav class="toc" aria-label="目录"><h2>目录</h2><ol><li><a href="#一2024-年-1-月判断来自数学的结构">一、2024 年 1 月：判断来自数学的结构</a></li><li><a href="#二楼梯再访ai-不需要走它可以跑">二、楼梯再访：AI 不需要走，它可以跑</a></li><li><a href="#三机械化推演为什么不需要灵感的部分这么大">三、机械化推演：为什么“不需要灵感”的部分这么大</a></li><li><a href="#四操作平等性为什么这种优势可以覆盖学院层的大部分">四、操作平等性：为什么这种优势可以覆盖学院层的大部分</a></li><li><a href="#五关键转折机械性不在证明而在起源">五、关键转折：机械性不在证明，而在起源</a></li><li><a href="#六学院与问题意识">六、学院与问题意识</a></li><li><a href="#七20242026只作为旁证">七、2024→2026：只作为旁证</a></li><li><a href="#八结论接管的是操作不是选择">八、结论：接管的是操作，不是选择</a></li><li><a href="#说明与边界">说明与边界</a></li></ol></nav></div></div></article><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

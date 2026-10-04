@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>01 After the Rapid Prototype: Code, Data, and Structure · LKM</title><meta name="description" content="The two tempting shortcuts for a rapid chatbot prototype are wrapping an agent CLI as the backend, or hardcoding rules and letting an agent maintain them. Both work at low traffic; the failure appears once the system accumulates changes. The answer is not that data beats code, but that code and data need the right boundary: what should be declared as data, what must stay in code, and who guards the structure."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/writing/rapid-prototypes-and-structure/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/writing/rapid-prototypes-and-structure/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/rapid-prototypes-and-structure/"><meta property="og:type" content="website"><meta property="og:title" content="01 After the Rapid Prototype: Code, Data, and Structure · LKM"><meta property="og:description" content="The two tempting shortcuts for a rapid chatbot prototype are wrapping an agent CLI as the backend, or hardcoding rules and letting an agent maintain them. Both work at low traffic; the failure appears once the system accumulates changes. The answer is not that data beats code, but that code and data need the right boundary: what should be declared as data, what must stay in code, and who guards the structure."><meta property="og:url" content="https://plae-tljg.github.io/en/writing/rapid-prototypes-and-structure/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/" aria-current="page">Writing</a><a href="/en/docs/">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/writing/rapid-prototypes-and-structure/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/en/">Home</a><span aria-hidden="true">/</span><a href="/en/writing/series/ai-maintainable-systems/">AI-Maintainable Systems</a><span aria-hidden="true">/</span><span>01 After the Rapid Prototype: Code, Data, and Structure</span></nav><header class="article__header"><h1 class="article__title">01 After the Rapid Prototype: Code, Data, and Structure</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026-10-01</time><span>·</span><span>7 min read</span><span class="badge badge--warn">Draft preview</span></div><p class="article__summary">The two tempting shortcuts for a rapid chatbot prototype are wrapping an agent CLI as the backend, or hardcoding rules and letting an agent maintain them. Both work at low traffic; the failure appears once the system accumulates changes. The answer is not that data beats code, but that code and data need the right boundary: what should be declared as data, what must stay in code, and who guards the structure.</p><div style="margin-top:1rem"><a class="tag" href="/en/tags/AI/">AI</a><a class="tag" href="/en/tags/structure/">structure</a><a class="tag" href="/en/tags/prototype/">prototype</a><a class="tag" href="/en/tags/data/">data</a></div></header><p class="notice">This article is not marked ready yet and only shows in preview mode.</p><p class="notice notice--ai">This article was translated from the Chinese original by an AI. Wording and terminology may be off.</p><div class="prose" data-pagefind-body><h2 id="1-a-very-typical-friday-afternoon">1. A Very Typical Friday Afternoon</h2>
+<p>Suppose you want to build a chatbot quickly, or any small app that uses AI. What you want to validate is “will anyone use it”, not “can it be written as a textbook architecture”. So you quite naturally do not want to write a data access layer, migrations, permissions, channels, read/write modules, and a review process.</p>
+<p>Then you see two shortcuts.</p>
+<p><strong>Shortcut one: treat the agent as the backend.</strong></p>
+<figure class="code-viewer" data-lines="13"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 伪代码：把 agent 命令包成一个 API</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> fastapi </span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">app </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">@app.post</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"/chat"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">def</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> chat</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(question: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">str</span><span style="color:#24292E;--shiki-dark:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    result </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess.run(</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"claude"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"-p"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, question],   </span><span style="color:#6A737D;--shiki-dark:#6A737D"># 或 opencode -c、其他 agent 命令</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">        capture_output</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#E36209;--shiki-dark:#FFAB70">text</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"answer"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: result.stdout}</span></span></code></pre></figure>
+<p>A user request comes in and is forwarded straight to the agent. You write no schema, no permissions, no channels, no read/write modules, and you can demo it in an afternoon. This is not writing a system; it is letting an agent play the whole system for a while.</p>
+<p><strong>Shortcut two: hardcode first, then let an agent maintain it.</strong></p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "price"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question </span><span style="color:#D73A49;--shiki-dark:#F97583">and</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iphone"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iPhone is $999."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "refund"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "Refunds are available within 14 days."</span></span></code></pre></figure>
+<p>It is more stable and cheaper at runtime. During the rapid-prototype stage that is a reasonable choice. The problem comes after: the price changed, edit a branch; the wording changed, add a branch; a bug, toss it to the agent to fix the code. After dozens of repetitions, no one can state in full what the system now knows.</p>
+<h2 id="2-at-low-traffic-both-shortcuts-can-be-right">2. At Low Traffic, Both Shortcuts Can Be Right</h2>
+<p>One counterexample has to be admitted:</p>
+<blockquote>
+<p>If the prototype lives only three days, traffic is low, the model is cheap enough to ignore, and the system barely changes — both shortcuts are rational.</p>
+</blockquote>
+<p>Short-circuiting a prototype is not a sin; treating a one-off prototype as a system that will keep growing is.</p>
+<p>So what you actually have to judge is:</p>
+<ul>
+<li>Will it keep changing?</li>
+<li>Do changes need to be verified?</li>
+<li>Besides the author, does anyone else need to review / understand it?</li>
+<li>When something breaks, is the loss just one demo, or has a customer already come to depend on it?</li>
+</ul>
+<p>If even one answer is “yes”, the shortcuts start getting expensive. But their shared problem is not “used an agent” or “used hardcoding”, it is:</p>
+<blockquote>
+<p><strong>The system gives change no verifiable landing point.</strong></p>
+</blockquote>
+<p>With an agent as the backend, the landing point does not exist; with hardcoding plus agent maintenance, the landing point is the code that is hardest to verify.</p>
+<h2 id="3-a-conclusion-reached-too-fast">3. A Conclusion Reached Too Fast</h2>
+<p>At this point it is easy to reach a conclusion:</p>
+<blockquote>
+<p>Then let AI change the data, not the code. Data is better suited than code to AI maintenance.</p>
+</blockquote>
+<p>That conclusion moves too fast, and it would carry the whole season toward a wrong premise.</p>
+<p>It is wrong in two ways:</p>
+<ol>
+<li><strong>Code is not bad.</strong> Algorithms, side effects, performance, security boundaries, transactions, and interaction with external systems are exactly what code should express.</li>
+<li><strong>Data is not automatically maintainable.</strong> A pile of JSON with no vocabulary, no schema, and no validation only hides the structure inside conventions, which is harder to verify than code.</li>
+</ol>
+<p>The real question is not “code or data”, but:</p>
+<blockquote>
+<p><strong>What should be declared as data, what must stay in code, where the boundary lies, and who is responsible for guarding it.</strong></p>
+</blockquote>
+<p>“Data is more advanced than code” is a lazy way of putting it; the right question is where the structure sits.</p>
+<h2 id="4-code-and-data-are-two-materials">4. Code and Data Are Two Materials</h2>
+<p>You can treat code and data as two materials rather than two ranks.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Code</th><th>Data</th></tr></thead><tbody><tr><td>Excels at</td><td>algorithms, side effects, I/O, performance, security, invariants</td><td>facts, rules, copy, configuration, content</td></tr><tr><td>Verifiability</td><td>depends on tests, execution paths, boundaries</td><td>addressable, diffable, validatable</td></tr><tr><td>Blast radius</td><td>call chains, timing, exception paths</td><td>usually limited to a row / entity / rule</td></tr><tr><td>Modified by</td><td>developers + AI (high risk)</td><td>people and AI (reviewable)</td></tr><tr><td>Failure mode</td><td>found only when some path runs</td><td>can be rejected at write time</td></tr></tbody></table>
+<p>Data suits AI maintenance better not because data is nobler, but because:</p>
+<ul>
+<li>it can have a stable identity;</li>
+<li>changes are usually local;</li>
+<li>the context can be trimmed;</li>
+<li>it can be rebuilt idempotently;</li>
+<li>it can be validated at write time.</li>
+</ul>
+<p>But these properties hold only for <strong>structured data</strong>. Free text and randomly dropped JSON do not have them.</p>
+<p>Code still carries the work it is good at: defining primitives, running algorithms, handling side effects, holding security boundaries. Code is not “moved out”; it retreats to a smaller, more stable position:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>System = Code + Data</span></span></code></pre></figure>
+<p>Code is responsible for interpreting, validating, executing, and reviewing; data carries knowledge, rules, variables, processes, and state.</p>
+<p>When code only interprets the vocabulary and no longer implements the business case by case, it approaches <strong>meta-code (metacode)</strong>:</p>
+<blockquote>
+<p>If code size grows with the number of domain objects, it is business code;
+If code size grows only with the size of the vocabulary, it earns the name meta-code.</p>
+</blockquote>
+<h2 id="5-when-behavior-belongs-in-data">5. When Behavior Belongs in Data</h2>
+<p>Not everything should be datafied. A checklist is more useful than a slogan:</p>
+<ul>
+<li><strong>Change frequency</strong>: does it change often? Facts that change often suit data better.</li>
+<li><strong>Addressability</strong>: can it be given a stable identity? Prices, rules, and copy can; a piece of control flow usually cannot.</li>
+<li><strong>Review needs</strong>: does the change need to be understood by non-programmers?</li>
+<li><strong>Verification method</strong>: can you write tests / validations, rather than only running it?</li>
+<li><strong>Blast radius</strong>: does a wrong change affect one row, or a call chain?</li>
+<li><strong>Context size</strong>: can the AI finish the change after reading only a small piece?</li>
+</ul>
+<p>Conversely, the following usually belong in code:</p>
+<ul>
+<li>algorithms and performance-sensitive paths;</li>
+<li>external side effects and I/O;</li>
+<li>concurrency, transactions, security boundaries;</li>
+<li>primitives that cannot be expressed in the data vocabulary.</li>
+</ul>
+<p>This is not “emptying the code out”, but pulling <strong>declarable knowledge</strong> out of the code so that code keeps only the part it is best at.</p>
+<h3 id="51-one-minimal-rule-values-do-not-enter-sentences">5.1 One Minimal Rule: Values Do Not Enter Sentences</h3>
+<p>Anything that changes faster than a sentence should not be written into a sentence.</p>
+<p>Prices, versions, stock, dates, and star counts belong to data; sentences belong to templates. That way one data change needs one line edited and one rebuild, not N answers edited — and no need to wake a model.</p>
+<h2 id="6-structure-is-a-boundary-not-a-slogan">6. Structure Is a Boundary, Not a Slogan</h2>
+<p>When you say “use structure”, what do you concretely mean? At least five things:</p>
+<ol>
+<li>What vocabulary the data uses (entity types, relationship types, action types);</li>
+<li>What shape the data takes (rows, JSON, files, columns);</li>
+<li>Which fields are declared and which are left free;</li>
+<li>Who validates, who reviews, how you roll back;</li>
+<li>How state and build artifacts are kept apart.</li>
+</ol>
+<p>Structure is not “the more tables the better”, nor “the less code the better”. It is a contract about boundaries.</p>
+<p>The hardest clause in this contract is:</p>
+<blockquote>
+<p><strong>How far do you generalize, and how far do you make it domain-specific?</strong></p>
+</blockquote>
+<h2 id="7-core-tension-generic-data-vs-domain-tables">7. Core Tension: Generic Data vs Domain Tables</h2>
+<p>One concrete example makes the tension clear.</p>
+<p>A product can be written as a generic entity:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"stock"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>The benefit is that extension is cheap: a new domain needs no migration, the AI just adds data.</p>
+<p>But three months later you may see:</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>Names start to drift; the price can be negative; stock can be a string; nobody knows whether “listed but no price” is legal. Queries get ugly too: every one has to write <code>json_extract</code>, and performance depends on convention.</p>
+<p>The other extreme is building a <code>products</code> table: types, constraints, and queries are all strong, but every domain change needs a migration, and the AI can no longer extend by “adding data”.</p>
+<p>So the question is not “datafy or codify”, but:</p>
+<ul>
+<li>generic data buys <strong>extensibility</strong> with <strong>structural strength</strong>;</li>
+<li>domain tables buy <strong>structural strength</strong> with <strong>evolution cost</strong>;</li>
+<li>the choice depends on which cost hurts more right now.</li>
+</ul>
+<p>That is the dialectic of data and code: <strong>not which one is more advanced, but which layer the structure sits on.</strong></p>
+<h2 id="8-failure-conditions-and-the-authors-position">8. Failure Conditions and the Author’s Position</h2>
+<p>When does this approach not hold?</p>
+<ul>
+<li>If the system barely changes, the investment in structure never pays back;</li>
+<li>If models are cheap, stable, and auditable enough that a runtime agent is acceptable, the tipping point moves;</li>
+<li>If every change needs a new primitive rather than new data, the generic structure has failed;</li>
+<li>If maintenance cost stays above just editing the code, the structure is not worth it.</li>
+</ul>
+<p>The author’s position: I do not think “data is better than code” or “code is better than data” is a meaningful debate. The meaningful question is:</p>
+<blockquote>
+<p><strong>The change frequency, verification needs, and blast radius of this behavior decide whether it should live in code or in data; and the boundary must be explicitly declared rather than held up by convention.</strong></p>
+</blockquote>
+<h2 id="9-the-next-question">9. The Next Question</h2>
+<p>The frame is now in place: code and data are two materials, structure is the boundary contract between them, and the core tension is generic data vs domain tables.</p>
+<p>But how exactly is the boundary drawn? When does a project that “can have generic entities” actually need a <code>products</code> table? And why is the answer not “never”?</p>
+<p>The next piece takes up exactly this question: <strong>The Boundary of Datafication</strong>.</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="In this series"><div class="series-nav__side"></div><div class="series-nav__side series-nav__side--next"><span class="series-nav__label">Next →</span><a href="/en/writing/boundary-of-datafication/">02 When Do You Actually Need a Products Table? The Boundary of Datafication</a></div></nav></div><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#1-a-very-typical-friday-afternoon">1. A Very Typical Friday Afternoon</a></li><li><a href="#2-at-low-traffic-both-shortcuts-can-be-right">2. At Low Traffic, Both Shortcuts Can Be Right</a></li><li><a href="#3-a-conclusion-reached-too-fast">3. A Conclusion Reached Too Fast</a></li><li><a href="#4-code-and-data-are-two-materials">4. Code and Data Are Two Materials</a></li><li><a href="#5-when-behavior-belongs-in-data">5. When Behavior Belongs in Data</a></li><li class="toc__l3"><a href="#51-one-minimal-rule-values-do-not-enter-sentences">5.1 One Minimal Rule: Values Do Not Enter Sentences</a></li><li><a href="#6-structure-is-a-boundary-not-a-slogan">6. Structure Is a Boundary, Not a Slogan</a></li><li><a href="#7-core-tension-generic-data-vs-domain-tables">7. Core Tension: Generic Data vs Domain Tables</a></li><li><a href="#8-failure-conditions-and-the-authors-position">8. Failure Conditions and the Author’s Position</a></li><li><a href="#9-the-next-question">9. The Next Question</a></li></ol></nav></div></div></article><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

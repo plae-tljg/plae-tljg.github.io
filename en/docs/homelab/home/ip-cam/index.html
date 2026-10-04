@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>IP Camera - CameraLink App · LKM</title><meta name="description" content="Use an Android phone as a local camera for monitoring. The new version uses the CameraLink app, which is simpler than the old version and does not require an extra server."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/docs/homelab/home/ip-cam/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/docs/homelab/home/ip-cam/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/docs/homelab/home/ip-cam/"><meta property="og:type" content="website"><meta property="og:title" content="IP Camera - CameraLink App · LKM"><meta property="og:description" content="Use an Android phone as a local camera for monitoring. The new version uses the CameraLink app, which is simpler than the old version and does not require an extra server."><meta property="og:url" content="https://plae-tljg.github.io/en/docs/homelab/home/ip-cam/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/path.0qta1OZl.css"><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+.docs-nav{font-size:.86rem;line-height:1.5}.docs-nav__toggle{background:var(--surface,transparent);border:1px solid var(--border);border-radius:var(--radius);width:100%;color:inherit;font:inherit;cursor:pointer;justify-content:space-between;align-items:center;gap:1rem;padding:.7rem .9rem;display:none}.docs-nav__track>summary,.docs-nav__stage>summary{cursor:pointer;align-items:baseline;gap:.5rem;padding:.4rem 0;list-style:none;display:flex}.docs-nav__track>summary::-webkit-details-marker,.docs-nav__stage>summary::-webkit-details-marker{display:none}.docs-nav__track>summary{color:var(--text);font-weight:620}.docs-nav__track>summary:before,.docs-nav__stage>summary:before{content:"▸";color:var(--text-faint);margin-right:.35rem;font-size:.7em;transition:transform .15s;display:inline-block}.docs-nav__track[open]>summary:before,.docs-nav__stage[open]>summary:before{transform:rotate(90deg)}.docs-nav__lang{border:1px solid var(--border);color:var(--text-faint);vertical-align:.05em;border-radius:3px;margin-left:.35rem;padding:0 .25rem;font-size:.62rem}.docs-nav__count{color:var(--text-faint);font-variant-numeric:tabular-nums;margin-left:auto;font-size:.78em}.docs-nav__stage{border-left:1px solid var(--border);margin-left:.55rem;padding-left:.7rem}.docs-nav__stage>summary{color:var(--text-soft);font-size:.95em}.docs-nav ul{margin:.1rem 0 .5rem;padding:0 0 0 1.1rem;list-style:none}.docs-nav li{margin:.1rem 0}.docs-nav a{color:var(--text-soft);border-left:2px solid #0000;border-radius:4px;padding:.12rem .4rem;text-decoration:none;display:block}.docs-nav a:hover{color:var(--link,var(--accent));background:var(--surface-soft,#7f7f7f14)}.docs-nav a.is-current{color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent);font-weight:650}.docs-nav__track>summary>a.is-current,.docs-nav__stage>summary>a.is-current{border-radius:4px;margin-left:-.4rem;padding:.05rem .4rem;display:inline-block}.docs-nav__foot{border-top:1px solid var(--border);margin:1rem 0 0;padding-top:.75rem}@media (width>=1024px){.docs-nav{border-right:1px solid var(--border);align-self:start;max-height:calc(100vh - 7rem);padding-right:.75rem;position:sticky;top:5rem;overflow-y:auto}}@media (width<=1023px){.docs-nav__toggle{display:flex}.docs-nav__body{border:1px solid var(--border);border-radius:var(--radius);margin-top:.75rem;padding:.75rem .9rem 1rem;display:none}.docs-nav[data-open] .docs-nav__body{display:block}}.container.container--docs{max-width:90rem}.docs-shell{grid-template-columns:minmax(0,1fr);gap:2rem;padding-top:2rem;display:grid}@media (width>=1024px){.docs-shell{grid-template-columns:15rem minmax(0,1fr);gap:2.5rem}}@media (width>=1280px){.docs-shell--with-toc{grid-template-columns:15rem minmax(0,1fr) 12rem}}.docs-main{min-width:0}.docs-main .article__header,.docs-main .notice,.docs-main .prose>p,.docs-main .prose>ul,.docs-main .prose>ol,.docs-main .prose>blockquote,.docs-main .prose>h2,.docs-main .prose>h3,.docs-main .prose>h4,.docs-main .prose>h5,.docs-main .prose>h6{max-width:46rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/">Writing</a><a href="/en/docs/" aria-current="page">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/docs/homelab/home/ip-cam/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><div class="container container--docs"><div class="docs-shell docs-shell--with-toc"><nav class="docs-nav" aria-label="Docs" data-docs-nav><button class="docs-nav__toggle" type="button" aria-expanded="false" data-docs-nav-toggle><span>Contents</span><span aria-hidden="true">▾</span></button><div class="docs-nav__body"><details class="docs-nav__track" data-nav-key="track:math-path"><summary><a href="/en/docs/math-path/">Math Learning Path</a><span class="docs-nav__count">9</span></summary><details class="docs-nav__stage" data-nav-key="stage:math-path/getting-started"><summary><a href="/en/docs/math-path/getting-started/">Getting Started</a></summary><ul><li><a href="/en/docs/math-path/getting-started/high-school-books/">Books I Read in High School</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:math-path/university"><summary><a href="/en/docs/math-path/university/">University Math</a></summary><ul><li><a href="/en/docs/math-path/university/set-theory/"><span aria-hidden="true">∅ </span>Set Theory</a></li><li><a href="/en/docs/math-path/university/math-logic/"><span aria-hidden="true">⟂ </span>Mathematical Logic</a></li><li><a href="/en/docs/math-path/university/number-theory/"><span aria-hidden="true">ℕ </span>Number Theory</a></li><li><a href="/en/docs/math-path/university/group-theory/"><span aria-hidden="true">⊕ </span>Group Theory</a></li><li><a href="/en/docs/math-path/university/analysis/"><span aria-hidden="true">∫ </span>Mathematical Analysis</a></li><li><a href="/en/docs/math-path/university/topology/"><span aria-hidden="true">◈ </span>Topology</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:ubuntu"><summary><a href="/en/docs/ubuntu/">My Ubuntu Setup</a><span class="docs-nav__count">44</span></summary><details class="docs-nav__stage" data-nav-key="stage:ubuntu/base"><summary><a href="/en/docs/ubuntu/base/">Install &amp; Disks</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/ubuntu/base/headless/">Running Linux in Headless Mode</a></li><li><a href="/en/docs/ubuntu/base/multiple-ssds/">Managing Multiple SSDs for Storage and Quick Access</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/apps"><summary><a href="/en/docs/ubuntu/apps/">Applications</a></summary><ul><li><a href="/en/docs/ubuntu/apps/quick-install/">Common Apps Installation</a></li><li><a href="/en/docs/ubuntu/apps/browsers/">浏览器</a></li><li><a href="/en/docs/ubuntu/apps/firefox/">Firefox</a></li><li><a href="/en/docs/ubuntu/apps/editors/">Editors and IDEs</a></li><li><a href="/en/docs/ubuntu/apps/ide/">IDE Installation</a></li><li><a href="/en/docs/ubuntu/apps/image-editors/">Image Editing Tools</a></li><li><a href="/en/docs/ubuntu/apps/audio/">Audio Tools</a></li><li><a href="/en/docs/ubuntu/apps/multimedia/">多媒体工具</a></li><li><a href="/en/docs/ubuntu/apps/office/">Office software</a></li><li><a href="/en/docs/ubuntu/apps/games/">Games</a></li><li><a href="/en/docs/ubuntu/apps/network-tools/">Network Tools</a></li><li><a href="/en/docs/ubuntu/apps/database-tools/">Database Tools</a></li><li><a href="/en/docs/ubuntu/apps/dev-tools/">Development Tools</a></li><li><a href="/en/docs/ubuntu/apps/system-tools/">System Tools</a></li><li><a href="/en/docs/ubuntu/apps/user-config/">User Configuration Tools</a></li><li><a href="/en/docs/ubuntu/apps/virtual-machines/">Virtual Machine</a></li><li><a href="/en/docs/ubuntu/apps/kvm-qemu/">KVM/QEMU VM Configuration and Migration</a></li><li><a href="/en/docs/ubuntu/apps/sogou-input/">Sogou Input</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/gpu"><summary><a href="/en/docs/ubuntu/gpu/">GPU &amp; CUDA</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/ubuntu/gpu/cuda/">NVIDIA GPU and CUDA setup</a></li><li><a href="/en/docs/ubuntu/gpu/igpu-postmortem/">Old iGPU problems (postmortem)</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/remote"><summary><a href="/en/docs/ubuntu/remote/">Remote Access</a></summary><ul><li><a href="/en/docs/ubuntu/remote/basics/">SSH Basic Commands</a></li><li><a href="/en/docs/ubuntu/remote/authentication/">Troubleshooting SSH authentication</a></li><li><a href="/en/docs/ubuntu/remote/sftp/">Using SFTP</a></li><li><a href="/en/docs/ubuntu/remote/proxy-jump/">SSH Jump Hosts and Proxies</a></li><li><a href="/en/docs/ubuntu/remote/android-access/">Android Local File Access</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/net"><summary><a href="/en/docs/ubuntu/net/">Networking</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/ubuntu/net/static-ip/">How to set a static IP on Ubuntu (temporary and permanent methods)</a></li><li><a href="/en/docs/ubuntu/net/local-https/">HTTPS Configuration</a></li><li><a href="/en/docs/ubuntu/net/wifi-reconnect/">Wi-Fi Auto-Reconnect Issues and Solutions on Windows</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/shell"><summary><a href="/en/docs/ubuntu/shell/">Terminal &amp; Shell</a></summary><ul><li><a href="/en/docs/ubuntu/shell/common-dirs/">Common Directory of Ubuntu</a></li><li><a href="/en/docs/ubuntu/shell/bash-tricks/">Bash Tricks</a></li><li><a href="/en/docs/ubuntu/shell/systemd/">systemd Common Commands</a></li><li><a href="/en/docs/ubuntu/shell/audio-cmd/">Common Command for Audio</a></li><li><a href="/en/docs/ubuntu/shell/reboot-router/">Reboot Router</a></li><li><a href="/en/docs/ubuntu/shell/send-email/">Scripts to Send Emails</a></li><li><a href="/en/docs/ubuntu/shell/code-highlight/">Code Highlighting</a></li><li><a href="/en/docs/ubuntu/shell/cursor-style/">Cursor Style</a></li><li><a href="/en/docs/ubuntu/shell/fun-commands/">Interesting Commands</a></li><li><a href="/en/docs/ubuntu/shell/links/">Useful Links</a></li><li><a href="/en/docs/ubuntu/shell/hidden-images/">Image seeds: hiding files inside pictures</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:android"><summary><a href="/en/docs/android/">Android Games on Linux</a><span class="docs-nav__count">3</span></summary><details class="docs-nav__stage" data-nav-key="stage:android/solution"><summary><a href="/en/docs/android/solution/">Solution</a></summary><ul><li><a href="/en/docs/android/solution/arknights/">Arknights on the same machine</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:android/trouble"><summary><a href="/en/docs/android/trouble/">Troubleshooting</a></summary><ul></ul></details></details><details class="docs-nav__track" data-nav-key="track:homelab" open><summary><a href="/en/docs/homelab/">Homelab &amp; Self-hosting</a><span class="docs-nav__count">11</span></summary><details class="docs-nav__stage" data-nav-key="stage:homelab/services"><summary><a href="/en/docs/homelab/services/">Services</a></summary><ul><li><a href="/en/docs/homelab/services/asterisk-basics/">Asterisk Basic Commands and Configuration</a></li><li><a href="/en/docs/homelab/services/asterisk-trunk/">SIP Trunk Configuration Guide</a></li><li><a href="/en/docs/homelab/services/asterisk-audio/">Asterisk Audio Processing</a></li><li><a href="/en/docs/homelab/services/postgresql/">PostgreSQL</a></li><li><a href="/en/docs/homelab/services/local-git/">Using Git on a Local Machine and LAN Server</a></li><li><a href="/en/docs/homelab/services/git-rewrite/">Deliberately rewriting repository history</a></li><li><a href="/en/docs/homelab/services/github-pages-paths/">两个仓库，一个域名：GitHub Pages 路径实验</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:homelab/home" open><summary><a href="/en/docs/homelab/home/">Home Devices</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/homelab/home/ip-cam/" aria-current="page" class="is-current">IP Camera - CameraLink App</a></li><li><a href="/en/docs/homelab/home/ip-cam-old/">IP Camera</a></li><li><a href="/en/docs/homelab/home/ip-cam-old-install/">IP Camera Project - Setup Guide</a></li></ul></details></details><p class="docs-nav__foot"><a href="/en/archive/">Index</a></p></div></nav><script type="module">var e=`docs-nav:open`,t=document.querySelector(`[data-docs-nav]`);if(t){let n=JSON.parse(localStorage.getItem(e)||`{}`),r=Array.from(t.querySelectorAll(`details[data-nav-key]`));for(let t of r){let r=t.dataset.navKey||``;r in n&&!t.querySelector(`[aria-current="page"]`)&&(t.open=n[r]),t.addEventListener(`toggle`,()=>{n[r]=t.open,localStorage.setItem(e,JSON.stringify(n))})}t.querySelector(`[data-docs-nav-toggle]`)?.addEventListener(`click`,e=>{let n=t.toggleAttribute(`data-open`);e.currentTarget.setAttribute(`aria-expanded`,String(n))}),t.querySelector(`[aria-current="page"]`)?.scrollIntoView({block:`center`})}</script><div class="docs-main" data-pagefind-body><article class="article"><div class="docs-page"><nav class="breadcrumb" style="margin-top:2rem"><a href="/en/docs/homelab/">Homelab &amp; Self-hosting</a><span aria-hidden="true">/</span><a href="/en/docs/homelab/home/">Home Devices</a><span aria-hidden="true">/</span><span>IP Camera - CameraLink App</span></nav><header class="article__header"><h1 class="article__title">IP Camera - CameraLink App</h1><div class="article__meta"><span>4 min read</span><span class="badge badge--warn">Draft preview</span></div><p class="article__summary">Use an Android phone as a local camera for monitoring. The new version uses the CameraLink app, which is simpler than the old version and does not require an extra server.</p></header><p class="notice">This article is not marked ready yet and only shows in preview mode.</p><p class="notice notice--ai">This page was translated from the Chinese original by an AI. Wording and terminology may be off.</p><div class="prose path-content"><h2 id="overview">Overview</h2>
+<p>CameraLink is an open-source Android application that can convert any Android 12+ device into an HTTP-based IP camera. The application supports continuous streaming with the screen turned off and provides a browser-friendly MJPEG stream.</p>
+<p><strong>Note</strong>: This is a modified version of <a href="https://github.com/onepersonhere/camera-link">onepersonhere/camera-link</a>, fixing Gradle issues and various runtime bugs.</p>
+<p><strong>GitHub project</strong>: <a href="https://github.com/plae-tljg/camera-link">plae-tljg/camera-link</a></p>
+<h2 id="key-features">Key Features</h2>
+<ul>
+<li>HTTP MJPEG streaming, viewable via browser or VLC</li>
+<li>Foreground camera service, supporting continuous streaming with screen off</li>
+<li>Built-in HTTP endpoints: <code>/stream</code> (live), <code>/snapshot</code> (snapshot)</li>
+<li>Optional Tailscale keepalive service</li>
+<li>Persistent notification, supporting quick control</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Android Studio Ladybug or newer</li>
+<li>Local installation of Android SDK 31 or higher</li>
+<li>Physical Android 12+ device with USB debugging enabled</li>
+<li>Java 17+ (if building from the command line)</li>
+</ul>
+<h3 id="clone-and-build">Clone and Build</h3>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">git</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> clone</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> https://github.com/plae-tljg/camera-link.git</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">cd</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> camera-link</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">./gradlew</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> assembleDebug</span></span></code></pre></figure>
+<h3 id="install">Install</h3>
+<p><strong>Android Studio</strong>:</p>
+<ul>
+<li>Open the project in Android Studio, sync Gradle, connect a device, and press Run to deploy the debug build.</li>
+</ul>
+<p><strong>Command line</strong>:</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">./gradlew</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> installDebug</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># Or manually install the generated APK</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> app/build/outputs/apk/debug/app-debug.apk</span></span></code></pre></figure>
+<h3 id="building-release-apk">Building Release APK</h3>
+<p>For production deployment, build a signed release APK:</p>
+<ol>
+<li>
+<p><strong>Generate keystore</strong> (already done in this project):</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># Keystore location: app/keystore.jks</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># Alias: androidkey</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># Password: android</span></span></code></pre></figure>
+</li>
+<li>
+<p><strong>Build release APK</strong>:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">./gradlew</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> assembleRelease</span></span></code></pre></figure>
+</li>
+<li>
+<p><strong>Locate APK</strong>:</p>
+<ul>
+<li>Release APK: <code>app/build/outputs/apk/release/app-release.apk</code></li>
+<li>Debug APK: <code>app/build/outputs/apk/debug/app-debug.apk</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Install release APK</strong>:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> app/build/outputs/apk/release/app-release.apk</span></span></code></pre></figure>
+</li>
+</ol>
+<p><strong>Note</strong>: Release builds are signed and optimized for production use. For Google Play Store distribution, you need your own keystore and signing configuration.</p>
+<h2 id="usage">Usage</h2>
+<h3 id="starting-streaming">Starting Streaming</h3>
+<ol>
+<li>Launch CameraLink on the device</li>
+<li>Grant camera, notification, and foreground service permissions (when prompted)</li>
+<li>Click <strong>Start Streaming</strong>. The UI and notification show the local stream URL (default <code>http://&#x3C;device-ip>:8080</code>)</li>
+<li>From any device on the same network, open the URL to view the live feed or trigger <code>/snapshot</code></li>
+<li>Stop streaming from the app button or notification</li>
+</ol>
+<p>Screen-off and background streaming remain active as long as the foreground service runs. Disable battery optimization for best reliability.</p>
+<h3 id="tailscale-keepalive">Tailscale Keepalive</h3>
+<ol>
+<li>TailscalePingService starts automatically (configurable in <code>MainActivity</code>)</li>
+<li>Every 15 seconds (default), resolve configured peers (MagicDNS or 100.64.0.0/10 address), and ping them</li>
+<li>Status displayed in the app and notification (success/failure count)</li>
+<li>Use the <strong>Manage Tailscale Peers</strong> section to add or remove peers at runtime</li>
+</ol>
+<h2 id="configuration">Configuration</h2>
+<ul>
+<li><strong>Ping interval</strong>: <code>app/src/main/java/.../TailscalePingService.kt</code>, <code>PING_INTERVAL_MS</code> constant</li>
+<li><strong>Default peers</strong>: <code>TailscalePinger.kt</code>, <code>configuredTailscaleIps</code> set</li>
+<li><strong>HTTP port</strong>: <code>CameraStreamingService.kt</code> and <code>MainActivity.kt</code> <code>port</code> value (default 8080)</li>
+<li><strong>Camera selection</strong>: Update <code>cameraSelector</code> in <code>CameraStreamingService.startCamera()</code> to select front or rear camera</li>
+<li><strong>JPEG quality / FPS</strong>: Adjust compression quality in <code>StreamingServer.imageProxyToJpeg()</code> and sleep duration in the streaming loop</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<ul>
+<li><strong>Local browser/VLC test</strong>: Start streaming, access <code>/stream</code> or <code>/snapshot</code> from another device, or add the URL to VLC via “Open Network Stream”</li>
+<li><strong>Service persistence</strong>: Run streaming for 30+ minutes with screen off, confirm wake lock behavior</li>
+<li><strong>Tailscale ping verification</strong>: Run <code>adb logcat | grep TailscalePing</code> to confirm resolution and ping results</li>
+</ul>
+<h2 id="viewing-stream">Viewing Stream</h2>
+<h3 id="browser-viewing">Browser viewing</h3>
+<ul>
+<li>Open: <code>http://&#x3C;device-ip>:8080/stream</code></li>
+<li>Works in any modern browser</li>
+</ul>
+<h3 id="vlc-media-player">VLC Media Player</h3>
+<ul>
+<li>File → Open network stream</li>
+<li>Input: <code>http://&#x3C;device-ip>:8080/stream</code></li>
+</ul>
+<h3 id="snapshot">Snapshot</h3>
+<ul>
+<li>Access: <code>http://&#x3C;device-ip>:8080/snapshot</code></li>
+<li>Get the current frame as a JPEG image</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<ol>
+<li>
+<p><strong>App crashes on startup</strong></p>
+<ul>
+<li>Ensure the device runs Android 12+</li>
+<li>Check that camera, notification, and foreground service permissions have been granted</li>
+<li>Try clearing app data and reinstalling</li>
+</ul>
+</li>
+<li>
+<p><strong>Cannot connect to streaming</strong></p>
+<ul>
+<li>Ensure the phone and viewing device are on the same WiFi network</li>
+<li>Check firewall settings (port 8080 should be open)</li>
+<li>Confirm the correct IP address</li>
+</ul>
+</li>
+<li>
+<p><strong>Poor streaming quality or stuttering</strong></p>
+<ul>
+<li>Use a stable WiFi connection</li>
+<li>Disable battery optimization for reliable background running</li>
+<li>Try different browsers (recommended: Chrome/Edge)</li>
+</ul>
+</li>
+<li>
+<p><strong>Tailscale remote access issues</strong></p>
+<ul>
+<li>Confirm Tailscale is configured correctly</li>
+<li>Check MagicDNS hostname resolution</li>
+<li>Verify the ping service is running</li>
+</ul>
+</li>
+</ol>
+<h3 id="debug-commands">Debug Commands</h3>
+<figure class="code-viewer" data-lines="8"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># View error logs</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> *</span><span style="color:#032F62;--shiki-dark:#9ECBFF">:E</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> camera</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># Check running services</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> shell</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> dumpsys</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> activity</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> services</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> camera</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># Clear app data</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> shell</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> pm</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> clear</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> com.example.cameralink</span></span></code></pre></figure>
+<h3 id="browser-compatibility">Browser Compatibility</h3>
+<ul>
+<li>✅ Chrome/Edge: Best performance</li>
+<li>⚠️ Firefox: May have slight delay</li>
+<li>❌ Safari: Limited MJPEG support</li>
+</ul>
+<h2 id="tech-stack">Tech Stack</h2>
+<ul>
+<li><strong>Android app</strong>: Kotlin + CameraX + Jetpack Compose</li>
+<li><strong>Streaming server</strong>: NanoHTTPD</li>
+<li><strong>Network protocol</strong>: HTTP MJPEG</li>
+<li><strong>Background service</strong>: Android foreground service + wake lock</li>
+</ul>
+<h2 id="use-cases">Use Cases</h2>
+<ul>
+<li>Plant growth monitoring</li>
+<li>Room security monitoring</li>
+<li>Pet activity monitoring</li>
+<li>Temporary security camera</li>
+<li>Remote monitoring (with Tailscale)</li>
+</ul>
+<h2 id="precautions">Precautions</h2>
+<ul>
+<li>All communication occurs over the local network and is not exposed to the internet (unless Tailscale is configured)</li>
+<li>Ensure the Android device is connected to a stable WiFi</li>
+<li>Video quality and frame rate depend on network conditions and device performance</li>
+<li>Recommend using a stable WiFi connection for the best experience</li>
+<li>The app requires Android 12+ because it uses modern camera API</li>
+</ul>
+<h2 id="old-version-notes">Old Version Notes</h2>
+<p>The old IP camera project required running VideoServer, WebApp, and other components on an Ubuntu server. CameraLink is a complete rewrite that only requires the Android app, no extra server needed, simpler and easier to use.</p>
+<p>Old version documentation has moved to the <a href="./old/">old/</a> directory.</p></div><nav class="path-nav" aria-label="In this stage"><div class="path-nav__side"><span class="path-nav__label">← Previous</span><a href="/en/docs/homelab/services/github-pages-paths/">两个仓库，一个域名：GitHub Pages 路径实验</a></div><div class="path-nav__side path-nav__side--next"><span class="path-nav__label">Next →</span><a href="/en/docs/homelab/home/ip-cam-old/">IP Camera</a></div></nav></div></article></div><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#overview">Overview</a></li><li><a href="#key-features">Key Features</a></li><li><a href="#getting-started">Getting Started</a></li><li class="toc__l3"><a href="#prerequisites">Prerequisites</a></li><li class="toc__l3"><a href="#clone-and-build">Clone and Build</a></li><li class="toc__l3"><a href="#install">Install</a></li><li class="toc__l3"><a href="#building-release-apk">Building Release APK</a></li><li><a href="#usage">Usage</a></li><li class="toc__l3"><a href="#starting-streaming">Starting Streaming</a></li><li class="toc__l3"><a href="#tailscale-keepalive">Tailscale Keepalive</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#testing">Testing</a></li><li><a href="#viewing-stream">Viewing Stream</a></li><li class="toc__l3"><a href="#browser-viewing">Browser viewing</a></li><li class="toc__l3"><a href="#vlc-media-player">VLC Media Player</a></li><li class="toc__l3"><a href="#snapshot">Snapshot</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li class="toc__l3"><a href="#common-issues">Common Issues</a></li><li class="toc__l3"><a href="#debug-commands">Debug Commands</a></li><li class="toc__l3"><a href="#browser-compatibility">Browser Compatibility</a></li><li><a href="#tech-stack">Tech Stack</a></li><li><a href="#use-cases">Use Cases</a></li><li><a href="#precautions">Precautions</a></li><li><a href="#old-version-notes">Old Version Notes</a></li></ol></nav></div></div><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

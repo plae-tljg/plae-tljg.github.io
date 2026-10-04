@@ -1,0 +1,694 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>为什么两年前我就知道 AI 会接管数学 · 连续阅读整个系列 · LKM</title><meta name="description" content="一个封闭的合集：从数学学习的经验出发，说明哪一层可以被机器接管，哪一层不能。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/series/why-ai-takes-over-math/read/"><meta property="og:type" content="website"><meta property="og:title" content="为什么两年前我就知道 AI 会接管数学 · 连续阅读整个系列 · LKM"><meta property="og:description" content="一个封闭的合集：从数学学习的经验出发，说明哪一层可以被机器接管，哪一层不能。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/series/why-ai-takes-over-math/read/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/writing/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><div class="container container--narrow"><header class="page-header"><nav class="breadcrumb"><a href="/zh/writing/series/why-ai-takes-over-math/">为什么两年前我就知道 AI 会接管数学</a><span aria-hidden="true">/</span><span>连续阅读整个系列</span></nav><h1>为什么两年前我就知道 AI 会接管数学</h1><p>一个封闭的合集：从数学学习的经验出发，说明哪一层可以被机器接管，哪一层不能。</p><div class="page-meta"><span>5 篇</span><span>·</span><span>86 分钟</span></div></header><nav class="toc" style="position:static;max-height:none;border-left:0;padding-left:0;margin:2rem 0 0"><h2>目录</h2><ol><li><a href="#why-ai-takes-over-math-00">合集摘要 · 00 合集摘要：为什么两年前我就知道 AI 会接管数学</a></li><li><a href="#why-ai-takes-over-math-01">第一篇 — 数学是怎样被学会的 · 01 数学学习的三项原则</a></li><li><a href="#why-ai-takes-over-math-02">第二篇 — 准备 · 02 准备：几种看数学的方式</a></li><li><a href="#why-ai-takes-over-math-03">第三篇 — 操作 · 03 为什么 AI 会接管数学</a></li><li><a href="#why-ai-takes-over-math-04">第四篇 — 选择 · 04 问题意识：AI 接管不了的那一层</a></li></ol></nav><section class="book__part" id="why-ai-takes-over-math-00"><div class="book__part-label">合集摘要 · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/why-ai-takes-over-math-00/" style="color:inherit">00 合集摘要：为什么两年前我就知道 AI 会接管数学</a></h2><div class="prose"><p>2024 年 1 月，GPT-4 还不算聪明。它连很多本科数学题都会算错，更不用说研究。但我已经确信，AI 会接管数学。</p>
+<p>这个判断不是从 AI 的能力来的。如果它依赖“AI 现在已经很聪明”，那我应该等到它更聪明再下结论。我的确信来自另一个方向——来自数学本身：来自数学是怎样被学会的，怎样被做出来的，以及其中哪一部分是操作的组合、哪一部分是选择。</p>
+<p>这四篇文章是一次回溯。它们不在第一页就把答案说出来，而是按当时走过的顺序，把那个判断重新走一遍。</p>
+<p>第一篇《数学学习的三项原则》是整份底稿的地基，原本是一份独立的数学学习指南，写于 2026 年 5 月，这里保留原样，只做排版整理。它谈三件事：由一生多、机械化推演、概念碰撞；自由结构如何被约束压出新对象；以及“垂直跳跃”这个动作。</p>
+<p>第二篇《准备：几种看数学的方式》把后面要用的视角摆出来：楼梯、机械化推演、证明即搜索、肉身方法、操作的平等性、物理学家与学院、以及 AI 乱说的活力。它们是词汇表，不是结论。</p>
+<p>第三篇《为什么 AI 会接管数学》从 2024 年 1 月的判断讲起，一路走到 2026 年。它要做的是：在这些视角之下，看清数学的哪一部分可以被机器接手，哪一部分不能。</p>
+<p>第四篇《问题意识：AI 接管不了的那一层》问的是另一半：如果有一部分可以被接手，那剩下的是什么，它在谁手里。</p>
+<p>这不是一本关于 AI 有多强的书，也不是一本关于数学有多美的书。它想回答的是一个更窄的问题：为什么在 2024 年 1 月，用一个并不聪明的 GPT，我就已经确信 AI 会接管数学。</p></div></section><section class="book__part" id="why-ai-takes-over-math-01"><div class="book__part-label">第一篇 — 数学是怎样被学会的 · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/why-ai-takes-over-math-01/" style="color:inherit">01 数学学习的三项原则</a></h2><div class="prose"><p>数学学习的基础是什么？不妨从一个问题出发：一个数学分支凭什么能成为独立学科？以集合论为例，它靠什么成其为一个子学科，而其他东西不是？</p>
+<p>要回答这个问题，首先要明确：一个学科至少需要什么？最根本的，需要一个对象；其次还需要一些操作规则，比如加减乘除。以四则运算为例，最基本的对象是 “1”，我们能对它做的是加、减、乘、除：1 加到自己变成 2，1 减 1 变成 0，等等。先不追问如果只有 1，0、2 这些从何而来——关键在于，从一个元素出发，通过反复运算，就能得到多个元素。这就是 <strong>从一生多</strong> 的雏形。</p>
+<p>接下来要问：如何扩展成一个完整学科？以集合论为例，它的基础对象是空集。不必先去纠结空集是什么、从何而来——追问下去会陷入语言的不严谨，甚至想把语言完全变成符号也没完没了。接下来考虑集合里能做哪些运算。四则运算有加减乘除，集合里也有类似的：并（相当于加法）、补（相当于减法）、笛卡尔积（相当于乘法），至于除法，虽然难找，也可能有某种商运算。这就像一个自由群：新的集合对象通过运算不断生成。比如空集的幂集变成含有一个元素的集合，再取幂集又会得到更复杂的结构。这些运算可能不满足交换律，但都是纯符号的堆叠。</p>
+<p>然而，集合运算并非完全自由的。比如 A ∪ B 再取补，它和 A 的补与 B 的补之间就有确定的关系，可以相互化简。这说明，集合运算本身受到一些恒等式的约束。换句话说，我们可以把一个学科想象成纯粹符号堆叠的 <strong>自由结构</strong>，当你发现其中的关系式时，就等于为这个自由结构找到了约束——这才是真正触及学科内在奥秘的时刻。</p>
+<h3 id="第一原则由一生多">第一原则：由一生多</h3>
+<p>从上面的讨论可以提炼出第一个原则：对于一个学科，找到最核心的基础对象，通过预设的运算让它从少变多，从而构造出大部分想要的东西。</p>
+<h3 id="第二原则机械化推演">第二原则：机械化推演</h3>
+<p>做证明时，我们常觉得步骤写得过分复杂，即便要证的结果直观上很简单也难以理解。其实可以暂时抛开内容，只按逻辑形式推演。最基本的例子是三段论：若 A 则 B，若 B 则 C，直接推得若 A 则 C。再比如数学分析里，已知紧致集必定闭且有界，闭且有界集上连续函数必有最值，那么机械合并就得到：紧致集上的连续函数必有最值。这就是不管内涵，纯粹按照规则做符号推演。</p>
+<h3 id="第三原则概念碰撞">第三原则：概念碰撞</h3>
+<p>第三个原则与第一个原则相关。第一个原则是从极少数基础元素和运算出发，由一生多。但在更复杂的学科里——比如实分析——核心概念不止一个两个，而是同时有实数、连续、紧致、集合、函数等一大堆概念，不妨称之为“元概念”。同一理论中的元概念不可能毫无关联。它们彼此碰撞，就会产生新结果、新定理。</p>
+<p>最简单的方式是让两个概念两两碰撞。比如“紧致”和“闭”，看看它们之间有什么包含关系。很容易猜想：紧致是否蕴含闭？证明确实如此；反过来，闭是否蕴含紧致？可以找到反例。这样，通过两两碰撞就得到两个结论：紧致推出闭，以及存在闭而非紧致的反例。</p>
+<p>做完两两碰撞，就可以引入第三个、第四个概念，依次类推。从第一原则生出多个概念之后，就可以用这些概念不断碰撞，引出更多结果。而在证明这些结果时，往往不需要过多思考，只需像机器一样按部就班地推演——这又回到了第二个原则。本科层次的数学学习，大致就是如此。</p>
+<h3 id="延伸思考">延伸思考</h3>
+<p>如果再学下去，会发现更有趣的事。前面把集合论当作最基础的东西，但基础本身可否更换？比如能否把路径积分当作基础？或许真的可以。因为没人规定一定要用简单推导复杂。从物理现实看，量子力学可能比经典力学更基本，路径积分说不定比传统动力学更底层。这也是值得玩味的方向。</p>
+<h2 id="集合论">集合论</h2>
+<h3 id="从空集出发">从空集出发</h3>
+<p>接下来谈集合论。按第一个原则，它的基础元素是空集，运算则是并、补、幂集和笛卡尔积。这看起来已经足够了——有了最基本的对象，加上最基本的操作，似乎可以从空集推出自然数，再推出整个数学。</p>
+<p>但仔细想一想，事情真的这么简单吗？假如脑海里有一个封闭的宇宙，里面只有一个空集，还有那几种操作工具，这个静止的宇宙会自己生长出自然数、函数、几何吗？不会。因为没有东西在推动它生长，空集本身不会自己动、自己分裂自己。</p>
+<p>这说明，在推导新东西的过程中，有一件事绝对不能被忽略——那就是你自己的思考。所有理论的成长，最需要的不是你把整本书背下来，而是你有能力去推动这个理论的发展，让它像一棵小树苗在你脑海的土壤上生根发芽，而不只是摊开一本死书。</p>
+<p>即便空集这个“球”自己会动，像自由群那样胡乱地生成无数不可消去的组合，那也只是像刘慈欣《诗云》那样把所有诗歌穷举出来——谁来挑选有意义的那一首？还是需要人。用玄幻小说的话说，数学其实不像所谓“天道”，更像“人道”，甚至本来就没有什么先天大道。</p>
+<p>那么，我们能从空集推出什么呢？最简单的，当然是构造一个只包含空集本身的集合。但这里有一个问题：如果没有幂集公理，你在教科书上写“在空集外面加一对花括号”，这种操作在严格意义上并不是合法的。只能用幂集——给定一个集合，生成它所有子集所构成的集合——才能合法地得到这个单元素集。</p>
+<p>这引出了一个更深的问题：就连“拥有”“唯一的”这类描述语言，在这个阶段本身也不是严格合法的。所以理论的发展始终需要一些理论之外的东西来推动——你的阅读经验、直觉、阅历，跟理论本身始终是交织在一起的。</p>
+<h3 id="有序对与关系">有序对与关系</h3>
+<p>有了第一个派生集合，再取它的幂集，就得到一个包含空集和那个单元素集两个元素的集合。这样，我们差不多就得到了“二”。有了空集（零）、单元素集（一）、二，就可以无尽地往下做了。</p>
+<p>但要注意，一和一的并集仍然是一，一和零的并集也是一。真正要产生新元素，还得不断借助幂集。除非用笛卡尔积，而笛卡尔积其实也可以通过幂集来做。</p>
+<p>关键的一步来了：如何定义有序对？</p>
+<p>对于两个集合 x 和 y，一个经典的做法是库拉托夫斯基定义（Kuratowski，1921）：用 {x} 和 {x, y} 构造出集合 {{x}, {x, y}}，用它来表示有序对 (x, y)。这个定义看起来有些奇怪，但它巧妙地把“顺序”编码进了集合的结构里。</p>
+<p>有了有序对，就可以定义笛卡尔积——即两个集合的所有有序对构成的集合。再结合分离公理，就能进一步挑选出符合特定关系的有序对。于是，函数和关系也就自然地出来了。</p>
+<p>为什么函数和关系这么重要？回想第三个原则：不同的概念就像不同的球，它们互相碰撞才会产生新结果。集合本身只是一堆对象，但如果只有单个集合，它们就像孤立的球，彼此没有联系。关系，正是捕捉“碰撞”本身并把碰撞对象化的工具。</p>
+<p>比如“x 属于 y”“x 等于 y”这些最简单的关联，在纯粹的集合宇宙里，起初只能零星地表达。但有了有序对和分离公理，就可以把满足某种条件的对子聚拢成一个集合——这就把“关系”变成了一份实实在在的集合实体，不再是飘在空中的描述。函数作为一种特殊的关系，更是将“一个输入决定一个输出”这种动态的碰撞，固化成了静态的数学对象。</p>
+<h3 id="思想需要载体">思想需要载体</h3>
+<p>这件事远不只是技术细节，它反映了一个深刻的道理：人的思想需要找到现实载体。</p>
+<p>打个比方。你正在写一个程序项目，数据库里存着一大段 JSON 数据，里面记载了许多音频的细节——时长、语音文字、录制地点，还有一条很关键的信息：这段音频实际上是前一段音频的延续。但你的表设计得太窄，只有“地点”这一列，其他属性全存不进去。你当然会意识到，必须扩展表结构，把“延续关系”这类原本隐含在数据间的关系也当作独立的字段、独立的实体存下来。</p>
+<p>在集合论里，情况完全一样。一开始我们只有集合这种实体，相当于数据库中只有一张对象表。当我们需要记录对象之间的联系——比如一个集合是不是另一个的子集，元素和集合的归属，乃至更加丰富的连续、对应——就迫使我们将这种联系本身也对象化，变成新的集合实体。</p>
+<p>函数和关系由此登堂入室，成为和原来的对象平起平坐的新角色。这一步一旦迈出，后续学科的大门就彻底打开了。代数里的同态、拓扑里的连续映射、分析里的极限关系，本质上都是某种被精确对象化的函数或关系。它们不再只是附属品，而成为了可以独立研究、相互碰撞、生成崭新结构的核心角色。</p>
+<p>可以说，数学从孤立的元素时代，进入到了关系与映射的网络时代。而这个转折，就始于我们用空集和那几个运算，给“有序对”和“关系”找到了它们在集合宇宙中的合法身份证。</p>
+<h2 id="数理逻辑">数理逻辑</h2>
+<h3 id="逻辑的核心形式本身">逻辑的核心：形式本身</h3>
+<p>数理逻辑正好对应第二个原则：机械化推演。做证明时，可以暂时不管内容，只跟着形式推。</p>
+<p>逻辑的核心就是形式本身。给定一串符号，它只根据规则变换符号，不关心符号代表什么。比如最经典的 modus ponens（肯定前件）：从“若 P 则 Q”和“P”，直接推出“Q”。不需要知道 P 是不是“天在下雨”，Q 是不是“地会湿”，只看到这个形状，就执行这个操作。这就是逻辑的机器性——它像一台只看语法不看语义的自动机。</p>
+<h3 id="空间性与时间性">空间性与时间性</h3>
+<p>进一步观察会发现，逻辑定理本身似乎带有某种空间性和时间性。有些逻辑定理偏空间，比如合取的交换律：“P 且 Q”等价于“Q 且 P”，这说的是两个命题放在一起，左右顺序无所谓，是空间的并列关系。又比如析取的结合律，括号可以重新分配，像是把几个容器在空间里重新摆布。这些定理处理的是静态结构，是同一时刻下的布局。</p>
+<p>另一些逻辑定理则偏时间。最典型的就是蕴含的传递性：如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>→</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P\to Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span></span></span></span> 且 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo>→</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">Q\to R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span>，那么 P → R。这明显带有链条和过程的意味——从第一步到第二步，最后得到从起点到终点的直达路径。这对应的是推导步骤的先后顺序，是线性的时间流动。再比如演绎定理：若要证明“若 P 则 Q”，可以先假设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span></span></span>，然后一步一步推出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span></span></span></span>，最后把整个推导打包成一个蕴含式。这就像在时间中走了一段路，然后把这段路程折叠成一个静态的箭头。</p>
+<p>逻辑虽然号称纯形式，但它的形式本身是从人类对空间并置和时间先后的最原始经验里抽象出来的。可以说，逻辑就是把空间结构（并列、嵌套、替换）和时间结构（先后、步骤、过程）纯粹化为符号操作规则的结果。</p>
+<h3 id="三原则在逻辑中的体现">三原则在逻辑中的体现</h3>
+<p>这就连回了第一个原则和第三个原则。逻辑系统本身也有基础元素和运算：命题是基本概念，连接词（且、或、非、蕴含）就是运算。从最简单的命题开始，用连接词不断复合，就像从空集开始用幂集和笛卡尔积不断生成新集合一样，由一生多。然后这些复合命题彼此碰撞，用推理规则产生新命题——这就是第三个原则在逻辑里的体现。比如 (P ∧ Q) → P 这个永真式，它本身就体现了“且”和“蕴含”两个概念在形式推导的空间里确立了一条永恒不变的定理。</p>
+<p>更有意思的是，当逻辑回过头来审视自己时，就出现了元逻辑。逻辑系统本身也可以被当作一个数学对象来研究：它是否一致？是否完备？这就像之前在集合论里把“关系”对象化成集合一样，元逻辑把“证明”本身也对象化了。这完全是同样的模式——人的思想需要找到现实载体，而“证明过程”这个原本流动在时间中的东西，被捕捉下来，变成了可以静态分析的对象。</p>
+<h3 id="从做数学到看清做数学本身">从做数学到看清做数学本身</h3>
+<p>数理逻辑的学习，骨子里是第二原则的彻底化：把自己训练成一台完美的符号处理机，在纸面上只做形式推演。但与此同时，也能退后一步，意识到这些形式规则的深层结构——空间性的并列替换，时间性的步骤传递——从而理解为什么这套形式系统能捕捉人类推理的本质。这是本科阶段一个非常深刻的转折：从“做数学”到“看清做数学这件事本身的形状”。</p>
+<h2 id="初等数论">初等数论</h2>
+<h3 id="第一原则整数加法乘法以及关键的边界">第一原则：整数、加法、乘法，以及关键的边界</h3>
+<p>数论最自然的起点，就是整数。原始动机再朴素不过：计数、交易、测量。有了一个东西，再得到一个东西，这就是加法。有三堆，每堆五个，这就是乘法。这两个操作一旦确立，一个无限的宇宙就打开了——从 1 开始，通过反复加 1 得到所有自然数，通过加法的逆运算得到零和负整数，通过乘法的反复进行得到幂。这就是第一原则的“由一生多”：从最简单的对象和操作出发，不断生成，无限扩张。</p>
+<p>然而，一个学科真正开始成为它自己，往往不是在能够无限生成新东西的时候，而是在发现自己的局限、碰到推不出的地方的时候。回想之前讲自由群和商群：如果把整数只看作一个自由生成的加法群，那不过是可以无穷无尽地堆叠符号，永远有新东西，这很无聊。真正的结构诞生于发现某些等式推不出，却又需要它们成立，于是强行设定关系，把自由群压成一个商群。那些被压掉的地方，才是结构诞生的地方。</p>
+<p>在整数里，减法没有制造这个边界。减不完？发明负数，扩张到整数环，完美封闭，没有阻力。真正的阻力来自除法。如果让整数对除法也封闭，立刻撞墙：3 ÷ 2，结果不在整数里。可以发明分数，扩张到有理数，问题被绕开了——这是换了一个更大的舞台，而不是去审视那道裂缝本身。</p>
+<p>这里引出了一个关键的洞见：不是问“3 除以 2 怎样能算出一个新数”，而是问“3 除以 2，在整数内部留下了什么？”答案是商为 1，余数为 1。那个余数，就是系统拒绝这次除法后残存下来的东西。它不是扩张出去的新数，而是收缩回来，被系统吐出来的剩余。这是心态的根本翻转：从“怎么越做越大”转向“做不动的地方有什么可看的”。</p>
+<h3 id="模运算从无限中强行设定有限">模运算：从无限中强行设定有限</h3>
+<p>一旦把注意力转向余数，整个格局就变了。无限多的整数，除以一个固定的 p 之后，只能留下有限种可能的余数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>p</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0,1,2,\dots,p-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。这不是通过加法从内部生成出来的有限性——整数的加法永远往外跑——而是从外部，通过“除不尽”这个操作，强行把无限压缩成的有限。Z/pZ 就是这个强行设定的产物：两个整数如果除以 p 的余数相同，就视为同一个元素。原本在整数里可以无限加下去，永远有新数；但在这里，加到 p 次就回到原点。</p>
+<p>更有意思的是，这个有限宇宙里的加减乘运算闭合得天衣无缝——模 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 的剩余类在加法和乘法下是封闭的，天然形成一个阿贝尔群和乘法幺半群。比如 a ≡ x (mod p)，b ≡ y (mod p)，则 ab ≡ xy (mod p)。模运算的意义在于：可以完全忽略那些商和中间过程，直接把余数当作独立的实体来运算。这就是第一原则的精髓——抽离出真正重要的元素，忘掉不相干的细节。</p>
+<h3 id="第二原则机器推演不管内容">第二原则：机器推演，不管内容</h3>
+<p>有了 Z/pZ 这套形式系统，第二原则就登场了。费马小定理是绝佳的例子：对于任何不被 p 整除的 a，有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn><mspace></mspace><mspace width="0.4444em"></mspace><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mspace width="0.3333em"></mspace><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">a^{p-1}\equiv 1 \pmod p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:0.4444em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.3333em;"></span><span class="mord mathnormal">p</span><span class="mclose">)</span></span></span></span>。如果只盯着 a 的具体数值看，会觉得莫名其妙。但从形式推演的角度，思路其实很自然：考虑序列 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>3</mn></msub><mo separator="true">,</mo><mo>…</mo><mspace></mspace><mspace width="0.4444em"></mspace><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mspace width="0.3333em"></mspace><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">a_1,a_2,a_3,\dots \pmod p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:0.4444em;"></span><span class="mspace" style="margin-right:0.1667em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathrm">mod</span></span></span><span class="mspace" style="margin-right:0.3333em;"></span><span class="mord mathnormal">p</span><span class="mclose">)</span></span></span></span>。因为模 p 的剩余类只有有限个，这个序列迟早会重复。一旦 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>≡</mo><msub><mi>a</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">a_i\equiv a_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6138em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>，就得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mi>j</mi><mo>−</mo><mi>i</mi></mrow></msup><mo>≡</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a^{j-i}\equiv 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8247em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。所以必然存在某个指数 q 使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mi>q</mi></msup><mo>≡</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a^q\equiv 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">q</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。再进一步，通过陪集分解——这正是群论的思路——可以证明最小的正指数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">q</span></span></span></span> 必定整除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">p-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，于是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a^{p-1}\equiv 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">p</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 水到渠成。</p>
+<p>整个推导过程并不需要真正去计算 a 的多少次方等于多少，只是在做纯粹的形式推演：有穷则重复，重复则成周期，周期则导出整除关系。证明变得像机器一样可以预期。</p>
+<h3 id="总体性的形式推演第二原则的升级">总体性的形式推演：第二原则的升级</h3>
+<p>费马小定理的证明展示了第二原则的基本形态：在一个有限的、形式化的系统内部，按部就班地推演，无需关注具体数值。但第二原则的力量远不止于此。当面对的不再是单个元素的周期性质，而是整个序列的演化规律时，一种更深刻的数学姿态出现了——不是一步一步地追踪，而是引入一个“垂直”的变量，将整个序列打包成一个总体对象，一次性处理。</p>
+<h4 id="生成函数">生成函数</h4>
+<p>生成函数就是这种姿态的完美范例。递推关系 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">a_n=a_{n-1}+a_{n-2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span> 原本是一维的、沿下标轴展开的时间性链条，每一项只能和它左边紧邻的两项对话。然而一旦写成生成函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mo>∑</mo><msub><mi>a</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">F(x)=\sum a_n x^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>，局面就彻底改变了。这里的 x 不再代表下标，它是垂直于整条序列的一个全新坐标。下标平移——这个原本在水平方向上发生的时间演化——被转换成了乘以 x 的代数操作，整条序列被压缩成新空间里的一个点。</p>
+<p>为什么这类递推的通项总是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>1</mn></msub><msup><mi>α</mi><mi>n</mi></msup><mo>+</mo><msub><mi>c</mi><mn>2</mn></msub><msup><mi>β</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">c_1\alpha^n+c_2\beta^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8144em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0528em;">β</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 的形式？这正是总体的垂直视角带来的必然结果。递推是一个线性、时不变的系统：它对每一项施加相同的规则，每一项又都是前驱项的线性组合。生成函数将整条序列打包，所得的函数方程经部分分式分解后，每一个分式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">1/(1-\alpha x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span> 展开的系数正是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>α</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\alpha^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>。解因此是若干个指数函数的线性叠加，每个本征模式独立演化，而总体的生成函数则一次性捕获了所有模式。</p>
+<h4 id="狄利克雷级数与素数定理">狄利克雷级数与素数定理</h4>
+<p>这种总体性视野在更精深的领域中展现出更加惊人的威力。解析数论之所以能撬动素数分布这样的宏大问题，靠的正是同一种跳脱。一旦引入狄利克雷级数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∑</mo><msub><mi>a</mi><mi>n</mi></msub><mi mathvariant="normal">/</mi><msup><mi>n</mi><mi>s</mi></msup></mrow><annotation encoding="application/x-tex">\sum a_n/n^s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span></span></span></span></span></span></span>，便相当于在整数序列之上架设了一条垂直的轴——连续变量 s。每一个整数 n 被赋予权重 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi mathvariant="normal">/</mi><msup><mi>n</mi><mi>s</mi></msup></mrow><annotation encoding="application/x-tex">1/n^s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span></span></span></span></span></span></span></span>，整个整数序列被打包成复平面上的一个函数。</p>
+<p>在这个新的垂直空间里，原来滞涩的加法结构忽然变成了乘性结构：狄利克雷卷积化为普通乘法，数论函数的生成关系展现为优雅的欧拉乘积。素数定理的核心走的是这条路：ζ 函数的零点分布——一个纯粹的复分析对象——牢牢控制着素数计数的误差项。这就是总体性的力量：不再纠缠于个体偶然的面貌，而是通过一个垂直的参数，将所有个体的集体行为一次性地映照在一个静态形式之中。</p>
+<h3 id="三原则的融合">三原则的融合</h3>
+<p>在这一层次上，数学中常说的“概念碰撞”其实也正是总体性形式推演的自然产物。将整除、对数、指数这些原本分属于不同领域的概念编织进同一个求和式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mrow><mi>d</mi><mo>∣</mo><mi>n</mi></mrow></msub><mi>log</mi><mo>⁡</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">\sum_{d\mid n}\log d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2247em;vertical-align:-0.4747em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2253em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mrel mtight">∣</span><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4747em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.0139em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span></span></span></span> 或同一个级数，本身就是在构造一个垂直的总体形式。所谓的“第三原则”，归根结底，往往只是这种总体性推演的结果在理论体系中的固化和命名；驱动它们浮现的，仍然是那个将一切打包、垂直跳跃的总体性姿态。</p>
+<p>因此，从费马小定理到生成函数，从欧拉乘积到素数定理，再到更现代的椭圆曲线算术，数论发展的深层线索并不在于堆积越来越多的定理，而在于反复践行一种认知跳跃：每当水平方向的推演变得笨拙滞重，就引入一个垂直方向的形式变量，将整个系统提升为一个总体对象，让演化凝结为方程，让个体溶解为整体，然后用最纯粹的代数操作——第二原则的极致形态——去解出一切。</p>
+<h2 id="群论">群论</h2>
+<p>数学走到某个阶段，会发生一种视线的翻转：不再只对面前的对象做计算，而是开始把“做计算的方式本身”当作一个新对象来端详。群论就诞生在这个翻转的瞬间。</p>
+<p>这个瞬间可以从两个方向逼近。一个方向来自直观的动作——对称。另一个方向来自结构本身的抽离——当发现不同领域的内部规则惊人地相似时，决定把这些相似性本身定义下来，给它一个名字，然后研究这个名字。两条路最终会合，变成同一种东西：群，是封闭运算系统的纯形式。</p>
+<h3 id="一动作的语言从对称到拼装">一、动作的语言：从对称到拼装</h3>
+<p>最古老的群，躺在每个人的日常直觉里。正方形转九十度，还是同一个正方形。正三角形翻一面，占的仍是同一片空间。这些“动完之后看起来还一样”的操作，天然携带着一种内部纪律：动两次还是一个对称；一动不动当然也算一种对称；每个动作都可以被撤回去。</p>
+<p>这里的群，不是一堆静态元素的集合，而是一堆“动作”。运算是“先做 A 再做 B”。这个视角直接带出一个根本概念：群作用。一个抽象的群，要“做”在一个具体的舞台 X 上，才看得见。舞台可以是正方形顶点，可以是多项式的根，可以是球面，可以是时空。群本身只是一个纯代数配方，只有跟 X 结合起来，群才成了真正的移动者。</p>
+<p>最简单的舞台就是群自己——让群作用于自身，用左乘做移动，这就是正则作用。整个群结构被翻译成一种对集合的排列，凯莱定理无非是说：任何群就这样看得见，它总可以看作某个集合上的置换群。</p>
+<p>数论里遇见的第一个真正意义上的群，也是从这种动作视角自然出现的。Z/pZ 的非零元素在乘法下构成一个有限群。指数序列 a1, a2, a3,… 在这个有限舞台上移动，迟早撞回原点——这正是推费马小定理时用过的逻辑。</p>
+<p>但现实中的对称往往不像 Z/pZ 这么干净。一个复杂的对象 X，它的全部对称构成的群往往很大、很杂。这时一个自然的欲望就冒出来了：这个复杂的群，能不能拆成若干个小块的简单群？</p>
+<p>这就是所谓的“建构性子群格”的问题。正规子群与商群是拆解的工具：把一个群切成一个正规子群和它对应的商群，就像把复杂的对称系统按“粗糙模式”和“细部调整”两层分开。Sylow 定理是这种拆解在有限群里的精确手术刀——它告诉你，在任何一个有限群里，你能找到多大块的“素数幂零件”，以及这些零件之间怎么相互包含和共轭。</p>
+<h3 id="二形式规律的骨架群作为理论的对象化">二、形式规律的骨架：群作为理论的对象化</h3>
+<p>另一条路更隐蔽，也更深刻地解释了为什么群论最后会成为数学的通用语法。</p>
+<p>在讲集合论时提过一个画面：一个理论，起初像是一个自由群——有一些基础元素和一套操作，符号在没有约束地堆叠，每一个新组合都是一个新的表达式。然而，一旦发现某些组合之间应该有某种等式关系——也就是发现了公式——便引入约束，把原来自由扩张的符号空间压扁。压成的那个商群，就是真正的理论。</p>
+<p>如果这个故事放在数论里，Z/pZ 就是这样一个被压出来的宇宙。本来整数的加法和乘法是自由的、无限的。然后强行规定：相差 p 的倍数相等。这等于在所有整数上砸下一条巨力，把无尽的一维链条弯成一个环。</p>
+<p>现在把这个画面本身提取出来：有一个由生成元自由生成的群 F ，和一组关系 R，取商群 F /⟨R⟩，就得到一个具体的群。这不仅仅是构造群的一种方法，它就是任何一个公理系统在群论层面的形状。生成元是基本概念，关系是公理，商群是理论展开的空间。</p>
+<p>伽罗瓦理论是这种身份最辉煌的范例：一个多项式的根的置换构成一个群，而扩域的结构完美对应着这个群的子群格。代数方程的求解问题，从一个计算的死胡同，被完整翻译成群论里的拆解问题。</p>
+<h3 id="两条路汇合">两条路汇合</h3>
+<p>这两条路走到深处，就不再是两条路。从对称出发的动作群，最终也要用子群格去拆解；从理论骨架出发的群，最终也要通过群作用去作用于某个具体的对象上。动作的语言和形式的语言，在同一个定义体内汇合。</p>
+<h4 id="群律小宇宙的宪法">群律：小宇宙的宪法</h4>
+<p>群的定义，无非是把从对称和 Z/pZ 那里感受到的“封闭性”正式写下来：一个集合，上面有一种运算，怎么算都掉不出去，这个运算还满足结合律，存在一个不做任何事的中性元素，每个元素都能被撤回去。这四条就是群的宪法。它们极简，以至于刚接触时可能会觉得空洞，但正是这种极简赋予了群论那种“通用骨架”的力量——凡是满足这四条的东西，不论它原本是数、是动作、是矩阵还是空间的扭曲，整部群论的机器都可以在它身上运转。</p>
+<h4 id="环与域当群长出第二只手">环与域：当群长出第二只手</h4>
+<p>单独的群只有一个运算，但数论和代数里总是同时面对加法和乘法。环便是一个集合同时带着两个群的影子：加法构成一个交换群，乘法是另一个封闭运算，两者通过分配律缠绕在一起。域则更进一步，要求非零元的乘法也构成群，于是四则运算完全封闭。整数环 Z，模 p 的域 Fp ，还有有理数、实数、复数，都是这条线的产物。</p>
+<h4 id="循环群由一生多的群论版">循环群：由一生多的群论版</h4>
+<p>最单纯的群，莫过于只由一个生成元反复运算产生的群——循环群。整数的加法群是它的无限形态，Z/pZ 的加法群是它的有限形态。循环群就是第一原则在群论里的直接投射：一个基础元素，一个基础操作，反复做，就生出了整个群。</p>
+<p>任何群里的单个元素，反复乘下去，都会生出一个循环子群——这是群论里最朴素也最根本的“由一推多”。</p>
+<h4 id="陪集把群切成等份的刀">陪集：把群切成等份的刀</h4>
+<p>当面对一个群，有时它太大，想通过一个子群来观察它。子群是保留下来的一部分对称。用这个子群去“平移”自己，会在整个群里扫出多少个不同的副本？这些副本就是陪集。陪集的妙处在于，它们把群严格地切成大小相等的若干片，没有任何重叠，也没有遗漏。</p>
+<p>由此直接掉下来一个结论——拉格朗日定理：子群的阶必然整除整个群的阶。这是第二原则的经典登场：几乎不需要知道群的具体内容，只需要承认群和子群的结构，再加上“陪集划分”这个机械推理，一个普遍定理就自行走出。</p>
+<h4 id="正规子群与商群强行压缩的智慧">正规子群与商群：强行压缩的智慧</h4>
+<p>陪集把群切成了片，但光切片还不够。这些片本身能不能再组成一个群？答案是不总是能。只有当一个子群的左右陪集完全重合——也就是正规子群——的时候，这些陪集片才在新乘法下构成群。这个新群就是商群。</p>
+<p>商群是群论里极富哲学意味的一个操作。它相当于宣布：凡是在同一片里的元素，都认为相等。把一个群内部的诸多细微差异强行压平，只保留片与片之间的粗粒度关系。商群就是结构压缩的工具，是对群施以“碰壁”之后、强行设定等式所得到的新对象。</p>
+<h4 id="自由群无拘无束的生成">自由群：无拘无束的生成</h4>
+<p>如果说商群是结构压缩的结果，那么自由群就是压缩之前那片未经开垦的丛林。给一组字母，允许任意正反写它们，唯一的规则就是相邻的正反字母可以抵消。这就生成了一个自由群——没有任何额外关系。任何一个群，都同构于某个自由群的商群。换言之，自由群是“随便说”的阶段，商群是“说定了”的阶段。</p>
+<h4 id="sylow-定理有限群的骨骼扫描">Sylow 定理：有限群的骨骼扫描</h4>
+<p>当一个群很大很复杂时，自然想把它拆成更小的零件。有限群的阶本身给出了一条线索：如果群的阶含有素因子 p，那么群里必然有 p 的幂阶的子群。Sylow 定理就是对这类子群的精确刻画——存在性、数量、包含关系，一一给说清楚。</p>
+<p>任何想要拆解或拼装有限群的努力，Sylow 定理都是绕不开的地图。这里的推理依然是机器式的——群作用与计数论证自动演绎出结论，但结果却把整个有限群的拼装逻辑暴露在光天化日之下。</p>
+<h4 id="伽罗瓦对应理论骨架的终极演出">伽罗瓦对应：理论骨架的终极演出</h4>
+<p>伽罗瓦理论是群论作为“理论骨架”的巅峰。一个域扩张，在自同构下形成一个群；扩域的中间域，精确对应这个群的子群格。于是，多项式方程能不能用根式求解，就转化成了对应群是不是可解群的问题。</p>
+<p>一个代数的世界被完整编码进了一个群，群的结构就是那个世界的地图。这就是群论成为数学通用语法的终极原因。</p>
+<h2 id="数学分析">数学分析</h2>
+<p>如果说数论的诞生，是因为在整数的无限扩张中撞上了除法的墙，在墙根下捡起了“余数”；群论的诞生，是因为把“封闭运算系统”从各个角落剥离出来，发现它是通用的形式骨架——那么分析学的诞生，则是另一场更深刻也更令人不安的相遇：人类发现，数本身有一条裂缝，而他们原本以为它是完整的。</p>
+<h3 id="一有理数的美梦">一、有理数的美梦</h3>
+<p>在最朴素的世界图景里，数是用来计量的。整数是计数，分数是分割。把整数和分数合在一起——也就是有理数——似乎就是全部了。任何两个有理数之间都有第三个有理数，永远可以切分得更细。有理数稠密地铺满了整条数线，不留肉眼可见的空隙。</p>
+<p>这种直觉太强了，以至于古希腊人一度相信，一切长度都可以用两个整数的比来表达。有理数是数线理所当然的主角，其他东西不过是这些主角的游戏。</p>
+<p>然后，正方形的对角线出现了，给这个美梦劈了一刀。</p>
+<h3 id="二洞的发现">二、洞的发现</h3>
+<p>边长为 1 的正方形，对角线是多少？它显然是个确定的长度，画在纸上，它明明就在那里。可是，没有任何一个整数比能表达它。这不是一个技术故障，不是当前方法不够精妙——这是一个被证明的不可消除的事实。有理数这块布，并不像人们以为的那样严丝合缝。它上面有洞，而有些长度正好就卡在洞里。√2 只是第一个被认出来的洞。人们很快发现，洞远比有理数多。回到数论中的直觉：在整数里，用除法做不动时，余数留了下来。在这里，用有理数去表达长度，表达不动了，剩下的不是一段可以继续分割的余数，而是整个“不能表达性”。无理数就是有理数世界的余数——一种不可名状的东西，被系统吐出来，却不肯消失。</p>
+<h3 id="三主客翻转">三、主客翻转</h3>
+<p>这就产生了一种奇特的心理扭转。有理数本来是舞台上预设的主角，人们立法、架构、规范，都是为了这批主角。洞只是偶尔的、边缘的缺陷，是在本该完整的地面上露出来的几个小坑。最初的动力是修补——也许再加一些数进去，就能把这些小坑填平。</p>
+<p>但随着研究深入，发现事情远非如此。填一个小坑，边上立刻冒出千千万万个更深的大坑。那些洞不是零星的例外，而是构成这条数线的主体。有理数不过是在无穷无尽的洞海中零星凸起的小小标点。缺陷变成了主角，而原来预设的主角，反倒成了更罕见、更特殊的存在。</p>
+<p>这一点可以从好几个方向去印证。最日常的视角：如果一个数的十进制表示最终开始循环——也就是循环小数——那么它一定是有理数；而不循环的小数，就是无理数。循环，是一种规律，是一种能被模式识别捕捉的东西。在数论和代数里，规律、周期、有限描述，始终是数学家偏爱的节点。然而，π、e，还有绝大多数的实数，它们的十进制展开完全没有规律。可以把“循环”当作有理数的签名，而“不循环”却占了数线的几乎全部。</p>
+<p>这不是修补。这是一个巨大的翻转：数线几乎完全是黑暗的，称为“数”的那些东西，绝大多数都不曾也不能被真正命名。熟悉的、能描写的、有规律的那一部分，只是黑暗中的点点磷光。</p>
+<p>而从整数的角度看，这甚至是一种嘲讽。数论里的整数崇拜，在分析的眼前遭遇了彻底的倒影。整数和有理数在数线上分布几乎为零，它们珍贵、稀少、彼此疏远。但偏偏把这些零星的珠子当作数线的典范，把无穷无尽的暗海当作“剩余的缺陷”。分析学的第一步，就是将这种优劣颠倒过来——承认那个黑夜才是数线本身的真实身体，有理数只不过是人类认知在漫长途中偶然抓到的一小块浮木。</p>
+<h3 id="四实数公理不是修补是接受">四、实数公理：不是修补，是接受</h3>
+<p>于是，分析学最基础的第一步，不是假设某一堆数存在，然后从它们生出多来。它比那要逆反得多：它是一次性宣布，这整条带着所有洞的数线，就是研究对象。不是把洞填掉，而是把原来当做背景的洞提升为主角，把原来的主角（有理数）看成不过是洞海上的有限标记。</p>
+<p>这个宣告，在数学里体现为完备性公理。确界原理是最直白的形式：任何有上界的非空实数集，都有上确界。这意味着，任何一个“应该到达却悬而未到的位置”，这个位置真的作为实数存在。这个公理并不构造任何东西——它不是从简单元素出发用操作生成的。它是后退一步，承认原本看到的数线并不是完整的叙述；真正完整的叙述，必须把洞一并收进来。</p>
+<p>从此，分析学不再纠结于修补个别的小坑。每一个以前以为能抓住的点，每一个有理数，现在不过是这片“连续性黑夜”里借助等号或分数浮出来的记号。分析学的真正舞台，就是这个兼备一切“不可数”未知与少数已知标记的完备数域。</p>
+<h3 id="五完备性的等价命题">五、完备性的等价命题</h3>
+<p>这五条命题分布在不同的语言角落，但它们彼此等价推导的过程，是分析学早期最漂亮的演练。</p>
+<h4 id="确界原理">确界原理</h4>
+<p>确界原理说的是：任何有上界的非空实数集，必有上确界。这意味着，任何一个集合“应该触及却悬而未至的边界”，那个边界点确实作为实数存在。这不是构造，而是承认——宣告实数线没有缺口。</p>
+<h4 id="单调有界定理">单调有界定理</h4>
+<p>单调有界定理则从动态视角切入。一个单调递增且有上界的序列，必然收敛。序列一步一步往上走，却永远不越过某条线，那么它终将贴上一个极限。这是确界原理在序列身上的投影——如果所有上界里有一个最小的，那这个最小上界就是序列必然趋近的目标。</p>
+<h4 id="区间套定理">区间套定理</h4>
+<p>区间套定理把完备性表达为几何的收缩。一列闭区间，层层嵌套，长度趋于零，则所有区间交于唯一一点。从两端不断逼近，最终套住一个点。</p>
+<h4 id="波尔查诺魏尔斯特拉斯定理">波尔查诺–魏尔斯特拉斯定理</h4>
+<p>波尔查诺–魏尔斯特拉斯定理给出更灵活的结论：任何有界序列，必有收敛子列。即使序列在有限的笼子里乱跳，它的足迹中也潜藏着秩序。实数的完备性保证，哪怕混沌一片，也会凝聚出某些收敛的方向。</p>
+<h4 id="柯西收敛准则">柯西收敛准则</h4>
+<p>柯西收敛准则则完全放弃了对极限值的外部参照。只要序列的项彼此越来越近，它必然收敛于某个实数。一个序列能否收敛，裁判不在外面，而在序列自身。</p>
+<p>从确界原理推出单调有界，从单调有界推出区间套，从区间套推出 B-W，从 B-W 推出 Cauchy，从 Cauchy 再绕回确界原理——这整个等价链条说明，从任何一个入口出发，最终框住的都是同一片完整的实数舞台。</p>
+<h3 id="六序列离散的触手">六、序列：离散的触手</h3>
+<p>舞台既已设好，下一步就是站在舞台上往极限走去。第一个自然的举动，是发明一种离散的工具去触碰那不可直接把握的连续——序列就这样登场了。</p>
+<p>序列是从自然数到实数的映射。自然数是离散的索引，一个接一个；实数是连续的目标，永远等在远处。序列用有限的、可计数的脚步去逼近那个可能无法用简单表达写下的极限。</p>
+<p>收敛、发散、子列、上下极限，都是这套“离散触手”的语言。如果一个序列收敛，它的极限就是它无穷跋涉的终点；如果发散，它就成了分析中反复出现的警示：极限并非理所当然，每一步都需要检验。</p>
+<h3 id="七函数与连续">七、函数与连续</h3>
+<p>序列探明了如何逼近一个点。但分析学的野心远不止于此——它要处理的不只是一个点，而是整个区间上的行为。这就是函数登场的时刻。</p>
+<p>函数是从实数到实数的映射，把整个连续统扭向另一个连续统。把序列的“趋近”翻译成函数的语言，就是连续性：当你把自变量挪动一点点，函数值也只挪动一点点。ε-δ 定义把这层意思精确固定下来——对任意容许的误差 ε，存在一个 δ，使得在 a 的 δ 邻域内所有的 x，其函数值都落在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(a)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mclose">)</span></span></span></span> 的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ε</mi></mrow><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ε</span></span></span></span> 范围里。这里有三个量词：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>ε</mi><mi mathvariant="normal">∃</mi><mi>δ</mi><mi mathvariant="normal">∀</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\forall\varepsilon\exists\delta\forall x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span><span class="mord mathnormal">ε</span><span class="mord">∃</span><span class="mord mathnormal" style="margin-right:0.0379em;">δ</span><span class="mord">∀</span><span class="mord mathnormal">x</span></span></span></span>。</p>
+<h4 id="介值定理与极值定理">介值定理与极值定理</h4>
+<p>连续函数一旦被定义，两个重磅定理立刻登场。介值定理说：若 f 在闭区间上连续，则它在两端之间取遍每一个值。极值定理说：闭区间上的连续函数，必在某处取到最大值和最小值。这两个定理的背后仍然是完备性。证明并不需要洞察函数的特殊构造，只需机械运用实数完备性与连续性定义之间的咬合，结论便从逻辑中自动走出。</p>
+<h3 id="八一致连续与一致收敛">八、一致连续与一致收敛</h3>
+<p>在逐点连续里，δ 依赖所在的那个点 a。对不同的 a，可能需要不同的 δ。但在某些幸运的情况下——或者刻意施加强制——这个 δ 可以统一管住整个区间上所有的点。这就是一致连续。</p>
+<p>唯一的改动，是 δ 不再依赖 x。量词顺序从逐点连续的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>x</mi><mi mathvariant="normal">∃</mi><mi>δ</mi></mrow><annotation encoding="application/x-tex">\forall x\exists\delta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span><span class="mord mathnormal">x</span><span class="mord">∃</span><span class="mord mathnormal" style="margin-right:0.0379em;">δ</span></span></span></span> 变成了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∃</mi><mi>δ</mi><mi mathvariant="normal">∀</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\exists\delta\forall x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∃</span><span class="mord mathnormal" style="margin-right:0.0379em;">δ</span><span class="mord">∀</span><span class="mord mathnormal">x</span></span></span></span>。区区一个交换，性质却发生质变。Heine-Cantor 定理说：闭区间上的连续函数必定一致连续。</p>
+<p>一致的概念同样蔓延到函数列的收敛上。给定一列函数 fn ，它们逐点收敛到 f ，意思是每个点 x 上 fn (x) → f (x)。但在这里，N 可以依赖于 x。一致收敛则把量词扳过来：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∃</mi><mi>N</mi><mi mathvariant="normal">∀</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\exists N\forall x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∃</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">∀</span><span class="mord mathnormal">x</span></span></span></span>，同一个 N 管住所有的 x。一致收敛之所以珍贵，是因为它能把好性质传递下去——连续函数列若一致收敛，极限函数保持连续。</p>
+<h3 id="九微分与积分">九、微分与积分</h3>
+<p>连续和一致收敛站稳了脚跟，分析学便可以向更深的地方掘进。微分，是在连续性之上再附加一层结构——要求函数在某点附近可以用一条直线逼近。</p>
+<p>差商的极限若存在，这个极限就是导数。直观上，导数捕获的是函数在每一点的瞬时变化率。中值定理族是微分这块领地的核心推演工具。Rolle 定理说，如果闭区间两端函数值相等，中间必有一点导数为零。拉格朗日中值定理更进一步：任意闭区间上，必有一点导数等于端点差商。</p>
+<p>积分从另一个方向攀登同一座山。黎曼积分的定义是和的极限：把区间切细，用矩形逼近函数下的面积。微积分基本定理把微分和积分锁成一对逆运算：积分攒起微小的变化，还原出函数的整体差；微分则拆开积好的整体，暴露每一点的变化率。</p>
+<h3 id="十概念层级与层层叠加">十、概念层级与层层叠加</h3>
+<p>所有这些概念——序列、函数、连续、一致连续、一致收敛、微分、积分——并不是散落一地的碎块。它们构成了一套层层相叠的层级结构。</p>
+<p>实数是最基础的一层，完备公理铸造了它的连续性。序列是第二层：从离散的自然数到连续的实数的映射。函数是第三层：从连续的实数到连续的实数的映射。函数列是第四层：从离散的自然数到函数空间的映射。逐点收敛是松弛的，一致收敛是刚性的。</p>
+<p>这种套娃不是任意的。它是思维的本能冲动——每一次掌握了一个层次的操作，就想把这个层次本身变成一个新的对象，在它之上重新开始。第一原则在每一层都找到新的“基础元素”：实数、序列、函数、函数列。第二原则在每一层都展开机器推演。第三原则则把这些层次之间彼此碰撞——逐点连续与一致连续碰撞出 Heine-Cantor，实数完备性与连续碰撞出介值定理，微分与积分碰撞出基本定理。</p>
+<p>分析学的行进，就是不停地重复这个动作：定义一个新的层级，将旧层级的内容打包成一个点，然后在新的层级上重新搭建极限、连续和收敛的机器。</p>
+<h2 id="说明与边界">说明与边界</h2>
+<ul>
+<li>这是一个人的学习经验，不是教学大纲，也不是数学史。文中例子按本科教材的通常顺序排列，不是历史发生的顺序。</li>
+<li>“自由结构 → 约束 → 新对象”是一种描述方式，不是一个定理。它解释我看数学时看到的东西，不声称穷尽了数学成长的方式。</li>
+<li>三项原则是并列的三种动作，不是一个推导链条。它们之间会有重叠，也会有用不上它们的地方。</li>
+<li>拓扑学一章有意不写，这份底稿在这里结束，后面几篇也不依赖它。</li>
+<li>文中的集合论、数论、群论与分析，取的都是本科标准讲法；省略了技术条件，也省略了不同教材之间的差异。</li>
+</ul>
+<!-- CTA-PLACEHOLDER: 发布前替换为真实链接（GitHub / newsletter / 联系邮箱）。
+     阻塞于 AGENTS.md §4 的 launch gate：域名、newsletter 与仓库审计均未决定。 --></div></section><section class="book__part" id="why-ai-takes-over-math-02"><div class="book__part-label">第二篇 — 准备 · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/why-ai-takes-over-math-02/" style="color:inherit">02 准备：几种看数学的方式</a></h2><div class="prose"><p>这篇文章不直接回答“AI 会不会接管数学”。它做的是准备工作：把理解那个问题所需要的几种视角摆出来。每一种视角都来自我学习数学的经验，也来自我对 AI 的观察。它们单独看可能只是经验之谈；放在一起，会指向下一篇文章要说的那个结论。</p>
+<h2 id="一楼梯数学看起来高不可攀但它可以被走通">一、楼梯：数学看起来高不可攀，但它可以被走通</h2>
+<p>学数学分析的时候，我脑子里一直有一个画面：数学像一座很高的楼梯。</p>
+<p>它高，但不是因为每一级台阶很高。恰恰相反，每一级台阶都很矮。你从数列的极限，走到函数的连续；从连续，走到可微；从可微，走到可积；从一元函数，走到多元函数；从数分一，走到数分二，再走到数分三。每一步的“智性增量”其实很小。没有哪一步需要你突然变成一个天才；没有哪一步是真正的飞跃。</p>
+<p>但每一级台阶都很宽。你要在一级台阶上走很久。一个定义，你要反复看；一个证明，你要自己写很多遍；一个估计，你要做到不用想就能做出来。楼梯的高度差很低，但梯面宽度很大。它消耗的不是天才，而是时间、记忆和熟练度。</p>
+<p>这就是为什么数学给人的感受如此矛盾：一方面，它好像并没有那么“难”，因为每一步都懂；另一方面，它又极其“难”，因为每一级台阶都要走很久，而人一生的时间有限。很多人不是被某一级台阶的高度吓退的，而是被它的宽度磨掉的。</p>
+<p>更关键的是，如果你真的走完了这条楼梯，你站在某个位置回头看，你会发现一个外人完全无法理解的事实：从数学分析一到数学分析三，到实分析、复分析，甚至到更远的地方，你并没有感受到任何“突破性的进展”。你只是走了很久。每一步都像是上一步的微小延伸。可是，一个没有走过这条楼梯的人，站在同样的位置，会完全不知道你在说什么。他的“不懂”和你的“懂”之间，隔着的不是某一个定理，而是整条楼梯的宽度。</p>
+<p>这里必须补一个区分，否则上面这句话会被读错。“没有突破性进展”说的是<strong>走完它需要的时间和力气</strong>：一级一级上去，每一级都不高。它不是说概念上没有断裂。第一篇讲实数的时候说过，发现有理数之间全是洞、必须把整条带洞的数线重新当作研究对象接受下来，那是一次世界观的翻转——那一刻你要做的是重新组织你已经会的一切，而不是多做一道题。</p>
+<p>**翻转是概念上的，楼梯是时间上的。**而一个概念上的翻转，事后会被写成一节顺理成章的课，于是它看起来也像一级矮台阶。教材把断裂磨平了。这一点在第三篇会变得很关键：能被“跑”的，是磨平之后的那条路径。</p>
+<p>这条楼梯也是数学界的门槛所在。它把“学过”和“没学过”分成了两个世界：外人无法在短时间内走完，里面的人也很难向外人解释自己到底走了什么。</p>
+<p>但门槛不是全部。还有一件更朴素的事：**两边其实都不太在意对方。**学院内部发展出来的新工具，外面的人大多不用——物理学家有自己的奇点概念和近似方法，几步就能处理掉你要花大力气推广的东西。反过来说，外面的人真正关心的问题，也常常进不了学院的议程。这种互相不在意，比门槛本身更能解释数学共同体为什么封闭。</p>
+<p>这条楼梯和 AI 有什么关系？</p>
+<p>关系在于：楼梯的每一级之所以“矮”，是因为它们最终都可以被形式化、被写下来、被一步一步地执行。而机器最擅长的，恰恰是执行那些被形式化了的、一步一步的动作。人类走完整条楼梯需要十年；机器不需要“走”，它可以直接“跑”，或者说，它可以反复地跑，直到把每一级都覆盖。它不需要拥有和人类相同的理解方式；它需要的是每一步都有明确的规则，以及一个能判断对错的验证器。</p>
+<p>至少，在楼梯的机械部分是这样。楼梯上也有少数地方，宽度突然变窄——那里需要的不是时间，而是真正的概念跳跃。那些地方后面再说。</p>
+<h2 id="二机械化推演数学的骨骼">二、机械化推演：数学的骨骼</h2>
+<p>第二项原则说：一旦对象被生成，很多工作就不再需要“理解实质”，只需要按照规则摆弄符号。</p>
+<p>最纯粹的例子是逻辑。你不需要知道 P 代表“天在下雨”还是“1+1=2”；只要看到“若 P 则 Q”和“P”，你就可以推出“Q”。逻辑像一台只看语法、不看语义的自动机。它关心的不是内容，而是形状。</p>
+<p>数学分析里的证明，是这种机械推演的高级版本。假设你已知两条定理：紧致集必定闭且有界；闭且有界集上的连续函数必有最值。把这两条机械地接起来，就得到：紧致集上的连续函数必有最值。整个过程不需要你重新思考“紧致”的哲学含义，只需要合法地使用已经证明的结论。</p>
+<p>这种机械性经常被误解。人们以为数学证明需要“灵感”，实际上，绝大多数证明是定义的展开、估计的组合、定理的调用。灵感出现在少数关键的地方——比如选择哪一个估计、引入哪一个辅助对象、交换哪两个量词——而不是每一步。</p>
+<p>机械化推演是数学的骨骼。它让数学可以被教、被学、被写下来、被检查。没有它，数学就只是少数人的私人直觉；有了它，数学才成为一门可以积累、可以传承、最终可以被机器执行的学科。</p>
+<p>但骨骼不是全部。机械推演不能自己选择前提，不能自己判断哪一条路值得走，也不能自己发明新的概念。它可以证明你给它的任何东西，前提是你已经把问题说清楚。它最大的局限不在“能不能推”，而在“推什么”。</p>
+<h2 id="三证明是搜索牙签与双向推导">三、证明是搜索：牙签与双向推导</h2>
+<p>第二项原则说的是“一步推导”。但一个证明通常不是一步，而是很多步。这里有一个比楼梯更细的比喻，可以说明证明是怎么被找到的。</p>
+<p>想象两个点：一个是起点 S，一个是终点 E。S 是已知条件，E 是要证明的结论。从 S 伸出三根牙签，代表三个向前的推导方向；从 E 伸出三根牙签，代表三个向后的归约方向。如果某根从 S 来的牙签和某根从 E 来的牙签碰上了，证明就完成了。如果还没有，就从每根牙签的末端继续长牙签，看看两边能不能在某处相遇。</p>
+<p>这就是证明的实际过程：从已知往目标推，同时从目标往已知倒推，直到两棵树相遇。考试的时候我们就是这么做的：先把条件变一变，再把结论化一化，看能不能接上。数学家在研究里也是这么做的，只是规模更大、工具更多。</p>
+<p>这个图像有一个正式名字：<strong>双向搜索</strong>。在自动定理证明里，从公理出发叫 forward chaining，从目标出发叫 backward chaining；证明就是两棵搜索树相遇。有些推理引擎——比如 EYE（Euler Yet another proof Engine）——做的就是 forward/backward chaining，只不过它处理的是 N3/RDF 规则，不是数学分析。</p>
+<p>牙签比喻比楼梯更细：楼梯说的是学习一门学科的路径，牙签说的是找一个证明的搜索。它也比 modus ponens 更完整：modus ponens 只是其中一根牙签；牙签比喻说的是整片搜索空间。</p>
+<p>对 AI 来说，这个比喻最关键的地方是：<strong>牙签可以并行地长</strong>。人类一次只能在脑子里追踪几根牙签，而且会累、会忘记、会因为“这条路看起来不优雅”而放弃；AI 可以同时长出成千上万根，记住每一根的位置，用搜索和学习到的启发式规则决定先长哪一根，再用验证器检查每一根是否合法。</p>
+<p>这就是 AI 在证明上的优势：不是它更聪明，而是它的搜索空间更大、记忆更全、验证更快。</p>
+<p>但牙签比喻也暴露了边界：</p>
+<ul>
+<li><strong>起点和终点是谁定的？</strong> 问题本身（要证什么、什么值得证）不是搜索能决定的。</li>
+<li><strong>牙签的种类是谁发明的？</strong> 大多数时候，牙签是已知的推导规则；但真正困难的证明往往需要发明新的牙签类型——新定义、新引理、新表示、新的垂直对象。这就是第一篇里的概念碰撞/垂直跳跃，不是搜索。</li>
+<li><strong>哪一根相遇的牙签值得保留？</strong> 搜索可能找到很多条路径，但哪一条是“对的证明”（可理解、可推广、值得进入经典），不是搜索能回答的。</li>
+</ul>
+<p>所以牙签比喻天然分成两半：牙签的扩展、组合、相遇属于操作，是 AI 的强项；起点和终点的选择、新牙签类型的发明、以及哪条路径值得保留，属于选择，是问题意识的位置。</p>
+<h2 id="四肉身方法用笔和嘴而不是用本质">四、肉身方法：用笔和嘴，而不是用本质</h2>
+<p>我一度以为，学数学最大的障碍是“不懂”。后来发现，更准确的描述是：我一直在追求一种并不存在的“懂”。</p>
+<p>所谓“懂”，很多时候被想象成一种本质性的领悟：你突然看到了定义背后的“东西”，你抓住了定理的“灵魂”。但在我自己的经验里，这种“灵魂时刻”很少发生。更多的时候，是你在书桌前反复写、反复说，某一天突然发现自己能顺畅地写下去了。你说不清自己懂了什么，但你的手和嘴已经会了。</p>
+<p>我后来把这种学习方式叫做“肉身方法”：不要抱太强的自我，不要一直问“它的本质是什么”，而是用笔或者嘴，直接按照合法的规则摆弄符号。你写一个 ε-δ 定义，不必去想“ε 到底是什么”，你只是按照量词的顺序把它写下来；你做一个估计，不必去想“这个估计美不美”，你只是把它算到底。</p>
+<p>这听起来很机械，甚至很卑微。但它是有效的。而且，它在某个意义上接近 AI 的工作方式：语言模型也是一个字一个字地往下预测，它并不需要“理解”每个词的本质。你和它的共同点，是都在某种形式上“接着说下去”。</p>
+<p>这个类比只能走到这里。“手和嘴已经会了”是练出来的身体记忆——你重复过很多次，于是它变成了技能，是被时间塑造出来的东西。模型“往下预测”是它的生成方式，不是它练出来的习惯。所以共同点只在于<strong>不需要先抓住本质就能继续操作</strong>，不在于人和它做的是同一件事。</p>
+<p>但这也不等于说理解不存在。区别在于：人可以在机械操作的同时，随时退后一步，问“我为什么这样做”“这个方向对不对”“有没有别的路”。AI 也可以生成这样的问题，但它的“问”是对语料中类似句子的预测，不是从一个活的困惑里长出来的。<strong>肉身方法是入口，不是终点。</strong> 它能让你走进数学，但不能替你决定要走到哪里。</p>
+<h2 id="五操作平等性平行四边形和家庭主妇">五、操作平等性：平行四边形和家庭主妇</h2>
+<p>第五个准备视角，是一种关于“操作”的平等性。</p>
+<p>我们在数学里学过很多基本操作：加法、乘法、取极限、求导、积分、做商、取对偶。很多复杂的东西，追到根上都是这些基本操作的组合。比如向量的加法满足 a+b=b+a，画出来是一个平行四边形；这个交换律看起来很简单，但它是一种“操作可以自由重排”的承诺。</p>
+<p>从数到函数、从函数到函数空间，每一步都是把前一层的基本操作重新用一遍：极限、连续、收敛，原本用在数上，后来用在函数上，再后来用在函数的函数上。复杂来自组合，而不是来自每一步本身有多么不同。</p>
+<p>我甚至愿意把这个观察推得更远一点：一个科学家在解决问题时的思维操作——分解、比较、组合、试错、调度——和一个家庭主妇在做饭、安排时间、准备材料时的思维操作，在某个层面上是同一类东西。不是同一个难度，也不是同一个价值，而是同一类操作：把大问题拆成小问题，把已知的东西组合起来，在约束下寻找可行路径。</p>
+<p>这个平等性有严格的边界。它说的是“操作层”的相似，不是“认识论地位”的相同。菜谱不需要同行评审，数学定理需要；做饭错了可以重来，数学定理错了会浪费很多人的时间。把平等性推到“所以做什么都一样”，就超出了它成立的范围。</p>
+<p>这里只需要记住一句话：<strong>数学能力的一大部分，是基本操作的组合。</strong> 它对 AI 意味着什么，留到第三篇再说。</p>
+<h2 id="六物理学家-vs-学院工具还是问题">六、物理学家 vs 学院：工具，还是问题？</h2>
+<p>第六个视角来自我对数学论文的阅读经验，尤其是物理学家写的数学论文。</p>
+<p>有一类论文，读的时候你会觉得每一步都聪明。比如一类关于三维流形不变量的论文：给定一个同调三维球面，取平坦 SU(2) 联络的规范等价类作为生成元，用四维的反自对偶联络——也就是从物理里来的 instanton——去数它们之间的关系，最后得到一个不变量。表示、同调、Yang–Mills、instanton，一层层搭上去；证明里的估计、紧性、扰动，也确实是恰到好处的安排。</p>
+<p>但合上论文之后，你问自己：“我为什么要在意这个问题？”答案往往是：因为同调、表示、Yang–Mills 这些词很大，把大词分解是数学自然会做的事。但这个答案只是把问题重新描述了一遍。</p>
+<p>另一类论文，比如 Witten 的 <em>Supersymmetry and Morse Theory</em>，你读的时候可能觉得数学工具很经典、很初等——Morse 理论、Betti 数、Hodge 理论、特征值——但整个问题是活的，因为它来自物理：supersymmetry、量子力学、隧穿、基态。论文做的正是把 supersymmetry 量子力学当作工具，重新推出 Morse 理论里的 Morse 不等式：物理是活的，数学是现成的。数学在这里不是主角，是工具。Witten 更像一个闯入者：他从物理闯进数学，提醒你，人们做数学很多时候不是为了数学本身，而是为了别的东西。</p>
+<p>这个对比不是关于谁更聪明。它关乎 <strong>论证的方向</strong>：</p>
+<ul>
+<li>学院的方向：从工具到问题。因为这些数学结构重要，所以研究它们；问题是从传统内部长出来的。</li>
+<li>问题意识的方向：从问题到工具。先有一个活的、来自外部的问题，再选择或发明合适的工具。</li>
+</ul>
+<p>物理学家经常不在意学院内部的推广，原因也在这里。你把一个 2 维的结果推广到 n 维，如果没有带来新的结构或新的可计算量，物理学家会觉得这只是加指标；他们用自己的奇点概念、自己的近似方法，快速处理掉。他们不需要你的严格性，因为他们的问题不在你的传统里。</p>
+<p>有一个具体的例子可以说明这种论证方向的差别：pseudoholomorphic curves 的 moduli space。</p>
+<p>在数学这一侧，你会关心这个 moduli space 的紧性、stable maps 的紧化、virtual fundamental class、Gromov–Witten 不变量。你想把整个曲线空间变成一个可以严格操作的对象，这需要大量的形式化工作：Gromov compactness、bubbling、用 stable maps 给 moduli space 做紧化、构造 virtual fundamental class、以及一整套 obstruction theory。</p>
+<p>在物理这一侧，同一套对象往往以另一种方式出现：worldsheet instantons、A-model，以及对具体情形的快速处理。物理学家有自己的约定和快速的数学方法；他们不一定需要你的紧性证明。他们会把某个特殊情形当作理解整个理论连续统的入口：先把它离散化、局部化、算出来，再看它如何嵌入更大的图景。对他们来说，边缘情形不是例外，而是理解连续统的入口。</p>
+<p>（“边缘情形”“局部模型”这几个词是我的说法，不是这个领域的固定术语；物理学家关心的是能不能算出来。）</p>
+<p>这正好说明：数学常常处理连续性、结构、严格性；物理学和应用学科常常处理离散化、特殊情形、可计算量。两者不是谁高谁低，而是论证的方向不同。学院内部把一个结构从 2 维推广到 n 维，如果只是加指标而没有带来新的可计算量或新的物理对应，物理学家完全可以忽略它——他们用自己的离散化语言，更快地到达他们关心的那一点。</p>
+<p>这不是说某个学科更高贵。如果我是物理学家，但保持同样的问题意识，我可能也会对 Witten 有同样的感觉：不是因为他用了高级数学，而是因为他从外部带来一个活的问题。反过来，物理里的 QCD、gauge invariance 也可能变成没人问起源的大词。学院式的展开和活的问题意识在任何学科都存在；区别不在于学科，而在于你是否还在问“为什么”。</p>
+<p>最后要交代一句我自己的立场，因为它决定了这一篇为什么会写成这样：**我用数学，就是当工具用的。**我不觉得它是什么更高的中间层，也不觉得纯数学天然比应用数学更值得尊敬。所以应用数学从来不是我的敌人；恰恰相反，如果一个工具解决不了任何工具之外的问题，我对它的兴趣会迅速下降。</p>
+<p>这也是为什么“大词”让我不安。大词本身没有错，错的是当一个问题的最初起源已经消失之后，那个大词还能靠自己的体量继续要求别人投入一生——像愚公移山一样，一天搬一筐土，搬完为止。问题不在移山的人，而在这座山是不是还值得移。</p>
+<p>这个视角也产生了一个关键区分：<strong>第一个我</strong>和<strong>第二个我</strong>。</p>
+<ul>
+<li>第一个我在传统内部。他接受既定框架，跟着证明走，欣赏局部聪明。他是必要的：没有他，你连问题都问不出来。</li>
+<li>第二个我在传统外部。他不问“这一步对不对”，而问“为什么是这个游戏”。他代表问题意识：他带来起源，选择方向。</li>
+</ul>
+<p>先说清楚：这是一组<strong>用来描述位置的定义</strong>，不是一个关于意识的发现。我把“在传统内部接受既定框架”叫做第一个我，把“从外部追问起源”叫做第二个我。定义本身不证明任何东西；它有用，是因为它能让你看清同一个人、同一篇论文在不同位置上的差别。同一个人可以在两处都待过——读证明的时候是第一个我，合上论文之后是第二个我。</p>
+<p>把这两篇论文放在一起，这个区分就变成一张可以对照的表：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>一篇关于三维流形不变量的论文</th><th>Witten, <em>Supersymmetry and Morse Theory</em></th></tr></thead><tbody><tr><td>用到的数学</td><td>表示论、同调、Yang–Mills 联络、instanton；一层层搭上去</td><td>经典而初等：Morse 理论、Betti 数、Hodge 理论、特征值</td></tr><tr><td>问题的来源</td><td>从传统内部长出来——这些大词重要，所以研究它们</td><td>从物理来：supersymmetry、量子力学、隧穿、基态</td></tr><tr><td>论证的方向</td><td>从工具到问题</td><td>从问题到工具</td></tr><tr><td>证明本身</td><td>局部很聪明：估计、紧性、扰动，恰到好处</td><td>局部并不复杂，真正新的是问题</td></tr><tr><td>第一个我看到</td><td>跟着走，佩服每一步</td><td>跟着走，佩服每一步</td></tr><tr><td>第二个我追问</td><td>为什么是这个游戏？</td><td>这个物理问题的起源是什么？</td></tr><tr><td>结论</td><td>问题意识是继承来的</td><td>问题意识是活的</td></tr></tbody></table>
+<blockquote>
+<p>左边这一栏我故意不点作者的论文名。这里批评的是“问题可以被继承”这件事，
+不是某一篇论文，更不是某一位作者——论文本身写得很好，每一步都值得敬佩。
+换成任何一篇同类型的论文，这张表的左栏都成立。</p>
+</blockquote>
+<p>AI 目前是极强的第一个我。它能不能成为第二个我，是后面文章的核心问题。</p>
+<h2 id="七ai-乱说的活力让词语的边界显形">七、AI 乱说的活力：让词语的边界显形</h2>
+<p>最后一个准备视角，来自 AI 的一种特殊能力：它不怕术语的“高深”。</p>
+<p>人类学习一个学科时，很容易被大词压住。你看到“Yang–Mills”“instanton”“层”“上同调”，第一反应是敬畏；你不敢乱用它们，因为你不确定自己是否理解。AI 没有这种敬畏。它会信心十足地把术语拼在一起，有时对，有时错得离谱——比如在量子场论里乱说话。</p>
+<p>初学者往往把这种“乱说”当成纯粹的缺点。但它有一个奇特的教学价值：当 AI 把两个不能搭配的词放在一起时，你被迫去看<strong>为什么它们不能搭配</strong>。你开始注意语法、类型、量词、定义域、语义边界。AI 的胡说八道，反而把形式系统的边界照亮了。</p>
+<p>这也是一种“概念碰撞”，但它是混乱版的碰撞：大量候选组合被生成出来，其中大部分是错的；然后由一个验证器——你的判断、教科书、Lean、一个具体的反例——把它们筛掉。留下的那一个，可能让你看到原本看不到的合法组合。</p>
+<p>这里有一个我一直没有想清楚的问题，它比“AI 能不能做数学”更基本：<strong>为什么一个词可以跟另一个词搭起来，换一个词就不行？</strong> 这既是语言学问题，也是数学的形式化问题：什么样的组合是合式的？语法和语义的边界在哪里？AI 的流利恰恰让这条边界变得可见：它能把话说得无比顺滑，直到你发现它根本不在合法的轨道上。</p>
+<p>但必须强调：乱说的价值不在乱说本身，而在<strong>验证</strong>。2026 年那些真正做出东西的系统，都是生成器加上验证器：生成器负责乱想，验证器负责筛掉。只有生成器的系统，只是噪声；只有验证器的系统，什么新东西也生不出来。两者结合，才有数学。这个结构，就是下一篇文章的钥匙。</p>
+<h2 id="结语准备结束问题开始">结语：准备结束，问题开始</h2>
+<p>把以上七个视角放在一起，可以看到一个反复出现的形状：</p>
+<ul>
+<li>有一层数学是机械的、可形式化的、可验证的、可以“跑”的——楼梯的机械段、学院的展开层、第一个我的世界。</li>
+<li>有一层数学是起源、选择与垂直跳跃的——问题意识、第二个我、闯入者的世界。</li>
+</ul>
+<p>注意“概念碰撞”不在第二行里。碰撞是一种<strong>生成</strong>：把两个概念放在一起，撞出新的候选对象。生成可以大量进行，第二篇的第七节甚至说 AI 的胡说八道就是一种混乱版的碰撞。真正落在第二行的是<strong>判断</strong>——哪一个候选值得留下，以及该不该引入一个新的总体对象。生成和判断分开，这一篇的词汇才算摆正了位置。</p>
+<p>AI 会接管哪一层？它凭什么接管？接管之后，另一层还剩什么？</p>
+<p>这就是下一篇要回答的问题。</p>
+<h2 id="说明与边界">说明与边界</h2>
+<ul>
+<li>这七个视角来自我自己的阅读和学习经验，不是一份文献综述。第六节里的两篇论文对照是个人读法；左边那一篇我故意不点名，因为批评的对象是“问题可以被继承”这件事，不是任何一位作者。</li>
+<li>“科学家和家庭主妇在操作层是同一类”只在操作层成立，不涉及认识论地位：菜谱不需要同行评审，定理需要。越过这条线，这个类比就不成立了。</li>
+<li>“AI 乱说有教学价值”目前只是我的观察，还没有可复现的例子：什么错误、谁发现的、学到了什么、代价多大，都还没有数据。第七节末尾已经说明，价值在验证，不在乱说本身。</li>
+<li>楼梯比喻描述的是一条已经整理好的学习路径，不是数学本身被创造出来的过程。教材会把历史抹平，这一点在第三篇还会用到。</li>
+<li>这一篇只准备词汇，不下结论。如果这些视角本身有问题，后面两篇的论证也会跟着塌。</li>
+</ul>
+<!-- CTA-PLACEHOLDER: 发布前替换为真实链接（GitHub / newsletter / 联系邮箱）。
+     阻塞于 AGENTS.md §4 的 launch gate：域名、newsletter 与仓库审计均未决定。 --></div></section><section class="book__part" id="why-ai-takes-over-math-03"><div class="book__part-label">第三篇 — 操作 · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/why-ai-takes-over-math-03/" style="color:inherit">03 为什么 AI 会接管数学</a></h2><div class="prose"><p>第一篇讲了三项原则：由一生多、机械化推演、概念碰撞。第二篇准备了七个视角：楼梯、机械化推演、证明即搜索、肉身方法、操作的平等性、物理学家与学院、以及 AI 乱说的活力。现在是第三篇，要把这些视角用在同一个问题上：</p>
+<blockquote>
+<p>AI 会接管数学的哪一部分？为什么？</p>
+</blockquote>
+<p>先把“接管”这个词说清楚。它在日常用法里滑来滑去，至少能指四件事：</p>
+<ol>
+<li>机器<strong>能做</strong>这件事；</li>
+<li>机器<strong>在做</strong>这件事；</li>
+<li>机器<strong>替代了</strong>原来做这件事的人；</li>
+<li>这件事<strong>完全不需要人</strong>了。</li>
+</ol>
+<p>这四个意思的强度差很远，需要的证据也完全不同。这一篇说的“接管”取的是最弱的那一档：**某一层的边际产出主要由机器完成，人不再逐件参与。**它不意味着这一层消失，也不意味着人停止参与；它意味着这一层的产量不再由人的时间决定。</p>
+<p>为什么取最弱的一档？因为它是能被证据支持的版本。第七节列出的那些事实，支持的是“机器能做，而且已经有人在做”，而不是“数学家失业了”。把结论说成后者，就超出了证据。</p>
+<p>这一篇的答案分四步。先回到 2024 年 1 月，说明那个判断到底基于什么；再用楼梯和机械化推演说明 AI 的结构性优势；然后用操作平等性说明这种优势可以覆盖学院层的哪一部分；最后把 2024 到 2026 的证据只当作旁证，而不是当论证本身。</p>
+<h2 id="一2024-年-1-月判断来自数学的结构">一、2024 年 1 月：判断来自数学的结构</h2>
+<p>2024 年 1 月，GPT-4 发布不到一年，GPT-3.5 仍然被大量使用。它们作为聊天机器人已经相当自然，但数学能力很有限：本科习题经常出错，研究级数学基本无从谈起。用当时的模型能力看，“AI 会接管数学”是一个夸张的判断。</p>
+<p>但那个判断本来就不是从模型能力来的。</p>
+<p>如果它依赖“AI 现在已经很聪明”，那我就应该在它变聪明之后再下结论。我的判断来自另一个方向：数学本身的结构。数学的很大一部分——定义、推导、验证、组合、检索——是机械化的。机械化的工作可以被逐步自动化；只要模型规模、数据、算力和验证手段到位，机器就会在这些部分追上并超过人类。2024 年的 GPT-4 不够聪明，只说明还需要时间，不说明方向有问题。</p>
+<p>这个判断还有一个更早的根。我是在 2021 年前后听说 EYE 的——全名是 Euler Yet another proof Engine，一个从 2006 年起就一直在维护的语义网推理引擎，做的是 forward / backward chaining。它不是一个数学定理证明器，处理的也不是数学分析，而是 N3/RDF 规则。我未必记得这个名字是否准确，但它让我第一次意识到：推理不只是人的事情，它可以被机器执行、被搜索、被验证。2024 年的 GPT-4 只是把这件事从逻辑和语义网的小圈子，带到了自然语言和数学。换句话说，我不是在 GPT-4 之后才开始相信“证明可以被机器执行”；这个信念比 GPT-4 更早。</p>
+<p>更准确地说：<strong>我不是在预测 AI 会变聪明；我是在观察数学的哪一部分不需要聪明。</strong></p>
+<p>那么，这条判断在什么情况下算错？一个不能被推翻的预测没有内容，所以这一节必须把话说死。下面三条里任何一条成立，“AI 会接管学院层”就要打折扣：</p>
+<ul>
+<li><strong>形式化的成本始终降不下来</strong>，以至于机器能检查的数学永远只占很小一块；</li>
+<li><strong>组合深度大的问题在实践中搜不收敛</strong>，机器只能处理那些人类早就做完的部分；</li>
+<li><strong>在机器已经能做的那些层里，人的时间仍然是产量的瓶颈</strong>——不是因为人做得更好，而是因为流程、责任或制度要求有人经手。</li>
+</ul>
+<p>这一篇没有能力判定这三条。第七节的证据只到“旁证”为止，不足以证实，也不足以证伪；它只能说明方向。</p>
+<p>不过，上面那段话里也埋着一个必须现在就承认的问题：**“只要模型规模、数据、算力和验证手段到位”是一个无法证伪的句式。**做到了就是判断正确，没做到就是条件还没到位。我在第四节会把这个句式拆成两个不同的断言，一个结构性、一个资源性；2024 年的那个判断只依赖前者。</p>
+<p>这个观察来自第二篇的楼梯比喻。</p>
+<h2 id="二楼梯再访ai-不需要走它可以跑">二、楼梯再访：AI 不需要走，它可以跑</h2>
+<p>第二篇的第一节已经讲过这条楼梯：梯级很矮，梯面很宽，消耗的不是天才，而是时间、记忆和熟练度。这里只取它的一个后果。</p>
+<p>人类必须“走”楼梯：每一步都要在时间里经历，身体会累，记忆有限，一个人一生能走的长度是有限的。AI 不需要走。它可以在每一步上高速尝试、验证、再尝试。它不需要拥有和人类相同的理解方式，也不需要经历人类的时间；它需要的是两件事：</p>
+<ol>
+<li><strong>每一步都有明确的规则</strong>：定义、类型、语法、形式化系统；</li>
+<li><strong>每一步都能被廉价地检查</strong>：Lean 内核、代码执行。</li>
+</ol>
+<p>第二条值得强调：它不是“盲审人类”或“基准测试”。那些是评估，不是验证——它们缓慢、统计、事后发生，没法给搜索过程中的每一步反馈。真正让“跑”成为可能的，只有那种能对单步立刻给出对错的检查器。这笔账在下一节还要再算一次。</p>
+<p>有了这两件事，AI 就可以把“走楼梯”变成“跑楼梯”：用算力换时间，用搜索换灵感，用验证换信心。第二篇的牙签比喻说的也是同一件事——证明是双向搜索，AI 可以并行地长出成千上万根牙签，再用验证器逐根检查；人类一次只能在脑子里追踪几根。</p>
+<p>这条楼梯并不止于数分 III。一旦 AI 掌握了数分 I 的基本操作，它就可以把这些操作组合到数分 II、数分 III、实分析、复分析，甚至 PDE 和 NS 方程。2024 年我对同学说“哪怕 AI 看起来很傻也要学”，依据就是这个：它可能走得很慢，但只要每一级都是可执行的，它最终会跑完整条楼梯。</p>
+<p>这里必须先划一条界线：这条楼梯描述的是<strong>已经被整理成教材的那条路径</strong>，不是数学被创造出来的过程。教材会把历史抹平——一次真正的突破，事后被写成一节顺理成章的课，看起来就像上一节的微小延伸。所以“楼梯可以被跑”说的是整理之后的数学，不是正在被创造的数学。这个区别在第六节会变得关键。</p>
+<p>而数学的学院层，恰好主要由“每一步都有明确规则”的工作构成：公理、定义、定理、证明、符号操作。所以问题不是“AI 能不能理解数学”，而是“数学的哪些部分不需要理解，只需要执行”。答案比人们想象的多得多。</p>
+<h2 id="三机械化推演为什么不需要灵感的部分这么大">三、机械化推演：为什么“不需要灵感”的部分这么大</h2>
+<p>第一篇的第二项原则和第二篇的第二节都说过：一旦对象被生成，很多工作就不再需要“理解实质”，只需要按规则摆弄符号。这里只补充两点，都是关于规模的。</p>
+<p>第一，AI 不怕术语。人类学习一个学科时容易被大词压住，AI 不会：它会把术语拼在一起，直到验证器把它拦下来。敬畏是一种人类成本，机器不付这笔钱。</p>
+<p>第二，也是更要紧的一点：机械推演要能跑起来，前提是这一步<strong>已经被形式化</strong>。而形式化本身是昂贵的人类劳动——AlphaProof 在 IMO 上的题目，就是人类专家手工翻译成 Lean 的。所以“机械化”不是一个免费的开关，而是一条流水线：人先把命题写成机器能检查的形式，机器才能在上面高速搜索。</p>
+<p>这带来一个必须说清楚的限制：<strong>验证并不便宜</strong>。Lean 内核只能检查已经被形式化的陈述，代码只能检查已经被写成程序的东西。凡是还没有被形式化的数学——也就是绝大部分正在被创造的数学——验证仍然要靠人，靠一个读得懂它的数学家。这个成本在第七节会以最直白的方式出现。</p>
+<h2 id="四操作平等性为什么这种优势可以覆盖学院层的大部分">四、操作平等性：为什么这种优势可以覆盖学院层的大部分</h2>
+<p>第二篇的第五节给过一个视角：数学能力的一大部分，是基本操作的组合；而在操作层上，数学家的思维操作和普通人的思维操作属于同一类——区别在认识论地位，不在操作类型。</p>
+<p>这里只取它的一个推论：</p>
+<p><strong>如果数学能力的一大部分是“基本操作的组合”，那么一个学会了这些操作的机器，就可以在组合空间里高速搜索。</strong></p>
+<p>它甚至可以比人组合得更快、更多、更不怕犯错。人类学者在几个可能的证明路径之间犹豫；AI 可以同时尝试几百条路径，让验证器筛掉错的。人类需要几十年才能熟练掌握的操作组合，AI 可以通过训练和搜索大规模覆盖。</p>
+<p>学院层的工作，绝大部分就是这样的组合：定义的操作、证明的操作、验证的操作、文献检索的操作、符号计算的操作。AI 不需要理解每个操作背后的“本质”；它只需要知道哪些操作是合法的、哪些组合能通过验证。这就是“跑楼梯”的准确含义——它不是跳过楼梯，而是把楼梯的每一级都变成高速可执行的步骤。</p>
+<p>不过这一步有一个缺口，必须写出来：<strong>“可组合”不等于“可覆盖”。</strong> 组合空间的规模是指数级的，能高速搜索不等于能搜完。上面那句“覆盖整个学院层”因此要收窄：它严格成立于组合深度有限、并且每一步都能被廉价检查的那部分。对组合深度大的部分，搜索能不能收敛是一个算力问题，不是结构问题。</p>
+<p>所以这一篇给出的首先是一个<strong>结构判断</strong>：这一层在原理上是可机械化的。它是否会在某一年被机械化完，是另一个问题，需要另一类证据——第七节只提供旁证，不提供结论。</p>
+<h2 id="五关键转折机械性不在证明而在起源">五、关键转折：机械性不在证明，而在起源</h2>
+<p>到这里，有一个必须说清楚的区分。否则，“AI 会接管数学”就会变成一个太粗的结论。</p>
+<p>学院的证明，其实可以每一步都很聪明。很多分析理论，你读的时候会感觉作者在每一步都很厉害：一个估计、一个紧性、一个扰动，把看似要散掉的东西重新收拢。那不是蛮力，是恰到好处的安排。局部证明不但不机械，甚至可以很有灵性。</p>
+<p>这里要说明我用“灵性”这个词是什么意思，因为它很容易被读成另一种东西。它不是在形容某个人聪明，也不是一种天赋。它是一个<strong>判断</strong>：读完一段推理，你会不会觉得它是活的——它背后是不是有一个真的问题在推着它走。这个判断是对着数学做的，不是对着人做的；换一个人写同样的东西，判断也一样。所以“灵性”和身份、天赋、学科高低都无关，它只和那段推理有没有一个活的起源有关。</p>
+<p>那么“机械”到底在哪里？</p>
+<p><strong>机械性不在证明，而在理论的起源。</strong></p>
+<p>一篇论文可以证明一个技术很难的定理，但如果它的问题是继承来的，如果它之所以存在只是因为传统里的大词还在那里，那么它的总体议程就是机械的。证明越聪明，这个反差有时越明显：每一步都很聪明，但整体证明的东西很无聊。</p>
+<p>这就是学院层的真正特征：它不是“证明机械”，而是“<strong>问题意识继承</strong>”。它擅长的是：给定一个已经选定的问题，把它展开、验证、组合、推广。它不需要重新决定“什么问题值得问”；它只需要在已有的问题空间里工作。</p>
+<p>AI 恰恰是这种工作的极致执行者。它是学院内部最强的“第一个我”：接受既定框架，跟着证明走，把局部工作做到极致。它不需要起源，也不需要判断这个游戏值不值得玩；它只需要规则和验证器。</p>
+<p>所以“AI 会接管数学”这个说法必须精确化：</p>
+<blockquote>
+<p>AI 会接管的是<strong>继承问题 + 机械化展开 + 验证</strong>这一层，也就是学院层。它不接管的是<strong>问题的起源</strong>——什么问题值得问、什么对象值得发明、哪个方向值得投入。</p>
+</blockquote>
+<p>学院层的证明可以很聪明；AI 的接管不是因为聪明不重要，而是因为<strong>在问题已经被选定之后，聪明可以被搜索、验证和规模化地替代</strong>。真正不能被替代的，是选择问题的那一步。</p>
+<h2 id="六学院与问题意识">六、学院与问题意识</h2>
+<p>现在可以把这两个词正式定下来。</p>
+<p><strong>学院</strong>是已经经典化的数学：定义、定理、证明、方法、论文、形式化库。它确实在积累——把零散的洞察变成可传承、可教学的东西。但它同时是一台靠惯性运转的机器：学院层的“大词”——同调、表示、Yang–Mills、上同调——本身可以成为继续工作的理由，即使最初的问题起源早就模糊了。</p>
+<p>这里要交代一个语气问题，因为它决定了这一篇为什么写成这样：**我不觉得学院是一桩值得赞颂的事业。**学院内部发展出来的新工具，外面的人大多不用。你把物理学里一个 2 维的结果推广到 n 维，物理学家不会因此感动——他们有自己的奇点概念和近似方法，几步就处理掉了。他们不在意你的严格性，不是因为你不够严格，而是因为你的问题不在他们的传统里。</p>
+<p>这不是在贬低学院。它是一台必要的机器，也是唯一能把洞察存下来的机器。但“必要”不等于“值得歌颂”，而一台靠大词运转的机器，在操作的边际成本降到接近零之后，是最容易被接管的。</p>
+<p><strong>问题意识</strong>是起源的那一面：什么问题值得问，什么对象值得发明，哪个方向值得投入，哪条路径会在事后看起来是必然的。它的问题来自外部——物理、几何、经验、别的学科、以及数学家个人的困惑。它不能靠继承得到，必须被重新提出。它产生的不是更多同一类定理，而是新的问题、新的概念、新的论证方向。</p>
+<p>在往下走之前，得先承认一件事：上面对学院层的刻画，其实用了两把不同的尺子。</p>
+<ul>
+<li>一把量的是<strong>问题的来源</strong>：它是继承来的，还是被重新提出来的？</li>
+<li>另一把量的是<strong>工作能不能被形式化</strong>：它能不能写进形式系统，能不能被机器检查？</li>
+</ul>
+<p>这两把尺子并不重合。一个继承来的问题如果没法形式化，按第一把尺子它属于学院层，但 AI 未必吃得下；一个刚起源、还热着的问题如果恰好形式化得很干净，按第二把尺子它就该被机器接手，可它明明属于问题意识那一侧。</p>
+<p>它们在这篇文章里之所以指向同一个结论，是因为历史上两者高度相关：一个数学分支被经典化的过程，本身就把它的语言磨成了可形式化的形状。所以“学院层”应当理解为<strong>已经典化、因而大体上可形式化的那一层</strong>，而不是两把尺子各自划出的并集。</p>
+<p>不重合的那条地带是真实存在的。它是这篇文章覆盖不到的地方，也是机器接管最慢的地方——那里堆着大量继承来的、却始终没有被形式化的数学。</p>
+<p>AI 会先接管学院层，原因很清楚：</p>
+<ul>
+<li>学院层的工作可以被形式化，AI 可以在形式系统里搜索和验证；</li>
+<li>学院层的工作可以被基准化，AI 公司有强烈的动机去优化；</li>
+<li>学院层的成功可以被度量，模型可以自我改进；</li>
+<li>学院层的问题大多是“给定设定，找证明”，这正是生成器加验证器最擅长的。</li>
+</ul>
+<p>问题意识很难被这样处理：</p>
+<ul>
+<li>“什么问题值得问”没有基准；</li>
+<li>“这个方向有没有意义”没有 Lean 内核；</li>
+<li>“哪条路径会在十年后看起来是必然的”需要共同体的历史判断；</li>
+<li>“这个起源是不是活的”需要生活、经验、别的学科的实际问题。</li>
+</ul>
+<p>这就是为什么 AI 是终极圈内人，而不是天然的闯入者。它在学院层的走廊里走得比任何人都快，但走廊本身不是它建的；它可以在已有的问题空间里高速移动，但“选择哪个问题空间”仍然是一个外部动作。</p>
+<p>第一篇里的那个问题，在这里有了现实版本：</p>
+<blockquote>
+<p>谁来挑选有意义的那一首？还是需要人。</p>
+</blockquote>
+<p>第一原则（由一生多）和第三原则（概念碰撞）可以生成无数候选；第二原则（机械化推演）可以把候选展开、验证、组合。但<strong>哪一个候选值得留下</strong>，不是生成和推演能回答的。学院擅长展开已经被选中的东西；问题意识负责在选择还没有发生之前，选出一个值得问的问题。</p>
+<p>所以，“AI 接管数学”这个说法必须拆开：</p>
+<ul>
+<li>学院层：接管，而且已经在接管。</li>
+<li>问题意识：没有被接管，而且暂时看不到被接管的路径。</li>
+</ul>
+<h2 id="七20242026只作为旁证">七、2024→2026：只作为旁证</h2>
+<p>结构判断是一回事，证据是另一回事。但这一节只写必要的旁证，不展开成一篇新闻综述。</p>
+<p>从 2024 年 1 月到现在，最相关的事实有四件：</p>
+<ol>
+<li><strong>AlphaProof（2024 年 7 月公布，Nature 论文 2025 年 11 月）</strong>：把大模型预训练、Mathlib 监督微调、Lean 定理证明器中的强化学习和树搜索结合起来，在 2024 年 IMO 中解出三道非几何题（P1、P2、P6），加上 AlphaGeometry 2 解出的 P4，合计四题、28/42 分，达到银牌水平（当年金牌线是 29 分）。证明由 Lean 内核逐步验证。代价是主强化学习阶段约 8 万 TPU-days、巨大的推理计算量，以及人类专家对竞赛题的手工形式化。</li>
+<li><strong>IMO 2025</strong>：DeepMind 和 OpenAI 的模型都拿到 35/42，越过金牌分数线。但两者的性质不同：DeepMind 的成绩由 IMO 官方评分确认，OpenAI 的成绩由三位前奖牌得主评分，未经官方认证；两者都不是正式参赛者，而当年的人类选手仍然拿到满分 42。所以准确的说法是“达到金牌分数线”，还不是“进入人类顶尖选手的区间”。</li>
+<li><strong>First Proof（2026）</strong>：一个独立评测项目。数学家提供十道尚未公开、来自自己研究过程的问题；四个 AI 系统在无人干预的条件下各作答一次，再由人类数学家盲审。第二批的结果是：十道题中有七道至少被一个系统评为“毫无瑕疵”或“只需小改”——这是四个系统合计的结果，不是单个模型的成绩。成本量级是每题几十到几百美元（Tao 的估计）。</li>
+<li><strong>OpenAI 的十项进展与 Navier–Stokes 声明（2026）</strong>：2026 年 8 月，公司宣称内部模型 Astra 在十个长期开放问题上取得结果或重大进展——包括非 sofic 群的具体构造、Connes 刚性猜想的否证——并配有 Lean 证书，十项合计约两千美元。9 月，公司又宣称用约一万个协同工作的智能体、约 88 小时、约 1300 亿输出 token 产生了一个 Navier–Stokes 有限时间奇点证明，并用 Lean 形式化，同时表示不会去主张千禧奖。这些都是公司声明，尚未完成学界验证，并且已经出现优先权争议。</li>
+</ol>
+<p>这些事实共同指向同一个机制：</p>
+<blockquote>
+<p><strong>生成 → 搜索 → 验证 → 重复</strong>。
+一个不可靠的生成器，配上一个可靠的验证器，再加上大量计算和人类的脚手架。</p>
+</blockquote>
+<p>Tao 的说法最清楚。他写道，生成式 AI</p>
+<blockquote>
+<p>本质上是无所依凭的（inherently ungrounded），因为它优化的是一份令人满意的输出的“外表”，而不是这份输出本应指示的那个底层属性。</p>
+</blockquote>
+<p>他接着指出，在几乎所有其他领域，AI 最大的软肋是“会犯无法验证的错误”，但在数学里几乎独一无二地，“你可以自动检查输出”。所以真正有效的用法，是把生成模型与更传统、更可靠的验证方法结合起来，滤掉那些本来会让输出变得毫无价值的幻觉。</p>
+<p>由此可以说：真正做出东西的系统，不是一个“理解数学的模型”，而是一个不可靠但强有力的随机生成器，加上一层可靠的过滤器。<strong>这最后一句是我的概括，不是 Tao 的原话。</strong></p>
+<p>这正好印证了本篇的结构判断：AI 在学院层先赢，因为学院层的工作可以被形式化、验证、搜索和基准化。越靠近起源、选题、意义和共同体接受，验证器越难发挥作用。</p>
+<p>对账表可以写得很短：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>2024 年的隐含判断</th><th>2026 年的证据</th><th>判定</th></tr></thead><tbody><tr><td>AI 会做本科数学</td><td>竞赛题和本科题大量解决；但一项受控研究显示，改动数值、加入无关条件会显著掉分（该研究测的是小学应用题，且模型不带工具）</td><td>基本成立，但脆</td></tr><tr><td>AI 会进入研究级数学</td><td>First Proof 第二批 7/10（四个系统合计）【同行评审中】；OpenAI 十项进展【公司声明】；Navier–Stokes【公司声明】</td><td>方向成立，条件很多</td></tr><tr><td>AI 会接管数学</td><td>在可形式化、可验证、可基准化的学院层已经出现胜利</td><td>学院层成立，问题意识未成立</td></tr><tr><td>AI 会理解数学</td><td>Lean 验证的是形式陈述，不是它是否符合原意；起源与选题没有证据</td><td>未成立</td></tr></tbody></table>
+<h2 id="八结论接管的是操作不是选择">八、结论：接管的是操作，不是选择</h2>
+<p>回到标题：<strong>为什么 AI 会接管数学？</strong></p>
+<p>因为数学有一个巨大的学院层，它的工作是操作的组合：给定问题，找到证明；给定定义，展开推论；给定猜想，搜索反例；给定文献，组合工具。这些操作可以被形式化、验证、搜索和规模化。AI 是一种前所未有的操作机器；它不需要“理解”每个操作背后的本质，只需要规则和验证器。</p>
+<p>但数学还有一个问题意识层，它的工作是起源、选择、垂直跳跃、意义叙述、共同体接受。这一层没有基准，没有 Lean 内核，没有清晰的奖励信号。AI 目前不是这一层的行动者；它是这一层的工具、加速器，以及——如果训练得当的话——一个借来的闯入者。</p>
+<p>所以 2024 年那个判断应该被精确化：</p>
+<blockquote>
+<p><strong>AI 会接管数学的学院层；数学的问题意识不会被自动接管。</strong></p>
+</blockquote>
+<p>这不是一个令人绝望的结论，也不是一个令人狂喜的结论。它是一个结构事实。第一篇的机械化推演、第二篇的楼梯和操作平等性，都指向同一个方向：<strong>操作可以被机器接管，选择不能。</strong></p>
+<p>剩下的问题就是：如果接管的是操作，那么选择发生在哪里？问题意识到底是什么？它为什么不能被形式化、被基准化、被搜索？人还能做什么？</p>
+<p>这就是第四篇要回答的。</p>
+<h2 id="说明与边界">说明与边界</h2>
+<ul>
+<li>这一篇主张的是一个结构性判断：数学里有一层工作可以被形式化、被验证、被规模化。它不是能力时间表，也不预测哪一年会发生什么。<strong>什么情况算这个判断失败</strong>，本篇没有回答——这是它最大的缺口。</li>
+<li>第七节的事实分三档：已复核的、仍在同行评审中的、以及公司的公开声明。公司声明没有被当作证据，只被当作迹象。</li>
+<li>验证并不便宜。Lean 只能检查已经被形式化的陈述，而形式化本身是昂贵的人类劳动——AlphaProof 在 IMO 上的题目就是人类专家手工形式化的。这一篇没有把这项成本算进“跑楼梯”的速度里。</li>
+<li>这一篇不主张 AI 理解数学。“理解”这个词在整篇里只出现在被否定的位置。</li>
+<li>反过来也成立：如果形式化成本降不下来，那么学院层被接管的快慢取决于人类形式化的供给，而不是机器的搜索能力。</li>
+</ul>
+<!-- CTA-PLACEHOLDER: 发布前替换为真实链接（GitHub / newsletter / 联系邮箱）。
+     阻塞于 AGENTS.md §4 的 launch gate：域名、newsletter 与仓库审计均未决定。 --></div></section><section class="book__part" id="why-ai-takes-over-math-04"><div class="book__part-label">第四篇 — 选择 · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/why-ai-takes-over-math-04/" style="color:inherit">04 问题意识：AI 接管不了的那一层</a></h2><div class="prose"><p>第三篇的结论是：AI 会接管数学的学院层，因为学院层是操作的组合——给定问题，找证明；给定定义，展开推论；给定猜想，搜索反例。这一层的工作可以被写下来、被检查、被穷举、被规模化。AI 是前所未有的操作机器。</p>
+<p>那么剩下的是什么？</p>
+<p>这一篇的答案是：<strong>剩下的是选择。</strong> 不是“从已有选项里挑一个”的选择，而是“什么东西值得被选”的选择。用第三篇的话说，AI 接管的是操作层，问题意识仍然在人的这一侧。</p>
+<h2 id="一生成与跳跃碰撞可以自动化跳跃不能">一、生成与跳跃：碰撞可以自动化，跳跃不能</h2>
+<p>第一篇讲了数学的三项原则。第一项是由一生多，第二项是机械化推演，第三项是概念碰撞。这里要先把它们摆正位置，否则整篇会站错立场。</p>
+<p>**由一生多和概念碰撞都属于生成。**两者都能产生新对象，区别不在“多”还是“新”，而在有没有引入新的变量：由一生多是在既定的操作集里生成；概念碰撞是把两个原本分属不同领域的概念放在一起，撞出一个新的对象类型。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>动作</th><th>例子</th><th>新在哪里</th></tr></thead><tbody><tr><td>由一生多</td><td>从空集生成自然数；从整数生成有理数</td><td>在既有操作集内生成</td></tr><tr><td>两两碰撞</td><td>群 × 光滑结构 → 李群；空间 × 代数 → 同调群；交换环 × 几何 → 概形；Yang–Mills × 三维流形 → instanton 不变量</td><td>长出新的对象类型</td></tr><tr><td>垂直跳跃</td><td>生成函数；狄利克雷级数；伽罗瓦对应</td><td>引入一个总体对象，把整片东西一次性收进来</td></tr></tbody></table>
+<p>前两行都是生成：它们可以被大量地进行。第二篇的第七节已经说过，AI 的胡说八道本身就是一个混乱版的碰撞生成器。所以<strong>生成不是这一篇要守的那条线。</strong></p>
+<p>要守的是第三行，第一篇把它叫做<strong>垂直跳跃</strong>：每当水平方向的推演变得笨重，就引入一个垂直变量，把整个系统提升为一个总体对象，让演化凝结成方程，然后用机械代数去解它。生成函数把整条递推序列打包成一个函数；狄利克雷级数把整数序列打包成复平面上的函数；伽罗瓦对应把一个域扩张的世界编码成一个群。</p>
+<p>这些动作有一个共同点：它们不是从已有规则里“推”出来的，而是<strong>选择了一个新的总体对象</strong>。一旦这个对象被选定，后面的工作就可以机械化；但在被选定之前，没有任何形式规则告诉你应该选它。</p>
+<p>这就是 AI 的边界所在：它可以生成无数个候选对象，但“该不该引入这个总体对象、它是不是对的那一个”在选择的当时没有判据——判据要等很多年才到。这件事第六节还会再说一次。</p>
+<p>第二篇的牙签比喻也可以说明这一点：搜索可以扩展牙签，但起点和终点是谁选的？新牙签的类型是谁发明的？哪一根相遇的牙签值得保留？这三个问题都不是搜索能回答的。它们属于选择。</p>
+<p>AI 可以生成大量候选：候选类比、候选结构、候选证明、候选统一。它可以在搜索空间里找到人类没有用过的路径；强化学习确实能发现新的策略。但“这个统一是不是对的、是不是值得的、是不是应该成为下一步的地基”，不是形式规则能决定的。它需要一种判断，而目前没有证据表明 AI 能独立拥有这种判断。</p>
+<h2 id="二诗云谁来挑选有意义的那一首">二、诗云：谁来挑选有意义的那一首</h2>
+<p>第一篇里有一个问题，我觉得是整本合集的枢纽：</p>
+<blockquote>
+<p>即便空集这个“球”自己会动，像自由群那样胡乱地生成无数不可消去的组合，那也只是像刘慈欣《诗云》那样把所有诗歌穷举出来——谁来挑选有意义的那一首？还是需要人。</p>
+</blockquote>
+<p>AI 擅长生成。给它一个形式系统，它可以生成无数合法的符号串；给它一个证明目标，它可以搜索无数条路径；给它一个数学领域，它可以组合出大量候选结构。生成不是瓶颈。<strong>选择</strong>才是瓶颈。</p>
+<p>选择难在哪里？难在它没有基准。</p>
+<ul>
+<li>你可以用基准测“证明对不对”：Lean 内核会告诉你。</li>
+<li>你可以用基准测“计算准不准”：代码会告诉你。</li>
+<li>你可以用基准测“题目解没解出来”：答案会告诉你。</li>
+<li>但你没法用基准测“这个问题值不值得问”“这个方向有没有意义”“这个统一会不会在十年后看起来是必然的”。</li>
+</ul>
+<p>不过这里要小心一步推理。“没有基准”只说明<strong>现在</strong>没法用训练和验证去逼近它，不说明它在原理上做不到——历史上不少能力，在有了合适的评价方式之后就变得可训练了。所以“选择没有基准”本身不是一个论证，它只是一个观察。</p>
+<p>真正的理由还要再往下走一层。问题不是“没有人给选择打分”，而是<strong>打分这件事在时间上来不及</strong>。这些判断不是形式属性，而是历史属性、共同体属性：什么问题在当下是活的，什么工具在当下是成熟的，什么方向会让整个领域重新组织——这个背景不在形式系统里，而在数学共同体的历史和实践里。</p>
+<p>关键在这里：**当你必须做选择的那一刻，这个背景还没有形成。**判断要等结果出来才能下，而结果要等很多年。所以选择不是在“有答案”和“没答案”之间摇摆，而是必须在一个还没有判决的时刻下注。</p>
+<p>AI 可以加速验证，可以帮忙整理，可以生成候选；但它不能替共同体完成“把路径叙述成必然”这件事——因为那需要选择、消化、教学、传承，以及一种对“什么值得”的判断。Tao 把这条管线拆成几个依次收紧的目标：解决问题、验证它、把它讲清楚、让它被共同体消化和接受、最后被经典化为领域里的权威理论。AI 可以大幅加速前两步；后面几步仍然依赖人类的时间、注意力和判断。</p>
+<p>如果这个环节被跳过——如果 AI 生成的结果只是堆积、不被消化——我们得到的不是数学的加速，而是<strong>证明过剩</strong>带来的消化不良：论文越来越多，真正被理解的越来越少；定理越来越多，起源越来越稀薄。</p>
+<h2 id="三第一个我第二个我">三、第一个我，第二个我</h2>
+<p>第二篇区分了两个自我。</p>
+<p><strong>第一个我</strong>在传统内部。他接受既定框架，跟着证明走，欣赏局部聪明；他知道同调、表示、Yang–Mills 这些词怎么用，知道这个领域的标准问题是什么，知道哪条路走得通、哪条路走不通。第一个我是必要的：没有他，你连该问什么都还不知道。</p>
+<p><strong>第二个我</strong>在传统外部。他不问“这一步对不对”，而问“这整个游戏是谁定的”。他不是更聪明，而是站在另一个位置上：他不接受既定框架是理所当然的，他要追问问题的起源。第二个我带来的是方向，而不是技巧。</p>
+<p>AI 是什么？</p>
+<p>AI 是第一个我的极致。它可以接受任何既定框架，高速执行、搜索、验证、组合；它可以在学院层的走廊里走得比任何人类都快。它甚至可以在第一个我的意义上“比人更懂”：它记得的定理更多，看得文献更广，试过的路径更多。</p>
+<p>但 AI 不是第二个我。它可以<strong>模拟</strong>第二个我的问题，可以生成大量“为什么这个方向重要”的文本；但它的“问”是对语料中类似句子的预测，不是从一个活的困惑里长出来的。它没有起源的立场；它没有“我为什么要在意”的经验。</p>
+<p>这里必须停一下，因为整篇的结论压在这一句上。这句话可以读成一个哲学立场：**“有立场”不能被完全还原成一套函数。**一个只在输入和输出之间做映射的系统，无论映射多复杂，都不构成“在意某件事”。</p>
+<p>但我不想把结论吊在这个立场上，因为它可以争论。下面这种说法不需要它：</p>
+<p>**就算一个系统真的“在意”，它也不承担。**承担不是一种心理状态，而是一个位置——押错了要付账的那个人。一个可以被复制、回滚、重跑的系统没有位置可站：它不会因为选错了而失去什么，所以它也没有理由在判决还没有下来的时候下注。</p>
+<p>如果你接受功能主义的版本，前一个立场会松动；后一个说法不受影响。这是我愿意把结论放在这里的原因。</p>
+<p>这不是在说 AI 永远做不到。它只是在说：从目前的结构看，第一个我可以被操作化，第二个我<strong>可以被模拟，但不会被承担</strong>。而数学真正的变化——新问题、新方向、新对象——恰恰发生在第二个我这一侧。</p>
+<h2 id="四工具问题还是问题工具">四、工具→问题，还是问题→工具</h2>
+<p>第二篇第六节的那个区分，在这里要再用一次：<strong>学院从工具走向问题，问题意识从问题走向工具。</strong></p>
+<p>Witten 的 <em>Supersymmetry and Morse Theory</em> 是后者的典型：数学是经典而初等的 Morse 理论、Betti 数、Hodge 理论，真正新的是物理问题——supersymmetry、量子力学、隧穿、基态。他更像一个闯入者，从物理闯进数学，提醒你人们做数学很多时候不是为了数学本身。第二篇里那篇关于三维流形不变量的论文则是前者的典型：问题是从传统内部长出来的。</p>
+<p>第二篇的 pseudoholomorphic curves 例子，是这种方向差别的另一个具体版本：数学这一侧关心紧性、stable maps、virtual fundamental class；物理这一侧用 worldsheet instantons、A-model 和对具体情形的快速处理，把连续的理论离散化成可以算的东西。物理学家不是不懂数学，而是他们论证的方向不同：从物理问题出发，用自己最快的工具到达那个可以算出来的情形。</p>
+<p>这个差别不是学科高低，而是两个方向：从工具到问题，还是从问题到工具。</p>
+<p>AI 能成为闯入者吗？</p>
+<p>它的训练语料里有世界知识，它可以跨领域检索、类比、搬运。所以它<strong>可以</strong>把外部材料带进来。但它的默认目标不是成为闯入者，而是成为一个拿高分的“得力助手”：解决被给定的问题，符合领域规范，通过基准测试。如果 AI 被训练成“数学专家”——只用被标记为数学的知识，只使用领域内的术语和方法——那么它会变成学院层最强的圈内人，而不是闯入者。</p>
+<p>所以更准确的说法是：<strong>AI 可以成为一个借来的闯入者，但起源必须由人或领域提供。</strong></p>
+<ul>
+<li>起源由人提供：一个物理现象、一个工程约束、一个哲学问题、一个经验困惑；</li>
+<li>AI 负责跨域搜索、类比生成、形式展开、候选证明；</li>
+<li>人负责判断哪一个候选有起源、哪一个值得进入下一步；</li>
+<li>验证器负责检查形式正确性；</li>
+<li>共同体负责消化、叙述、经典化。</li>
+</ul>
+<p>这不是“AI 自己成为 Witten”，而是“人 + AI 的合作体，比单个人更像一个闯入者”。AI 提供速度和广度，人提供问题和判断。两者缺一不可。</p>
+<h2 id="五academic-professionalism-风险">五、academic-professionalism 风险</h2>
+<p>这里有一个现实的风险，值得单独说清楚。</p>
+<p>如果 AI 被训练成学术专业主义的极致——只用领域内的知识，只做领域内被认可的问题，只优化形式正确性和基准分数——那么它会越来越像学院本身。它会加速学院，但不会给学院带来新的起源。它会把“同调、表示、Yang–Mills 这些大词很重要”当作理所当然，因为它就是在这些大词的语料里训练出来的。</p>
+<p>这个风险不是凭空猜测。AI 公司的默认目标通常是基准分数、产品能力、可演示的成就，而不是“问题值不值得问”。</p>
+<p>2026 年 9 月 11 日，25 位菲尔兹奖得主以个人身份发起了一份声明《A Severe Misalignment of AI in Mathematics》。它不是国际数学联盟的文件，而是 25 位数学家的共同署名（此后又有几位加入）。声明的第一句就是：</p>
+<blockquote>
+<p>AI 公司的目标与数学共同体的目标严重错位。</p>
+</blockquote>
+<p>它接着写道，解决问题只是达成“概念理解与洞察”这一首要目标的工具和代理指标；而“以越来越快的速度批量生产‘真/假’陈述，可能会摧毁肥沃的土壤，而不是催生新的想法”。它还警告，数学家之间那条关键的人类传承链可能会消失。</p>
+<p>同一年 6 月，另一份由国际数学联盟背书的文件《Leiden Declaration on Artificial Intelligence and Mathematics》提出了几条制度性主张：公开工具的使用、尊重归属、由人类作者对正确性负责、支持同行评审、保护训练数据的权益、维护研究议程的自主性。</p>
+<p>这两份文件说的都是同一件事：目标、激励与制度，而不是模型能力。</p>
+<p>这些不是技术问题，而是制度和目标问题。AI 会成为圈内人还是借来的闯入者，不取决于模型本身，而取决于我们给它什么目标、什么数据、什么奖励。</p>
+<h2 id="六人剩下什么">六、人剩下什么</h2>
+<p>把操作层交给 AI 之后，人的工作会向两个方向收缩：</p>
+<p><strong>第一，起源。</strong> 决定什么值得研究、什么问题值得问、哪个方向值得投入。这不是“从已有问题里挑一个”，而是创造一个问题，或者从现象、经验、别的学科里把一个还不在数学里的问题带进来。问题意识不能继承；它必须被重新提出。</p>
+<p><strong>第二，选择与叙述。</strong> 从 AI 生成的大量候选中，判断哪一个有意义、哪一个值得进一步展开、哪一个会在十年后看起来是必然的。然后把它讲清楚，放进更大的图景，教给别人，变成共同体的理解。这就是经典化。</p>
+<p>这两个方向有一个共同的名字：<strong>第二个我的工作。</strong> 不是学院内部的操作工作，而是从外部把起源带进来，并决定什么值得留下的工作。</p>
+<p>这里还有一件事必须写出来，否则它会被读得太轻松：<strong>做选择的人，在做选择的那一刻是独自一人的。</strong></p>
+<p>没有判据，没有基准，也没有共同体可以问——共同体要等结果出来之后才有话说。你没法优化“别人会不会接受”，因为那个答案还不存在。你只能自己走一条路出来，并且自己付账。如果非要给这件事一个名字，可以叫唯我论——但它说的不是“只有我存在”，而是“此刻没有任何外部判据可以援引”。</p>
+<p>独自一人下注，不等于没有对错。判据不是不存在，它只是<strong>晚到</strong>——它会在很多年之后到达，而且它可以到达成“这只是噪声”。自己走一条路，不等于每条路都一样值得走。</p>
+<p>这也解释了为什么这一步不能外包。不是因为它需要某种机器没有的天赋，而是因为<strong>承担不是一种计算</strong>。生成、搜索、验证都可以交出去，“押错了由谁负责”交不出去。</p>
+<p>一个简单的分工可以写成：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>层</th><th>谁负责</th><th>做什么</th></tr></thead><tbody><tr><td>操作层 / 学院</td><td>AI + 验证器</td><td>搜索、证明、验证、计算、形式化、组合</td></tr><tr><td>起源</td><td>人</td><td>从数学之外带一个问题、现象或困惑，明确它为什么值得问</td></tr><tr><td>选择</td><td>个人，独自承担</td><td>在判决还没下来的时候下注，并承担押错的代价</td></tr><tr><td>叙述 / 经典化</td><td>人 + 共同体</td><td>讲清楚、写出来、教给别人、放进经典</td></tr></tbody></table>
+<p>这个分工不对称：AI 可以没有起源地生成，但人不能没有起源地选择。如果没有起源，AI 的输出只是一堆候选；如果没有人的选择，候选无法变成数学。</p>
+<h2 id="七结尾">七、结尾</h2>
+<p>第三篇的结论是：AI 会接管操作层，因为那一层的工作可以被写进形式系统、被检查、被穷举。第四篇的结论是：问题意识不会被自动接管，因为选择必须在判决下来之前下注，而下注的人要自己付账。</p>
+<p>这并不意味着问题意识会永远存在。它可能被忽视。当证明变得无限便宜，当论文和结果以指数速度堆积，当评估体系只看可量化的产出，问题意识是最容易被挤掉的东西：它没有基准，没有即时回报，也很难被写进考核指标。如果没有人继续问“为什么”，学院会继续运转，而且运转得越来越快——只是它可能不再知道自己在往哪里走。</p>
+<p>所以这篇合集的最后一句话不是一个预测，也不是一个结论，而是一个开放的问题：</p>
+<blockquote>
+<p>当学院层被自动化之后，人还愿不愿意继续问：什么问题值得问？</p>
+</blockquote>
+<p>问题意识不会被 AI 自动接管，但它也不会自动延续。它需要有人继续把问题种下——不是种在学院的操作层，而是种在还没有被形式化的那一侧。</p>
+<h2 id="说明与边界">说明与边界</h2>
+<ul>
+<li>这一篇讨论的是数学内部的问题意识，不是物理真理。物理学家自己也会承认，很多理论——包括弦论和量子引力的一些版本——更像玄、噪、闷的构造，和实验物理相比缺少硬约束。学院可以内部非常丰富，同时离物理现实很远。问题意识本身不保证起源是“真的”；它只保证你在问一个活的问题，而不是在继承一个大词。</li>
+<li>“学院”和“问题意识”是一条分析性的界线，不是道德分类。两边都有扎实的工作和敷衍的工作，也都可能被制度化。</li>
+<li>这一篇的结论有两层。浅的一层是“立场不能被完全还原成函数”，它可以争论，而且如果功能主义是对的，它会松动；深的一层是“承担不是一种计算”，它不依赖前一层。我主要靠后一层。</li>
+<li>还有一个我回答不了的问题：如果“独自下注”真的没有任何可以在当时援引的判据，它和“随便选”的区别在哪里？本文给的答案是判据晚到、并且可以到达成“这只是噪声”。但这个答案本身没有被论证，它只是一个立场。</li>
+<li>2026 年的两份声明都按原文引用，它们代表的是署名者的判断，不是学界的共识结论。</li>
+<li>最后那句是一个开放的问题，不是一个预测。它可以被回答成“愿意”，也可以被回答成“不愿意”。</li>
+</ul>
+<!-- CTA-PLACEHOLDER: 发布前替换为真实链接（GitHub / newsletter / 联系邮箱）。
+     阻塞于 AGENTS.md §4 的 launch gate：域名、newsletter 与仓库审计均未决定。 --></div></section></div></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

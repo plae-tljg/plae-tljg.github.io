@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>02 When Do You Actually Need a Products Table? The Boundary of Datafication · LKM</title><meta name="description" content="After moving behaviour into data, a natural question follows: why not generalise all the way, and make products and prices just entities and attributes? Instead of synthesising too early, this article lets the generic extreme fail in concrete ways — JSON conventions, ugly queries, weak validation — then derives promotion conditions from that failure and demonstrates a migration where the knowledge template stays unchanged."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/writing/boundary-of-datafication/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/writing/boundary-of-datafication/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/boundary-of-datafication/"><meta property="og:type" content="website"><meta property="og:title" content="02 When Do You Actually Need a Products Table? The Boundary of Datafication · LKM"><meta property="og:description" content="After moving behaviour into data, a natural question follows: why not generalise all the way, and make products and prices just entities and attributes? Instead of synthesising too early, this article lets the generic extreme fail in concrete ways — JSON conventions, ugly queries, weak validation — then derives promotion conditions from that failure and demonstrates a migration where the knowledge template stays unchanged."><meta property="og:url" content="https://plae-tljg.github.io/en/writing/boundary-of-datafication/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/" aria-current="page">Writing</a><a href="/en/docs/">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/writing/boundary-of-datafication/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/en/">Home</a><span aria-hidden="true">/</span><a href="/en/writing/series/ai-maintainable-systems/">AI-Maintainable Systems</a><span aria-hidden="true">/</span><span>02 When Do You Actually Need a Products Table? The Boundary of Datafication</span></nav><header class="article__header"><h1 class="article__title">02 When Do You Actually Need a Products Table? The Boundary of Datafication</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026-10-01</time><span>·</span><span>7 min read</span><span class="badge badge--warn">Draft preview</span></div><p class="article__summary">After moving behaviour into data, a natural question follows: why not generalise all the way, and make products and prices just entities and attributes? Instead of synthesising too early, this article lets the generic extreme fail in concrete ways — JSON conventions, ugly queries, weak validation — then derives promotion conditions from that failure and demonstrates a migration where the knowledge template stays unchanged.</p><div style="margin-top:1rem"><a class="tag" href="/en/tags/AI/">AI</a><a class="tag" href="/en/tags/data/">data</a><a class="tag" href="/en/tags/%E8%A1%A8%E7%BB%93%E6%9E%84/">表结构</a><a class="tag" href="/en/tags/%E8%BE%A9%E8%AF%81/">辩证</a></div></header><p class="notice">This article is not marked ready yet and only shows in preview mode.</p><p class="notice notice--ai">This article was translated from the Chinese original by an AI. Wording and terminology may be off.</p><div class="prose" data-pagefind-body><h2 id="0-the-boundary-question-left-by-the-previous-article">0. The Boundary Question Left by the Previous Article</h2>
+<p>The previous article concluded: code and data are two materials, and structure is the boundary contract between them; the hardest line among them is <strong>generic data vs domain tables</strong>. It stopped at a concrete question:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>entities + entity_links + attrs_json</span></span></code></pre></figure>
+<p>A product can be just:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>But this immediately raises a question:</p>
+<blockquote>
+<p>Since a product can be a generic entity, why do we still need a domain table like <code>products</code>?<br>
+If we never need it, where does structure live?<br>
+If we do need it, why wasn’t it needed from day one?</p>
+</blockquote>
+<p>This article doesn’t rush to an answer. First, let both extremes fail for real, then derive the boundary from those failures.</p>
+<h2 id="1-seriously-stay-at-the-fully-generic-end-first">1. Seriously Stay at the “Fully Generic” End First</h2>
+<p>Suppose we really insist:</p>
+<ul>
+<li>No <code>products</code> table;</li>
+<li>No typed columns;</li>
+<li>All business facts go into <code>attrs_json</code>.</li>
+</ul>
+<p>At first it works great: new domains need no migrations, AI just adds a few rows of data.</p>
+<p>Then the system grows. The first failure is <strong>naming drift</strong>.</p>
+<p>Three months later, when querying prices you might see:</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>No one deliberately created divergence; different people, different agents, different times simply made different naming choices. The database never rejected any of them.</p>
+<p>The second failure is <strong>validation decay</strong>:</p>
+<ul>
+<li>Price can be negative;</li>
+<li>Currency can be USD, HKD, or missing;</li>
+<li>“Stock” can be a number, a string, or absent;</li>
+<li>A delisted product might still have a price, but no one knows whether that’s a legal state.</li>
+</ul>
+<p>The third failure is <strong>queries turn ugly</strong>:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">SELECT</span><span style="color:#D73A49;--shiki-dark:#F97583"> *</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">FROM</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entities</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">WHERE</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entity_type </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'product'</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  AND</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json_extract(attrs_json, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">'$.price_cents'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) </span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 10000</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  AND</span><span style="color:#D73A49;--shiki-dark:#F97583"> status</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'live'</span></span></code></pre></figure>
+<p>Once such queries multiply, performance, indexes, and readability all start exacting a price.</p>
+<p>This shows:</p>
+<blockquote>
+<p><strong>Genericisation does not eliminate structure; it merely moves structure from the schema into conventions, naming, and queries.</strong></p>
+</blockquote>
+<p>Structure becomes <strong>reconstructed structure</strong>: every person reading it, every AI session, every debugging round has to piece it back together from scratch.</p>
+<h3 id="11-declared-structure-vs-reconstructed-structure">1.1 Declared Structure vs Reconstructed Structure</h3>
+<p>The same structure can live in two places:</p>
+<ul>
+<li><strong>Declared structure</strong>: columns, constraints, vocabularies. Declared once at write time, the engine and database read it;</li>
+<li><strong>Reconstructed structure</strong>: naming conventions, comments, JSON keys. Every reader, every AI session, every query has to piece it back together from scratch.</li>
+</ul>
+<p>The goal isn’t to eliminate structure, but to minimise reconstructed structure.</p>
+<h3 id="12-how-long-is-the-handoff-brief">1.2 How Long Is the Handoff Brief?</h3>
+<p>An actionable test:</p>
+<blockquote>
+<p><strong>How long is the handoff brief?</strong> Every sentence an AI or new maintainer needs to be told before they can act is structure that hasn’t been declared yet.</p>
+</blockquote>
+<p>But declared structure has costs too: migrations, coupling, a badly designed column is harder to delete than to add. So the goal isn’t less structure the better, but to compress the declared structure that must be kept down to the necessary minimum.</p>
+<h2 id="2-seriously-stay-at-the-one-table-per-domain-end">2. Seriously Stay at the “One Table Per Domain” End</h2>
+<p>The other extreme is creating a table for every domain that arrives:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>products</span></span>
+<span class="line"><span>orders</span></span>
+<span class="line"><span>coupons</span></span>
+<span class="line"><span>flows</span></span>
+<span class="line"><span>rules</span></span>
+<span class="line"><span>...</span></span></code></pre></figure>
+<p>It queries conveniently, constrains strongly, teams know it well. But the price is:</p>
+<ul>
+<li>New domains need migrations and deployments;</li>
+<li>AI cannot truly extend the system, only modify existing domains;</li>
+<li>Lots of repeated structure: status, source, time, audit;</li>
+<li>When a domain changes, the schema changes with it.</li>
+</ul>
+<p>Its failure mode isn’t “can’t express” — it’s “can’t evolve lightly”.</p>
+<h2 id="3-dont-rush-to-synthesise-compare-with-the-same-currency">3. Don’t Rush to Synthesise: Compare with the Same Currency</h2>
+<p>The two extremes aren’t “one more advanced” — they put the same kind of cost in different places. We can compare on four dimensions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Dimension</th><th>Fully Generic Entities</th><th>One Table Per Domain</th></tr></thead><tbody><tr><td>Add domain</td><td>Add data, 0 migrations</td><td>Add table, 1 migration</td></tr><tr><td>Queries &#x26; constraints</td><td>Weak, relies on JSON &#x26; conventions</td><td>Strong, database can enforce</td></tr><tr><td>Readability &#x26; handoff</td><td>Every reader reconstructs</td><td>Schema explains directly</td></tr><tr><td>Evolution cost</td><td>Low (data layer), high (semantic layer)</td><td>Low (semantic layer), high (schema layer)</td></tr></tbody></table>
+<p>The real question isn’t “domain table or not”, but:</p>
+<blockquote>
+<p>Put structure in conventions, or put it in the schema?<br>
+Which cost hurts more in the current system?</p>
+</blockquote>
+<h2 id="4-derive-promotion-conditions-from-failure">4. Derive Promotion Conditions from Failure</h2>
+<p>Promotion conditions shouldn’t be a checklist; they should be derived from the failures above.</p>
+<h3 id="41-when-data-is-no-longer-a-thing">4.1 When Data Is No Longer a “Thing”</h3>
+<p>Order lines, inventory streams, price history aren’t entities — they’re events / state changes. Forcing events into <code>attrs_json</code> makes queries and temporal relationships awkward. That’s when you need fact tables.</p>
+<h3 id="42-when-the-database-can-enforce-but-validators-struggle">4.2 When the Database Can Enforce but Validators Struggle</h3>
+<p>Multi-column unique, foreign keys, cross-row CHECK — these constraints are natively stronger in the database. If they’re prerequisites for business correctness, promotion is worth it.</p>
+<h3 id="43-when-query-pain-is-measured-not-imagined">4.3 When Query Pain Is Measured, Not Imagined</h3>
+<p>JSON queries aren’t slow because you “feel 50k SKUs would be slow”, but because:</p>
+<ul>
+<li>There are real slow queries;</li>
+<li>There are real index needs;</li>
+<li>There are real aggregations and sorts.</li>
+</ul>
+<p>Measure first, then split.</p>
+<h3 id="44-when-external-schema-doesnt-let-you-choose">4.4 When External Schema Doesn’t Let You Choose</h3>
+<p>Integrating with ERP, payments, inventory systems — the other side gives you a fixed schema. You no longer design it; you can only adapt.</p>
+<h3 id="45-two-counterexamples">4.5 Two Counterexamples</h3>
+<p>Even when the above conditions hold, you might still not promote:</p>
+<ul>
+<li>Large data volume but few, cold queries; bottleneck isn’t in JSON; optimisation would just be premature complexity.</li>
+<li>Query pain exists but can be solved with materialised views or index optimisation, without changing the core model.</li>
+</ul>
+<p>Even when the above conditions don’t hold, you might still be forced to promote:</p>
+<ul>
+<li>External schema forces you; even without internal query pain, you still need the table.</li>
+</ul>
+<p>So promotion isn’t a rule table — it’s:</p>
+<blockquote>
+<p>Only move the boundary when one cost genuinely outweighs the other.</p>
+</blockquote>
+<h2 id="5-a-real-promotion-knowledge-template-unchanged">5. A Real Promotion: Knowledge Template Unchanged</h2>
+<p>Below I demonstrate a promotion where the key point isn’t how elegant the SQL is, but that <strong>the knowledge layer doesn’t change</strong>.</p>
+<h3 id="51-before-promotion">5.1 Before Promotion</h3>
+<p>Entity row:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>Knowledge row:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">slug</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product.price</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  patterns</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"how much is {product}"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  slots</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    kind</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">answer</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    template</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"{product} is {price}."</span></span></code></pre></figure>
+<p>Test:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product.price.iphone</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"how much is iphone-17"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    resolves</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answer_contains</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre></figure>
+<h3 id="52-after-promotion">5.2 After Promotion</h3>
+<p>Add <code>products</code> table, entity backbone stays:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">CREATE</span><span style="color:#D73A49;--shiki-dark:#F97583"> TABLE</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> products</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  entity_id    </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> PRIMARY KEY</span><span style="color:#D73A49;--shiki-dark:#F97583"> REFERENCES</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entities(id),</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  price_cents  </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  currency     </span><span style="color:#D73A49;--shiki-dark:#F97583">TEXT</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#D73A49;--shiki-dark:#F97583"> DEFAULT</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'USD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  stock        </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#D73A49;--shiki-dark:#F97583"> DEFAULT</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span></code></pre></figure>
+<p>When the storage layer reads price, it takes from <code>products</code> instead of <code>attrs_json</code>. But:</p>
+<ul>
+<li>The knowledge template (<code>knowledge</code>) remains <code>{product}</code> and <code>{price}</code>;</li>
+<li>The parser’s returned context still contains <code>price</code>;</li>
+<li>Test cases don’t need rewriting;</li>
+<li>Only the data projection and SQL change.</li>
+</ul>
+<p>This is the payoff of parameterisation:</p>
+<blockquote>
+<p><strong>Storage form can change; knowledge sentences don’t.</strong></p>
+</blockquote>
+<h2 id="6-a-domain-table-is-also-a-naming-act">6. A Domain Table Is Also a Naming Act</h2>
+<p>One layer often overlooked: the word <code>products</code> itself does naming work for future readers.</p>
+<p><code>entity_type='product'</code> + vocabulary entries scatter the definition of “what is this thing” across code, data, docs, and human memory; a <code>products</code> table declares that definition in one place.</p>
+<p>This is its advantage, and its cost:</p>
+<ul>
+<li>Advantage: handoff brief gets shorter, readers know faster what lives here;</li>
+<li>Cost: once a name is public it’s hard to change, table coupling locks future choices.</li>
+</ul>
+<p>So “domain table = naming act” isn’t rhetoric — it means at promotion time you must additionally ask:</p>
+<blockquote>
+<p>Is this name stable enough to become part of the schema?</p>
+</blockquote>
+<p>If the answer is uncertain, maybe let it exist as vocabulary / entity_type first, wait for enough evidence before solidifying.</p>
+<h2 id="7-four-homes-where-structure-ultimately-lives">7. Four Homes: Where Structure Ultimately Lives</h2>
+<p>Whether promoted or not, structure must be divided into four homes:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Home</th><th>Who Changes</th><th>Change Means</th></tr></thead><tbody><tr><td>Config</td><td>Humans</td><td>One deployment</td></tr><tr><td>Content</td><td>Humans &#x26; AI (reviewed)</td><td>One PR</td></tr><tr><td>Data</td><td>Build process</td><td>One rebuild</td></tr><tr><td>State</td><td>Runtime</td><td>Append-only; never rebuilt</td></tr></tbody></table>
+<p>Two further lines:</p>
+<ul>
+<li><strong>Offline / Online</strong>: content diffable offline; projection queryable online; runtime reads projection only;</li>
+<li><strong>Build / Online</strong>: build tables stateless; state lives only in online tables.</li>
+</ul>
+<p>These four boundaries matter more than “is there a products table”. They decide:</p>
+<ul>
+<li>Which layer AI modifies;</li>
+<li>Whether rebuild hurts state;</li>
+<li>What review sees;</li>
+<li>Where a new structure should land.</li>
+</ul>
+<h3 id="71-state-must-also-be-earned">7.1 State Must Also Be Earned</h3>
+<p>Domain tables aren’t the only thing over-created; state tables are too.</p>
+<p>“The second” can be rewritten from the previous round’s citation — no state table needed; only when a value must persist across rounds (“How many people?” -> “3”) do flow and state deserve to exist. Conversely, step state in GUI automation is a real need because recognition and action inherently have sequence and branching. <code>MaaFwPhoneAI</code> is a domain where state must be modelled.</p>
+<p>So state isn’t taboo — it must be earned by cross-round values or side effects.</p>
+<h2 id="8-notes--boundaries">8. Notes &#x26; Boundaries</h2>
+<ul>
+<li>This article doesn’t advocate “never domain tables”. It advocates: promotion triggered by real cost, not by intuition.</li>
+<li>If the business inherently demands strong transactions, strong constraints, heavy queries, domain tables may belong on day one.</li>
+<li>If the team lacks capacity to maintain schema, generic entities fit better; if the team lacks capacity to maintain conventions, domain tables fit better.</li>
+<li>Author’s bias: start with generic structure for evolution speed, wait until one cost genuinely outweighs the other, then promote.</li>
+</ul>
+<h2 id="9-the-next-question">9. The Next Question</h2>
+<p>We have the datafication boundary, and knowledge sentence stability. But one question remains unanswered:</p>
+<blockquote>
+<p><strong>After AI changes data / structure, how do we know the change actually made the system better?</strong></p>
+</blockquote>
+<p>That’s exactly the next article’s topic: verification, permissions, and wake-up cost.</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="In this series"><div class="series-nav__side"><span class="series-nav__label">← Previous</span><a href="/en/writing/rapid-prototypes-and-structure/">01 After the Rapid Prototype: Code, Data, and Structure</a></div><div class="series-nav__side series-nav__side--next"><span class="series-nav__label">Next →</span><a href="/en/writing/verification-is-trust/">03 Verification Is Trust: Tests, Authority, and Wake Cost</a></div></nav></div><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#0-the-boundary-question-left-by-the-previous-article">0. The Boundary Question Left by the Previous Article</a></li><li><a href="#1-seriously-stay-at-the-fully-generic-end-first">1. Seriously Stay at the “Fully Generic” End First</a></li><li class="toc__l3"><a href="#11-declared-structure-vs-reconstructed-structure">1.1 Declared Structure vs Reconstructed Structure</a></li><li class="toc__l3"><a href="#12-how-long-is-the-handoff-brief">1.2 How Long Is the Handoff Brief?</a></li><li><a href="#2-seriously-stay-at-the-one-table-per-domain-end">2. Seriously Stay at the “One Table Per Domain” End</a></li><li><a href="#3-dont-rush-to-synthesise-compare-with-the-same-currency">3. Don’t Rush to Synthesise: Compare with the Same Currency</a></li><li><a href="#4-derive-promotion-conditions-from-failure">4. Derive Promotion Conditions from Failure</a></li><li class="toc__l3"><a href="#41-when-data-is-no-longer-a-thing">4.1 When Data Is No Longer a “Thing”</a></li><li class="toc__l3"><a href="#42-when-the-database-can-enforce-but-validators-struggle">4.2 When the Database Can Enforce but Validators Struggle</a></li><li class="toc__l3"><a href="#43-when-query-pain-is-measured-not-imagined">4.3 When Query Pain Is Measured, Not Imagined</a></li><li class="toc__l3"><a href="#44-when-external-schema-doesnt-let-you-choose">4.4 When External Schema Doesn’t Let You Choose</a></li><li class="toc__l3"><a href="#45-two-counterexamples">4.5 Two Counterexamples</a></li><li><a href="#5-a-real-promotion-knowledge-template-unchanged">5. A Real Promotion: Knowledge Template Unchanged</a></li><li class="toc__l3"><a href="#51-before-promotion">5.1 Before Promotion</a></li><li class="toc__l3"><a href="#52-after-promotion">5.2 After Promotion</a></li><li><a href="#6-a-domain-table-is-also-a-naming-act">6. A Domain Table Is Also a Naming Act</a></li><li><a href="#7-four-homes-where-structure-ultimately-lives">7. Four Homes: Where Structure Ultimately Lives</a></li><li class="toc__l3"><a href="#71-state-must-also-be-earned">7.1 State Must Also Be Earned</a></li><li><a href="#8-notes--boundaries">8. Notes &amp; Boundaries</a></li><li><a href="#9-the-next-question">9. The Next Question</a></li></ol></nav></div></div></article><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

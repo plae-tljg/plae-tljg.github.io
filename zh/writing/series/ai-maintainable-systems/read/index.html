@@ -1,0 +1,1104 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI 可维护的系统 · 连续阅读整个系列 · LKM</title><meta name="description" content="让模型维护数据与结构，让确定性引擎负责执行。第一讲已展开为三篇正文加一篇附录：《AI 时代的编程结构》。"><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/writing/series/ai-maintainable-systems/read/"><meta property="og:type" content="website"><meta property="og:title" content="AI 可维护的系统 · 连续阅读整个系列 · LKM"><meta property="og:description" content="让模型维护数据与结构，让确定性引擎负责执行。第一讲已展开为三篇正文加一篇附录：《AI 时代的编程结构》。"><meta property="og:url" content="https://plae-tljg.github.io/zh/writing/series/ai-maintainable-systems/read/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/">文章</a><a href="/zh/docs/">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/writing/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><div class="container container--narrow"><header class="page-header"><nav class="breadcrumb"><a href="/zh/writing/series/ai-maintainable-systems/">AI 可维护的系统</a><span aria-hidden="true">/</span><span>连续阅读整个系列</span></nav><h1>AI 可维护的系统</h1><p>让模型维护数据与结构，让确定性引擎负责执行。第一讲已展开为三篇正文加一篇附录：《AI 时代的编程结构》。</p><div class="page-meta"><span>4 篇</span><span>·</span><span>25 分钟</span></div></header><nav class="toc" style="position:static;max-height:none;border-left:0;padding-left:0;margin:2rem 0 0"><h2>目录</h2><ol><li><a href="#rapid-prototypes-and-structure">01 快速原型之后：代码、数据与结构</a></li><li><a href="#boundary-of-datafication">02 什么时候才需要一张 products 表？——数据化的边界</a></li><li><a href="#verification-is-trust">03 验证才是信任：测试、权限与唤醒成本</a></li><li><a href="#appendix-derivation-and-checklist">04 附录：推导模板、清单与术语表</a></li></ol></nav><section class="book__part" id="rapid-prototypes-and-structure"><div class="book__part-label"> · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/rapid-prototypes-and-structure/" style="color:inherit">01 快速原型之后：代码、数据与结构</a></h2><div class="prose"><h2 id="1-一个很典型的周五下午">1. 一个很典型的周五下午</h2>
+<p>假设你想快速做一个聊天机器人，或者任何会用上 AI 的小应用。你想验证的是“有没有人用”，不是“能不能写成教科书架构”。于是你很自然地不想写数据访问层、迁移、权限、渠道、读写模块和评审流程。</p>
+<p>然后你看到两条捷径。</p>
+<p><strong>捷径一：把 agent 当后端。</strong></p>
+<figure class="code-viewer" data-lines="13"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 伪代码：把 agent 命令包成一个 API</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> fastapi </span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">app </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">@app.post</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"/chat"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">def</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> chat</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(question: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">str</span><span style="color:#24292E;--shiki-dark:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    result </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess.run(</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"claude"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"-p"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, question],   </span><span style="color:#6A737D;--shiki-dark:#6A737D"># 或 opencode -c、其他 agent 命令</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">        capture_output</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#E36209;--shiki-dark:#FFAB70">text</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"answer"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: result.stdout}</span></span></code></pre></figure>
+<p>用户请求进来，直接转给 agent。你不写表结构、权限、渠道、读写模块，一个下午就能演示。这不是在写系统，是在让 agent 临时扮演整个系统。</p>
+<p><strong>捷径二：先写硬编码，再让 agent 维护。</strong></p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "price"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question </span><span style="color:#D73A49;--shiki-dark:#F97583">and</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iphone"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iPhone is $999."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "refund"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "Refunds are available within 14 days."</span></span></code></pre></figure>
+<p>它运行时更稳定、更便宜。快速原型阶段，这是合理选择。问题是之后：价格变了改分支，问法变了加分支，错误丢给 agent 改代码；重复几十次后，没有人能完整说出系统现在知道什么。</p>
+<h2 id="2-低流量下两条捷径都可能是对的">2. 低流量下，两条捷径都可能是对的</h2>
+<p>必须承认一个反例：</p>
+<blockquote>
+<p>如果原型只活三天，流量很低，模型便宜到可以忽略，系统几乎不变化——两条捷径都是理智的。</p>
+</blockquote>
+<p>短路原型不是罪，把一次性原型当成会持续成长的系统才是。</p>
+<p>所以真正要判断的是：</p>
+<ul>
+<li>它会不会持续变化？</li>
+<li>变化时需不需要被验证？</li>
+<li>除了作者，还有没有人需要评审 / 理解它？</li>
+<li>出错时，损失只是一次 demo，还是客户已经依赖它？</li>
+</ul>
+<p>只要有一个答案是“是”，捷径就会开始变贵。但它们共同的问题不是“用了 agent”或“用了硬编码”，而是：</p>
+<blockquote>
+<p><strong>系统没有给变化一个可验证的落点。</strong></p>
+</blockquote>
+<p>Agent 当后端，落点不存在；硬编码 + agent 维护，落点是最难验证的代码。</p>
+<h2 id="3-一个太快得出的结论">3. 一个太快得出的结论</h2>
+<p>到这里，很容易得出结论：</p>
+<blockquote>
+<p>那就让 AI 改数据，不要改代码。数据比代码更适合 AI 维护。</p>
+</blockquote>
+<p>这个结论走得太快了，而且会把整季带向一个错误前提。</p>
+<p>它错在两点：</p>
+<ol>
+<li><strong>代码不是坏的。</strong> 算法、副作用、性能、安全边界、事务、外部系统交互，本来就应该由代码表达。</li>
+<li><strong>数据不是自动可维护的。</strong> 一堆没有词汇、没有表结构、没有校验的 JSON，只会把结构藏进约定里，比代码更难验证。</li>
+</ol>
+<p>真正的问题不是“代码还是数据”，而是：</p>
+<blockquote>
+<p><strong>哪些东西应该被声明成数据，哪些必须留在代码，边界在哪里，谁负责守边界。</strong></p>
+</blockquote>
+<p>“数据比代码高级”是一种偷懒的说法；正确的问题是结构放在哪里。</p>
+<h2 id="4-代码和数据是两种材料">4. 代码和数据是两种材料</h2>
+<p>可以把代码和数据当成两种材料，而不是两个等级。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>代码</th><th>数据</th></tr></thead><tbody><tr><td>擅长</td><td>算法、副作用、I/O、性能、安全、不变量</td><td>事实、规则、文案、配置、内容</td></tr><tr><td>可验证性</td><td>依赖测试、运行路径、边界</td><td>可寻址、可比较差异、可校验</td></tr><tr><td>爆炸半径</td><td>调用链、时序、异常路径</td><td>通常限制在行 / 实体 / 规则</td></tr><tr><td>修改者</td><td>开发者 + AI（高风险）</td><td>人和 AI（可评审）</td></tr><tr><td>失败方式</td><td>运行到某条路径才发现</td><td>写入时可以被拒绝</td></tr></tbody></table>
+<p>数据更适合 AI 维护，不是因为数据更高贵，而是因为：</p>
+<ul>
+<li>它可以有稳定标识；</li>
+<li>改动通常是局部的；</li>
+<li>上下文可以裁剪；</li>
+<li>可以被幂等重建；</li>
+<li>可以在写入时校验。</li>
+</ul>
+<p>但这些性质只对<strong>有结构的数据</strong>成立。自由文本和乱放 JSON 不具备它们。</p>
+<p>代码仍然承担它擅长的工作：定义 原语、执行算法、处理副作用、守住安全边界。代码不是被“搬掉”，而是退到更少、更稳定的位置：</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>System = Code + Data</span></span></code></pre></figure>
+<p>代码负责解释、校验、执行、审查；数据负责承载知识、规则、变量、流程和状态。</p>
+<p>当代码只解释词汇表、不逐条实现业务时，它接近 <strong>meta-code（元代码）</strong>：</p>
+<blockquote>
+<p>如果代码规模随领域对象数量增长，它是业务代码；
+如果代码规模只随词汇表大小增长，它才配叫 meta-code。</p>
+</blockquote>
+<h2 id="5-什么时候应该把行为放进数据">5. 什么时候应该把行为放进数据</h2>
+<p>不是所有东西都应该数据化。一个判断清单比口号有用：</p>
+<ul>
+<li><strong>变化频率</strong>：它经常变吗？经常变的事实更适合数据。</li>
+<li><strong>可寻址性</strong>：能给它一个稳定标识吗？价格、规则、文案可以；一段控制流通常不行。</li>
+<li><strong>评审需求</strong>：改动需不需要被非程序员看懂？</li>
+<li><strong>验证方式</strong>：能不能写测试 / 校验，而不是只能靠运行？</li>
+<li><strong>爆炸半径</strong>：改错了影响一行，还是一条调用链？</li>
+<li><strong>上下文大小</strong>：AI 能不能只读一小块就完成修改？</li>
+</ul>
+<p>反过来，以下通常应该留在代码：</p>
+<ul>
+<li>算法和性能敏感路径；</li>
+<li>外部副作用和 I/O；</li>
+<li>并发、事务、安全边界；</li>
+<li>无法用数据词汇表达的原语。</li>
+</ul>
+<p>这不是“把代码搬空”，而是把<strong>可声明的知识</strong>从代码里拿出来，让代码只保留它最擅长的部分。</p>
+<h3 id="51-一个最小规则值不进句子">5.1 一个最小规则：值不进句子</h3>
+<p>变化速度比句子更快的东西，不要写进句子里。</p>
+<p>价格、版本、库存、日期、star 数属于数据；句子属于模板。这样一次数据变化只需要改一行、做一次重建，而不是改 N 条答案，更不需要唤醒模型。</p>
+<h2 id="6-结构是边界不是口号">6. 结构是边界，不是口号</h2>
+<p>当你说“用结构”，具体指的是什么？至少包含五件事：</p>
+<ol>
+<li>数据用什么词汇表达（实体类型、关系类型、动作类型）；</li>
+<li>数据用什么形态承载（行、JSON、文件、列）；</li>
+<li>哪些字段被声明、哪些留着自由；</li>
+<li>谁来校验、谁来评审、怎么回滚；</li>
+<li>状态和构建产物怎么分开。</li>
+</ol>
+<p>结构不是“表越多越好”，也不是“代码越少越好”。它是一份关于边界的契约。</p>
+<p>这个契约里最困难的一条是：</p>
+<blockquote>
+<p><strong>通用化到哪一步，领域特定化到哪一步？</strong></p>
+</blockquote>
+<h2 id="7-核心张力通用数据-vs-领域表">7. 核心张力：通用数据 vs 领域表</h2>
+<p>一个具体例子会让这个张力变清楚。</p>
+<p>商品可以写成通用实体：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"stock"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>好处是扩展便宜：新增领域不用迁移，AI 加数据就行。</p>
+<p>但三个月后，你可能会看到：</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>命名开始漂移；价格可以是负数；库存可以是字符串；“上架但无价格”没人知道是否合法。查询也变丑：每次都要写 <code>json_extract</code>，性能依赖约定。</p>
+<p>另一个极端是建 <code>products</code> 表：类型、约束、查询都强，但每次领域变化都要迁移，AI 不能再靠“加数据”扩展。</p>
+<p>于是问题不是“数据化还是代码化”，而是：</p>
+<ul>
+<li>通用数据用<strong>扩展性</strong>换<strong>结构强度</strong>；</li>
+<li>领域表用<strong>结构强度</strong>换<strong>演化成本</strong>；</li>
+<li>选择取决于当前哪种成本更痛。</li>
+</ul>
+<p>这就是数据与代码的辩证：<strong>不是谁更高级，而是结构放在哪一层。</strong></p>
+<h2 id="8-失败条件与作者立场">8. 失败条件与作者立场</h2>
+<p>这套方法什么时候不成立？</p>
+<ul>
+<li>如果系统几乎不变化，结构投入收不回来；</li>
+<li>如果模型便宜、稳定、可审计到可以接受运行时 agent，临界点会移动；</li>
+<li>如果每次变化都需要新增 原语，而不是新增数据，通用结构就失败了；</li>
+<li>如果维护成本长期高于直接改代码，结构就是不划算的。</li>
+</ul>
+<p>作者立场：我不认为“数据比代码好”或“代码比数据好”是有意义的争论。有意义的问题是：</p>
+<blockquote>
+<p><strong>这部分行为的变化频率、验证需求和爆炸半径，决定了它应该住在代码还是数据；而边界必须被明确声明，而不是靠约定维持。</strong></p>
+</blockquote>
+<h2 id="9-下一个问题">9. 下一个问题</h2>
+<p>现在框架有了：代码和数据是两种材料，结构是两者的边界契约，核心张力是通用数据 vs 领域表。</p>
+<p>但边界具体怎么划？什么时候一个“可以有通用实体”的项目，真的需要一张 <code>products</code> 表？为什么不是永远不需要？</p>
+<p>下一篇专门处理这个问题：<strong>数据化的边界</strong>。</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section><section class="book__part" id="boundary-of-datafication"><div class="book__part-label"> · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/boundary-of-datafication/" style="color:inherit">02 什么时候才需要一张 products 表？——数据化的边界</a></h2><div class="prose"><h2 id="0-上篇留下的边界问题">0. 上篇留下的边界问题</h2>
+<p>上篇的结论是：代码和数据是两种材料，结构是两者的边界契约；其中最困难的一条是 <strong>通用数据 vs 领域表</strong>。它停在了一个具体问题上：</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>entities + entity_links + attrs_json</span></span></code></pre></figure>
+<p>商品可以只是：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>但这立刻带来一个问题：</p>
+<blockquote>
+<p>既然商品可以是通用实体，为什么还需要 <code>products</code> 这种领域表？<br>
+如果永远不需要，结构住在哪里？<br>
+如果需要，为什么不是一开始就需要？</p>
+</blockquote>
+<p>这篇不急着给答案。先把两个极端都推到失败，再从失败里推导边界。</p>
+<h2 id="1-先认真待在全通用这一端">1. 先认真待在“全通用”这一端</h2>
+<p>假设我们真的坚持：</p>
+<ul>
+<li>没有 <code>products</code> 表；</li>
+<li>没有 有类型的列；</li>
+<li>所有业务事实都放进 <code>attrs_json</code>。</li>
+</ul>
+<p>一开始它很好用：新增领域不用迁移，AI 加几行数据就行。</p>
+<p>然后系统开始变大。第一个失败是<strong>命名漂移</strong>。</p>
+<p>三个月后，查询价格时你可能看到：</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>没有人故意制造分歧；只是不同的人、不同的 agent、不同的时间，做了不同的命名选择。数据库没有拒绝过任何一条。</p>
+<p>第二个失败是<strong>校验退化</strong>：</p>
+<ul>
+<li>价格可以是负数；</li>
+<li>单位可以是 USD、HKD，也可以没有；</li>
+<li>“库存”可以是数字、字符串或缺失；</li>
+<li>已下架商品可能仍然有价格，但没人知道这是不是合法状态。</li>
+</ul>
+<p>第三个失败是<strong>查询变丑</strong>：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">SELECT</span><span style="color:#D73A49;--shiki-dark:#F97583"> *</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">FROM</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entities</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">WHERE</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entity_type </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'product'</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  AND</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json_extract(attrs_json, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">'$.price_cents'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) </span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 10000</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  AND</span><span style="color:#D73A49;--shiki-dark:#F97583"> status</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'live'</span></span></code></pre></figure>
+<p>一旦这种查询变多，性能、索引和可读性都会开始付代价。</p>
+<p>这说明：</p>
+<blockquote>
+<p><strong>通用化不会消灭结构，它只是把结构从表结构转移到了约定、命名和查询里。</strong></p>
+</blockquote>
+<p>结构变成了<strong>重建结构</strong>：每个读它的人、每个 AI 会话、每次调试，都要重新把它拼出来。</p>
+<h3 id="11-声明结构与重建结构">1.1 声明结构与重建结构</h3>
+<p>同样的结构，可以住在两个地方：</p>
+<ul>
+<li><strong>声明结构</strong>：列、约束、词汇表。写的时候声明一次，引擎和数据库会读它；</li>
+<li><strong>重建结构</strong>：命名约定、注释、JSON key。每个读者、每个 AI 会话、每次查询，都要重新把它拼出来。</li>
+</ul>
+<p>目标不是消灭结构，而是最小化重建结构。</p>
+<h3 id="12-交接说明有多长">1.2 交接说明有多长</h3>
+<p>一个可操作的检验：</p>
+<blockquote>
+<p><strong>交接说明有多长？</strong> AI 或新维护者行动前需要被告知的每句话，都是还没有声明出来的结构。</p>
+</blockquote>
+<p>但声明结构也有成本：迁移、耦合、一个设计错的列删起来比加更难。所以目标不是结构越少越好，而是把必须保留的声明结构压到足够小。</p>
+<h2 id="2-再认真待在每个领域一张表这一端">2. 再认真待在“每个领域一张表”这一端</h2>
+<p>另一个极端是每来一个领域就建表：</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>products</span></span>
+<span class="line"><span>orders</span></span>
+<span class="line"><span>coupons</span></span>
+<span class="line"><span>flows</span></span>
+<span class="line"><span>rules</span></span>
+<span class="line"><span>...</span></span></code></pre></figure>
+<p>它查询方便、约束强、团队熟悉。但代价是：</p>
+<ul>
+<li>新领域需要迁移和部署；</li>
+<li>AI 不能真正扩展系统，只能改已有领域；</li>
+<li>很多结构重复：状态、来源、时间、审计；</li>
+<li>领域一变化，表结构跟着变。</li>
+</ul>
+<p>它的失败方式不是“无法表达”，而是“无法轻量演化”。</p>
+<h2 id="3-不急着合成用同一种货币比较">3. 不急着合成：用同一种货币比较</h2>
+<p>两个极端不是“一个更先进”，而是把同一种成本放到了不同地方。可以用四个维度比较：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>维度</th><th>全通用实体</th><th>每领域一张表</th></tr></thead><tbody><tr><td>新增领域</td><td>加数据，0 迁移</td><td>加表，1 迁移</td></tr><tr><td>查询和约束</td><td>弱，依赖 JSON 和约定</td><td>强，数据库可强制</td></tr><tr><td>可读性与交接说明</td><td>每个读者要自己重建</td><td>表结构直接说明</td></tr><tr><td>演化成本</td><td>低（数据层），高（语义层）</td><td>低（语义层），高（表结构层）</td></tr></tbody></table>
+<p>真正的问题不是“要不要领域表”，而是：</p>
+<blockquote>
+<p>把结构放在约定里，还是放在表结构里？<br>
+哪一种成本在当前系统里更痛？</p>
+</blockquote>
+<h2 id="4-从失败推导提升条件">4. 从失败推导提升条件</h2>
+<p>提升条件不应该是清单，而应该是从上面失败里推出来的。</p>
+<h3 id="41-当数据不再是东西">4.1 当数据不再是“东西”</h3>
+<p>订单行、库存流水、价格历史不是实体，它们是事件 / 状态变化。把事件硬塞进 <code>attrs_json</code> 会让查询和时间关系变得别扭。这时需要事实表。</p>
+<h3 id="42-当数据库能强制而校验器很难强制">4.2 当数据库能强制、而校验器很难强制</h3>
+<p>多列唯一、外键、跨行 CHECK 这类约束，数据库天然更强。如果这些约束是业务正确性的前提，就值得提升。</p>
+<h3 id="43-当查询痛苦是测量出来的不是想象出来的">4.3 当查询痛苦是测量出来的，不是想象出来的</h3>
+<p>JSON 查询慢不是因为你“感觉 50k SKU 会慢”，而是因为：</p>
+<ul>
+<li>有真实慢查询；</li>
+<li>有真实索引需求；</li>
+<li>有真实聚合和排序。</li>
+</ul>
+<p>measure 之后再拆。</p>
+<h3 id="44-当外部表结构不允许你选择">4.4 当外部表结构不允许你选择</h3>
+<p>对接 ERP、支付、库存系统时，对方给你一个固定表结构。你不再设计它，只能适配。</p>
+<h3 id="45-两个反例">4.5 两个反例</h3>
+<p>上面这些条件成立，也可能还不该提升：</p>
+<ul>
+<li>数据量很大，但查询很少、很冷，瓶颈不在 JSON；此时优化可能只是早期复杂化。</li>
+<li>查询很痛，但可以通过物化视图或索引优化解决，不一定要改主模型。</li>
+</ul>
+<p>上面这些条件不成立，也可能必须提升：</p>
+<ul>
+<li>外部表结构强迫你；即使内部没有查询痛点，也得上表。</li>
+</ul>
+<p>所以提升不是规则表，而是：</p>
+<blockquote>
+<p>当某一种成本真实地压过了另一种，才移动边界。</p>
+</blockquote>
+<h2 id="5-一次真实的提升知识模板不动">5. 一次真实的提升：知识模板不动</h2>
+<p>下面演示一次提升，重点不是 SQL 多优雅，而是<strong>知识层不用改</strong>。</p>
+<h3 id="51-提升前">5.1 提升前</h3>
+<p>实体行：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>知识行：</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">slug</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product.price</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  patterns</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"how much is {product}"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  slots</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    kind</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">answer</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    template</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"{product} is {price}."</span></span></code></pre></figure>
+<p>测试：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product.price.iphone</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"how much is iphone-17"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    resolves</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answer_contains</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre></figure>
+<h3 id="52-提升后">5.2 提升后</h3>
+<p>新增 <code>products</code> 表，实体主干仍然保留：</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">CREATE</span><span style="color:#D73A49;--shiki-dark:#F97583"> TABLE</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> products</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  entity_id    </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> PRIMARY KEY</span><span style="color:#D73A49;--shiki-dark:#F97583"> REFERENCES</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entities(id),</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  price_cents  </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  currency     </span><span style="color:#D73A49;--shiki-dark:#F97583">TEXT</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#D73A49;--shiki-dark:#F97583"> DEFAULT</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'USD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  stock        </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#D73A49;--shiki-dark:#F97583"> DEFAULT</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span></code></pre></figure>
+<p>存储层读价格时，从 <code>products</code> 取，而不是从 <code>attrs_json</code> 取。但：</p>
+<ul>
+<li>知识模板（<code>knowledge</code>）仍然是 <code>{product}</code> 和 <code>{price}</code>；</li>
+<li>解析器返回的上下文仍然包含 <code>price</code>；</li>
+<li>测试用例不需要重写；</li>
+<li>变的只是数据投影和 SQL。</li>
+</ul>
+<p>这就是参数化的回报：</p>
+<blockquote>
+<p><strong>存储形态可以变，知识的句子不用变。</strong></p>
+</blockquote>
+<h2 id="6-领域表也是一次命名行为">6. 领域表也是一次命名行为</h2>
+<p>还有一层经常被忽略：<code>products</code> 这个词本身在替未来读者做命名工作。</p>
+<p><code>entity_type='product'</code> + 词汇表条目，把“这是什么东西”的定义分散在代码、数据、文档和人的记忆里；<code>products</code> 表把这份定义声明在一个地方。</p>
+<p>这是它的优势，也是它的成本：</p>
+<ul>
+<li>优势：交接说明变短，读者更快知道这里放什么；</li>
+<li>成本：命名一旦公开就很难改，表的耦合会把未来的选择锁住。</li>
+</ul>
+<p>所以“领域表 = 命名行为”不是一句修辞，它意味着提升时要额外问：</p>
+<blockquote>
+<p>这个名字是否稳定到值得成为表结构的一部分？</p>
+</blockquote>
+<p>如果答案不确定，也许先让它以 词汇表 / entity_type 的形式存在，等证据足够再固化。</p>
+<h2 id="7-四个家结构最终住在哪里">7. 四个家：结构最终住在哪里</h2>
+<p>无论提升与否，结构都要分到四个家：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>家</th><th>谁改</th><th>改动意味着</th></tr></thead><tbody><tr><td>配置</td><td>人</td><td>一次部署</td></tr><tr><td>内容</td><td>人和 AI（经评审）</td><td>一次 PR</td></tr><tr><td>数据</td><td>构建流程</td><td>一次重建</td></tr><tr><td>状态</td><td>运行时</td><td>追加；永不重建</td></tr></tbody></table>
+<p>进一步两条线：</p>
+<ul>
+<li><strong>离线 / 在线</strong>：内容离线可比较差异；投影在线可查询；运行时只读投影；</li>
+<li><strong>构建 / 在线</strong>：构建表无状态；状态只在在线表。</li>
+</ul>
+<p>这四条边界比“有没有 products 表”更重要。它们决定了：</p>
+<ul>
+<li>AI 改的是哪一层；</li>
+<li>重建 会不会伤害状态；</li>
+<li>评审看到的是什么；</li>
+<li>一个新增结构应该落到哪里。</li>
+</ul>
+<h3 id="71-状态也要被赚得">7.1 状态也要被赚得</h3>
+<p>领域表不是唯一会被过度建立的东西，状态表也一样。</p>
+<p>“第二个”可以从上一轮引文重写出来，不需要状态表；只有某个值必须跨轮保留（“几个人？” -> “3”）时，流程与状态才值得存在。反过来，GUI 自动化里的步骤状态是真需求，因为识别与动作本来就有先后和分支。<code>MaaFwPhoneAI</code> 就是一个状态必须被建出来的域。</p>
+<p>所以状态不是禁忌，而是必须由跨轮值或副作用来赚得。</p>
+<h2 id="8-说明与边界">8. 说明与边界</h2>
+<ul>
+<li>本文不主张“永远不要领域表”。它主张的是：提升由真实成本触发，而不是由直觉触发。</li>
+<li>如果业务天然要求强事务、强约束、大量查询，领域表可能第一天就该存在。</li>
+<li>如果团队没有能力维护表结构，通用实体更合适；如果团队没有能力维护约定，领域表更合适。</li>
+<li>作者倾向于：先用通用结构换演化速度，等一种成本真实地压过另一种，再提升。</li>
+</ul>
+<h2 id="9-下一个问题">9. 下一个问题</h2>
+<p>数据化的边界有了，知识句子的稳定性也有了。但还有一个问题没有回答：</p>
+<blockquote>
+<p><strong>AI 改了数据 / 结构之后，我们怎么知道这次改动真的让系统变好了？</strong></p>
+</blockquote>
+<p>这正是下一篇的主题：验证、权限与唤醒成本。</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section><section class="book__part" id="verification-is-trust"><div class="book__part-label"> · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/verification-is-trust/" style="color:inherit">03 验证才是信任：测试、权限与唤醒成本</a></h2><div class="prose"><h2 id="0-上篇留下的问题">0. 上篇留下的问题</h2>
+<p>上篇处理了代码与数据的边界：什么应该声明成数据，什么时候才值得从通用实体提升为领域表。它留下了数据侧的结构。</p>
+<p>但结构存在不等于结构正确。AI 改了数据、加了规则、提升了一张表之后，下一个问题立刻出现：</p>
+<blockquote>
+<p><strong>我们怎么知道这次改动真的让系统变好了？</strong></p>
+</blockquote>
+<p>这篇处理验证、权限与唤醒成本。</p>
+<h2 id="1-一个全绿的失败">1. 一个全绿的失败</h2>
+<p>一个 agent 接到任务：系统答不出某类问题。</p>
+<p>它看了几条未命中问题，写了一条新规则，又写了一条测试：</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">rule.new_case</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"can I get a refund?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answers</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre></figure>
+<p>CI 全绿。规则上线。</p>
+<p>但真实流量里，用户问的是：</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>“What is your refund policy?”</span></span>
+<span class="line"><span>“Can I cancel and get my money back?”</span></span>
+<span class="line"><span>“How long do refunds take?”</span></span></code></pre></figure>
+<p>系统仍然拒答。</p>
+<p>问题不是 agent 不够聪明，而是：</p>
+<blockquote>
+<p><strong>规则和测试来自同一批问句、同一个来源。测试只证明了这条规则能覆盖 agent 刚刚看过的那几句话。</strong></p>
+</blockquote>
+<p>修复一个例子，和让系统真正知道一类问题，是两件不同的事。这件事的教训可以推广成一句更锋利的话：</p>
+<blockquote>
+<p><strong>信任不来自 AI 判断得对不对，来自检查器的形状。</strong></p>
+</blockquote>
+<p>后面的测试、权限和成本，都是围绕这句话展开的。</p>
+<h2 id="2-测试是验收标准不是质量附录">2. 测试是验收标准，不是质量附录</h2>
+<p>在 AI 维护里，测试不是“验证 AI 写的代码”，而是规定什么算“变好”。</p>
+<h3 id="21-四类测试">2.1 四类测试</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>类型</th><th>断言</th><th>防什么</th></tr></thead><tbody><tr><td>正例</td><td>应该回答，且落到正确数据</td><td>规则过严、永远不命中</td></tr><tr><td>易混负例</td><td>长得像，但不应该命中</td><td>规则过松、抢别人的问题</td></tr><tr><td>拒答</td><td>没依据时拒答</td><td>编造</td></tr><tr><td>歧义</td><td>两个候选同样接近时拒答</td><td>随便挑一个</td></tr></tbody></table>
+<p>后三类最好在 AI 开始编辑之前由人种下。原因就是第 1 节的自证循环：</p>
+<blockquote>
+<p>如果测试和规则都由 AI 从同一批失败里生成，它们会一起变绿，而真实流量继续拒答。</p>
+</blockquote>
+<p>这也是为什么“测试通过”不能直接等于“维护完成”。测试只是检查器；检查器的形状决定它能发现什么、漏掉什么。</p>
+<h3 id="22-断言要粗">2.2 断言要粗</h3>
+<p>最好断言“答案包含某个事实”，而不是“等于某句完整文本”。</p>
+<p>一个改措辞就报警的测试集，人很快会学会忽略它；一旦被忽略，它就死了。这是关于人类注意力稀缺的论断：</p>
+<blockquote>
+<p><strong>验证系统的成本不只是机器时间，还包括人认真看它的意愿。</strong></p>
+</blockquote>
+<h3 id="23-测试本身也是数据">2.3 测试本身也是数据</h3>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">confusable.price-not-a-product-question</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"what is the price of dsh-review?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    refuses</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre></figure>
+<p>加一个问法是加模式；加一条保证是加测试。两者都应该是可比较差异的数据。</p>
+<h3 id="24-数据--git--ci-之间的账">2.4 数据 / git / CI 之间的账</h3>
+<p>这里有一个常见问题：</p>
+<blockquote>
+<p>如果测试也是数据，为什么不把它们放进数据库里，而放在 git 文件里？</p>
+</blockquote>
+<p>因为测试不是运行时知识。运行时读取的是“如何回答”；测试回答的是“什么算对”。两者生命周期不同：</p>
+<ul>
+<li>知识要被执行；</li>
+<li>测试要 gate 一次改动。</li>
+</ul>
+<p>一个程序化的发布流程其实更长：</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>agent 编辑内容 -> 跑测试 -> 开 PR -> CI -> 人合并</span></span></code></pre></figure>
+<p>核心不是 GitHub，而是：</p>
+<ul>
+<li>main 上测试全绿；</li>
+<li>分支变红就是回归；</li>
+<li><code>git revert</code> 提供回滚。</li>
+</ul>
+<p>回归证据住在 git / CI 里，这一点和“把可声明的都搬到数据侧”看起来冲突。处理方式是分清楚：</p>
+<blockquote>
+<p><strong>运行时知识必须声明进数据；验证证据可以是 gate 的一部分，但必须可追溯到具体改动。</strong></p>
+</blockquote>
+<p>如果未来的系统需要一个非 git 的评审界面，那时才需要把提案 / 测试结果变成表。不是现在。</p>
+<h3 id="25-死行与歧义报告">2.5 死行与歧义报告</h3>
+<p>除了四类测试，还需要：</p>
+<ul>
+<li>从未命中的知识行；</li>
+<li>会匹配多个候选的问法；</li>
+<li>新规则是否覆盖旧规则的范围；</li>
+<li>真实未命中问题按形状聚类。</li>
+</ul>
+<p>这些检查决定“该加规则”还是“该改结构”。</p>
+<h2 id="3-权限谁有权改什么">3. 权限：谁有权改什么</h2>
+<p>验证要成立，边界必须是真的。</p>
+<h3 id="31-请不要越界不是边界">3.1 “请不要越界”不是边界</h3>
+<p>把边界写进提示词是请求，不是约束。只要 agent 有 shell、文件系统和数据库，它就可能直接写库、改引擎、改测试来让测试通过。</p>
+<p>可维护的系统需要工具强制：</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>read:  content/**, read-only projection</span></span>
+<span class="line"><span>write: content/** (or proposals)</span></span>
+<span class="line"><span>deny:  engine/**, schema, direct live writes, merge</span></span></code></pre></figure>
+<h3 id="32-为什么">3.2 为什么</h3>
+<p>原则：</p>
+<blockquote>
+<p>回答用户和写系统状态，不应该由同一个进程同时拥有权限。</p>
+</blockquote>
+<p>如果 AI 在请求路径上既能回答又能写知识，错误答案会立刻变成“系统知识”，没有评审，没有回滚。</p>
+<p>即使不在运行时，agent 直接改在线数据库也有问题：改动不在差异里，评审看不到，重建后可能被覆盖。</p>
+<h3 id="33-两种合法写入">3.3 两种合法写入</h3>
+<p><strong>PR / 差异</strong>：改离线文件，开分支，跑测试，开 PR，人合并。评审、历史、回滚都由 git 提供。</p>
+<p><strong>提案表</strong>：当评审者不使用 git，或者需要在不合并的情况下快速学习时，才需要 <code>proposals</code> + 审核界面 + 状态机 + 发布路径。这是例外，不是默认。</p>
+<h3 id="34-允许面要足够">3.4 允许面要足够</h3>
+<p>边界太严也会失败：如果 agent 不能读数据、看统计、跑测试，它为了完成任务会去找绕路。</p>
+<p>一个可用的边界通常包括：</p>
+<ul>
+<li>只读数据查询；</li>
+<li>内容文件读写；</li>
+<li>build / test 命令；</li>
+<li>未命中问题和统计查看；</li>
+<li>明确的提交方式。</li>
+</ul>
+<h3 id="35-角色权限表">3.5 角色权限表</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>读</th><th>写</th><th>不能</th></tr></thead><tbody><tr><td>终端用户</td><td>自己的对话</td><td>提问 / 操作</td><td>看内部数据</td></tr><tr><td>运营</td><td>面板、评审队列</td><td>发布决策</td><td>改引擎</td></tr><tr><td>AI 维护者</td><td>只读投影、证据、内容</td><td>内容 / 提案</td><td>直接写在线表、合并</td></tr><tr><td>开发者</td><td>全部</td><td>引擎 /表结构/ 迁移</td><td>绕过评审</td></tr><tr><td>运行时</td><td>数据投影</td><td>运行时状态</td><td>改知识</td></tr></tbody></table>
+<h2 id="4-唤醒成本">4. 唤醒成本</h2>
+<h3 id="41-三个账本">4.1 三个账本</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>来源</th><th>次数与什么成正比</th><th>处理</th></tr></thead><tbody><tr><td>A. 运行时兜底</td><td>请求数 ×（1 − 覆盖率）</td><td>尽量不用；用了也保留证据</td></tr><tr><td>B. 维护轮</td><td>结构变化频率</td><td>批量、离线、经测试和评审</td></tr><tr><td>C. 构建 / 同步</td><td>数据量</td><td>0 次模型调用</td></tr></tbody></table>
+<p>目标：</p>
+<blockquote>
+<p>让 AI 调用与结构变化成正比，而不是与流量或数据变化成正比。</p>
+</blockquote>
+<h3 id="42-成本公式和一个警告">4.2 成本公式和一个警告</h3>
+<figure class="code-viewer" data-lines="8"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N  = 每周期请求数</span></span>
+<span class="line"><span>c0 = 确定性解析单次成本</span></span>
+<span class="line"><span>ca = 运行时兜底单次成本</span></span>
+<span class="line"><span>κ  = 确定性覆盖率</span></span>
+<span class="line"><span>w  = 每周期维护唤醒次数</span></span>
+<span class="line"><span>cm = 单次维护成本（模型 + 上下文 + 人工评审）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>C(N, w) = N * [c0 + (1 - κ) * ca] + w * cm</span></span></code></pre></figure>
+<p>如果一次维护把覆盖率提高 <code>Δκ</code>：</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>benefit = N * Δκ * ca</span></span>
+<span class="line"><span>值得做当且仅当 N * Δκ * ca > cm</span></span></code></pre></figure>
+<p>但这个公式有几个强假设，值得写清楚：</p>
+<ul>
+<li>维护成本对 <code>w</code> 近似线性——上下文和评审摊薄后可能成立，也可能不成立；</li>
+<li><code>Δκ</code> 不递减——实际上越往后提升越难；</li>
+<li>增加结构不会抬高 <code>c0</code>——规则越多，解析可能越慢。</li>
+</ul>
+<p>所以公式不是预言，是一个用来问“这轮维护值不值”的框架。</p>
+<h3 id="43-一个示意算例">4.3 一个示意算例</h3>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N = 10,000 请求/天，ca = 0.01，cm = 0.50</span></span>
+<span class="line"><span>覆盖率从 90% 到 92%：benefit = 2 > 0.50</span></span>
+<span class="line"><span>覆盖率只提高 0.1%：benefit = 0.1 &#x3C; 0.50</span></span></code></pre></figure>
+<p>数字仅用于说明。</p>
+<h3 id="44-唤醒策略">4.4 唤醒策略</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>模式</th><th>适合场景</th><th>风险</th></tr></thead><tbody><tr><td>每请求</td><td>冷启动、首次探索</td><td>成本不可控</td></tr><tr><td>微批量</td><td>高峰后补学习</td><td>反馈延迟</td></tr><tr><td>每日 / 每周</td><td>稳定业务、批量评审</td><td>新问题多时慢</td></tr><tr><td>事件触发</td><td>新目录、新政策</td><td>阈值难调</td></tr><tr><td>手动</td><td>低流量、高敏感</td><td>长期不更新</td></tr></tbody></table>
+<h3 id="45-兜底不等于系统知道">4.5 兜底不等于系统知道</h3>
+<p>模型兜底可以是一个可选层，但必须：</p>
+<ul>
+<li>由人决定开启；</li>
+<li>回答过的问题仍记录为未解决；</li>
+<li>模型只看到相关实体，而不是全库；</li>
+<li>超时 / 报错 / key 失效时安全地拒答。</li>
+</ul>
+<p>原因：</p>
+<blockquote>
+<p><strong>回答访客，不等于系统知道。</strong></p>
+</blockquote>
+<h2 id="5-两个真实案例作为证据">5. 两个真实案例作为证据</h2>
+<h3 id="51-personal-chatbots">5.1 personal-chatbots</h3>
+<p>一个最小实现：5 张表、离线内容、运行时投影、<code>messages</code> 在线表。截至写作时：</p>
+<ul>
+<li>24 条知识行；</li>
+<li>48 条 frozen cases；</li>
+<li>单元与不变量测试；</li>
+<li>浏览器版跑同一组 frozen cases，CI 做 parity 检查。</li>
+</ul>
+<p>它证明的是：上述结构可以小到什么程度。
+它还证明了另一件更窄的事：确定性层约 0.2 ms、0 token；模型兜底约 7 秒。差的不是 token 单价，是唤醒位置。</p>
+<h3 id="52-maafwphoneai">5.2 MaaFwPhoneAI</h3>
+<p>第二个域是 Android GUI 自动化：</p>
+<ul>
+<li>workflow 是数据库里的 MaaFramework 流水线图；</li>
+<li>AI 只写提案，评审后成为在线流水线；</li>
+<li>每次执行保存后置条件与证据；</li>
+<li>已验证流程进入 0 token 回放。</li>
+</ul>
+<p>PC 原型已经验证了“AI 跑通一次，之后 0 token 回放”；Android 端仍在收敛。它证明结构逻辑不依赖文本域，也暴露了更多运行时复杂度。</p>
+<h2 id="6-说明与边界">6. 说明与边界</h2>
+<ul>
+<li>四类测试只认证已知的失败类别；它不能证明未知情况下也对。</li>
+<li>测试和规则同源的问题，本文没有完全解决。要解决它，需要让验证器的一部分独立于被验证者，这可能是下一阶段的工作。</li>
+<li>如果模型变得足够便宜、稳定、可审计，运行时 agent 的缺陷会减小；但这套结构仍然解决“可累积、可回滚”。</li>
+<li>如果一次改动的评审成本长期高于直接改代码，这套结构不划算。</li>
+<li>作者立场：我不认为“让 AI 自己判断自己”能成为长期信任机制；信任必须来自独立的检查器。</li>
+<li>这套方法最大的代价是评审带宽。自动化可以提高检查速度，但不能自动产生判断。</li>
+</ul>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section><section class="book__part" id="appendix-derivation-and-checklist"><div class="book__part-label"> · 草稿预览</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/zh/writing/appendix-derivation-and-checklist/" style="color:inherit">04 附录：推导模板、清单与术语表</a></h2><div class="prose"><p>这不是正文，而是前 3 篇的配套工作文档。</p>
+<h2 id="1-推导链">1. 推导链</h2>
+<p>不要从“用哪张表 / 哪个 agent”开始，而从目标和约束开始：</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Goal -> Actors -> Intents -> Information shapes</span></span>
+<span class="line"><span>     -> Structures -> Columns -> IO -> Wake policy</span></span></code></pre></figure>
+<h3 id="11-goal">1.1 Goal</h3>
+<p>一句话：为谁解决什么。包含终端用户、他们要完成什么、哪些事情必须由人接手。</p>
+<h3 id="12-actors">1.2 Actors</h3>
+<p>至少区分：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>关心什么</th></tr></thead><tbody><tr><td>终端用户</td><td>是否被回答 / 操作是否完成</td></tr><tr><td>运营 / 客户</td><td>知识是否正确、能否评审发布</td></tr><tr><td>AI 维护者</td><td>读什么、写什么、如何验证</td></tr><tr><td>开发者</td><td>引擎、表结构、迁移、权限</td></tr></tbody></table>
+<h3 id="13-intents">1.3 Intents</h3>
+<p>列真实意图：查事实、查实体属性、条件判断、多轮澄清、副作用 / 交人、未知。</p>
+<h3 id="14-information-shapes">1.4 Information shapes</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>形态</th><th>适合结构</th></tr></thead><tbody><tr><td>静态事实</td><td>知识行 / 文案</td></tr><tr><td>参数化事实</td><td>模板 + 实体行</td></tr><tr><td>条件路由</td><td>规则行 / 小 DSL</td></tr><tr><td>跨轮指代</td><td>projection，不用状态表</td></tr><tr><td>多轮收集</td><td>流程 + 状态</td></tr><tr><td>副作用</td><td>task / 外部动作</td></tr><tr><td>未知</td><td>拒答 + 收件箱</td></tr><tr><td>复合问句</td><td>解析算法，不是表</td></tr></tbody></table>
+<h3 id="15-structures">1.5 Structures</h3>
+<ul>
+<li>放配置、内容、数据还是状态？</li>
+<li>优先：配置文件 > 内容文件 > 已有表 > 新表；</li>
+<li>默认：通用实体 + link + JSON 属性 + 小词汇表；</li>
+<li>提升由真实成本触发，不由直觉触发。</li>
+</ul>
+<h3 id="16-columns">1.6 Columns</h3>
+<ul>
+<li>会查询、连接、过滤、约束、统计的字段 -> 有类型的列；</li>
+<li>领域相关、只随行携带的字段 -> JSON；</li>
+<li>需要双向关系 -> link 表；</li>
+<li>不再是实体形状 -> 独立事实表。</li>
+</ul>
+<h3 id="17-io">1.7 IO</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>角色</th><th>读</th><th>写</th></tr></thead><tbody><tr><td>终端用户</td><td>对话</td><td>提问 / 操作</td></tr><tr><td>运营</td><td>面板、评审队列</td><td>发布决策</td></tr><tr><td>AI 维护者</td><td>只读证据、内容</td><td>内容 / 提案</td></tr><tr><td>运行时</td><td>数据投影</td><td>运行时状态</td></tr></tbody></table>
+<h3 id="18-唤醒策略">1.8 唤醒策略</h3>
+<ul>
+<li>运行时是否允许模型兜底？</li>
+<li>维护是每日、事件触发还是手动？</li>
+<li>哪些数据变化根本不需要模型？</li>
+<li>模型回答过的未命中是否保留证据？</li>
+</ul>
+<h2 id="2-一个练习预约助手">2. 一个练习：预约助手</h2>
+<p>目标：用户可以预约，复杂预约交给人工。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Intent</th><th>Shape</th><th>Structure</th></tr></thead><tbody><tr><td>营业时间</td><td>静态事实</td><td>知识行</td></tr><tr><td>有哪些服务</td><td>参数化事实</td><td>实体 + 模板</td></tr><tr><td>周末能不能约</td><td>条件规则</td><td>规则行</td></tr><tr><td>“第二个服务”</td><td>指代</td><td>上一轮引文</td></tr><tr><td>预约需要哪些信息</td><td>多轮收集</td><td>流程 + 状态</td></tr><tr><td>提交后通知工作人员</td><td>副作用</td><td>task</td></tr><tr><td>未知政策</td><td>未知</td><td>拒答 + 收件箱</td></tr></tbody></table>
+<h2 id="3-结课清单">3. 结课清单</h2>
+<h3 id="问题">问题</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 我面对的是运行时 agent 不稳定，还是硬编码维护不可验证？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 问题会持续成长，还是一次性？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 我是否把“修好一个例子”当成“变好”？</li>
+</ul>
+<h3 id="结构">结构</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 业务事实还有多少住在代码里？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 配置、内容、数据、状态是否分开？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 离线 / 在线、构建 / 运行时边界是否清楚？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 值进句子了吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 新结构有真实触发条件吗？</li>
+</ul>
+<h3 id="验证">验证</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 每个行为改动有测试吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 有正例、易混负例、拒答、歧义四类吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 有回归基线和回滚路径吗？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 有死行 / 歧义报告吗？</li>
+</ul>
+<h3 id="权限">权限</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> AI 的读 / 写 / 禁止集合是什么？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 权限是工具强制还是 prompt 请求？</li>
+<li class="task-list-item"><input type="checkbox" disabled> AI 能否直接写在线表、直接合并？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 评审能否在有限上下文内完成？</li>
+</ul>
+<h3 id="成本">成本</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 运行时唤醒几次？维护唤醒几次？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 哪些变化会唤醒模型？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 兜底是否仍记录 unresolved？</li>
+<li class="task-list-item"><input type="checkbox" disabled> 覆盖率、兜底率、单位成本有记录吗？</li>
+</ul>
+<h2 id="4-反模式">4. 反模式</h2>
+<ul>
+<li>把所有逻辑塞进代码；</li>
+<li>把 agent 放在运行时；</li>
+<li>让 agent 直接改在线状态；</li>
+<li>没有测试就让 agent 维护；</li>
+<li>所有东西都塞 JSON；</li>
+<li>为未来预留空表；</li>
+<li>用模型兜底却清掉 unresolved；</li>
+<li>用模型回答来假装结构已经知道答案。</li>
+</ul>
+<h2 id="5-什么时候不该用这套东西">5. 什么时候不该用这套东西</h2>
+<p>一次性脚本、没有持续演化需求的小工具、完全没有重复决策的探索任务——简单脚本就是正确答案。</p>
+<p>结构化有成本，不值得的时候不要用它。</p>
+<h2 id="6-术语表">6. 术语表</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>术语</th><th>含义</th></tr></thead><tbody><tr><td>可维护</td><td>改动可执行、可验证、可回滚、可累积、可负担</td></tr><tr><td>结构</td><td>代码与数据之间的契约：行、表结构、词汇、校验、流程</td></tr><tr><td>Data</td><td>可声明层：知识、规则、变量、流程、测试、内容文件</td></tr><tr><td>meta-code</td><td>代码规模随词汇表增长、而不是随领域增长的解释器 / 校验器 / 运行器</td></tr><tr><td>四个家</td><td>配置 / 内容 / 数据 / 状态</td></tr><tr><td>离线 / 在线</td><td>可编辑、可比较差异的形态 vs 可索引、可查询的投影</td></tr><tr><td>构建 / 在线</td><td>构建表 vs 运行时状态表</td></tr><tr><td>重建结构</td><td>未声明、每次都要重新推导的结构</td></tr><tr><td>指代</td><td>从上一轮引文推导的跨轮引用，不需要状态表</td></tr><tr><td>流程 / 状态</td><td>只有值必须跨轮保留时才需要的运行时状态</td></tr><tr><td>唤醒</td><td>唤醒模型：运行时兜底 / 维护轮 / 构建</td></tr><tr><td>兜底（fallback）</td><td>结构答不出时的模型回答；仍记录 unresolved</td></tr><tr><td>提案</td><td>可审核、可回滚的改动；git PR 或提案表</td></tr><tr><td>κ</td><td>确定性覆盖率</td></tr><tr><td>死行</td><td>从未命中的知识行</td></tr></tbody></table>
+<h2 id="7-最后四个问题">7. 最后四个问题</h2>
+<p>如果 AI 改了一个数据 / 内容，你能回答下面四个问题，这个系统就在正确方向上：</p>
+<ol>
+<li>为什么改？证据是什么？</li>
+<li>改了什么？差异在哪里？</li>
+<li>是否变好？测试和指标是否支持？</li>
+<li>错了怎么退回去？</li>
+</ol>
+<p>能回答，结构就是可维护的；不能回答，模型再强也只是更快地在黑箱里改东西。</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section></div></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

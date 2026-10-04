@@ -1,0 +1,1104 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI-Maintainable Systems · Read the whole series · LKM</title><meta name="description" content="Letting models maintain data and structure while deterministic engines execute. Topic one is now a three-article mini-course with an appendix: Programming Structure in the AI Era."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/writing/series/ai-maintainable-systems/read/"><meta property="og:type" content="website"><meta property="og:title" content="AI-Maintainable Systems · Read the whole series · LKM"><meta property="og:description" content="Letting models maintain data and structure while deterministic engines execute. Topic one is now a three-article mini-course with an appendix: Programming Structure in the AI Era."><meta property="og:url" content="https://plae-tljg.github.io/en/writing/series/ai-maintainable-systems/read/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/">Writing</a><a href="/en/docs/">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/writing/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><div class="container container--narrow"><header class="page-header"><nav class="breadcrumb"><a href="/en/writing/series/ai-maintainable-systems/">AI-Maintainable Systems</a><span aria-hidden="true">/</span><span>Read the whole series</span></nav><h1>AI-Maintainable Systems</h1><p>Letting models maintain data and structure while deterministic engines execute. Topic one is now a three-article mini-course with an appendix: Programming Structure in the AI Era.</p><div class="page-meta"><span>4 posts</span><span>·</span><span>28 min read</span></div></header><nav class="toc" style="position:static;max-height:none;border-left:0;padding-left:0;margin:2rem 0 0"><h2>Contents</h2><ol><li><a href="#rapid-prototypes-and-structure">01 After the Rapid Prototype: Code, Data, and Structure</a></li><li><a href="#boundary-of-datafication">02 When Do You Actually Need a Products Table? The Boundary of Datafication</a></li><li><a href="#verification-is-trust">03 Verification Is Trust: Tests, Authority, and Wake Cost</a></li><li><a href="#appendix-derivation-and-checklist">04 Appendix: Derivation Template, Checklist, and Glossary</a></li></ol></nav><section class="book__part" id="rapid-prototypes-and-structure"><div class="book__part-label"> · Draft preview</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/en/writing/rapid-prototypes-and-structure/" style="color:inherit">01 After the Rapid Prototype: Code, Data, and Structure</a></h2><div class="prose"><h2 id="1-a-very-typical-friday-afternoon">1. A Very Typical Friday Afternoon</h2>
+<p>Suppose you want to build a chatbot quickly, or any small app that uses AI. What you want to validate is “will anyone use it”, not “can it be written as a textbook architecture”. So you quite naturally do not want to write a data access layer, migrations, permissions, channels, read/write modules, and a review process.</p>
+<p>Then you see two shortcuts.</p>
+<p><strong>Shortcut one: treat the agent as the backend.</strong></p>
+<figure class="code-viewer" data-lines="13"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 伪代码：把 agent 命令包成一个 API</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">from</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> fastapi </span><span style="color:#D73A49;--shiki-dark:#F97583">import</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">app </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> FastAPI()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">@app.post</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"/chat"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">def</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> chat</span><span style="color:#24292E;--shiki-dark:#E1E4E8">(question: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">str</span><span style="color:#24292E;--shiki-dark:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    result </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> subprocess.run(</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">        [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"claude"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"-p"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, question],   </span><span style="color:#6A737D;--shiki-dark:#6A737D"># 或 opencode -c、其他 agent 命令</span></span>
+<span class="line"><span style="color:#E36209;--shiki-dark:#FFAB70">        capture_output</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#E36209;--shiki-dark:#FFAB70">text</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#005CC5;--shiki-dark:#79B8FF">True</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">    )</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> {</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"answer"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: result.stdout}</span></span></code></pre></figure>
+<p>A user request comes in and is forwarded straight to the agent. You write no schema, no permissions, no channels, no read/write modules, and you can demo it in an afternoon. This is not writing a system; it is letting an agent play the whole system for a while.</p>
+<p><strong>Shortcut two: hardcode first, then let an agent maintain it.</strong></p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "price"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question </span><span style="color:#D73A49;--shiki-dark:#F97583">and</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iphone"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "iPhone is $999."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">if</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "refund"</span><span style="color:#D73A49;--shiki-dark:#F97583"> in</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> question:</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    return</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "Refunds are available within 14 days."</span></span></code></pre></figure>
+<p>It is more stable and cheaper at runtime. During the rapid-prototype stage that is a reasonable choice. The problem comes after: the price changed, edit a branch; the wording changed, add a branch; a bug, toss it to the agent to fix the code. After dozens of repetitions, no one can state in full what the system now knows.</p>
+<h2 id="2-at-low-traffic-both-shortcuts-can-be-right">2. At Low Traffic, Both Shortcuts Can Be Right</h2>
+<p>One counterexample has to be admitted:</p>
+<blockquote>
+<p>If the prototype lives only three days, traffic is low, the model is cheap enough to ignore, and the system barely changes — both shortcuts are rational.</p>
+</blockquote>
+<p>Short-circuiting a prototype is not a sin; treating a one-off prototype as a system that will keep growing is.</p>
+<p>So what you actually have to judge is:</p>
+<ul>
+<li>Will it keep changing?</li>
+<li>Do changes need to be verified?</li>
+<li>Besides the author, does anyone else need to review / understand it?</li>
+<li>When something breaks, is the loss just one demo, or has a customer already come to depend on it?</li>
+</ul>
+<p>If even one answer is “yes”, the shortcuts start getting expensive. But their shared problem is not “used an agent” or “used hardcoding”, it is:</p>
+<blockquote>
+<p><strong>The system gives change no verifiable landing point.</strong></p>
+</blockquote>
+<p>With an agent as the backend, the landing point does not exist; with hardcoding plus agent maintenance, the landing point is the code that is hardest to verify.</p>
+<h2 id="3-a-conclusion-reached-too-fast">3. A Conclusion Reached Too Fast</h2>
+<p>At this point it is easy to reach a conclusion:</p>
+<blockquote>
+<p>Then let AI change the data, not the code. Data is better suited than code to AI maintenance.</p>
+</blockquote>
+<p>That conclusion moves too fast, and it would carry the whole season toward a wrong premise.</p>
+<p>It is wrong in two ways:</p>
+<ol>
+<li><strong>Code is not bad.</strong> Algorithms, side effects, performance, security boundaries, transactions, and interaction with external systems are exactly what code should express.</li>
+<li><strong>Data is not automatically maintainable.</strong> A pile of JSON with no vocabulary, no schema, and no validation only hides the structure inside conventions, which is harder to verify than code.</li>
+</ol>
+<p>The real question is not “code or data”, but:</p>
+<blockquote>
+<p><strong>What should be declared as data, what must stay in code, where the boundary lies, and who is responsible for guarding it.</strong></p>
+</blockquote>
+<p>“Data is more advanced than code” is a lazy way of putting it; the right question is where the structure sits.</p>
+<h2 id="4-code-and-data-are-two-materials">4. Code and Data Are Two Materials</h2>
+<p>You can treat code and data as two materials rather than two ranks.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th>Code</th><th>Data</th></tr></thead><tbody><tr><td>Excels at</td><td>algorithms, side effects, I/O, performance, security, invariants</td><td>facts, rules, copy, configuration, content</td></tr><tr><td>Verifiability</td><td>depends on tests, execution paths, boundaries</td><td>addressable, diffable, validatable</td></tr><tr><td>Blast radius</td><td>call chains, timing, exception paths</td><td>usually limited to a row / entity / rule</td></tr><tr><td>Modified by</td><td>developers + AI (high risk)</td><td>people and AI (reviewable)</td></tr><tr><td>Failure mode</td><td>found only when some path runs</td><td>can be rejected at write time</td></tr></tbody></table>
+<p>Data suits AI maintenance better not because data is nobler, but because:</p>
+<ul>
+<li>it can have a stable identity;</li>
+<li>changes are usually local;</li>
+<li>the context can be trimmed;</li>
+<li>it can be rebuilt idempotently;</li>
+<li>it can be validated at write time.</li>
+</ul>
+<p>But these properties hold only for <strong>structured data</strong>. Free text and randomly dropped JSON do not have them.</p>
+<p>Code still carries the work it is good at: defining primitives, running algorithms, handling side effects, holding security boundaries. Code is not “moved out”; it retreats to a smaller, more stable position:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>System = Code + Data</span></span></code></pre></figure>
+<p>Code is responsible for interpreting, validating, executing, and reviewing; data carries knowledge, rules, variables, processes, and state.</p>
+<p>When code only interprets the vocabulary and no longer implements the business case by case, it approaches <strong>meta-code (metacode)</strong>:</p>
+<blockquote>
+<p>If code size grows with the number of domain objects, it is business code;
+If code size grows only with the size of the vocabulary, it earns the name meta-code.</p>
+</blockquote>
+<h2 id="5-when-behavior-belongs-in-data">5. When Behavior Belongs in Data</h2>
+<p>Not everything should be datafied. A checklist is more useful than a slogan:</p>
+<ul>
+<li><strong>Change frequency</strong>: does it change often? Facts that change often suit data better.</li>
+<li><strong>Addressability</strong>: can it be given a stable identity? Prices, rules, and copy can; a piece of control flow usually cannot.</li>
+<li><strong>Review needs</strong>: does the change need to be understood by non-programmers?</li>
+<li><strong>Verification method</strong>: can you write tests / validations, rather than only running it?</li>
+<li><strong>Blast radius</strong>: does a wrong change affect one row, or a call chain?</li>
+<li><strong>Context size</strong>: can the AI finish the change after reading only a small piece?</li>
+</ul>
+<p>Conversely, the following usually belong in code:</p>
+<ul>
+<li>algorithms and performance-sensitive paths;</li>
+<li>external side effects and I/O;</li>
+<li>concurrency, transactions, security boundaries;</li>
+<li>primitives that cannot be expressed in the data vocabulary.</li>
+</ul>
+<p>This is not “emptying the code out”, but pulling <strong>declarable knowledge</strong> out of the code so that code keeps only the part it is best at.</p>
+<h3 id="51-one-minimal-rule-values-do-not-enter-sentences">5.1 One Minimal Rule: Values Do Not Enter Sentences</h3>
+<p>Anything that changes faster than a sentence should not be written into a sentence.</p>
+<p>Prices, versions, stock, dates, and star counts belong to data; sentences belong to templates. That way one data change needs one line edited and one rebuild, not N answers edited — and no need to wake a model.</p>
+<h2 id="6-structure-is-a-boundary-not-a-slogan">6. Structure Is a Boundary, Not a Slogan</h2>
+<p>When you say “use structure”, what do you concretely mean? At least five things:</p>
+<ol>
+<li>What vocabulary the data uses (entity types, relationship types, action types);</li>
+<li>What shape the data takes (rows, JSON, files, columns);</li>
+<li>Which fields are declared and which are left free;</li>
+<li>Who validates, who reviews, how you roll back;</li>
+<li>How state and build artifacts are kept apart.</li>
+</ol>
+<p>Structure is not “the more tables the better”, nor “the less code the better”. It is a contract about boundaries.</p>
+<p>The hardest clause in this contract is:</p>
+<blockquote>
+<p><strong>How far do you generalize, and how far do you make it domain-specific?</strong></p>
+</blockquote>
+<h2 id="7-core-tension-generic-data-vs-domain-tables">7. Core Tension: Generic Data vs Domain Tables</h2>
+<p>One concrete example makes the tension clear.</p>
+<p>A product can be written as a generic entity:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">, </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"stock"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">12</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>The benefit is that extension is cheap: a new domain needs no migration, the AI just adds data.</p>
+<p>But three months later you may see:</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>Names start to drift; the price can be negative; stock can be a string; nobody knows whether “listed but no price” is legal. Queries get ugly too: every one has to write <code>json_extract</code>, and performance depends on convention.</p>
+<p>The other extreme is building a <code>products</code> table: types, constraints, and queries are all strong, but every domain change needs a migration, and the AI can no longer extend by “adding data”.</p>
+<p>So the question is not “datafy or codify”, but:</p>
+<ul>
+<li>generic data buys <strong>extensibility</strong> with <strong>structural strength</strong>;</li>
+<li>domain tables buy <strong>structural strength</strong> with <strong>evolution cost</strong>;</li>
+<li>the choice depends on which cost hurts more right now.</li>
+</ul>
+<p>That is the dialectic of data and code: <strong>not which one is more advanced, but which layer the structure sits on.</strong></p>
+<h2 id="8-failure-conditions-and-the-authors-position">8. Failure Conditions and the Author’s Position</h2>
+<p>When does this approach not hold?</p>
+<ul>
+<li>If the system barely changes, the investment in structure never pays back;</li>
+<li>If models are cheap, stable, and auditable enough that a runtime agent is acceptable, the tipping point moves;</li>
+<li>If every change needs a new primitive rather than new data, the generic structure has failed;</li>
+<li>If maintenance cost stays above just editing the code, the structure is not worth it.</li>
+</ul>
+<p>The author’s position: I do not think “data is better than code” or “code is better than data” is a meaningful debate. The meaningful question is:</p>
+<blockquote>
+<p><strong>The change frequency, verification needs, and blast radius of this behavior decide whether it should live in code or in data; and the boundary must be explicitly declared rather than held up by convention.</strong></p>
+</blockquote>
+<h2 id="9-the-next-question">9. The Next Question</h2>
+<p>The frame is now in place: code and data are two materials, structure is the boundary contract between them, and the core tension is generic data vs domain tables.</p>
+<p>But how exactly is the boundary drawn? When does a project that “can have generic entities” actually need a <code>products</code> table? And why is the answer not “never”?</p>
+<p>The next piece takes up exactly this question: <strong>The Boundary of Datafication</strong>.</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section><section class="book__part" id="boundary-of-datafication"><div class="book__part-label"> · Draft preview</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/en/writing/boundary-of-datafication/" style="color:inherit">02 When Do You Actually Need a Products Table? The Boundary of Datafication</a></h2><div class="prose"><h2 id="0-the-boundary-question-left-by-the-previous-article">0. The Boundary Question Left by the Previous Article</h2>
+<p>The previous article concluded: code and data are two materials, and structure is the boundary contract between them; the hardest line among them is <strong>generic data vs domain tables</strong>. It stopped at a concrete question:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>entities + entity_links + attrs_json</span></span></code></pre></figure>
+<p>A product can be just:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>But this immediately raises a question:</p>
+<blockquote>
+<p>Since a product can be a generic entity, why do we still need a domain table like <code>products</code>?<br>
+If we never need it, where does structure live?<br>
+If we do need it, why wasn’t it needed from day one?</p>
+</blockquote>
+<p>This article doesn’t rush to an answer. First, let both extremes fail for real, then derive the boundary from those failures.</p>
+<h2 id="1-seriously-stay-at-the-fully-generic-end-first">1. Seriously Stay at the “Fully Generic” End First</h2>
+<p>Suppose we really insist:</p>
+<ul>
+<li>No <code>products</code> table;</li>
+<li>No typed columns;</li>
+<li>All business facts go into <code>attrs_json</code>.</li>
+</ul>
+<p>At first it works great: new domains need no migrations, AI just adds a few rows of data.</p>
+<p>Then the system grows. The first failure is <strong>naming drift</strong>.</p>
+<p>Three months later, when querying prices you might see:</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">999</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"priceCents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_usd"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>No one deliberately created divergence; different people, different agents, different times simply made different naming choices. The database never rejected any of them.</p>
+<p>The second failure is <strong>validation decay</strong>:</p>
+<ul>
+<li>Price can be negative;</li>
+<li>Currency can be USD, HKD, or missing;</li>
+<li>“Stock” can be a number, a string, or absent;</li>
+<li>A delisted product might still have a price, but no one knows whether that’s a legal state.</li>
+</ul>
+<p>The third failure is <strong>queries turn ugly</strong>:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">SELECT</span><span style="color:#D73A49;--shiki-dark:#F97583"> *</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">FROM</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entities</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">WHERE</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entity_type </span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'product'</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  AND</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> json_extract(attrs_json, </span><span style="color:#032F62;--shiki-dark:#9ECBFF">'$.price_cents'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">) </span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 10000</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">  AND</span><span style="color:#D73A49;--shiki-dark:#F97583"> status</span><span style="color:#D73A49;--shiki-dark:#F97583"> =</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'live'</span></span></code></pre></figure>
+<p>Once such queries multiply, performance, indexes, and readability all start exacting a price.</p>
+<p>This shows:</p>
+<blockquote>
+<p><strong>Genericisation does not eliminate structure; it merely moves structure from the schema into conventions, naming, and queries.</strong></p>
+</blockquote>
+<p>Structure becomes <strong>reconstructed structure</strong>: every person reading it, every AI session, every debugging round has to piece it back together from scratch.</p>
+<h3 id="11-declared-structure-vs-reconstructed-structure">1.1 Declared Structure vs Reconstructed Structure</h3>
+<p>The same structure can live in two places:</p>
+<ul>
+<li><strong>Declared structure</strong>: columns, constraints, vocabularies. Declared once at write time, the engine and database read it;</li>
+<li><strong>Reconstructed structure</strong>: naming conventions, comments, JSON keys. Every reader, every AI session, every query has to piece it back together from scratch.</li>
+</ul>
+<p>The goal isn’t to eliminate structure, but to minimise reconstructed structure.</p>
+<h3 id="12-how-long-is-the-handoff-brief">1.2 How Long Is the Handoff Brief?</h3>
+<p>An actionable test:</p>
+<blockquote>
+<p><strong>How long is the handoff brief?</strong> Every sentence an AI or new maintainer needs to be told before they can act is structure that hasn’t been declared yet.</p>
+</blockquote>
+<p>But declared structure has costs too: migrations, coupling, a badly designed column is harder to delete than to add. So the goal isn’t less structure the better, but to compress the declared structure that must be kept down to the necessary minimum.</p>
+<h2 id="2-seriously-stay-at-the-one-table-per-domain-end">2. Seriously Stay at the “One Table Per Domain” End</h2>
+<p>The other extreme is creating a table for every domain that arrives:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>products</span></span>
+<span class="line"><span>orders</span></span>
+<span class="line"><span>coupons</span></span>
+<span class="line"><span>flows</span></span>
+<span class="line"><span>rules</span></span>
+<span class="line"><span>...</span></span></code></pre></figure>
+<p>It queries conveniently, constrains strongly, teams know it well. But the price is:</p>
+<ul>
+<li>New domains need migrations and deployments;</li>
+<li>AI cannot truly extend the system, only modify existing domains;</li>
+<li>Lots of repeated structure: status, source, time, audit;</li>
+<li>When a domain changes, the schema changes with it.</li>
+</ul>
+<p>Its failure mode isn’t “can’t express” — it’s “can’t evolve lightly”.</p>
+<h2 id="3-dont-rush-to-synthesise-compare-with-the-same-currency">3. Don’t Rush to Synthesise: Compare with the Same Currency</h2>
+<p>The two extremes aren’t “one more advanced” — they put the same kind of cost in different places. We can compare on four dimensions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Dimension</th><th>Fully Generic Entities</th><th>One Table Per Domain</th></tr></thead><tbody><tr><td>Add domain</td><td>Add data, 0 migrations</td><td>Add table, 1 migration</td></tr><tr><td>Queries &#x26; constraints</td><td>Weak, relies on JSON &#x26; conventions</td><td>Strong, database can enforce</td></tr><tr><td>Readability &#x26; handoff</td><td>Every reader reconstructs</td><td>Schema explains directly</td></tr><tr><td>Evolution cost</td><td>Low (data layer), high (semantic layer)</td><td>Low (semantic layer), high (schema layer)</td></tr></tbody></table>
+<p>The real question isn’t “domain table or not”, but:</p>
+<blockquote>
+<p>Put structure in conventions, or put it in the schema?<br>
+Which cost hurts more in the current system?</p>
+</blockquote>
+<h2 id="4-derive-promotion-conditions-from-failure">4. Derive Promotion Conditions from Failure</h2>
+<p>Promotion conditions shouldn’t be a checklist; they should be derived from the failures above.</p>
+<h3 id="41-when-data-is-no-longer-a-thing">4.1 When Data Is No Longer a “Thing”</h3>
+<p>Order lines, inventory streams, price history aren’t entities — they’re events / state changes. Forcing events into <code>attrs_json</code> makes queries and temporal relationships awkward. That’s when you need fact tables.</p>
+<h3 id="42-when-the-database-can-enforce-but-validators-struggle">4.2 When the Database Can Enforce but Validators Struggle</h3>
+<p>Multi-column unique, foreign keys, cross-row CHECK — these constraints are natively stronger in the database. If they’re prerequisites for business correctness, promotion is worth it.</p>
+<h3 id="43-when-query-pain-is-measured-not-imagined">4.3 When Query Pain Is Measured, Not Imagined</h3>
+<p>JSON queries aren’t slow because you “feel 50k SKUs would be slow”, but because:</p>
+<ul>
+<li>There are real slow queries;</li>
+<li>There are real index needs;</li>
+<li>There are real aggregations and sorts.</li>
+</ul>
+<p>Measure first, then split.</p>
+<h3 id="44-when-external-schema-doesnt-let-you-choose">4.4 When External Schema Doesn’t Let You Choose</h3>
+<p>Integrating with ERP, payments, inventory systems — the other side gives you a fixed schema. You no longer design it; you can only adapt.</p>
+<h3 id="45-two-counterexamples">4.5 Two Counterexamples</h3>
+<p>Even when the above conditions hold, you might still not promote:</p>
+<ul>
+<li>Large data volume but few, cold queries; bottleneck isn’t in JSON; optimisation would just be premature complexity.</li>
+<li>Query pain exists but can be solved with materialised views or index optimisation, without changing the core model.</li>
+</ul>
+<p>Even when the above conditions don’t hold, you might still be forced to promote:</p>
+<ul>
+<li>External schema forces you; even without internal query pain, you still need the table.</li>
+</ul>
+<p>So promotion isn’t a rule table — it’s:</p>
+<blockquote>
+<p>Only move the boundary when one cost genuinely outweighs the other.</p>
+</blockquote>
+<h2 id="5-a-real-promotion-knowledge-template-unchanged">5. A Real Promotion: Knowledge Template Unchanged</h2>
+<p>Below I demonstrate a promotion where the key point isn’t how elegant the SQL is, but that <strong>the knowledge layer doesn’t change</strong>.</p>
+<h3 id="51-before-promotion">5.1 Before Promotion</h3>
+<p>Entity row:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "entity_type"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"product"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "key"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#005CC5;--shiki-dark:#79B8FF">  "attrs_json"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#005CC5;--shiki-dark:#79B8FF">"price_cents"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">99900</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></figure>
+<p>Knowledge row:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">slug</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product.price</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  patterns</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"how much is {product}"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  slots</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  action</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    kind</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">answer</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    template</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"{product} is {price}."</span></span></code></pre></figure>
+<p>Test:</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">product.price.iphone</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"how much is iphone-17"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    resolves</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: { </span><span style="color:#22863A;--shiki-dark:#85E89D">product</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"sku:iphone-17"</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answer_contains</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: [</span><span style="color:#032F62;--shiki-dark:#9ECBFF">"999.00"</span><span style="color:#24292E;--shiki-dark:#E1E4E8">]</span></span></code></pre></figure>
+<h3 id="52-after-promotion">5.2 After Promotion</h3>
+<p>Add <code>products</code> table, entity backbone stays:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="sql"><code><span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">CREATE</span><span style="color:#D73A49;--shiki-dark:#F97583"> TABLE</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> products</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  entity_id    </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> PRIMARY KEY</span><span style="color:#D73A49;--shiki-dark:#F97583"> REFERENCES</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> entities(id),</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  price_cents  </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  currency     </span><span style="color:#D73A49;--shiki-dark:#F97583">TEXT</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#D73A49;--shiki-dark:#F97583"> DEFAULT</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'USD'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">  stock        </span><span style="color:#D73A49;--shiki-dark:#F97583">INTEGER</span><span style="color:#D73A49;--shiki-dark:#F97583"> NOT NULL</span><span style="color:#D73A49;--shiki-dark:#F97583"> DEFAULT</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> 0</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">);</span></span></code></pre></figure>
+<p>When the storage layer reads price, it takes from <code>products</code> instead of <code>attrs_json</code>. But:</p>
+<ul>
+<li>The knowledge template (<code>knowledge</code>) remains <code>{product}</code> and <code>{price}</code>;</li>
+<li>The parser’s returned context still contains <code>price</code>;</li>
+<li>Test cases don’t need rewriting;</li>
+<li>Only the data projection and SQL change.</li>
+</ul>
+<p>This is the payoff of parameterisation:</p>
+<blockquote>
+<p><strong>Storage form can change; knowledge sentences don’t.</strong></p>
+</blockquote>
+<h2 id="6-a-domain-table-is-also-a-naming-act">6. A Domain Table Is Also a Naming Act</h2>
+<p>One layer often overlooked: the word <code>products</code> itself does naming work for future readers.</p>
+<p><code>entity_type='product'</code> + vocabulary entries scatter the definition of “what is this thing” across code, data, docs, and human memory; a <code>products</code> table declares that definition in one place.</p>
+<p>This is its advantage, and its cost:</p>
+<ul>
+<li>Advantage: handoff brief gets shorter, readers know faster what lives here;</li>
+<li>Cost: once a name is public it’s hard to change, table coupling locks future choices.</li>
+</ul>
+<p>So “domain table = naming act” isn’t rhetoric — it means at promotion time you must additionally ask:</p>
+<blockquote>
+<p>Is this name stable enough to become part of the schema?</p>
+</blockquote>
+<p>If the answer is uncertain, maybe let it exist as vocabulary / entity_type first, wait for enough evidence before solidifying.</p>
+<h2 id="7-four-homes-where-structure-ultimately-lives">7. Four Homes: Where Structure Ultimately Lives</h2>
+<p>Whether promoted or not, structure must be divided into four homes:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Home</th><th>Who Changes</th><th>Change Means</th></tr></thead><tbody><tr><td>Config</td><td>Humans</td><td>One deployment</td></tr><tr><td>Content</td><td>Humans &#x26; AI (reviewed)</td><td>One PR</td></tr><tr><td>Data</td><td>Build process</td><td>One rebuild</td></tr><tr><td>State</td><td>Runtime</td><td>Append-only; never rebuilt</td></tr></tbody></table>
+<p>Two further lines:</p>
+<ul>
+<li><strong>Offline / Online</strong>: content diffable offline; projection queryable online; runtime reads projection only;</li>
+<li><strong>Build / Online</strong>: build tables stateless; state lives only in online tables.</li>
+</ul>
+<p>These four boundaries matter more than “is there a products table”. They decide:</p>
+<ul>
+<li>Which layer AI modifies;</li>
+<li>Whether rebuild hurts state;</li>
+<li>What review sees;</li>
+<li>Where a new structure should land.</li>
+</ul>
+<h3 id="71-state-must-also-be-earned">7.1 State Must Also Be Earned</h3>
+<p>Domain tables aren’t the only thing over-created; state tables are too.</p>
+<p>“The second” can be rewritten from the previous round’s citation — no state table needed; only when a value must persist across rounds (“How many people?” -> “3”) do flow and state deserve to exist. Conversely, step state in GUI automation is a real need because recognition and action inherently have sequence and branching. <code>MaaFwPhoneAI</code> is a domain where state must be modelled.</p>
+<p>So state isn’t taboo — it must be earned by cross-round values or side effects.</p>
+<h2 id="8-notes--boundaries">8. Notes &#x26; Boundaries</h2>
+<ul>
+<li>This article doesn’t advocate “never domain tables”. It advocates: promotion triggered by real cost, not by intuition.</li>
+<li>If the business inherently demands strong transactions, strong constraints, heavy queries, domain tables may belong on day one.</li>
+<li>If the team lacks capacity to maintain schema, generic entities fit better; if the team lacks capacity to maintain conventions, domain tables fit better.</li>
+<li>Author’s bias: start with generic structure for evolution speed, wait until one cost genuinely outweighs the other, then promote.</li>
+</ul>
+<h2 id="9-the-next-question">9. The Next Question</h2>
+<p>We have the datafication boundary, and knowledge sentence stability. But one question remains unanswered:</p>
+<blockquote>
+<p><strong>After AI changes data / structure, how do we know the change actually made the system better?</strong></p>
+</blockquote>
+<p>That’s exactly the next article’s topic: verification, permissions, and wake-up cost.</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section><section class="book__part" id="verification-is-trust"><div class="book__part-label"> · Draft preview</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/en/writing/verification-is-trust/" style="color:inherit">03 Verification Is Trust: Tests, Authority, and Wake Cost</a></h2><div class="prose"><h2 id="0-the-problem-the-previous-essay-left">0. The Problem the Previous Essay Left</h2>
+<p>The previous essay handled the boundary between code and data: what should be declared as data, and when it is worth promoting a generic entity into a domain table. It left behind the structure on the data side.</p>
+<p>But a structure existing does not mean the structure is right. Once AI has changed the data, added a rule, and promoted a table, the next question appears immediately:</p>
+<blockquote>
+<p><strong>How do we know this change actually made the system better?</strong></p>
+</blockquote>
+<p>This essay covers verification, authority, and wake cost.</p>
+<h2 id="1-an-all-green-failure">1. An All-Green Failure</h2>
+<p>An agent gets a task: the system cannot answer a certain kind of question.</p>
+<p>It looks at a few missed questions, writes a new rule, then writes a test:</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">rule.new_case</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"can I get a refund?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answers</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre></figure>
+<p>CI is all green. The rule ships.</p>
+<p>But in real traffic, users ask:</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>“What is your refund policy?”</span></span>
+<span class="line"><span>“Can I cancel and get my money back?”</span></span>
+<span class="line"><span>“How long do refunds take?”</span></span></code></pre></figure>
+<p>The system still refuses to answer.</p>
+<p>The problem is not that the agent is not smart enough; it is that:</p>
+<blockquote>
+<p><strong>The rule and the test come from the same batch of questions, from the same source. The test only proves that this rule can cover the few sentences the agent just looked at.</strong></p>
+</blockquote>
+<p>Fixing one example and making the system actually know a kind of question are two different things. The lesson generalizes into a sharper sentence:</p>
+<blockquote>
+<p><strong>Trust does not come from whether the AI judged correctly; it comes from the shape of the checker.</strong></p>
+</blockquote>
+<p>The tests, authority, and cost that follow all unfold around this sentence.</p>
+<h2 id="2-tests-are-acceptance-criteria-not-a-quality-appendix">2. Tests Are Acceptance Criteria, Not a Quality Appendix</h2>
+<p>In AI maintenance, tests are not about “verifying the code the AI wrote”; they define what counts as “better”.</p>
+<h3 id="21-four-kinds-of-test">2.1 Four Kinds of Test</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Kind</th><th>Assertion</th><th>Guards against</th></tr></thead><tbody><tr><td>Positive</td><td>Should answer, and land on the right data</td><td>Overly strict rules that never match</td></tr><tr><td>Confusable negative</td><td>Looks similar, but should not match</td><td>Overly loose rules that steal other people’s questions</td></tr><tr><td>Refusal</td><td>Refuses when there is no basis</td><td>Fabrication</td></tr><tr><td>Ambiguity</td><td>Refuses when two candidates are equally close</td><td>Picking one arbitrarily</td></tr></tbody></table>
+<p>The last three kinds are best planted by a human before the AI starts editing. The reason is the self-confirmation loop of Section 1:</p>
+<blockquote>
+<p>If both the tests and the rules are generated by the AI from the same batch of failures, they will turn green together while real traffic keeps being refused.</p>
+</blockquote>
+<p>This is also why “tests pass” cannot simply mean “maintenance is done”. A test is only a checker; the checker’s shape decides what it finds and what it misses.</p>
+<h3 id="22-assertions-should-be-coarse">2.2 Assertions Should Be Coarse</h3>
+<p>It is best to assert that “the answer contains some fact”, not that it “equals some complete sentence”.</p>
+<p>A test set that alarms on a rewording will be learned to ignore quickly; once ignored, it is dead. This is a claim about scarce human attention:</p>
+<blockquote>
+<p><strong>The cost of verifying a system is not only machine time; it also includes the willingness of a human to look at it seriously.</strong></p>
+</blockquote>
+<h3 id="23-tests-are-data-too">2.3 Tests Are Data Too</h3>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">confusable.price-not-a-product-question</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"what is the price of dsh-review?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    refuses</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre></figure>
+<p>Adding a phrasing adds a pattern; adding a guarantee adds a test. Both should be data that can be diffed.</p>
+<h3 id="24-the-accounting-between-data--git--ci">2.4 The Accounting Between Data / git / CI</h3>
+<p>There is a common question here:</p>
+<blockquote>
+<p>If tests are data too, why not put them in the database instead of git files?</p>
+</blockquote>
+<p>Because tests are not runtime knowledge. What runtime reads is “how to answer”; what a test answers is “what counts as correct”. The two have different lifecycles:</p>
+<ul>
+<li>Knowledge must be executed;</li>
+<li>A test must gate one change.</li>
+</ul>
+<p>A programmatic release process is actually longer:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>agent 编辑内容 -> 跑测试 -> 开 PR -> CI -> 人合并</span></span></code></pre></figure>
+<p>The core is not GitHub; it is:</p>
+<ul>
+<li>tests are all green on main;</li>
+<li>a branch going red means a regression;</li>
+<li><code>git revert</code> provides the rollback.</li>
+</ul>
+<p>Regression evidence lives in git / CI, which looks like it conflicts with “move everything declarable to the data side”. The way to handle it is to separate the two:</p>
+<blockquote>
+<p><strong>Runtime knowledge must be declared into data; verification evidence may be part of a gate, but it must be traceable to the specific change.</strong></p>
+</blockquote>
+<p>If a future system needs a review interface that is not git, that is when proposals / test results need to become tables. Not now.</p>
+<h3 id="25-dead-rows-and-ambiguity-reports">2.5 Dead Rows and Ambiguity Reports</h3>
+<p>Beyond the four kinds of test, you also need:</p>
+<ul>
+<li>knowledge rows that never match;</li>
+<li>phrasings that match multiple candidates;</li>
+<li>whether a new rule covers the scope of the old one;</li>
+<li>real missed questions clustered by shape.</li>
+</ul>
+<p>These checks decide whether to “add a rule” or “change the structure”.</p>
+<h2 id="3-authority-who-may-change-what">3. Authority: Who May Change What</h2>
+<p>For verification to hold, the boundary must be real.</p>
+<h3 id="31-please-dont-cross-the-line-is-not-a-boundary">3.1 “Please Don’t Cross the Line” Is Not a Boundary</h3>
+<p>Writing a boundary into the prompt is a request, not a constraint. As long as the agent has a shell, a filesystem, and a database, it can write straight to the database, change the engine, or change the test to make the test pass.</p>
+<p>A maintainable system needs tool enforcement:</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>read:  content/**, read-only projection</span></span>
+<span class="line"><span>write: content/** (or proposals)</span></span>
+<span class="line"><span>deny:  engine/**, schema, direct live writes, merge</span></span></code></pre></figure>
+<h3 id="32-why">3.2 Why</h3>
+<p>The principle:</p>
+<blockquote>
+<p>Answering users and writing system state should not both be held by the same process at once.</p>
+</blockquote>
+<p>If AI on the request path can both answer and write knowledge, a wrong answer immediately becomes “system knowledge”, with no review and no rollback.</p>
+<p>Even outside runtime, an agent editing the live database directly is a problem: the change is not in the diff, reviewers cannot see it, and a rebuild may overwrite it.</p>
+<h3 id="33-two-legitimate-writes">3.3 Two Legitimate Writes</h3>
+<p><strong>PR / diff</strong>: edit the offline files, open a branch, run the tests, open a PR, a human merges. Review, history, and rollback are all provided by git.</p>
+<p><strong>Proposal tables</strong>: only when reviewers do not use git, or when you need to learn quickly without merging, do you need <code>proposals</code> + a review interface + a state machine + a publish path. This is an exception, not the default.</p>
+<h3 id="34-the-allowed-surface-must-be-wide-enough">3.4 The Allowed Surface Must Be Wide Enough</h3>
+<p>A boundary that is too strict also fails: if the agent cannot read data, look at statistics, or run tests, it will look for a way around to finish the task.</p>
+<p>A usable boundary usually includes:</p>
+<ul>
+<li>read-only data queries;</li>
+<li>reading and writing content files;</li>
+<li>build / test commands;</li>
+<li>viewing missed questions and statistics;</li>
+<li>an explicit way to submit.</li>
+</ul>
+<h3 id="35-role-permission-table">3.5 Role Permission Table</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Role</th><th>Read</th><th>Write</th><th>Must not</th></tr></thead><tbody><tr><td>End user</td><td>Their own conversations</td><td>Ask questions / act</td><td>See internal data</td></tr><tr><td>Operations</td><td>Dashboards, review queue</td><td>Publish decisions</td><td>Change the engine</td></tr><tr><td>AI maintainer</td><td>Read-only projections, evidence, content</td><td>Content / proposals</td><td>Write online tables directly, merge</td></tr><tr><td>Developer</td><td>Everything</td><td>Engine / schema / migrations</td><td>Bypass review</td></tr><tr><td>Runtime</td><td>Data projections</td><td>Runtime state</td><td>Change knowledge</td></tr></tbody></table>
+<h2 id="4-wake-cost">4. Wake Cost</h2>
+<h3 id="41-three-ledgers">4.1 Three Ledgers</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Source</th><th>Count scales with</th><th>Handling</th></tr></thead><tbody><tr><td>A. Runtime fallback</td><td>Requests × (1 − coverage)</td><td>Avoid it; if used, keep the evidence</td></tr><tr><td>B. Maintenance rounds</td><td>Frequency of structure change</td><td>Batched, offline, through tests and review</td></tr><tr><td>C. Build / sync</td><td>Volume of data</td><td>Zero model calls</td></tr></tbody></table>
+<p>The goal:</p>
+<blockquote>
+<p>Make AI calls proportional to structural change, not to traffic or data change.</p>
+</blockquote>
+<h3 id="42-the-cost-formula-and-one-warning">4.2 The Cost Formula and One Warning</h3>
+<figure class="code-viewer" data-lines="8"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N  = 每周期请求数</span></span>
+<span class="line"><span>c0 = 确定性解析单次成本</span></span>
+<span class="line"><span>ca = 运行时兜底单次成本</span></span>
+<span class="line"><span>κ  = 确定性覆盖率</span></span>
+<span class="line"><span>w  = 每周期维护唤醒次数</span></span>
+<span class="line"><span>cm = 单次维护成本（模型 + 上下文 + 人工评审）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>C(N, w) = N * [c0 + (1 - κ) * ca] + w * cm</span></span></code></pre></figure>
+<p>If one maintenance round raises coverage by <code>Δκ</code>:</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>benefit = N * Δκ * ca</span></span>
+<span class="line"><span>值得做当且仅当 N * Δκ * ca > cm</span></span></code></pre></figure>
+<p>But this formula carries several strong assumptions worth writing down:</p>
+<ul>
+<li>maintenance cost is approximately linear in <code>w</code> — that may hold once context and review are amortized, or it may not;</li>
+<li><code>Δκ</code> does not decrease — in practice improvements get harder later;</li>
+<li>adding structure does not raise <code>c0</code> — the more rules, the slower parsing may become.</li>
+</ul>
+<p>So the formula is not a prophecy; it is a framework for asking whether this round of maintenance is worth it.</p>
+<h3 id="43-a-sample-calculation">4.3 A Sample Calculation</h3>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N = 10,000 请求/天，ca = 0.01，cm = 0.50</span></span>
+<span class="line"><span>覆盖率从 90% 到 92%：benefit = 2 > 0.50</span></span>
+<span class="line"><span>覆盖率只提高 0.1%：benefit = 0.1 &#x3C; 0.50</span></span></code></pre></figure>
+<p>The numbers are illustrative only.</p>
+<h3 id="44-wake-strategies">4.4 Wake Strategies</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Mode</th><th>Fits</th><th>Risk</th></tr></thead><tbody><tr><td>Per request</td><td>Cold start, first exploration</td><td>Uncontrolled cost</td></tr><tr><td>Micro-batch</td><td>Catch-up learning after a peak</td><td>Delayed feedback</td></tr><tr><td>Daily / weekly</td><td>Stable business, batch review</td><td>Slow when new problems pile up</td></tr><tr><td>Event-triggered</td><td>New catalog, new policy</td><td>Hard to tune thresholds</td></tr><tr><td>Manual</td><td>Low traffic, high sensitivity</td><td>Goes stale</td></tr></tbody></table>
+<h3 id="45-fallback-is-not-the-same-as-the-system-knowing">4.5 Fallback Is Not the Same as the System Knowing</h3>
+<p>A model fallback can be an optional layer, but it must:</p>
+<ul>
+<li>be enabled by a human decision;</li>
+<li>questions it has answered are still recorded as unresolved;</li>
+<li>the model sees only the relevant entities, not the whole database;</li>
+<li>refuse safely on timeout / error / invalid key.</li>
+</ul>
+<p>The reason:</p>
+<blockquote>
+<p><strong>Answering a visitor does not mean the system knows.</strong></p>
+</blockquote>
+<h2 id="5-two-real-cases-as-evidence">5. Two Real Cases as Evidence</h2>
+<h3 id="51-personal-chatbots">5.1 personal-chatbots</h3>
+<p>A minimal implementation: 5 tables, offline content, a runtime projection, and the online <code>messages</code> table. As of writing:</p>
+<ul>
+<li>24 knowledge rows;</li>
+<li>48 frozen cases;</li>
+<li>unit and invariant tests;</li>
+<li>the browser build runs the same set of frozen cases, and CI does a parity check.</li>
+</ul>
+<p>What it proves is how small the structure above can get.
+It also proves something narrower: the deterministic layer takes about 0.2 ms and 0 tokens; the model fallback takes about 7 seconds. What differs is not the token unit price but where the wake happens.</p>
+<h3 id="52-maafwphoneai">5.2 MaaFwPhoneAI</h3>
+<p>The second domain is Android GUI automation:</p>
+<ul>
+<li>the workflow is a MaaFramework pipeline graph in the database;</li>
+<li>AI only writes proposals; after review they become the live pipeline;</li>
+<li>each execution saves its postconditions and evidence;</li>
+<li>verified flows enter 0-token replay.</li>
+</ul>
+<p>The PC prototype already verified “the AI runs it once, then 0-token replay”; the Android side is still converging. It proves the structural logic does not depend on the text domain, and it also exposes more runtime complexity.</p>
+<h2 id="6-notes-and-limits">6. Notes and Limits</h2>
+<ul>
+<li>The four kinds of test only certify known failure classes; they cannot prove correctness in unknown situations.</li>
+<li>This essay does not fully solve the problem of tests and rules sharing one origin. Solving it would require part of the verifier to be independent of the thing being verified, which is probably the next stage of work.</li>
+<li>If models become cheap, stable, and auditable enough, the defects of runtime agents will shrink; but this structure still solves “accumulable and rollback-able”.</li>
+<li>If the review cost of a change stays higher than editing the code directly over the long run, this structure is not worth it.</li>
+<li>Author’s position: I do not think “letting AI judge itself” can become a long-term trust mechanism; trust must come from an independent checker.</li>
+<li>The biggest cost of this method is review bandwidth. Automation can speed up checking, but it cannot produce judgment on its own.</li>
+</ul>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section><section class="book__part" id="appendix-derivation-and-checklist"><div class="book__part-label"> · Draft preview</div><h2 style="font-size:1.6rem;margin:0 0 1.5rem;letter-spacing:-.02em"><a href="/en/writing/appendix-derivation-and-checklist/" style="color:inherit">04 Appendix: Derivation Template, Checklist, and Glossary</a></h2><div class="prose"><p>This is not the main text; it is the companion working document for the first 3 articles.</p>
+<h2 id="1-derivation-chain">1. Derivation Chain</h2>
+<p>Do not start from “which table / which agent” — start from the goal and the constraints:</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Goal -> Actors -> Intents -> Information shapes</span></span>
+<span class="line"><span>     -> Structures -> Columns -> IO -> Wake policy</span></span></code></pre></figure>
+<h3 id="11-goal">1.1 Goal</h3>
+<p>One sentence: for whom, solving what. Include the end users, what they need to get done, and which things a human must take over.</p>
+<h3 id="12-actors">1.2 Actors</h3>
+<p>Distinguish at least:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Role</th><th>What they care about</th></tr></thead><tbody><tr><td>End user</td><td>Whether they were answered / whether the action completed</td></tr><tr><td>Operations / customer</td><td>Whether the knowledge is correct, whether they can review and publish it</td></tr><tr><td>AI maintainer</td><td>What to read, what to write, how to verify</td></tr><tr><td>Developer</td><td>Engine, table structure, migrations, permissions</td></tr></tbody></table>
+<h3 id="13-intents">1.3 Intents</h3>
+<p>List the real intents: look up a fact, look up an entity attribute, conditional judgement, multi-turn clarification, side effects / hand off to a human, unknown.</p>
+<h3 id="14-information-shapes">1.4 Information shapes</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Shape</th><th>Suitable structure</th></tr></thead><tbody><tr><td>Static fact</td><td>Knowledge row / copy</td></tr><tr><td>Parameterised fact</td><td>Template + entity row</td></tr><tr><td>Conditional routing</td><td>Rule row / small DSL</td></tr><tr><td>Cross-turn reference</td><td>Projection, not a state table</td></tr><tr><td>Multi-turn collection</td><td>Flow + state</td></tr><tr><td>Side effect</td><td>task / external action</td></tr><tr><td>Unknown</td><td>Refusal + inbox</td></tr><tr><td>Compound question</td><td>Parsing algorithm, not a table</td></tr></tbody></table>
+<h3 id="15-structures">1.5 Structures</h3>
+<ul>
+<li>Configuration, content, data, or state?</li>
+<li>Preference order: config file > content file > existing table > new table;</li>
+<li>Default: generic entity + link + JSON attributes + a small vocabulary;</li>
+<li>Promotion is triggered by real cost, not by intuition.</li>
+</ul>
+<h3 id="16-columns">1.6 Columns</h3>
+<ul>
+<li>Fields that get queried, joined, filtered, constrained, aggregated -> typed columns;</li>
+<li>Fields that are domain-specific and travel only with the row -> JSON;</li>
+<li>Fields that need a bidirectional relationship -> link table;</li>
+<li>Fields that are no longer of an entity shape -> a separate fact table.</li>
+</ul>
+<h3 id="17-io">1.7 IO</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Role</th><th>Read</th><th>Write</th></tr></thead><tbody><tr><td>End user</td><td>Conversation</td><td>Question / action</td></tr><tr><td>Operations</td><td>Console, review queue</td><td>Publish decision</td></tr><tr><td>AI maintainer</td><td>Read-only evidence, content</td><td>Content / proposal</td></tr><tr><td>Runtime</td><td>Data projection</td><td>Runtime state</td></tr></tbody></table>
+<h3 id="18-wake-policy">1.8 Wake policy</h3>
+<ul>
+<li>Is the model allowed to fall back at runtime?</li>
+<li>Is maintenance daily, event-triggered, or manual?</li>
+<li>Which data changes never need the model at all?</li>
+<li>Do the misses the model has answered keep their evidence?</li>
+</ul>
+<h2 id="2-an-exercise-the-booking-assistant">2. An exercise: the booking assistant</h2>
+<p>Goal: the user can book, and complex bookings get handed to a human.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Intent</th><th>Shape</th><th>Structure</th></tr></thead><tbody><tr><td>Opening hours</td><td>Static fact</td><td>Knowledge row</td></tr><tr><td>What services are there</td><td>Parameterised fact</td><td>Entity + template</td></tr><tr><td>Can I book on a weekend</td><td>Conditional rule</td><td>Rule row</td></tr><tr><td>“the second service”</td><td>Anaphora</td><td>Previous-turn quote</td></tr><tr><td>What information does a booking need</td><td>Multi-turn collection</td><td>Flow + state</td></tr><tr><td>Notify staff after submission</td><td>Side effect</td><td>task</td></tr><tr><td>Unknown policy</td><td>Unknown</td><td>Refusal + inbox</td></tr></tbody></table>
+<h2 id="3-course-completion-checklist">3. Course-completion checklist</h2>
+<h3 id="problem">Problem</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Am I facing an unstable runtime agent, or unverifiable hardcoded maintenance?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Does the problem keep growing, or is it one-off?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Am I treating “fixing one example” as “getting better”?</li>
+</ul>
+<h3 id="structure">Structure</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> How many business facts still live in the code?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are configuration, content, data and state separate?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are the offline / online and build / runtime boundaries clear?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Do values go into the sentences?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Does the new structure have a real trigger?</li>
+</ul>
+<h3 id="verification">Verification</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> Is there a test for every behaviour change?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are there the four categories: positive cases, confusable negatives, refusals, ambiguity?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Is there a regression baseline and a rollback path?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Is there a dead-row / ambiguity report?</li>
+</ul>
+<h3 id="permissions">Permissions</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> What is the AI’s read / write / forbidden set?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are permissions enforced by tools or requested by prompt?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Can the AI write directly to the online table, or merge directly?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Can review be completed within a limited context?</li>
+</ul>
+<h3 id="cost">Cost</h3>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> How many runtime wake-ups? How many maintenance wake-ups?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Which changes wake the model?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Does the fallback still log <code>unresolved</code>?</li>
+<li class="task-list-item"><input type="checkbox" disabled> Are coverage, fallback rate and unit cost recorded?</li>
+</ul>
+<h2 id="4-anti-patterns">4. Anti-patterns</h2>
+<ul>
+<li>Putting all logic into code;</li>
+<li>Putting the agent in the runtime;</li>
+<li>Letting the agent directly modify online state;</li>
+<li>Letting the agent maintain without tests;</li>
+<li>Stuffing everything into JSON;</li>
+<li>Reserving empty tables for the future;</li>
+<li>Using the model as fallback but clearing unresolved;</li>
+<li>Using model answers to pretend the structure already knows the answers.</li>
+</ul>
+<h2 id="5-when-not-to-use-this">5. When Not to Use This</h2>
+<p>One-off scripts, small tools with no ongoing evolution needs, exploratory tasks with no repeated decisions—simple scripts are the correct answer.</p>
+<p>Structure has a cost; don’t use it when it’s not worth it.</p>
+<h2 id="6-glossary">6. Glossary</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Maintainable</td><td>Changes are executable, verifiable, rollbackable, accumulable, affordable</td></tr><tr><td>Structure</td><td>The contract between code and data: rows, table structure, vocabulary, validation, process</td></tr><tr><td>Data</td><td>Declarable layer: knowledge, rules, variables, processes, tests, content files</td></tr><tr><td>meta-code</td><td>Interpreter/validator/runner whose code scale grows with vocabulary, not with domain</td></tr><tr><td>Four Homes</td><td>Config / Content / Data / State</td></tr><tr><td>Offline / Online</td><td>Editable, diff-comparable form vs indexable, queryable projection</td></tr><tr><td>Build / Online</td><td>Build tables vs runtime state tables</td></tr><tr><td>Rebuild Structure</td><td>Undeclared structure that must be re-derived every time</td></tr><tr><td>Reference</td><td>Cross-turn reference derived from previous turn’s citation, no state table needed</td></tr><tr><td>Process / State</td><td>Runtime state needed only when values must persist across turns</td></tr><tr><td>Wake</td><td>Wake the model: runtime fallback / maintenance turn / build</td></tr><tr><td>Fallback</td><td>Model answer when structure can’t answer; still records unresolved</td></tr><tr><td>Proposal</td><td>Auditable, rollbackable change; git PR or proposal table</td></tr><tr><td>κ</td><td>Deterministic coverage rate</td></tr><tr><td>Dead Row</td><td>Knowledge row never hit</td></tr></tbody></table>
+<h2 id="7-the-final-four-questions">7. The Final Four Questions</h2>
+<p>If AI changed a data/content item, and you can answer the four questions below, the system is on the right track:</p>
+<ol>
+<li>Why change? What’s the evidence?</li>
+<li>What changed? Where’s the diff?</li>
+<li>Did it improve? Do tests and metrics support it?</li>
+<li>How to roll back if wrong?</li>
+</ol>
+<p>Can answer, structure is maintainable; can’t answer, no matter how strong the model, it’s just changing things faster in a black box.</p>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div></section></div></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

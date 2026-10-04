@@ -1,0 +1,653 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Troubleshooting · Android Games on Linux · LKM</title><meta name="description" content="Look up by symptom: each entry is symptom → layer → cause → fix, including eleven false alarms."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/docs/android/trouble/"><meta property="og:type" content="website"><meta property="og:title" content="Troubleshooting · Android Games on Linux · LKM"><meta property="og:description" content="Look up by symptom: each entry is symptom → layer → cause → fix, including eleven false alarms."><meta property="og:url" content="https://plae-tljg.github.io/en/docs/android/trouble/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/path.0qta1OZl.css"><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+.docs-nav{font-size:.86rem;line-height:1.5}.docs-nav__toggle{background:var(--surface,transparent);border:1px solid var(--border);border-radius:var(--radius);width:100%;color:inherit;font:inherit;cursor:pointer;justify-content:space-between;align-items:center;gap:1rem;padding:.7rem .9rem;display:none}.docs-nav__track>summary,.docs-nav__stage>summary{cursor:pointer;align-items:baseline;gap:.5rem;padding:.4rem 0;list-style:none;display:flex}.docs-nav__track>summary::-webkit-details-marker,.docs-nav__stage>summary::-webkit-details-marker{display:none}.docs-nav__track>summary{color:var(--text);font-weight:620}.docs-nav__track>summary:before,.docs-nav__stage>summary:before{content:"▸";color:var(--text-faint);margin-right:.35rem;font-size:.7em;transition:transform .15s;display:inline-block}.docs-nav__track[open]>summary:before,.docs-nav__stage[open]>summary:before{transform:rotate(90deg)}.docs-nav__lang{border:1px solid var(--border);color:var(--text-faint);vertical-align:.05em;border-radius:3px;margin-left:.35rem;padding:0 .25rem;font-size:.62rem}.docs-nav__count{color:var(--text-faint);font-variant-numeric:tabular-nums;margin-left:auto;font-size:.78em}.docs-nav__stage{border-left:1px solid var(--border);margin-left:.55rem;padding-left:.7rem}.docs-nav__stage>summary{color:var(--text-soft);font-size:.95em}.docs-nav ul{margin:.1rem 0 .5rem;padding:0 0 0 1.1rem;list-style:none}.docs-nav li{margin:.1rem 0}.docs-nav a{color:var(--text-soft);border-left:2px solid #0000;border-radius:4px;padding:.12rem .4rem;text-decoration:none;display:block}.docs-nav a:hover{color:var(--link,var(--accent));background:var(--surface-soft,#7f7f7f14)}.docs-nav a.is-current{color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent);font-weight:650}.docs-nav__track>summary>a.is-current,.docs-nav__stage>summary>a.is-current{border-radius:4px;margin-left:-.4rem;padding:.05rem .4rem;display:inline-block}.docs-nav__foot{border-top:1px solid var(--border);margin:1rem 0 0;padding-top:.75rem}@media (width>=1024px){.docs-nav{border-right:1px solid var(--border);align-self:start;max-height:calc(100vh - 7rem);padding-right:.75rem;position:sticky;top:5rem;overflow-y:auto}}@media (width<=1023px){.docs-nav__toggle{display:flex}.docs-nav__body{border:1px solid var(--border);border-radius:var(--radius);margin-top:.75rem;padding:.75rem .9rem 1rem;display:none}.docs-nav[data-open] .docs-nav__body{display:block}}.container.container--docs{max-width:90rem}.docs-shell{grid-template-columns:minmax(0,1fr);gap:2rem;padding-top:2rem;display:grid}@media (width>=1024px){.docs-shell{grid-template-columns:15rem minmax(0,1fr);gap:2.5rem}}@media (width>=1280px){.docs-shell--with-toc{grid-template-columns:15rem minmax(0,1fr) 12rem}}.docs-main{min-width:0}.docs-main .article__header,.docs-main .notice,.docs-main .prose>p,.docs-main .prose>ul,.docs-main .prose>ol,.docs-main .prose>blockquote,.docs-main .prose>h2,.docs-main .prose>h3,.docs-main .prose>h4,.docs-main .prose>h5,.docs-main .prose>h6{max-width:46rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/">Writing</a><a href="/en/docs/" aria-current="page">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/docs/android/trouble/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><div class="container container--docs"><div class="docs-shell docs-shell--with-toc"><nav class="docs-nav" aria-label="Docs" data-docs-nav><button class="docs-nav__toggle" type="button" aria-expanded="false" data-docs-nav-toggle><span>Contents</span><span aria-hidden="true">▾</span></button><div class="docs-nav__body"><details class="docs-nav__track" data-nav-key="track:math-path"><summary><a href="/en/docs/math-path/">Math Learning Path</a><span class="docs-nav__count">9</span></summary><details class="docs-nav__stage" data-nav-key="stage:math-path/getting-started"><summary><a href="/en/docs/math-path/getting-started/">Getting Started</a></summary><ul><li><a href="/en/docs/math-path/getting-started/high-school-books/">Books I Read in High School</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:math-path/university"><summary><a href="/en/docs/math-path/university/">University Math</a></summary><ul><li><a href="/en/docs/math-path/university/set-theory/"><span aria-hidden="true">∅ </span>Set Theory</a></li><li><a href="/en/docs/math-path/university/math-logic/"><span aria-hidden="true">⟂ </span>Mathematical Logic</a></li><li><a href="/en/docs/math-path/university/number-theory/"><span aria-hidden="true">ℕ </span>Number Theory</a></li><li><a href="/en/docs/math-path/university/group-theory/"><span aria-hidden="true">⊕ </span>Group Theory</a></li><li><a href="/en/docs/math-path/university/analysis/"><span aria-hidden="true">∫ </span>Mathematical Analysis</a></li><li><a href="/en/docs/math-path/university/topology/"><span aria-hidden="true">◈ </span>Topology</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:ubuntu"><summary><a href="/en/docs/ubuntu/">My Ubuntu Setup</a><span class="docs-nav__count">44</span></summary><details class="docs-nav__stage" data-nav-key="stage:ubuntu/base"><summary><a href="/en/docs/ubuntu/base/">Install &amp; Disks</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/ubuntu/base/headless/">Running Linux in Headless Mode</a></li><li><a href="/en/docs/ubuntu/base/multiple-ssds/">Managing Multiple SSDs for Storage and Quick Access</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/apps"><summary><a href="/en/docs/ubuntu/apps/">Applications</a></summary><ul><li><a href="/en/docs/ubuntu/apps/quick-install/">Common Apps Installation</a></li><li><a href="/en/docs/ubuntu/apps/browsers/">浏览器</a></li><li><a href="/en/docs/ubuntu/apps/firefox/">Firefox</a></li><li><a href="/en/docs/ubuntu/apps/editors/">Editors and IDEs</a></li><li><a href="/en/docs/ubuntu/apps/ide/">IDE Installation</a></li><li><a href="/en/docs/ubuntu/apps/image-editors/">Image Editing Tools</a></li><li><a href="/en/docs/ubuntu/apps/audio/">Audio Tools</a></li><li><a href="/en/docs/ubuntu/apps/multimedia/">多媒体工具</a></li><li><a href="/en/docs/ubuntu/apps/office/">Office software</a></li><li><a href="/en/docs/ubuntu/apps/games/">Games</a></li><li><a href="/en/docs/ubuntu/apps/network-tools/">Network Tools</a></li><li><a href="/en/docs/ubuntu/apps/database-tools/">Database Tools</a></li><li><a href="/en/docs/ubuntu/apps/dev-tools/">Development Tools</a></li><li><a href="/en/docs/ubuntu/apps/system-tools/">System Tools</a></li><li><a href="/en/docs/ubuntu/apps/user-config/">User Configuration Tools</a></li><li><a href="/en/docs/ubuntu/apps/virtual-machines/">Virtual Machine</a></li><li><a href="/en/docs/ubuntu/apps/kvm-qemu/">KVM/QEMU VM Configuration and Migration</a></li><li><a href="/en/docs/ubuntu/apps/sogou-input/">Sogou Input</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/gpu"><summary><a href="/en/docs/ubuntu/gpu/">GPU &amp; CUDA</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/ubuntu/gpu/cuda/">NVIDIA GPU and CUDA setup</a></li><li><a href="/en/docs/ubuntu/gpu/igpu-postmortem/">Old iGPU problems (postmortem)</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/remote"><summary><a href="/en/docs/ubuntu/remote/">Remote Access</a></summary><ul><li><a href="/en/docs/ubuntu/remote/basics/">SSH Basic Commands</a></li><li><a href="/en/docs/ubuntu/remote/authentication/">Troubleshooting SSH authentication</a></li><li><a href="/en/docs/ubuntu/remote/sftp/">Using SFTP</a></li><li><a href="/en/docs/ubuntu/remote/proxy-jump/">SSH Jump Hosts and Proxies</a></li><li><a href="/en/docs/ubuntu/remote/android-access/">Android Local File Access</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/net"><summary><a href="/en/docs/ubuntu/net/">Networking</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/ubuntu/net/static-ip/">How to set a static IP on Ubuntu (temporary and permanent methods)</a></li><li><a href="/en/docs/ubuntu/net/local-https/">HTTPS Configuration</a></li><li><a href="/en/docs/ubuntu/net/wifi-reconnect/">Wi-Fi Auto-Reconnect Issues and Solutions on Windows</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/shell"><summary><a href="/en/docs/ubuntu/shell/">Terminal &amp; Shell</a></summary><ul><li><a href="/en/docs/ubuntu/shell/common-dirs/">Common Directory of Ubuntu</a></li><li><a href="/en/docs/ubuntu/shell/bash-tricks/">Bash Tricks</a></li><li><a href="/en/docs/ubuntu/shell/systemd/">systemd Common Commands</a></li><li><a href="/en/docs/ubuntu/shell/audio-cmd/">Common Command for Audio</a></li><li><a href="/en/docs/ubuntu/shell/reboot-router/">Reboot Router</a></li><li><a href="/en/docs/ubuntu/shell/send-email/">Scripts to Send Emails</a></li><li><a href="/en/docs/ubuntu/shell/code-highlight/">Code Highlighting</a></li><li><a href="/en/docs/ubuntu/shell/cursor-style/">Cursor Style</a></li><li><a href="/en/docs/ubuntu/shell/fun-commands/">Interesting Commands</a></li><li><a href="/en/docs/ubuntu/shell/links/">Useful Links</a></li><li><a href="/en/docs/ubuntu/shell/hidden-images/">Image seeds: hiding files inside pictures</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:android" open><summary><a href="/en/docs/android/">Android Games on Linux</a><span class="docs-nav__count">3</span></summary><details class="docs-nav__stage" data-nav-key="stage:android/solution"><summary><a href="/en/docs/android/solution/">Solution</a></summary><ul><li><a href="/en/docs/android/solution/arknights/">Arknights on the same machine</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:android/trouble" open><summary><a href="/en/docs/android/trouble/" aria-current="page" class="is-current">Troubleshooting</a></summary><ul></ul></details></details><details class="docs-nav__track" data-nav-key="track:homelab"><summary><a href="/en/docs/homelab/">Homelab &amp; Self-hosting</a><span class="docs-nav__count">11</span></summary><details class="docs-nav__stage" data-nav-key="stage:homelab/services"><summary><a href="/en/docs/homelab/services/">Services</a></summary><ul><li><a href="/en/docs/homelab/services/asterisk-basics/">Asterisk Basic Commands and Configuration</a></li><li><a href="/en/docs/homelab/services/asterisk-trunk/">SIP Trunk Configuration Guide</a></li><li><a href="/en/docs/homelab/services/asterisk-audio/">Asterisk Audio Processing</a></li><li><a href="/en/docs/homelab/services/postgresql/">PostgreSQL</a></li><li><a href="/en/docs/homelab/services/local-git/">Using Git on a Local Machine and LAN Server</a></li><li><a href="/en/docs/homelab/services/git-rewrite/">Deliberately rewriting repository history</a></li><li><a href="/en/docs/homelab/services/github-pages-paths/">两个仓库，一个域名：GitHub Pages 路径实验</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:homelab/home"><summary><a href="/en/docs/homelab/home/">Home Devices</a><span class="docs-nav__lang" title="Language"></span></summary><ul><li><a href="/en/docs/homelab/home/ip-cam/">IP Camera - CameraLink App</a></li><li><a href="/en/docs/homelab/home/ip-cam-old/">IP Camera</a></li><li><a href="/en/docs/homelab/home/ip-cam-old-install/">IP Camera Project - Setup Guide</a></li></ul></details></details><p class="docs-nav__foot"><a href="/en/archive/">Index</a></p></div></nav><script type="module">var e=`docs-nav:open`,t=document.querySelector(`[data-docs-nav]`);if(t){let n=JSON.parse(localStorage.getItem(e)||`{}`),r=Array.from(t.querySelectorAll(`details[data-nav-key]`));for(let t of r){let r=t.dataset.navKey||``;r in n&&!t.querySelector(`[aria-current="page"]`)&&(t.open=n[r]),t.addEventListener(`toggle`,()=>{n[r]=t.open,localStorage.setItem(e,JSON.stringify(n))})}t.querySelector(`[data-docs-nav-toggle]`)?.addEventListener(`click`,e=>{let n=t.toggleAttribute(`data-open`);e.currentTarget.setAttribute(`aria-expanded`,String(n))}),t.querySelector(`[aria-current="page"]`)?.scrollIntoView({block:`center`})}</script><div class="docs-main" data-pagefind-body><div class="docs-page"><nav class="breadcrumb" style="margin-top:2rem"><a href="/en/docs/android/">Android Games on Linux</a><span aria-hidden="true">/</span><span>Troubleshooting</span></nav><header class="path-stage__head"><h1>Troubleshooting</h1><p>Look up by symptom: each entry is symptom → layer → cause → fix, including eleven false alarms.</p></header><div class="prose path-content"><p><em>Single source of truth for symptoms. Concepts (why any of this is true) are explained once, in
+<code>02-STORY.md</code> and <code>research/</code> — this file links to them instead of repeating them.</em></p>
+<p><strong>How to read an entry:</strong> <code>Symptom</code> (exact text where we have it) → <code>Layer</code> → <code>Cause</code> → <code>Fix</code>.
+Anything marked <strong>⚠️ open</strong> was never fixed on this machine.</p>
+<hr>
+<h2 id="0-thirty-second-triage">0. Thirty-second triage</h2>
+<p>Run these five before believing any theory:</p>
+<figure class="code-viewer" data-lines="6"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">emulator</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -accel-check</span><span style="color:#6A737D;--shiki-dark:#6A737D">                     # 1) is KVM really usable?</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">ls</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -l</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> /dev/kvm</span><span style="color:#24292E;--shiki-dark:#E1E4E8"> &#x26;&#x26; </span><span style="color:#6F42C1;--shiki-dark:#B392F0">id</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -o</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> kvm</span><span style="color:#6A737D;--shiki-dark:#6A737D">        #    …and is your user allowed to use it?</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">glxinfo</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -B</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> renderer</span><span style="color:#6A737D;--shiki-dark:#6A737D">             # 2) is OpenGL real (NVIDIA/AMD) or llvmpipe (software)?</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> shell</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> getprop</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> ro.build.version.sdk</span><span style="color:#6A737D;--shiki-dark:#6A737D">    # 3) which Android is the guest?  (need 36)</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -s</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> berberis:</span><span style="color:#005CC5;--shiki-dark:#79B8FF">*</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -m1</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> Initialized</span><span style="color:#6A737D;--shiki-dark:#6A737D">   # 4) which translator?</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">adb</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> logcat</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -cE</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> "restore sp|Fatal signal"</span><span style="color:#6A737D;--shiki-dark:#6A737D">   # 5) crash counters (want 0 0)</span></span></code></pre></figure>
+<p><code>tools/scripts/setup-fgo-avd.sh verify</code> runs 3–5 for you and says whether the config is the known-good one.</p>
+<p><strong>The habit that matters:</strong> work out <em>which layer</em> the failure is in before changing anything
+(§7 has the list of things that looked like the culprit and were not).</p>
+<hr>
+<h2 id="1-host--os-layer">1. Host / OS layer</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>1.1</td><td><code>/dev/kvm is not found: VT disabled in BIOS or KVM kernel module not loaded</code></td><td><strong>Misleading message.</strong> VT-x was on and <code>kvm_intel</code> was loaded — the user simply wasn’t in the <code>kvm</code> group (<code>crw-rw---- root:kvm</code>)</td><td><code>sudo usermod -aG kvm $USER</code>, then <strong>re-login</strong>; confirm with <code>emulator -accel-check</code></td></tr><tr><td>1.2</td><td>Guest renders at ~1 fps; <code>glxinfo -B</code> says <code>llvmpipe (LLVM 15.0.7, 256 bits)</code> — <strong>while <code>nvidia-smi</code> prints a healthy GPU table</strong></td><td>Driver installed <strong>compute-only</strong>: <code>nvidia.ko</code>, <code>libcuda</code>, <code>nvidia-ml</code> present, but the <strong>graphics</strong> userspace (<code>libGLX_nvidia.so.0</code>, <code>libnvidia-glcore</code>, <code>libEGL_nvidia</code>) missing. One kernel module, <strong>two independent userspaces</strong></td><td>Install the full open-kernel driver (<code>nvidia-driver-595-open</code> and friends). Verify <code>glxinfo -B</code> shows the real GPU, and in-guest <code>dumpsys SurfaceFlinger | grep '^GLES'</code></td></tr><tr><td>1.3</td><td><code>nvidia-settings assert failure: free(): invalid pointer</code> at login</td><td><code>nvidia-settings</code> came from the CUDA repo (<code>615.71.09</code>) while the driver is <code>595.91.07</code>, and it was not held</td><td><code>sudo apt install --allow-downgrades nvidia-settings=595.91.07-1ubuntu1</code> + <code>sudo apt-mark hold nvidia-settings</code>. <strong>⚠️ open on this machine</strong> (<code>04-CLEANUP.md</code> §6.3)</td></tr><tr><td>1.4</td><td>DKMS cannot build the NVIDIA module after a kernel update</td><td>Missing <code>linux-headers-$(uname -r)</code></td><td><code>sudo apt install linux-headers-$(uname -r)</code> then <code>sudo dkms autoinstall -k $(uname -r)</code></td></tr><tr><td>1.5</td><td>SDK tools fail with a path error even though the SDK is installed</td><td><code>ANDROID_SDK_ROOT</code> pointed at a <strong>non-existent</strong> directory while <code>ANDROID_HOME</code> was correct — tools read <code>ANDROID_SDK_ROOT</code> first</td><td>Set both to the same real path in <code>~/.bash_env_vars</code></td></tr><tr><td>1.6</td><td>Whole PC loses networking</td><td>A <code>docker run --network host</code> container (redroid) collided with the host’s <code>wg0 10.0.0.0/24</code></td><td>Never give redroid <code>--network host</code>; use a bridge network (see 6.3)</td></tr></tbody></table>
+<h2 id="2-emulator-layer">2. Emulator layer</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>2.1</td><td><code>PANIC: Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator on x86_64 host</code></td><td>Deliberate policy: ARM64 guests are refused on x86_64 hosts (<code>qemu-system-aarch64</code> ships but is blocked)</td><td>Don’t chase ARM64 AVDs. Use an <strong>x86_64</strong> image + the ARM translator</td></tr><tr><td>2.2</td><td>Stream of <code>gfxstream … error null ctx</code>, <code>Failed to find ColorBuffer</code>, then the emulator dies with <strong>SIGSEGV</strong></td><td>gfxstream host-GL path is unstable, worst on emulator 37.2.12</td><td>Use emulator <strong>37.3.2+</strong>; if it still happens, <code>-gpu swiftshader_indirect</code> (software, stable)</td></tr><tr><td>2.3</td><td>You believed you were testing ANGLE, but everything behaved like <code>host</code></td><td><code>ERROR | gpuChoiceBasedOnGpuOptions: Selected GPU option 'angle_indirect' is not valid, switching to 'auto' mode</code> — <code>auto</code> selects <strong>host</strong></td><td>Don’t pass <code>angle_indirect</code>. Read that log line to know what actually ran</td></tr><tr><td>2.4</td><td><code>adb remount</code> → <code>Device must be bootloader unlocked</code></td><td>The emulator was started <strong>without</strong> <code>-writable-system</code></td><td>Add the flag — but note the working FGO setup needs <strong>no</strong> system writes at all</td></tr><tr><td>2.5</td><td><code>WARNING | Emulator does not support more than 6 cores. Number of cores set to 6</code></td><td>Cosmetic cap</td><td>Ignore</td></tr><tr><td>2.6</td><td><code>INSTALL_FAILED_INSUFFICIENT_STORAGE</code> / <code>Requested internal only, but not enough space</code></td><td>Fresh AVDs default to a <strong>2 GB</strong> data partition; FGO’s APK alone is 2 GB</td><td>Set <code>disk.dataPartition.size=32G</code> (and <code>hw.ramSize=8192</code>) in <code>~/.android/avd/&#x3C;name>.avd/config.ini</code></td></tr><tr><td>2.7</td><td><code>adb install</code> → <code>Failure calling service package: Broken pipe (32)</code></td><td><code>system_server</code> restarted mid-install: either an unstable image (36.1) or a too-small partition</td><td>Use Android <strong>16.0 rev 7</strong> and a 32 GB partition; or <code>adb push</code> + <code>adb shell pm install -r -g /data/local/tmp/x.apk</code></td></tr><tr><td>2.8</td><td><code>INSTALL_FAILED_DEPRECATED_SDK_VERSION: App package must target at least SDK version 24, but found 0</code></td><td>An APK (ours: <code>armtest.apk</code>) built without <code>targetSdkVersion</code> — Android 14+ refuses it</td><td>Set <code>targetSdkVersion</code> ≥ 24 and rebuild (see <code>tools/armprobe/</code> for a correct example)</td></tr><tr><td>2.9</td><td><strong>The game feels slow</strong>: 17–23 fps, frames 100–120 ms, ~30 % of frames miss vsync</td><td>The emulator’s threads may run on <strong>any</strong> core, and on a hybrid CPU the scheduler lands them on the <strong>E-cores</strong> — on this i5-13500 the 6 P-cores run at 4.8 GHz while the 8 E-cores only reach 3.5 GHz. ARM64 translation is pure CPU work, so it inherits that penalty</td><td><strong>Pin the emulator to the P-cores.</strong> Detect them, then hand them to <code>taskset</code>: <br><code>P=$(lscpu -e=CPU,MAXMHZ | awk 'NR>1 &#x26;&#x26; $2+0>4000{printf "%s,",$1}' | sed 's/,$//')</code> <br><code>taskset -c "$P" emulator -avd api36 …</code> <br>Measured in battle: <strong>17–23 fps / 30 % missed → 30.0 fps / 2–7 % missed</strong>. Already wired into <code>avd</code>/<code>avdbg</code> in <code>~/.bash_env_vars</code> (<code>_avd_pcpu</code>; disable with <code>AVD_NO_PIN=1</code>)</td></tr><tr><td>2.10</td><td>You tune for 60 fps and never reach it</td><td><strong>FGO caps itself at 30 fps</strong> (<code>Application.targetFrameRate</code>), so 33.3 ms frame intervals are the game’s own design, not a fault. The AVD refreshes at 60 Hz, so a correctly configured setup shows exactly 30.0 fps</td><td>Don’t chase 60. Judge the setup by <strong>missed-vsync %</strong> instead — see §10 for the <code>dumpsys SurfaceFlinger --latency</code> command; intervals should sit at ~33 ms</td></tr><tr><td>2.11</td><td>Adding RAM to the AVD hoping for smoother gameplay</td><td>With 8 GB the guest has ~4 GB <em>available</em> and Android’s <code>lmkd</code> never fires, so there is no memory pressure to relieve. The host is the real constraint (this box: 31 GB, <strong>no swap</strong>, ~20 GB already used, emulator RSS ≈13 GB at 8 GB configured)</td><td>Don’t. Going to 16 GB would push the host toward ~28 GB with no swap → OOM kills that look exactly like “random crashes” (§1.7). Fix CPU pinning (2.9) instead</td></tr><tr><td>2.12</td><td>The game holds a steady 30 fps, then <strong>dips to ~19 fps for a few seconds</strong> and recovers by itself</td><td>Not the emulator: it is <strong>ACE’s anti-cheat memory scanner</strong>. During a dip the guest shows <code>ndk_translation_program_runner_binfmt_misc_arm64 ./memscan</code> burning <strong>~204 % CPU</strong> (two guest cores) — and it is itself translated ARM64 — while the game needs only ~64 %</td><td>Nothing to fix; it is a periodic in-game event. Recognise it instead of chasing RAM/GPU: <code>adb shell "top -n 1 -b | head -10"</code> during a dip</td></tr></tbody></table>
+<h2 id="3-system-image-layer">3. System-image layer</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>3.1</td><td><code>dlopen failed: empty/missing DT_HASH/DT_GNU_HASH in "…/libtersafe2.so" (new hash type from the future?)</code></td><td><strong>16 KB page-size</strong> image (<code>google_apis_ps16k</code>) is incompatible with ACE’s hardened <code>libtersafe2.so</code></td><td>Use a normal (4 KB) image</td></tr><tr><td>3.2</td><td>On Android <strong>36.1</strong>: SurfaceFlinger crash-loops (<code>Abort message: 'Assertion failed: !rcEnc->featureInfo()->hasReadColorBufferDma'</code>, 48–72× per boot) and <code>system_server</code> restarts during large installs</td><td>That specific image build is broken on this emulator/GPU combination (both <code>host</code> and <code>swiftshader</code>)</td><td>Use <strong>Android 16.0 rev 7</strong> (<code>android-36;google_apis;x86_64</code>)</td></tr><tr><td>3.3</td><td>You read that only <code>google_apis_playstore</code> ships ARM translation</td><td>It’s <strong>false</strong>: all three API 35 images set <code>ro.dalvik.vm.native.bridge=libndk_translation.so</code></td><td>Check the image’s own <code>build.prop</code> (and <code>getprop</code>) instead of trusting a summary</td></tr><tr><td>3.4</td><td><code>boot_completed</code> never becomes 1 after copying files into <code>/system</code></td><td>You overwrote ordinary system libraries from another build — classically <code>libnbaio.so</code> / <code>libnblog.so</code> — and <code>audioserver</code> SIGSEGV-loops every 5 s</td><td><strong>Only</strong> ever copy <code>libndk_translation*</code> files. Recover by deleting <code>~/.android/avd/&#x3C;name>.avd/system.img.qcow2</code> so it regenerates pristine</td></tr><tr><td>3.5</td><td>Your <code>/system</code> edits appear to “vanish” between boots (the bridge hash is suddenly the stock one again) — or, the reverse, a long-forgotten experiment comes back to life</td><td>A writable <code>/system</code> lives in <code>system.img.qcow2</code>, and that overlay is only mounted when the emulator is started with <strong><code>-writable-system</code></strong>. Boot without it and you get the pristine image; boot with it and you get whatever was last copied in</td><td>Decide which you want and <em>say so every time</em>. The FGO setup needs <strong>no</strong> system writes, so never pass the flag — or delete the overlay to be certain. Always confirm with the bridge hash (<code>avdgpu</code> / <code>tools/scripts/setup-fgo-avd.sh verify</code>) (bridge hash <code>fbadc774…</code> = stock/good, <code>af88b2c1…</code> = the failed 16.1 transplant). <strong>State on this machine (2026-10-04): the overlay was deleted and <code>api36</code> re-verified at <code>fbadc774…</code>, so both AVDs are stock now</strong></td></tr><tr><td>3.6</td><td>No Play Store in the guest</td><td>Wrong image <strong>tag</strong>: <code>google_apis</code>, <code>google_apis_ps16k</code> and <code>default</code> have no Play Store; only <code>google_apis_playstore</code> does</td><td>Pick the tag you actually need (<code>google_apis</code>/<code>ps16k</code> are <code>userdebug</code> and therefore writable; <code>playstore</code> is <code>user</code> and is not)</td></tr><tr><td>3.7</td><td>In-guest “device isn’t Play Protect certified”, Google sign-in fails</td><td>The AVD isn’t registered with Google; unpatched API 37 revisions are known to fail sign-in outright</td><td>Register the device ID at <code>google.com/android/uncertified</code>, cold-boot (<code>-no-snapshot-load</code>) after signing in, or stay on API 35/36. Irrelevant for FGO 国服 (no Google services needed)</td></tr></tbody></table>
+<h2 id="4-translator-layer-the-heart-of-it">4. Translator layer (the heart of it)</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>4.1</td><td><strong>The original killer.</strong> <code>F berberis: Guest call didn't restore sp: expected 0x…fd0, actual 0x…fc0</code> → <code>F libc: Fatal signal 6 (SIGABRT) … (bilibili.fatego)</code> at <strong>~51 s</strong>, every run, on API 35 images</td><td><code>berberis 0.2.3</code>’s <code>ExecuteGuestCall</code> requires the guest SP to return byte-identical; FGO is off by exactly <code>0x10</code>. Three different API 35 libndk builds all contain the fatal check</td><td><strong>Use the Android 16.0 image</strong> — its <code>berberis 16.0.0</code> does not trip it. This is the fix</td></tr><tr><td>4.2</td><td>Same message but as a <strong>warning</strong>: <code>E berberis: Warning: guest call didn't restore sp…</code> + <code>Trying to restore sp and continue...</code> — no crash, but the game then hangs forever (idle <code>UnityMain</code> in a private futex, black surface, zero network traffic)</td><td>The Android 16.1 bridge softens the abort but leaves the process in a broken state. Reproduced on API 35 <strong>and</strong> 36.0</td><td>Don’t transplant the 16.1 bridge. Use the <strong>matched</strong> 16.0 image so the fault never happens</td></tr><tr><td>4.3</td><td>After copying only <code>libndk_translation.so</code>: <code>Fatal signal 11 … #04 libndk_translation_proxy_libandroid.so (berberis::TrampolineFuncGenerator&#x3C;…>::Func+15)</code></td><td>A bridge and its <code>libndk_translation_proxy_*.so</code> files are a <strong>matched set</strong>; the trampolines call into the proxies</td><td>Copy the whole set (<code>tools/nbkit-a361/</code>) — or, better, don’t transplant at all</td></tr><tr><td>4.4</td><td>libhoudini inside an AVD: <code>D houdini: Initialize library(version: 13.0.1_z.39540.g RELEASE)... successfully.</code> then <code>D houdini: Fatal error (ID:0x01900158).</code> and SIGSEGV at <code>s_000067+1227</code> inside <code>NativeLoaderNamespace::Load</code> — on <em>any</em> ARM64 library</td><td>houdini cannot be transplanted onto stock Google AVD images in this way; the image lacks whatever else it needs. Not SELinux, not binfmt, not the bridge filename (all three were tested)</td><td>Don’t. It <em>does</em> work inside the purpose-built redroid image (6.4)</td></tr><tr><td>4.5</td><td>Apps hang on splash / die with <code>SIGILL</code>/<code>SIGABRT</code> naming <code>libhoudini.so</code>, one process pegging <strong>270 % CPU</strong>, “suddenly around September 2026”</td><td>The <strong>hpe-14 build</strong> of houdini has a hardcoded counter gate: <code>cmp [mem],2</code> / <code>jae</code> — the folk name is “timebomb”, it is <em>not</em> a timestamp (<code>research/FGO-on-Linux-ARM-emulation-report.md</code> §3.2)</td><td>6-byte NOP of that <code>jae</code> — 64-bit offset <code>0xe6085</code>, 32-bit <code>0x8a29a</code>. <strong>Never apply those offsets to a different build</strong>: on this machine’s <code>13.0.1_z.39540.g</code> offset <code>0xe6085</code> holds <code>ff ff 0f 84 4b 07</code>, i.e. unrelated <code>.text</code>. Use <code>Vvamp</code>’s pattern-searching script, which refuses unknown hashes</td></tr><tr><td>4.6</td><td>houdini dies with <code>SIGILL</code> (<code>signal 4</code>, <code>SI_USER</code>) that is clearly <strong>self-inflicted</strong></td><td>Second, undocumented self-destruct: houdini sends itself <code>tkill(gettid(), SIGILL)</code> when its <strong>on-disk symlink topology</strong> is disturbed — identical bytes as four regular files crash, the stock symlink layout works</td><td>Preserve the symlink layout when packaging houdini (Magisk/overlay)</td></tr><tr><td>4.7</td><td><code>W …: Unexpected CPU variant for x86: x86_64.</code> + <code>Known variants: atom, sandybridge, silvermont, …</code></td><td><strong>Benign ART noise</strong> on 12th/13th-gen Intel — it is not a translator error, despite looking like one</td><td>Ignore</td></tr><tr><td>4.8</td><td>redroid: <code>zygote64</code> itself SIGSEGVs (<code>fault addr 0xffffffffffffffea</code>, <code>ndk_translation::WaitForAppProcess</code>) and nothing can start — regressed from previously working</td><td>The container had silently reverted to the image’s <strong>bundled 2023 libndk</strong>, which doesn’t recognise 13th-gen Intel</td><td>Use the purpose-built houdini image and verify the bridge hash after <strong>every</strong> container recreation</td></tr></tbody></table>
+<h2 id="5-game--anti-cheat-layer">5. Game / anti-cheat layer</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>5.1</td><td><code>Input dispatching timed out (… is not responding. Waited 500xms for MotionEvent(… source=MOUSE … action=HOVER_MOVE))</code></td><td>Input from a <strong>mouse</strong> (scrcpy forwarding hover) — FGO is touch-only and never consumes hover events</td><td>Drive it with <strong>touch</strong> only: <code>adb shell input tap X Y</code>. Don’t attach a mouse to the game surface</td></tr><tr><td>5.2</td><td>Game “hangs” on a static splash that is byte-identical across screenshots</td><td>Sometimes it really is loading; sometimes a dialog is on top that screencap doesn’t show</td><td>Dump the UI (<code>uiautomator dump</code>) and the top activity before concluding “frozen”. In our case a <code>GSCPushAuthActivity</code> prompt was waiting</td></tr><tr><td>5.3</td><td><code>E GP7Worker: Invalid ID 0x00000000.</code> and the ACE worker process restart-loops every ~17 s</td><td>ACE’s own worker failing — looks alarming</td><td><strong>Benign</strong>: the same loop appears in runs that reach the login page and play normally</td></tr><tr><td>5.4</td><td><code>V BgcPlugin: … NullPointerException: … com.base.bgcplugin.BgcPluginManager.onlyDownloadAndInstall() on a null object reference</code></td><td>B站 game CDN/plugin deployment step throwing</td><td><strong>Benign</strong>: byte-identical NPE appears in the successful run too</td></tr><tr><td>5.5</td><td>Removing/zeroing ACE to “get past” it → <code>UnsatisfiedLinkError</code> at <code>com.ace.gshell.AceApplication.&#x3C;clinit></code> (and <code>pm disable-user</code> doesn’t help)</td><td>ACE is loaded from a static initialiser and re-bound by the game</td><td>Don’t. ACE is <strong>not</strong> the blocker anyway (4.1 is) — and tampering is server-side visible</td></tr><tr><td>5.6</td><td>redroid: <code>E AHardwareBuffer: GraphicBuffer(w=4, h=4, lc=1) failed (Unknown error -3)</code> repeatedly</td><td>Guest GPU path (software/VirtIO) can’t allocate certain buffers</td><td>Part of why the container route renders poorly; use the AVD</td></tr><tr><td>5.7</td><td>Login page won’t open from adb: <code>SecurityException: … not exported from uid …</code></td><td>The bilibili login activities are not exported</td><td><code>adb root</code> first, then <code>am start -n com.bilibili.fatego/com.gsc.phone_login.PhoneLoginActivity</code></td></tr></tbody></table>
+<h2 id="6-container-route-redroid--waydroid">6. Container route (redroid / Waydroid)</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>#</th><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>6.1</td><td>redroid container exits <strong><code>129</code> with no logs at all</strong></td><td>The <code>binder_linux</code> kernel module was not loaded</td><td>Load it without sudo: <code>docker run --rm --privileged --pid=host ubuntu:22.04 nsenter -t 1 -m -u -i -n -p -- /usr/sbin/modprobe binder_linux</code></td></tr><tr><td>6.2</td><td>redroid “can’t connect over adb — port 5555 is taken by the emulator”</td><td><strong>Misdiagnosis.</strong> The container had <strong>no network attachment at all</strong> (<code>Networks={}</code>, its network had 0 members); <code>adbd</code> was listening on 5555 <em>inside</em> it</td><td>Attach a network and publish a port (<code>-p 5556:5555</code>), then <code>adb connect 127.0.0.1:5556</code> — or <code>adb connect &#x3C;container-ip>:5555</code></td></tr><tr><td>6.3</td><td>Host loses all networking when redroid starts</td><td><code>--network host</code> + redroid’s internal <code>10.0.0.0/24</code> collided with the host’s <code>wg0</code></td><td>Use a bridge network (<code>redroid-net</code>, <code>172.30.0.0/24</code>), never <code>--network host</code></td></tr><tr><td>6.4</td><td>redroid with <code>androidboot.redroid_gpu_mode=host</code> → SurfaceFlinger SIGSEGV loop, <code>init.svc.surfaceflinger = restarting</code>, boot never completes</td><td>NVIDIA’s proprietary driver doesn’t provide the standard Mesa/DRM interfaces redroid’s gralloc expects</td><td>Keep <code>gpu_mode=guest</code> (software). There is no GPU path for redroid on NVIDIA</td></tr><tr><td>6.5</td><td>redroid: game runs but <code>UnityMain</code> pegs <strong>~105 % of a core</strong> forever on a frozen splash, <code>RenderThread</code> idle</td><td>Unity’s job system spin-waiting in translated code; environment has no GPU accel and Unity is told <code>Cores = 1</code> although the guest really has 20</td><td>No fix found. This is why the container route is a dead end for FGO</td></tr><tr><td>6.6</td><td>Waydroid: 3D unplayable, <code>ro.hardware.egl=swiftshader</code> no matter what you set</td><td><strong>By design</strong>: Waydroid’s <code>tools/helpers/gpu.py</code> contains <code>unsupported = ["nvidia"]</code>; Android needs bionic EGL/GLES, NVIDIA ships glibc-only userspace</td><td>Don’t fight it — use the AVD. Waydroid is fine for 2D/media on this box</td></tr><tr><td>6.7</td><td>Waydroid won’t start on this desktop at all</td><td>Waydroid is a <strong>Wayland client</strong>; this session is X11/GNOME 42</td><td>Nested Weston (<code>weston --backend=x11-backend.so --shell=kiosk-shell.so</code>) — see <code>02-STORY.md</code> §4</td></tr><tr><td>6.8</td><td>Container: “no Vulkan drivers” / graphics init failure in Vulkan-only ARM64 games; config edits (e.g. DPI) silently ignored</td><td>ARM bridges provide no Vulkan path; and Waydroid’s <code>make_base_props()</code> only re-runs on <code>init</code>/<code>upgrade</code>, so <code>[properties]</code> edits appear to do nothing</td><td>No Vulkan workaround. For config: <code>sudo waydroid upgrade -o</code> after editing, or set it at runtime (<code>wm density</code>). Both are moot for FGO — use the AVD</td></tr><tr><td>6.9</td><td><strong>Dangerous:</strong> pressing “Power off” <em>inside</em> the Android container shuts down the <strong>host</strong> root filesystem (every new host process segfaults; hard reboot required)</td><td><code>F2FS_IOC_SHUTDOWN</code> from the container reaches the host superblock through the rbind’d <code>/data</code> (upstream Waydroid issue #2438)</td><td>Never press Android’s power-off in a container. Keep container data off the root filesystem</td></tr><tr><td>6.10</td><td>Banking apps / Play Integrity refuse to run</td><td>A container is not a Google-certified device: no TEE, SELinux off, wrong ABI list</td><td>Nothing to fix; Magisk-style hiding doesn’t restore hardware attestation. Irrelevant for FGO 国服</td></tr></tbody></table>
+<h2 id="7-false-alarms--things-that-looked-like-the-culprit-and-were-not">7. False alarms — things that looked like the culprit and were not</h2>
+<p>Worth reading before you spend a day on any of them.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Suspect</th><th>Why it looked guilty</th><th>Verdict</th></tr></thead><tbody><tr><td><strong>ACE anti-cheat</strong></td><td>FGO ships it (<code>libtersafe2.so</code>, <code>libtprt.so</code>, GP6/GP7 services) and won’t run without it</td><td>❌ Not the blocker. Arknights ships the same ACE family and plays; FGO passes ACE to the agreement page</td></tr><tr><td><strong>Mouse-hover ANR</strong></td><td>Six ANR traces, all identical</td><td>⚠️ Real, but an <em>input artefact</em>. Touch-only input removed it</td></tr><tr><td><strong>“adb port 5555 conflict”</strong></td><td>The emulator did hold 5555</td><td>❌ The container simply had no network (6.2)</td></tr><tr><td><strong><code>BgcPluginManager</code> NPE</strong></td><td>Thrown during startup, looks fatal</td><td>❌ Present in the successful run too</td></tr><tr><td><strong><code>GP7Worker</code> restart loop</strong></td><td>Looks like anti-cheat failing</td><td>❌ Present in successful runs</td></tr><tr><td><strong>Our first ARM64 probe crashing</strong></td><td>Suggested translation was broken</td><td>❌ The APK had <code>targetSdk 0</code> and couldn’t even install on Android 14+ (2.8)</td></tr><tr><td><strong>“Only Play Store images have ARM translation”</strong></td><td>Widely repeated</td><td>❌ False (3.3)</td></tr><tr><td><strong>ARM64 AVD</strong></td><td>Seems like the obvious way to run ARM games</td><td>❌ Refused by policy (2.1)</td></tr><tr><td><strong>Different libndk builds</strong></td><td>Different sizes, different build IDs</td><td>❌ All three carry the same fatal check (4.1)</td></tr><tr><td><strong>Blaming the GPU/driver for the crash</strong></td><td><code>restore sp</code> sounds graphics-adjacent</td><td>❌ It’s the translator’s stack invariant</td></tr><tr><td><strong><code>Unexpected CPU variant for x86</code></strong></td><td>Sounds like a CPU-support error</td><td>❌ Benign ART noise (4.7)</td></tr></tbody></table>
+<h2 id="8-concepts--where-each-is-explained-no-duplicates">8. Concepts → where each is explained (no duplicates)</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Concept</th><th>Explained in</th></tr></thead><tbody><tr><td>Native bridge / <code>NativeBridgeItf</code>, why only itu can work</td><td><code>02-STORY.md</code> §3.1</td></tr><tr><td>berberis vs libndk_translation vs libhoudini; which to use when</td><td><code>02-STORY.md</code> §3 · <code>research/FGO-on-Linux-ARM-emulation-report.md</code></td></tr><tr><td>The <code>ExecuteGuestCall</code> SP invariant (the actual bug)</td><td><code>02-STORY.md</code> §3.3 · <code>research/ACE-ARCHITECTURE-AND-CONTAINER-VIABILITY.md</code> §5</td></tr><tr><td>houdini “timebomb” (counter gate) + symlink-topology SIGILL</td><td><code>02-STORY.md</code> §3.2 · <code>research/FGO-on-Linux-ARM-emulation-report.md</code> §3.2</td></tr><tr><td>bionic vs glibc ABI → why NVIDIA can’t be injected</td><td><code>02-STORY.md</code> §2.1 · <code>archive/waydroid-ubuntu2204-nvidia-report.md</code></td></tr><tr><td>Why Wine/Proton/box64/FEX can’t help</td><td><code>02-STORY.md</code> §2.2</td></tr><tr><td>X11 vs Wayland, nested Weston, explicit sync</td><td><code>02-STORY.md</code> §4</td></tr><tr><td>ACE internals (userspace, server-side verdicts)</td><td><code>research/ACE-ARCHITECTURE-AND-CONTAINER-VIABILITY.md</code></td></tr><tr><td>LXC vs Docker containers, binderfs, <code>gpu_mode</code></td><td><code>02-STORY.md</code> §2 · <code>04-CLEANUP.md</code> §5.4</td></tr><tr><td>16 KB page size and why ACE’s library breaks</td><td><code>02-STORY.md</code> §3 · 3.1 above</td></tr><tr><td>KVM, gfxstream/ANGLE/SwiftShader, SurfaceFlinger</td><td><code>02-STORY.md</code> §4 · 2.2 above</td></tr><tr><td>Host-bug vs scheme-limit framing (method)</td><td><code>archive/ANDROID-模拟器-困境与出路.md</code> (Chinese, session 1)</td></tr><tr><td>The Arknights control case</td><td><code>archive/为什么明日方舟能在Ubuntu上运行.md</code> (Chinese)</td></tr><tr><td>Dynamic partitions (<code>super</code>, what <code>system.img</code> really is)</td><td><code>02-STORY.md</code> §10.2</td></tr><tr><td><code>NativeBridgeItf</code> in depth (<code>loadLibrary</code>, <code>getTrampoline</code>, <code>createNamespace</code>)</td><td><code>02-STORY.md</code> §10.1</td></tr></tbody></table>
+<hr>
+<h2 id="9-corrections-register--claims-in-the-archived-documents-that-are-wrong">9. Corrections register — claims in the archived documents that are <strong>wrong</strong></h2>
+<p>The documents in <code>docs/archive/</code> (and the two <code>research/</code> reports) are session-1 history and were
+deliberately <strong>not</strong> rewritten, so their reasoning trail stays intact. Several of their conclusions were
+later falsified. Carry this table if you read them.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Wrong claim</th><th>Where it appears</th><th>Correct fact</th></tr></thead><tbody><tr><td>“Only <code>google_apis_playstore</code> images ship ARM translation”</td><td><code>archive/ANDROID-模拟器-困境与出路.md</code>, <code>archive/为什么明日方舟能在Ubuntu上运行.md</code></td><td><strong>All three</strong> API 35 images set <code>ro.dalvik.vm.native.bridge=libndk_translation.so</code> — read their <code>build.prop</code></td></tr><tr><td>“redroid won’t connect because the emulator holds adb port 5555”</td><td><code>archive/FGO-STATUS-…-round2.md</code> §9</td><td>The container had <strong>no network attachment at all</strong>, and <code>binder_linux</code> was unloaded (container exits <code>129</code> with no logs) — see 6.1/6.2</td></tr><tr><td>“redroid + libndk SIGSEGVs 3/3 in 60–80 ms — intrinsic to the stack”</td><td><code>archive/…</code>, <code>research/ACE-…</code> §3.1</td><td>That was a <strong>silently reverted bridge install</strong> (container recreated, houdini swap lost); the bundled 2023 libndk crashes <code>zygote64</code> itself — see 4.8</td></tr><tr><td>“redroid’s blocker is performance / ANR”</td><td><code>archive/…</code></td><td>The six ANRs are <strong>mouse-hover input timeouts</strong> (5.1); with touch-only input there is no ANR. The real redroid blocker is a Unity busy-wait (6.5)</td></tr><tr><td>“FGO 国服 does not ship Tencent ACE”</td><td><code>research/FGO-on-Linux-ARM-emulation-report.md</code> §8.1</td><td>It <strong>does</strong>: <code>libtersafe2.so</code> (5,608,784 B) + <code>libtprt.so</code>, <code>com.ace.gshell.GP6Service/GP7Service/GP7Worker</code> in its own manifest</td></tr><tr><td>“Waydroid on NVIDIA: ruled out, no workaround”</td><td><code>archive/waydroid-ubuntu2204-nvidia-report.md</code>, <code>research/…</code> §9.1</td><td>Stock Waydroid is hard-blocked (6.6), <strong>but</strong> a community fork plus <code>persist.waydroid.use_subsurface=false</code> reportedly retains GPU acceleration — untested here, and it expects KWin/Plasma 6, not this GNOME 42 X11 desktop</td></tr><tr><td>“ARM64 AVDs work, just slowly”</td><td><code>archive/ANDROID-EMULATOR-UBUNTU.md</code> §3h, <code>archive/ANDROID-模拟器-困境与出路.md</code></td><td><strong>Refused at launch</strong>: <code>PANIC: … arm64 … not supported by the QEMU2 emulator on x86_64 host</code> (2.1)</td></tr><tr><td>Older environment numbers: driver 580.76.05, emulator 36.1.9, <code>llvmpipe</code> rendering</td><td><code>archive/ANDROID-EMULATOR-UBUNTU.md</code>, <code>archive/waydroid-…</code></td><td>Final state: driver <strong>595.91.07</strong> (open module, real GLX), emulator <strong>37.3.2</strong>, API <strong>36.0</strong> image</td></tr><tr><td>“<code>nvidia-settings</code> mismatch fixed”</td><td><code>archive/ANDROID-模拟器-困境与出路.md</code> §9</td><td><strong>Still mismatched</strong> (615.71.09 vs 595.91.07) — <code>04-CLEANUP.md</code> §6.3</td></tr><tr><td>“FGO can’t run on the AVD; the transplanted bridge is the workaround”</td><td><code>archive/FGO-STATUS-…-round2.md</code> §9.4, <code>evidence/fgo-attempts/api36/FINDINGS-LOGIN-PAGE.md</code></td><td>The <strong>final, working</strong> run used the <strong>stock</strong> Android 16.0 bridge (<code>fbadc774…</code>) with <strong>no</strong> <code>-writable-system</code>; the transplanted 16.1 set (<code>af88b2c1…</code>) is the configuration that <strong>hangs</strong> (4.2). Both statements were true at different moments of the investigation — the FINDINGS file describes an intermediate experiment, not the solution</td></tr><tr><td><code>Cores = 1</code> (redroid) / <code>Cores = 2</code> (AVD) reported to Unity</td><td><code>archive/FGO-STATUS-…</code> §5</td><td>The guest really has 20 CPUs; this is a <strong>native-bridge mis-report</strong> (4.7-adjacent, see 6.5)</td></tr></tbody></table>
+<hr>
+<h2 id="10-measuring-the-frame-rate-yourself-the-metric-that-actually-matters-here">10. Measuring the frame rate yourself (the metric that actually matters here)</h2>
+<p><code>dumpsys gfxinfo</code> is <strong>useless for FGO</strong>: Unity draws on its own surface, so the hwui counters report ~0
+frames (an early attempt to measure this way produced a completely misleading “39 % janky” reading from
+66 frames). Use SurfaceFlinger’s per-frame timestamps for the game’s <strong>BLAST layer</strong> instead:</p>
+<figure class="code-viewer" data-lines="14"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">ADB</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$ANDROID_SDK</span><span style="color:#032F62;--shiki-dark:#9ECBFF">/platform-tools/adb</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">D</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#032F62;--shiki-dark:#9ECBFF">emulator-5554</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 1) find the layer (Unity's SurfaceView — the one tagged BLAST)</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">L</span><span style="color:#D73A49;--shiki-dark:#F97583">=</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$($ADB -s $D shell </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dumpsys SurfaceFlinger --list"</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> tr</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> '\r'</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> sed</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -n</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 's/.*RequestedLayerState{\(.*\)}$/\1/p'</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> fatego</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> grep</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -i</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> BLAST</span><span style="color:#D73A49;--shiki-dark:#F97583"> |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> head</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -1</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#D73A49;--shiki-dark:#F97583">    |</span><span style="color:#6F42C1;--shiki-dark:#B392F0"> sed</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 's/ parentId=.*//'</span><span style="color:#24292E;--shiki-dark:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 2) the last ~128 frames; each row is "desired  actual  ready" in nanoseconds</span></span>
+<span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">$ADB -s $D shell </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"dumpsys SurfaceFlinger --latency '</span><span style="color:#24292E;--shiki-dark:#E1E4E8">$L</span><span style="color:#032F62;--shiki-dark:#9ECBFF">'"</span><span style="color:#D73A49;--shiki-dark:#F97583"> ></span><span style="color:#24292E;--shiki-dark:#E1E4E8"> /tmp/lat.txt</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 3) fps, worst frame, missed vsync</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">awk</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> 'NR>1 &#x26;&#x26; NF==3 &#x26;&#x26; $2>0 {n++; if(!t0)t0=$2; t1=$2</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">     if(prev){d=($2-prev)/1e6; s+=d; if(d>mx)mx=d} prev=$2</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">     if($2-$1>16666666) late++}</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">     END{printf "%.1f fps  avg %.1f ms  worst %.0f ms  missed-vsync %.0f%%\n",</span></span>
+<span class="line"><span style="color:#032F62;--shiki-dark:#9ECBFF">         (n-1)/((t1-t0)/1e9), s/(n-1), mx, 100*late/n}'</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> /tmp/lat.txt</span></span></code></pre></figure>
+<p><strong>How to read it:</strong> <code>30.0 fps</code> with a worst frame under ~50 ms is the healthy state for FGO — the game caps
+itself at 30, so more is neither expected nor possible. If you see 17–23 fps with ~30 % missed vsync, the
+emulator is running on the E-cores → fix it per §2.9.</p></div><nav class="path-nav" aria-label="All stages"><div class="path-nav__side"><span class="path-nav__label">← Previous</span><a href="/en/docs/android/solution/">Solution</a></div><div class="path-nav__side path-nav__side--next"></div></nav></div></div><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#0-thirty-second-triage">0. Thirty-second triage</a></li><li><a href="#1-host--os-layer">1. Host / OS layer</a></li><li><a href="#2-emulator-layer">2. Emulator layer</a></li><li><a href="#3-system-image-layer">3. System-image layer</a></li><li><a href="#4-translator-layer-the-heart-of-it">4. Translator layer (the heart of it)</a></li><li><a href="#5-game--anti-cheat-layer">5. Game / anti-cheat layer</a></li><li><a href="#6-container-route-redroid--waydroid">6. Container route (redroid / Waydroid)</a></li><li><a href="#7-false-alarms--things-that-looked-like-the-culprit-and-were-not">7. False alarms — things that looked like the culprit and were not</a></li><li><a href="#8-concepts--where-each-is-explained-no-duplicates">8. Concepts → where each is explained (no duplicates)</a></li><li><a href="#9-corrections-register--claims-in-the-archived-documents-that-are-wrong">9. Corrections register — claims in the archived documents that are wrong</a></li><li><a href="#10-measuring-the-frame-rate-yourself-the-metric-that-actually-matters-here">10. Measuring the frame rate yourself (the metric that actually matters here)</a></li></ol></nav></div></div><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>03 Verification Is Trust: Tests, Authority, and Wake Cost · LKM</title><meta name="description" content="Whether AI maintenance can be trusted depends not on whether the model judged correctly, but on the shape of the checker. Starting from the failure where a rule and its test share the same origin, this article discusses four test kinds, reviewable boundaries, tool-enforced authority, and the wake cost of runtime fallback versus maintenance rounds."><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/en/writing/verification-is-trust/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/writing/verification-is-trust/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/writing/verification-is-trust/"><meta property="og:type" content="website"><meta property="og:title" content="03 Verification Is Trust: Tests, Authority, and Wake Cost · LKM"><meta property="og:description" content="Whether AI maintenance can be trusted depends not on whether the model judged correctly, but on the shape of the checker. Starting from the failure where a rule and its test share the same origin, this article discusses four test kinds, reviewable boundaries, tool-enforced authority, and the wake cost of runtime fallback versus maintenance rounds."><meta property="og:url" content="https://plae-tljg.github.io/en/writing/verification-is-trust/"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM — Personal Site RSS" href="/en/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">Skip to content</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/en/">LKM<span>.</span></a><nav class="site-nav" aria-label="Main"><a href="/en/">Home</a><a href="/en/writing/" aria-current="page">Writing</a><a href="/en/docs/">Docs</a><a href="/en/projects/">Projects</a><a href="/en/about/">About</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">Search</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="Search"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="Search docs, articles and projects…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="Close">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/zh/writing/verification-is-trust/" title="Language" hreflang="zh">中<span class="chip--label">中文</span></a><button class="chip" type="button" data-theme-toggle title="Theme" aria-label="Theme">◐</button></div></div></header><main id="content"><article class="article"><div class="container"><div class="article__layout article__layout--with-toc"><div><nav class="breadcrumb" aria-label="breadcrumb"><a href="/en/">Home</a><span aria-hidden="true">/</span><a href="/en/writing/series/ai-maintainable-systems/">AI-Maintainable Systems</a><span aria-hidden="true">/</span><span>03 Verification Is Trust: Tests, Authority, and Wake Cost</span></nav><header class="article__header"><h1 class="article__title">03 Verification Is Trust: Tests, Authority, and Wake Cost</h1><div class="article__meta"><time datetime="2026-10-01T00:00:00.000Z">2026-10-01</time><span>·</span><span>9 min read</span><span class="badge badge--warn">Draft preview</span></div><p class="article__summary">Whether AI maintenance can be trusted depends not on whether the model judged correctly, but on the shape of the checker. Starting from the failure where a rule and its test share the same origin, this article discusses four test kinds, reviewable boundaries, tool-enforced authority, and the wake cost of runtime fallback versus maintenance rounds.</p><div style="margin-top:1rem"><a class="tag" href="/en/tags/AI/">AI</a><a class="tag" href="/en/tags/verification/">verification</a><a class="tag" href="/en/tags/testing/">testing</a><a class="tag" href="/en/tags/cost/">cost</a></div></header><p class="notice">This article is not marked ready yet and only shows in preview mode.</p><p class="notice notice--ai">This article was translated from the Chinese original by an AI. Wording and terminology may be off.</p><div class="prose" data-pagefind-body><h2 id="0-the-problem-the-previous-essay-left">0. The Problem the Previous Essay Left</h2>
+<p>The previous essay handled the boundary between code and data: what should be declared as data, and when it is worth promoting a generic entity into a domain table. It left behind the structure on the data side.</p>
+<p>But a structure existing does not mean the structure is right. Once AI has changed the data, added a rule, and promoted a table, the next question appears immediately:</p>
+<blockquote>
+<p><strong>How do we know this change actually made the system better?</strong></p>
+</blockquote>
+<p>This essay covers verification, authority, and wake cost.</p>
+<h2 id="1-an-all-green-failure">1. An All-Green Failure</h2>
+<p>An agent gets a task: the system cannot answer a certain kind of question.</p>
+<p>It looks at a few missed questions, writes a new rule, then writes a test:</p>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">rule.new_case</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"can I get a refund?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    answers</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre></figure>
+<p>CI is all green. The rule ships.</p>
+<p>But in real traffic, users ask:</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>“What is your refund policy?”</span></span>
+<span class="line"><span>“Can I cancel and get my money back?”</span></span>
+<span class="line"><span>“How long do refunds take?”</span></span></code></pre></figure>
+<p>The system still refuses to answer.</p>
+<p>The problem is not that the agent is not smart enough; it is that:</p>
+<blockquote>
+<p><strong>The rule and the test come from the same batch of questions, from the same source. The test only proves that this rule can cover the few sentences the agent just looked at.</strong></p>
+</blockquote>
+<p>Fixing one example and making the system actually know a kind of question are two different things. The lesson generalizes into a sharper sentence:</p>
+<blockquote>
+<p><strong>Trust does not come from whether the AI judged correctly; it comes from the shape of the checker.</strong></p>
+</blockquote>
+<p>The tests, authority, and cost that follow all unfold around this sentence.</p>
+<h2 id="2-tests-are-acceptance-criteria-not-a-quality-appendix">2. Tests Are Acceptance Criteria, Not a Quality Appendix</h2>
+<p>In AI maintenance, tests are not about “verifying the code the AI wrote”; they define what counts as “better”.</p>
+<h3 id="21-four-kinds-of-test">2.1 Four Kinds of Test</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Kind</th><th>Assertion</th><th>Guards against</th></tr></thead><tbody><tr><td>Positive</td><td>Should answer, and land on the right data</td><td>Overly strict rules that never match</td></tr><tr><td>Confusable negative</td><td>Looks similar, but should not match</td><td>Overly loose rules that steal other people’s questions</td></tr><tr><td>Refusal</td><td>Refuses when there is no basis</td><td>Fabrication</td></tr><tr><td>Ambiguity</td><td>Refuses when two candidates are equally close</td><td>Picking one arbitrarily</td></tr></tbody></table>
+<p>The last three kinds are best planted by a human before the AI starts editing. The reason is the self-confirmation loop of Section 1:</p>
+<blockquote>
+<p>If both the tests and the rules are generated by the AI from the same batch of failures, they will turn green together while real traffic keeps being refused.</p>
+</blockquote>
+<p>This is also why “tests pass” cannot simply mean “maintenance is done”. A test is only a checker; the checker’s shape decides what it finds and what it misses.</p>
+<h3 id="22-assertions-should-be-coarse">2.2 Assertions Should Be Coarse</h3>
+<p>It is best to assert that “the answer contains some fact”, not that it “equals some complete sentence”.</p>
+<p>A test set that alarms on a rewording will be learned to ignore quickly; once ignored, it is dead. This is a claim about scarce human attention:</p>
+<blockquote>
+<p><strong>The cost of verifying a system is not only machine time; it also includes the willingness of a human to look at it seriously.</strong></p>
+</blockquote>
+<h3 id="23-tests-are-data-too">2.3 Tests Are Data Too</h3>
+<figure class="code-viewer" data-lines="4"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#24292E;--shiki-dark:#E1E4E8">- </span><span style="color:#22863A;--shiki-dark:#85E89D">name</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">confusable.price-not-a-product-question</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  question</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#032F62;--shiki-dark:#9ECBFF">"what is the price of dsh-review?"</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">  expect</span><span style="color:#24292E;--shiki-dark:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#22863A;--shiki-dark:#85E89D">    refuses</span><span style="color:#24292E;--shiki-dark:#E1E4E8">: </span><span style="color:#005CC5;--shiki-dark:#79B8FF">true</span></span></code></pre></figure>
+<p>Adding a phrasing adds a pattern; adding a guarantee adds a test. Both should be data that can be diffed.</p>
+<h3 id="24-the-accounting-between-data--git--ci">2.4 The Accounting Between Data / git / CI</h3>
+<p>There is a common question here:</p>
+<blockquote>
+<p>If tests are data too, why not put them in the database instead of git files?</p>
+</blockquote>
+<p>Because tests are not runtime knowledge. What runtime reads is “how to answer”; what a test answers is “what counts as correct”. The two have different lifecycles:</p>
+<ul>
+<li>Knowledge must be executed;</li>
+<li>A test must gate one change.</li>
+</ul>
+<p>A programmatic release process is actually longer:</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>agent 编辑内容 -> 跑测试 -> 开 PR -> CI -> 人合并</span></span></code></pre></figure>
+<p>The core is not GitHub; it is:</p>
+<ul>
+<li>tests are all green on main;</li>
+<li>a branch going red means a regression;</li>
+<li><code>git revert</code> provides the rollback.</li>
+</ul>
+<p>Regression evidence lives in git / CI, which looks like it conflicts with “move everything declarable to the data side”. The way to handle it is to separate the two:</p>
+<blockquote>
+<p><strong>Runtime knowledge must be declared into data; verification evidence may be part of a gate, but it must be traceable to the specific change.</strong></p>
+</blockquote>
+<p>If a future system needs a review interface that is not git, that is when proposals / test results need to become tables. Not now.</p>
+<h3 id="25-dead-rows-and-ambiguity-reports">2.5 Dead Rows and Ambiguity Reports</h3>
+<p>Beyond the four kinds of test, you also need:</p>
+<ul>
+<li>knowledge rows that never match;</li>
+<li>phrasings that match multiple candidates;</li>
+<li>whether a new rule covers the scope of the old one;</li>
+<li>real missed questions clustered by shape.</li>
+</ul>
+<p>These checks decide whether to “add a rule” or “change the structure”.</p>
+<h2 id="3-authority-who-may-change-what">3. Authority: Who May Change What</h2>
+<p>For verification to hold, the boundary must be real.</p>
+<h3 id="31-please-dont-cross-the-line-is-not-a-boundary">3.1 “Please Don’t Cross the Line” Is Not a Boundary</h3>
+<p>Writing a boundary into the prompt is a request, not a constraint. As long as the agent has a shell, a filesystem, and a database, it can write straight to the database, change the engine, or change the test to make the test pass.</p>
+<p>A maintainable system needs tool enforcement:</p>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>read:  content/**, read-only projection</span></span>
+<span class="line"><span>write: content/** (or proposals)</span></span>
+<span class="line"><span>deny:  engine/**, schema, direct live writes, merge</span></span></code></pre></figure>
+<h3 id="32-why">3.2 Why</h3>
+<p>The principle:</p>
+<blockquote>
+<p>Answering users and writing system state should not both be held by the same process at once.</p>
+</blockquote>
+<p>If AI on the request path can both answer and write knowledge, a wrong answer immediately becomes “system knowledge”, with no review and no rollback.</p>
+<p>Even outside runtime, an agent editing the live database directly is a problem: the change is not in the diff, reviewers cannot see it, and a rebuild may overwrite it.</p>
+<h3 id="33-two-legitimate-writes">3.3 Two Legitimate Writes</h3>
+<p><strong>PR / diff</strong>: edit the offline files, open a branch, run the tests, open a PR, a human merges. Review, history, and rollback are all provided by git.</p>
+<p><strong>Proposal tables</strong>: only when reviewers do not use git, or when you need to learn quickly without merging, do you need <code>proposals</code> + a review interface + a state machine + a publish path. This is an exception, not the default.</p>
+<h3 id="34-the-allowed-surface-must-be-wide-enough">3.4 The Allowed Surface Must Be Wide Enough</h3>
+<p>A boundary that is too strict also fails: if the agent cannot read data, look at statistics, or run tests, it will look for a way around to finish the task.</p>
+<p>A usable boundary usually includes:</p>
+<ul>
+<li>read-only data queries;</li>
+<li>reading and writing content files;</li>
+<li>build / test commands;</li>
+<li>viewing missed questions and statistics;</li>
+<li>an explicit way to submit.</li>
+</ul>
+<h3 id="35-role-permission-table">3.5 Role Permission Table</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Role</th><th>Read</th><th>Write</th><th>Must not</th></tr></thead><tbody><tr><td>End user</td><td>Their own conversations</td><td>Ask questions / act</td><td>See internal data</td></tr><tr><td>Operations</td><td>Dashboards, review queue</td><td>Publish decisions</td><td>Change the engine</td></tr><tr><td>AI maintainer</td><td>Read-only projections, evidence, content</td><td>Content / proposals</td><td>Write online tables directly, merge</td></tr><tr><td>Developer</td><td>Everything</td><td>Engine / schema / migrations</td><td>Bypass review</td></tr><tr><td>Runtime</td><td>Data projections</td><td>Runtime state</td><td>Change knowledge</td></tr></tbody></table>
+<h2 id="4-wake-cost">4. Wake Cost</h2>
+<h3 id="41-three-ledgers">4.1 Three Ledgers</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Source</th><th>Count scales with</th><th>Handling</th></tr></thead><tbody><tr><td>A. Runtime fallback</td><td>Requests × (1 − coverage)</td><td>Avoid it; if used, keep the evidence</td></tr><tr><td>B. Maintenance rounds</td><td>Frequency of structure change</td><td>Batched, offline, through tests and review</td></tr><tr><td>C. Build / sync</td><td>Volume of data</td><td>Zero model calls</td></tr></tbody></table>
+<p>The goal:</p>
+<blockquote>
+<p>Make AI calls proportional to structural change, not to traffic or data change.</p>
+</blockquote>
+<h3 id="42-the-cost-formula-and-one-warning">4.2 The Cost Formula and One Warning</h3>
+<figure class="code-viewer" data-lines="8"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N  = 每周期请求数</span></span>
+<span class="line"><span>c0 = 确定性解析单次成本</span></span>
+<span class="line"><span>ca = 运行时兜底单次成本</span></span>
+<span class="line"><span>κ  = 确定性覆盖率</span></span>
+<span class="line"><span>w  = 每周期维护唤醒次数</span></span>
+<span class="line"><span>cm = 单次维护成本（模型 + 上下文 + 人工评审）</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>C(N, w) = N * [c0 + (1 - κ) * ca] + w * cm</span></span></code></pre></figure>
+<p>If one maintenance round raises coverage by <code>Δκ</code>:</p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>benefit = N * Δκ * ca</span></span>
+<span class="line"><span>值得做当且仅当 N * Δκ * ca > cm</span></span></code></pre></figure>
+<p>But this formula carries several strong assumptions worth writing down:</p>
+<ul>
+<li>maintenance cost is approximately linear in <code>w</code> — that may hold once context and review are amortized, or it may not;</li>
+<li><code>Δκ</code> does not decrease — in practice improvements get harder later;</li>
+<li>adding structure does not raise <code>c0</code> — the more rules, the slower parsing may become.</li>
+</ul>
+<p>So the formula is not a prophecy; it is a framework for asking whether this round of maintenance is worth it.</p>
+<h3 id="43-a-sample-calculation">4.3 A Sample Calculation</h3>
+<figure class="code-viewer" data-lines="3"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>N = 10,000 请求/天，ca = 0.01，cm = 0.50</span></span>
+<span class="line"><span>覆盖率从 90% 到 92%：benefit = 2 > 0.50</span></span>
+<span class="line"><span>覆盖率只提高 0.1%：benefit = 0.1 &#x3C; 0.50</span></span></code></pre></figure>
+<p>The numbers are illustrative only.</p>
+<h3 id="44-wake-strategies">4.4 Wake Strategies</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Mode</th><th>Fits</th><th>Risk</th></tr></thead><tbody><tr><td>Per request</td><td>Cold start, first exploration</td><td>Uncontrolled cost</td></tr><tr><td>Micro-batch</td><td>Catch-up learning after a peak</td><td>Delayed feedback</td></tr><tr><td>Daily / weekly</td><td>Stable business, batch review</td><td>Slow when new problems pile up</td></tr><tr><td>Event-triggered</td><td>New catalog, new policy</td><td>Hard to tune thresholds</td></tr><tr><td>Manual</td><td>Low traffic, high sensitivity</td><td>Goes stale</td></tr></tbody></table>
+<h3 id="45-fallback-is-not-the-same-as-the-system-knowing">4.5 Fallback Is Not the Same as the System Knowing</h3>
+<p>A model fallback can be an optional layer, but it must:</p>
+<ul>
+<li>be enabled by a human decision;</li>
+<li>questions it has answered are still recorded as unresolved;</li>
+<li>the model sees only the relevant entities, not the whole database;</li>
+<li>refuse safely on timeout / error / invalid key.</li>
+</ul>
+<p>The reason:</p>
+<blockquote>
+<p><strong>Answering a visitor does not mean the system knows.</strong></p>
+</blockquote>
+<h2 id="5-two-real-cases-as-evidence">5. Two Real Cases as Evidence</h2>
+<h3 id="51-personal-chatbots">5.1 personal-chatbots</h3>
+<p>A minimal implementation: 5 tables, offline content, a runtime projection, and the online <code>messages</code> table. As of writing:</p>
+<ul>
+<li>24 knowledge rows;</li>
+<li>48 frozen cases;</li>
+<li>unit and invariant tests;</li>
+<li>the browser build runs the same set of frozen cases, and CI does a parity check.</li>
+</ul>
+<p>What it proves is how small the structure above can get.
+It also proves something narrower: the deterministic layer takes about 0.2 ms and 0 tokens; the model fallback takes about 7 seconds. What differs is not the token unit price but where the wake happens.</p>
+<h3 id="52-maafwphoneai">5.2 MaaFwPhoneAI</h3>
+<p>The second domain is Android GUI automation:</p>
+<ul>
+<li>the workflow is a MaaFramework pipeline graph in the database;</li>
+<li>AI only writes proposals; after review they become the live pipeline;</li>
+<li>each execution saves its postconditions and evidence;</li>
+<li>verified flows enter 0-token replay.</li>
+</ul>
+<p>The PC prototype already verified “the AI runs it once, then 0-token replay”; the Android side is still converging. It proves the structural logic does not depend on the text domain, and it also exposes more runtime complexity.</p>
+<h2 id="6-notes-and-limits">6. Notes and Limits</h2>
+<ul>
+<li>The four kinds of test only certify known failure classes; they cannot prove correctness in unknown situations.</li>
+<li>This essay does not fully solve the problem of tests and rules sharing one origin. Solving it would require part of the verifier to be independent of the thing being verified, which is probably the next stage of work.</li>
+<li>If models become cheap, stable, and auditable enough, the defects of runtime agents will shrink; but this structure still solves “accumulable and rollback-able”.</li>
+<li>If the review cost of a change stays higher than editing the code directly over the long run, this structure is not worth it.</li>
+<li>Author’s position: I do not think “letting AI judge itself” can become a long-term trust mechanism; trust must come from an independent checker.</li>
+<li>The biggest cost of this method is review bandwidth. Automation can speed up checking, but it cannot produce judgment on its own.</li>
+</ul>
+<!-- CTA: GitHub / newsletter / contact links are intentionally left blank until the launch gate. --></div><nav class="series-nav" aria-label="In this series"><div class="series-nav__side"><span class="series-nav__label">← Previous</span><a href="/en/writing/boundary-of-datafication/">02 When Do You Actually Need a Products Table? The Boundary of Datafication</a></div><div class="series-nav__side series-nav__side--next"><span class="series-nav__label">Next →</span><a href="/en/writing/appendix-derivation-and-checklist/">04 Appendix: Derivation Template, Checklist, and Glossary</a></div></nav></div><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol><li><a href="#0-the-problem-the-previous-essay-left">0. The Problem the Previous Essay Left</a></li><li><a href="#1-an-all-green-failure">1. An All-Green Failure</a></li><li><a href="#2-tests-are-acceptance-criteria-not-a-quality-appendix">2. Tests Are Acceptance Criteria, Not a Quality Appendix</a></li><li class="toc__l3"><a href="#21-four-kinds-of-test">2.1 Four Kinds of Test</a></li><li class="toc__l3"><a href="#22-assertions-should-be-coarse">2.2 Assertions Should Be Coarse</a></li><li class="toc__l3"><a href="#23-tests-are-data-too">2.3 Tests Are Data Too</a></li><li class="toc__l3"><a href="#24-the-accounting-between-data--git--ci">2.4 The Accounting Between Data / git / CI</a></li><li class="toc__l3"><a href="#25-dead-rows-and-ambiguity-reports">2.5 Dead Rows and Ambiguity Reports</a></li><li><a href="#3-authority-who-may-change-what">3. Authority: Who May Change What</a></li><li class="toc__l3"><a href="#31-please-dont-cross-the-line-is-not-a-boundary">3.1 “Please Don’t Cross the Line” Is Not a Boundary</a></li><li class="toc__l3"><a href="#32-why">3.2 Why</a></li><li class="toc__l3"><a href="#33-two-legitimate-writes">3.3 Two Legitimate Writes</a></li><li class="toc__l3"><a href="#34-the-allowed-surface-must-be-wide-enough">3.4 The Allowed Surface Must Be Wide Enough</a></li><li class="toc__l3"><a href="#35-role-permission-table">3.5 Role Permission Table</a></li><li><a href="#4-wake-cost">4. Wake Cost</a></li><li class="toc__l3"><a href="#41-three-ledgers">4.1 Three Ledgers</a></li><li class="toc__l3"><a href="#42-the-cost-formula-and-one-warning">4.2 The Cost Formula and One Warning</a></li><li class="toc__l3"><a href="#43-a-sample-calculation">4.3 A Sample Calculation</a></li><li class="toc__l3"><a href="#44-wake-strategies">4.4 Wake Strategies</a></li><li class="toc__l3"><a href="#45-fallback-is-not-the-same-as-the-system-knowing">4.5 Fallback Is Not the Same as the System Knowing</a></li><li><a href="#5-two-real-cases-as-evidence">5. Two Real Cases as Evidence</a></li><li class="toc__l3"><a href="#51-personal-chatbots">5.1 personal-chatbots</a></li><li class="toc__l3"><a href="#52-maafwphoneai">5.2 MaaFwPhoneAI</a></li><li><a href="#6-notes-and-limits">6. Notes and Limits</a></li></ol></nav></div></div></article><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · Opinions are the author’s own.</p><p style="margin:0"><a href="/en/writing/">Writing</a><span aria-hidden="true"> · </span><a href="/en/docs/">Docs</a><span aria-hidden="true"> · </span><a href="/en/projects/">Projects</a><span aria-hidden="true"> · </span><a href="/en/archive/">Index</a><span aria-hidden="true"> · </span><a href="/en/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;Chats&quot;,&quot;newChat&quot;:&quot;New chat&quot;,&quot;back&quot;:&quot;Back to the chat&quot;,&quot;placeholder&quot;:&quot;Ask something about the work…&quot;,&quot;send&quot;:&quot;Ask&quot;,&quot;you&quot;:&quot;You&quot;,&quot;delete&quot;:&quot;Delete this chat&quot;,&quot;noChats&quot;:&quot;No chats yet&quot;,&quot;note&quot;:&quot;Answers come from tables, not a model. What it does not know, it refuses.&quot;,&quot;langNote&quot;:&quot;Chinese and English both work — every row carries phrasings in both. The answers themselves are written in English.&quot;,&quot;loading&quot;:&quot;Loading…&quot;,&quot;failed&quot;:&quot;Could not load the bot&quot;,&quot;retry&quot;:&quot;Retry&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;run the frozen cases here&quot;,&quot;static&quot;:&quot;static page · no server&quot;,&quot;refs&quot;:&quot;refs&quot;,&quot;fromTables&quot;:&quot;from tables&quot;,&quot;refused&quot;:&quot;question recorded&quot;,&quot;fuzzy&quot;:&quot;near match&quot;,&quot;try&quot;:&quot;try&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="Ask about my work — hold to drag"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">Ask about my work</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="Ask about my work" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="Chats"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">Ask about my work</b><span id="lkm-bot-tagline">static page · no server</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="New chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="Ask something about the work…" aria-label="Ask something about the work…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">Ask</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>Chats</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="Back to the chat"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>

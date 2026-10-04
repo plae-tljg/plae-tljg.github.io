@@ -1,0 +1,922 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PostgreSQL · LKM</title><meta name="description" content="如果需要完整的 PostgreSQL 服务器："><meta name="robots" content="noindex, nofollow"><link rel="canonical" href="https://plae-tljg.github.io/zh/docs/homelab/services/postgresql/"><link rel="alternate" hreflang="zh" href="https://plae-tljg.github.io/zh/docs/homelab/services/postgresql/"><link rel="alternate" hreflang="en" href="https://plae-tljg.github.io/en/docs/homelab/services/postgresql/"><meta property="og:type" content="website"><meta property="og:title" content="PostgreSQL · LKM"><meta property="og:description" content="如果需要完整的 PostgreSQL 服务器："><meta property="og:url" content="https://plae-tljg.github.io/zh/docs/homelab/services/postgresql/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://plae-tljg.github.io/_astro/hero-formulas.DQCZtpcR.jpg"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale:alternate" content="zh_CN"><meta property="og:locale:alternate" content="en_US"><link rel="alternate" type="application/rss+xml" title="LKM 的个人主页 RSS" href="/zh/rss.xml"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+      // Set the theme before first paint to avoid a flash.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          if (stored === 'dark' || stored === 'light') {
+            document.documentElement.dataset.theme = stored
+          }
+        } catch (e) {}
+      })()
+    </script><link rel="stylesheet" href="/_astro/path.0qta1OZl.css"><style>.code-viewer{border:1px solid var(--border);border-radius:var(--radius);margin:1.75rem 0;overflow:hidden}.code-viewer__bar{background:var(--surface-soft,#7f7f7f12);border-bottom:1px solid var(--border);color:var(--text-soft);align-items:center;gap:.6rem;padding:.45rem .7rem;font-size:.78rem;display:flex}.code-viewer__title{color:var(--text);text-overflow:ellipsis;white-space:nowrap;font-weight:600;overflow:hidden}.code-viewer__lang{border:1px solid var(--border);color:var(--text-faint);border-radius:999px;padding:.05rem .4rem;font-size:.72rem}.code-viewer__spacer{flex:1}.code-viewer__button{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem}.code-viewer__button:hover{color:var(--link,var(--accent));border-color:currentColor}.code-viewer pre{border:0;border-radius:0;margin:0}.code-viewer.is-collapsed pre{max-height:15rem;position:relative;overflow:hidden}.code-viewer.is-collapsed pre:after{content:"";background:linear-gradient(transparent, var(--bg,#fff));pointer-events:none;height:4rem;position:absolute;inset:auto 0 0}.archive-viewer{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-soft,#7f7f7f0d);margin:1.75rem 0;padding:.7rem .9rem}.archive-viewer__head{color:var(--text-soft);flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;font-size:.85rem;display:flex}.archive-viewer__label{color:var(--text-faint)}.archive-viewer__actions{gap:.5rem;margin-left:auto;display:flex}.archive-viewer__actions button,.archive-viewer__actions a{border:1px solid var(--border);color:var(--text-soft);font:inherit;cursor:pointer;background:0 0;border-radius:6px;padding:.15rem .55rem;font-size:.8rem;text-decoration:none}.archive-viewer__actions button:hover,.archive-viewer__actions a:hover{color:var(--link,var(--accent));border-color:currentColor}.archive-viewer__note{color:var(--text-faint);margin:.35rem 0 0;font-size:.78rem}.archive-viewer__body:not(:empty){margin-top:.75rem}.archive-viewer__body iframe{border:1px solid var(--border);border-radius:var(--radius);background:#fff;width:100%;height:32rem}
+.docs-nav{font-size:.86rem;line-height:1.5}.docs-nav__toggle{background:var(--surface,transparent);border:1px solid var(--border);border-radius:var(--radius);width:100%;color:inherit;font:inherit;cursor:pointer;justify-content:space-between;align-items:center;gap:1rem;padding:.7rem .9rem;display:none}.docs-nav__track>summary,.docs-nav__stage>summary{cursor:pointer;align-items:baseline;gap:.5rem;padding:.4rem 0;list-style:none;display:flex}.docs-nav__track>summary::-webkit-details-marker,.docs-nav__stage>summary::-webkit-details-marker{display:none}.docs-nav__track>summary{color:var(--text);font-weight:620}.docs-nav__track>summary:before,.docs-nav__stage>summary:before{content:"▸";color:var(--text-faint);margin-right:.35rem;font-size:.7em;transition:transform .15s;display:inline-block}.docs-nav__track[open]>summary:before,.docs-nav__stage[open]>summary:before{transform:rotate(90deg)}.docs-nav__lang{border:1px solid var(--border);color:var(--text-faint);vertical-align:.05em;border-radius:3px;margin-left:.35rem;padding:0 .25rem;font-size:.62rem}.docs-nav__count{color:var(--text-faint);font-variant-numeric:tabular-nums;margin-left:auto;font-size:.78em}.docs-nav__stage{border-left:1px solid var(--border);margin-left:.55rem;padding-left:.7rem}.docs-nav__stage>summary{color:var(--text-soft);font-size:.95em}.docs-nav ul{margin:.1rem 0 .5rem;padding:0 0 0 1.1rem;list-style:none}.docs-nav li{margin:.1rem 0}.docs-nav a{color:var(--text-soft);border-left:2px solid #0000;border-radius:4px;padding:.12rem .4rem;text-decoration:none;display:block}.docs-nav a:hover{color:var(--link,var(--accent));background:var(--surface-soft,#7f7f7f14)}.docs-nav a.is-current{color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent);font-weight:650}.docs-nav__track>summary>a.is-current,.docs-nav__stage>summary>a.is-current{border-radius:4px;margin-left:-.4rem;padding:.05rem .4rem;display:inline-block}.docs-nav__foot{border-top:1px solid var(--border);margin:1rem 0 0;padding-top:.75rem}@media (width>=1024px){.docs-nav{border-right:1px solid var(--border);align-self:start;max-height:calc(100vh - 7rem);padding-right:.75rem;position:sticky;top:5rem;overflow-y:auto}}@media (width<=1023px){.docs-nav__toggle{display:flex}.docs-nav__body{border:1px solid var(--border);border-radius:var(--radius);margin-top:.75rem;padding:.75rem .9rem 1rem;display:none}.docs-nav[data-open] .docs-nav__body{display:block}}.container.container--docs{max-width:90rem}.docs-shell{grid-template-columns:minmax(0,1fr);gap:2rem;padding-top:2rem;display:grid}@media (width>=1024px){.docs-shell{grid-template-columns:15rem minmax(0,1fr);gap:2.5rem}}@media (width>=1280px){.docs-shell--with-toc{grid-template-columns:15rem minmax(0,1fr) 12rem}}.docs-main{min-width:0}.docs-main .article__header,.docs-main .notice,.docs-main .prose>p,.docs-main .prose>ul,.docs-main .prose>ol,.docs-main .prose>blockquote,.docs-main .prose>h2,.docs-main .prose>h3,.docs-main .prose>h4,.docs-main .prose>h5,.docs-main .prose>h6{max-width:46rem}
+</style><link rel="stylesheet" href="/_astro/BaseLayout.DH6J_TKP.css"></head><body><a class="skip-link" href="#content">跳到正文</a><header class="site-header"><div class="container site-header__inner"><a class="brand" href="/zh/">LKM<span>.</span></a><nav class="site-nav" aria-label="主导航"><a href="/zh/">首页</a><a href="/zh/writing/">文章</a><a href="/zh/docs/" aria-current="page">文档</a><a href="/zh/projects/">项目</a><a href="/zh/about/">关于</a></nav><div class="header-tools"><div class="search" data-search><button class="chip search__trigger" type="button" data-search-open><span aria-hidden="true">⌕</span><span class="search__label">搜索</span><kbd class="search__kbd">⌘K</kbd></button><dialog class="search__dialog" data-search-dialog aria-label="搜索"><form method="dialog" class="search__form"><input type="search" name="q" class="search__input" placeholder="搜索文档、文章与项目…" autocomplete="off" spellcheck="false" data-search-input><button class="search__close" type="button" data-search-close aria-label="关闭">✕</button></form><div class="search__status" data-search-status></div><ol class="search__results" data-search-results></ol></dialog></div><script type="module" src="/_astro/SearchBox.astro_astro_type_script_index_0_lang.MlSlFiLN.js"></script><a class="chip" href="/en/docs/homelab/services/postgresql/" title="语言" hreflang="en">EN<span class="chip--label">English</span></a><button class="chip" type="button" data-theme-toggle title="主题" aria-label="主题">◐</button></div></div></header><main id="content"><div class="container container--docs"><div class="docs-shell docs-shell--with-toc"><nav class="docs-nav" aria-label="文档" data-docs-nav><button class="docs-nav__toggle" type="button" aria-expanded="false" data-docs-nav-toggle><span>目录</span><span aria-hidden="true">▾</span></button><div class="docs-nav__body"><details class="docs-nav__track" data-nav-key="track:math-path"><summary><a href="/zh/docs/math-path/">数学学习路径</a><span class="docs-nav__count">9</span></summary><details class="docs-nav__stage" data-nav-key="stage:math-path/getting-started"><summary><a href="/zh/docs/math-path/getting-started/">入门指南</a></summary><ul><li><a href="/zh/docs/math-path/getting-started/high-school-books/">高中时读的书</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:math-path/university"><summary><a href="/zh/docs/math-path/university/">大学数学</a></summary><ul><li><a href="/zh/docs/math-path/university/set-theory/"><span aria-hidden="true">∅ </span>集合论</a></li><li><a href="/zh/docs/math-path/university/math-logic/"><span aria-hidden="true">⟂ </span>数理逻辑</a></li><li><a href="/zh/docs/math-path/university/number-theory/"><span aria-hidden="true">ℕ </span>数论</a></li><li><a href="/zh/docs/math-path/university/group-theory/"><span aria-hidden="true">⊕ </span>群论</a></li><li><a href="/zh/docs/math-path/university/analysis/"><span aria-hidden="true">∫ </span>数学分析</a></li><li><a href="/zh/docs/math-path/university/topology/"><span aria-hidden="true">◈ </span>拓扑学</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:ubuntu"><summary><a href="/zh/docs/ubuntu/">Ubuntu 环境</a><span class="docs-nav__count">44</span></summary><details class="docs-nav__stage" data-nav-key="stage:ubuntu/base"><summary><a href="/zh/docs/ubuntu/base/">安装与磁盘</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/ubuntu/base/headless/">以无头模式运行 Linux</a></li><li><a href="/zh/docs/ubuntu/base/multiple-ssds/">多 SSD 存储管理与快捷访问</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/apps"><summary><a href="/zh/docs/ubuntu/apps/">应用</a></summary><ul><li><a href="/zh/docs/ubuntu/apps/quick-install/">常用软件安装</a></li><li><a href="/zh/docs/ubuntu/apps/browsers/">浏览器</a></li><li><a href="/zh/docs/ubuntu/apps/firefox/">Firefox</a></li><li><a href="/zh/docs/ubuntu/apps/editors/">编辑器与 IDE</a></li><li><a href="/zh/docs/ubuntu/apps/ide/">IDE 安装</a></li><li><a href="/zh/docs/ubuntu/apps/image-editors/">图像编辑工具</a></li><li><a href="/zh/docs/ubuntu/apps/audio/">音频工具</a></li><li><a href="/zh/docs/ubuntu/apps/multimedia/">多媒体工具</a></li><li><a href="/zh/docs/ubuntu/apps/office/">办公软件</a></li><li><a href="/zh/docs/ubuntu/apps/games/">游戏</a></li><li><a href="/zh/docs/ubuntu/apps/network-tools/">网络工具</a></li><li><a href="/zh/docs/ubuntu/apps/database-tools/">数据库工具</a></li><li><a href="/zh/docs/ubuntu/apps/dev-tools/">开发工具</a></li><li><a href="/zh/docs/ubuntu/apps/system-tools/">系统工具</a></li><li><a href="/zh/docs/ubuntu/apps/user-config/">用户配置工具</a></li><li><a href="/zh/docs/ubuntu/apps/virtual-machines/">虚拟机</a></li><li><a href="/zh/docs/ubuntu/apps/kvm-qemu/">KVM/QEMU 虚拟机配置与迁移</a></li><li><a href="/zh/docs/ubuntu/apps/sogou-input/">Sogou Input</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/gpu"><summary><a href="/zh/docs/ubuntu/gpu/">GPU 与 CUDA</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/ubuntu/gpu/cuda/">NVIDIA GPU 与 CUDA 环境配置</a></li><li><a href="/zh/docs/ubuntu/gpu/igpu-postmortem/">旧版 iGPU 问题记录（复盘）</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/remote"><summary><a href="/zh/docs/ubuntu/remote/">远程访问</a></summary><ul><li><a href="/zh/docs/ubuntu/remote/basics/">SSH 基础命令</a></li><li><a href="/zh/docs/ubuntu/remote/authentication/">SSH 认证问题解决</a></li><li><a href="/zh/docs/ubuntu/remote/sftp/">SFTP 使用</a></li><li><a href="/zh/docs/ubuntu/remote/proxy-jump/">SSH 跳板和代理</a></li><li><a href="/zh/docs/ubuntu/remote/android-access/">Android 本地文件访问</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/net"><summary><a href="/zh/docs/ubuntu/net/">网络</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/ubuntu/net/static-ip/">Ubuntu 设置静态 IP（临时与永久方法）说明</a></li><li><a href="/zh/docs/ubuntu/net/local-https/">HTTPS 配置</a></li><li><a href="/zh/docs/ubuntu/net/wifi-reconnect/">Windows 下无法自动重连 Wi-Fi 的问题与解决方法</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:ubuntu/shell"><summary><a href="/zh/docs/ubuntu/shell/">终端与 Shell</a></summary><ul><li><a href="/zh/docs/ubuntu/shell/common-dirs/">Ubuntu 的常用目录</a></li><li><a href="/zh/docs/ubuntu/shell/bash-tricks/">Bash 技巧</a></li><li><a href="/zh/docs/ubuntu/shell/systemd/">systemd 常用命令</a></li><li><a href="/zh/docs/ubuntu/shell/audio-cmd/">Common Command for Audio</a></li><li><a href="/zh/docs/ubuntu/shell/reboot-router/">Reboot Router</a></li><li><a href="/zh/docs/ubuntu/shell/send-email/">发送邮件的脚本</a></li><li><a href="/zh/docs/ubuntu/shell/code-highlight/">代码高亮</a></li><li><a href="/zh/docs/ubuntu/shell/cursor-style/">光标样式</a></li><li><a href="/zh/docs/ubuntu/shell/fun-commands/">有趣的命令</a></li><li><a href="/zh/docs/ubuntu/shell/links/">常用链接</a></li><li><a href="/zh/docs/ubuntu/shell/hidden-images/">图种：把文件藏进图片里</a></li></ul></details></details><details class="docs-nav__track" data-nav-key="track:android"><summary><a href="/zh/docs/android/">Linux 上的安卓游戏</a><span class="docs-nav__count">3</span></summary><details class="docs-nav__stage" data-nav-key="stage:android/solution"><summary><a href="/zh/docs/android/solution/">方案与配置</a></summary><ul><li><a href="/zh/docs/android/solution/arknights/">同一台机器上的明日方舟</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:android/trouble"><summary><a href="/zh/docs/android/trouble/">排错</a></summary><ul></ul></details></details><details class="docs-nav__track" data-nav-key="track:homelab" open><summary><a href="/zh/docs/homelab/">家庭网络与自托管</a><span class="docs-nav__count">11</span></summary><details class="docs-nav__stage" data-nav-key="stage:homelab/services" open><summary><a href="/zh/docs/homelab/services/">自托管服务</a></summary><ul><li><a href="/zh/docs/homelab/services/asterisk-basics/">Asterisk 基础命令和配置</a></li><li><a href="/zh/docs/homelab/services/asterisk-trunk/">SIP Trunk 配置指南</a></li><li><a href="/zh/docs/homelab/services/asterisk-audio/">Asterisk 音频处理</a></li><li><a href="/zh/docs/homelab/services/postgresql/" aria-current="page" class="is-current">PostgreSQL</a></li><li><a href="/zh/docs/homelab/services/local-git/">Git 本地和局域网服务器使用</a></li><li><a href="/zh/docs/homelab/services/git-rewrite/">有意识地重写仓库历史</a></li><li><a href="/zh/docs/homelab/services/github-pages-paths/">两个仓库，一个域名：GitHub Pages 路径实验</a></li></ul></details><details class="docs-nav__stage" data-nav-key="stage:homelab/home"><summary><a href="/zh/docs/homelab/home/">家居设备</a><span class="docs-nav__lang" title="语言"></span></summary><ul><li><a href="/zh/docs/homelab/home/ip-cam/">IP Camera - CameraLink App</a></li><li><a href="/zh/docs/homelab/home/ip-cam-old/">IP Camera</a></li><li><a href="/zh/docs/homelab/home/ip-cam-old-install/">IP Camera 项目 - 安装指南</a></li></ul></details></details><p class="docs-nav__foot"><a href="/zh/archive/">索引</a></p></div></nav><script type="module">var e=`docs-nav:open`,t=document.querySelector(`[data-docs-nav]`);if(t){let n=JSON.parse(localStorage.getItem(e)||`{}`),r=Array.from(t.querySelectorAll(`details[data-nav-key]`));for(let t of r){let r=t.dataset.navKey||``;r in n&&!t.querySelector(`[aria-current="page"]`)&&(t.open=n[r]),t.addEventListener(`toggle`,()=>{n[r]=t.open,localStorage.setItem(e,JSON.stringify(n))})}t.querySelector(`[data-docs-nav-toggle]`)?.addEventListener(`click`,e=>{let n=t.toggleAttribute(`data-open`);e.currentTarget.setAttribute(`aria-expanded`,String(n))}),t.querySelector(`[aria-current="page"]`)?.scrollIntoView({block:`center`})}</script><div class="docs-main" data-pagefind-body><article class="article"><div class="docs-page"><nav class="breadcrumb" style="margin-top:2rem"><a href="/zh/docs/homelab/">家庭网络与自托管</a><span aria-hidden="true">/</span><a href="/zh/docs/homelab/services/">自托管服务</a><span aria-hidden="true">/</span><span>PostgreSQL</span></nav><header class="article__header"><h1 class="article__title">PostgreSQL</h1><div class="article__meta"><span>21 分钟</span><span class="badge badge--warn">草稿预览</span></div><p class="article__summary">如果需要完整的 PostgreSQL 服务器：</p></header><p class="notice">这篇文章尚未标记为 ready，仅在预览模式下显示。</p><div class="prose path-content"><h2 id="安装-postgresql-服务器">安装 PostgreSQL 服务器</h2>
+<p>如果需要完整的 PostgreSQL 服务器：</p>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sudo</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> apt</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> postgresql</span></span></code></pre></figure>
+<h2 id="仅安装客户端轻量级选项">仅安装客户端（轻量级选项）</h2>
+<p>如果你只需要连接到远程 PostgreSQL 服务器，而不需要本地运行数据库服务，可以只安装客户端工具，这样可以大大减少系统负载：</p>
+<figure class="code-viewer" data-lines="5"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 仅安装 PostgreSQL 客户端工具</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sudo</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> apt</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> postgresql-client</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 使用 psql 连接到远程服务器</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">psql</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -h</span><span style="color:#D73A49;--shiki-dark:#F97583"> &#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">服务器地</span><span style="color:#24292E;--shiki-dark:#E1E4E8">址</span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -U</span><span style="color:#D73A49;--shiki-dark:#F97583"> &#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">用户</span><span style="color:#24292E;--shiki-dark:#E1E4E8">名</span><span style="color:#D73A49;--shiki-dark:#F97583">></span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -d</span><span style="color:#D73A49;--shiki-dark:#F97583"> &#x3C;</span><span style="color:#032F62;--shiki-dark:#9ECBFF">数据库</span><span style="color:#24292E;--shiki-dark:#E1E4E8">名</span><span style="color:#D73A49;--shiki-dark:#F97583">></span></span></code></pre></figure>
+<p><strong>优势：</strong></p>
+<ul>
+<li>体积小：只安装客户端工具，不包含数据库服务器</li>
+<li>低负载：不会在本地运行数据库服务进程</li>
+<li>适合场景：只需要查询和管理远程数据库，不需要本地数据库服务</li>
+</ul>
+<h2 id="change-config-files">Change Config Files</h2>
+<p>The config files are on <code>/etc/postgresql/&#x3C;version>/main</code>,</p>
+<p><code>pghba.conf</code>:</p>
+
+<figure class="code-viewer is-collapsed" data-lines="109"><figcaption class="code-viewer__bar"><span class="code-viewer__title">pghba.conf · /lib/psql/pghba.conf</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button><button type="button" class="code-viewer__button" data-expand="" aria-expanded="false">展开</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span># PostgreSQL Client Authentication Configuration File</span></span>
+<span class="line"><span># ===================================================</span></span>
+<span class="line"><span># located in /etc/postgresql/14/main</span></span>
+<span class="line"><span># Refer to the "Client Authentication" section in the PostgreSQL</span></span>
+<span class="line"><span># documentation for a complete description of this file.  A short</span></span>
+<span class="line"><span># synopsis follows.</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># This file controls: which hosts are allowed to connect, how clients</span></span>
+<span class="line"><span># are authenticated, which PostgreSQL user names they can use, which</span></span>
+<span class="line"><span># databases they can access.  Records take one of these forms:</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># local         DATABASE  USER  METHOD  [OPTIONS]</span></span>
+<span class="line"><span># host          DATABASE  USER  ADDRESS  METHOD  [OPTIONS]</span></span>
+<span class="line"><span># hostssl       DATABASE  USER  ADDRESS  METHOD  [OPTIONS]</span></span>
+<span class="line"><span># hostnossl     DATABASE  USER  ADDRESS  METHOD  [OPTIONS]</span></span>
+<span class="line"><span># hostgssenc    DATABASE  USER  ADDRESS  METHOD  [OPTIONS]</span></span>
+<span class="line"><span># hostnogssenc  DATABASE  USER  ADDRESS  METHOD  [OPTIONS]</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># (The uppercase items must be replaced by actual values.)</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># The first field is the connection type:</span></span>
+<span class="line"><span># - "local" is a Unix-domain socket</span></span>
+<span class="line"><span># - "host" is a TCP/IP socket (encrypted or not)</span></span>
+<span class="line"><span># - "hostssl" is a TCP/IP socket that is SSL-encrypted</span></span>
+<span class="line"><span># - "hostnossl" is a TCP/IP socket that is not SSL-encrypted</span></span>
+<span class="line"><span># - "hostgssenc" is a TCP/IP socket that is GSSAPI-encrypted</span></span>
+<span class="line"><span># - "hostnogssenc" is a TCP/IP socket that is not GSSAPI-encrypted</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># DATABASE can be "all", "sameuser", "samerole", "replication", a</span></span>
+<span class="line"><span># database name, or a comma-separated list thereof. The "all"</span></span>
+<span class="line"><span># keyword does not match "replication". Access to replication</span></span>
+<span class="line"><span># must be enabled in a separate record (see example below).</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># USER can be "all", a user name, a group name prefixed with "+", or a</span></span>
+<span class="line"><span># comma-separated list thereof.  In both the DATABASE and USER fields</span></span>
+<span class="line"><span># you can also write a file name prefixed with "@" to include names</span></span>
+<span class="line"><span># from a separate file.</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># ADDRESS specifies the set of hosts the record matches.  It can be a</span></span>
+<span class="line"><span># host name, or it is made up of an IP address and a CIDR mask that is</span></span>
+<span class="line"><span># an integer (between 0 and 32 (IPv4) or 128 (IPv6) inclusive) that</span></span>
+<span class="line"><span># specifies the number of significant bits in the mask.  A host name</span></span>
+<span class="line"><span># that starts with a dot (.) matches a suffix of the actual host name.</span></span>
+<span class="line"><span># Alternatively, you can write an IP address and netmask in separate</span></span>
+<span class="line"><span># columns to specify the set of hosts.  Instead of a CIDR-address, you</span></span>
+<span class="line"><span># can write "samehost" to match any of the server's own IP addresses,</span></span>
+<span class="line"><span># or "samenet" to match any address in any subnet that the server is</span></span>
+<span class="line"><span># directly connected to.</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># METHOD can be "trust", "reject", "md5", "password", "scram-sha-256",</span></span>
+<span class="line"><span># "gss", "sspi", "ident", "peer", "pam", "ldap", "radius" or "cert".</span></span>
+<span class="line"><span># Note that "password" sends passwords in clear text; "md5" or</span></span>
+<span class="line"><span># "scram-sha-256" are preferred since they send encrypted passwords.</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># OPTIONS are a set of options for the authentication in the format</span></span>
+<span class="line"><span># NAME=VALUE.  The available options depend on the different</span></span>
+<span class="line"><span># authentication methods -- refer to the "Client Authentication"</span></span>
+<span class="line"><span># section in the documentation for a list of which options are</span></span>
+<span class="line"><span># available for which authentication methods.</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># Database and user names containing spaces, commas, quotes and other</span></span>
+<span class="line"><span># special characters must be quoted.  Quoting one of the keywords</span></span>
+<span class="line"><span># "all", "sameuser", "samerole" or "replication" makes the name lose</span></span>
+<span class="line"><span># its special character, and just match a database or username with</span></span>
+<span class="line"><span># that name.</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># This file is read on server startup and when the server receives a</span></span>
+<span class="line"><span># SIGHUP signal.  If you edit the file on a running system, you have to</span></span>
+<span class="line"><span># SIGHUP the server for the changes to take effect, run "pg_ctl reload",</span></span>
+<span class="line"><span># or execute "SELECT pg_reload_conf()".</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># Put your actual configuration here</span></span>
+<span class="line"><span># ----------------------------------</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># If you want to allow non-local connections, you need to add more</span></span>
+<span class="line"><span># "host" records.  In that case you will also need to make PostgreSQL</span></span>
+<span class="line"><span># listen on a non-local interface via the listen_addresses</span></span>
+<span class="line"><span># configuration parameter, or via the -i or -h command line switches.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># DO NOT DISABLE!</span></span>
+<span class="line"><span># If you change this first entry you will need to make sure that the</span></span>
+<span class="line"><span># database superuser can access the database using some other method.</span></span>
+<span class="line"><span># Noninteractive access to all databases is required during automatic</span></span>
+<span class="line"><span># maintenance (custom daily cronjobs, replication, and similar tasks).</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># Database administrative login by Unix domain socket</span></span>
+<span class="line"><span>local   all             postgres                                peer</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># TYPE  DATABASE        USER            ADDRESS                 METHOD</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># "local" is for Unix domain socket connections only</span></span>
+<span class="line"><span>local   all             all                                     peer</span></span>
+<span class="line"><span>local   all             postgres                                peer map=user1</span></span>
+<span class="line"><span># IPv4 local connections:</span></span>
+<span class="line"><span>host    all             all             127.0.0.1/32            md5</span></span>
+<span class="line"><span>host    all             all             192.0.2.114/32         scram-sha-256</span></span>
+<span class="line"><span>host    all             all             192.0.2.244/32         scram-sha-256</span></span>
+<span class="line"><span>host    all             all             192.0.2.0/24         scram-sha-256</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#host    all             all             127.0.0.1/32            scram-sha-256</span></span>
+<span class="line"><span># IPv6 local connections:</span></span>
+<span class="line"><span>host    all             all             ::1/128                 scram-sha-256</span></span>
+<span class="line"><span># Allow replication connections from localhost, by a user with the</span></span>
+<span class="line"><span># replication privilege.</span></span>
+<span class="line"><span>local   replication     all                                     peer</span></span>
+<span class="line"><span>host    replication     all             127.0.0.1/32            scram-sha-256</span></span>
+<span class="line"><span>host    replication     all             ::1/128                 scram-sha-256</span></span>
+<span class="line"><span># 允許來自 192.0.2.101 的用戶 postgres 連接到 phone_chatbot 數據庫</span></span>
+<span class="line"><span>host    phone_chatbot    postgres    192.0.2.101/32    md5</span></span></code></pre></figure>
+<figure class="code-viewer" data-lines="1"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sudo</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> systemctl</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> restart</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> postgresql</span></span></code></pre></figure>
+<h2 id="set-password">Set Password</h2>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">sudo</span><span style="color:#005CC5;--shiki-dark:#79B8FF"> -u</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> postgres</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> psql</span></span>
+<span class="line"><span style="color:#6F42C1;--shiki-dark:#B392F0">\password</span><span style="color:#032F62;--shiki-dark:#9ECBFF"> postgres</span><span style="color:#6A737D;--shiki-dark:#6A737D">  # type the password</span></span></code></pre></figure>
+<h2 id="gui-客户端工具">GUI 客户端工具</h2>
+<h3 id="pgadmin-性能问题">pgAdmin 性能问题</h3>
+<p><strong>注意：</strong> pgAdmin 4 在 Ubuntu 上存在已知的性能问题。许多用户报告：</p>
+<ul>
+<li><strong>系统卡顿</strong>：使用一段时间后，整个系统和 IDE 会变得卡顿</li>
+<li><strong>启动缓慢</strong>：展开服务器或数据库树可能需要 30 秒或更长时间</li>
+<li><strong>资源占用高</strong>：pgAdmin 4 对 CPU、内存和磁盘 I/O 占用较高</li>
+<li><strong>架构问题</strong>：这是 pgAdmin 4 在 Linux 系统上的固有架构问题</li>
+</ul>
+<p>这些问题在高负载情况下尤其明显，可能导致整个系统响应变慢。</p>
+<h3 id="推荐的替代方案">推荐的替代方案</h3>
+<h4 id="dbeaver强烈推荐">DBeaver（强烈推荐）</h4>
+<p>DBeaver 是许多开发者和数据库管理员推荐的替代方案：</p>
+<p><strong>优势：</strong></p>
+<ul>
+<li>✅ <strong>性能优秀</strong>：在 Linux 系统上具有出色的原生性能，比 pgAdmin 响应更快</li>
+<li>✅ <strong>多数据库支持</strong>：不仅支持 PostgreSQL，还支持多种数据库系统</li>
+<li>✅ <strong>功能强大</strong>：包含强大的 SQL 编辑器，语法高亮等高级功能</li>
+<li>✅ <strong>广泛使用</strong>：被广泛用于 PostgreSQL 工作</li>
+<li>✅ <strong>不拖慢系统</strong>：不会导致整个系统变慢</li>
+</ul>
+<p><strong>安装：</strong></p>
+<figure class="code-viewer" data-lines="2"><figcaption class="code-viewer__bar"><span class="code-viewer__title">代码</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 添加 DBeaver 仓库并安装</span></span>
+<span class="line"><span style="color:#6A737D;--shiki-dark:#6A737D"># 具体安装步骤请参考 DBeaver 官方文档</span></span></code></pre></figure>
+<h4 id="其他可选方案">其他可选方案</h4>
+<ul>
+<li><strong>DataGrip</strong>（JetBrains 产品）- 在 Linux 上性能优秀</li>
+<li><strong>TablePlus</strong> - 跨平台性能良好</li>
+<li><strong>Navicat Premium</strong> - 跨平台性能良好</li>
+<li><strong>Beekeeper Studio</strong> - 现代、轻量级的 SQL 客户端</li>
+</ul>
+<h3 id="无客户端安装的-web-方案">无客户端安装的 Web 方案</h3>
+<p>如果你想让其他人访问 PostgreSQL 服务器，但不想让他们安装任何客户端软件，可以考虑以下 Web 方案：</p>
+<p><strong>1. pgAdmin Web 部署</strong></p>
+<ul>
+<li>将 pgAdmin 部署为 Web 应用</li>
+<li>用户通过浏览器访问，无需安装任何软件</li>
+</ul>
+<p><strong>2. TeamPostgreSQL</strong></p>
+<ul>
+<li>专为通过内网或互联网访问 PostgreSQL 设计的 Web 应用</li>
+<li>提供基于浏览器的访问</li>
+</ul>
+<p><strong>3. PostgREST API + Web 界面</strong></p>
+<ul>
+<li>通过 REST API 暴露 PostgreSQL 数据库</li>
+<li>创建简单的 Web 界面连接</li>
+</ul>
+<p><strong>4. PGlite（前沿选项）</strong></p>
+<ul>
+<li>使用 WebAssembly 在浏览器中直接运行 PostgreSQL</li>
+<li>无需服务器端设置或客户端安装</li>
+</ul>
+<p>这些 Web 方案的优势：</p>
+<ul>
+<li>用户无需安装任何软件</li>
+<li>更好的权限控制</li>
+<li>可以在服务器级别配置只读访问</li>
+<li>通过 Web 界面管理用户认证</li>
+</ul>
+<h2 id="further-dev">Further Dev</h2>
+<p>For further allowing accessing remotely and easily, we can do more:</p>
+
+<figure class="code-viewer is-collapsed" data-lines="700"><figcaption class="code-viewer__bar"><span class="code-viewer__title">AI chat for modifying config · /lib/psql/chat-PostgreSQL Network Access Setup.txt</span><span class="code-viewer__spacer"></span><button type="button" class="code-viewer__button" data-copy="">复制</button><button type="button" class="code-viewer__button" data-expand="" aria-expanded="false">展开</button></figcaption><pre class="astro-code astro-code-themes github-light github-dark" style="background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>### USER</span></span>
+<span class="line"><span>in my ubutnu vm, i want the pgsql be accessible by any machine on same network, tell me how to change the conf</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>To make PostgreSQL accessible from other machines on the same network in your Ubuntu VM, you need to configure **two key files**:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 1. Edit `postgresql.conf` — Listen on all interfaces</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Locate the config (usually in `/etc/postgresql/&#x3C;version>/main/postgresql.conf`):</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo nano /etc/postgresql/*/main/postgresql.conf</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Find and modify the `listen_addresses` line:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span>listen_addresses = '*'   # or '0.0.0.0' for IPv4 only</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>> 💡 Ensure it's not commented out (`#` removed).  </span></span>
+<span class="line"><span>> If `listen_addresses` doesn’t exist, add it under **CONNECTIONS AND AUTHENTICATION**.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 2. Edit `pg_hba.conf` — Allow network connections</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Edit the client authentication config:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo nano /etc/postgresql/*/main/pg_hba.conf</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Add a line like this **at the end** (or before stricter rules) to allow connections from your subnet, e.g., `192.0.2.0/24`:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span># TYPE  DATABASE        USER            ADDRESS                 METHOD</span></span>
+<span class="line"><span>host    all             all             192.0.2.0/24         md5</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>> 🔍 Replace `192.0.2.0/24` with your actual network (e.g., `192.0.2.0/24`).  </span></span>
+<span class="line"><span>> `md5` enables password auth (recommended). Use `trust` only for testing in secure LANs.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Optionally, if you want *any* private IP:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span>host    all             all             10.0.0.0/8              md5</span></span>
+<span class="line"><span>host    all             all             172.16.0.0/12           md5</span></span>
+<span class="line"><span>host    all             all             192.0.2.0/16          md5</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>⚠️ Avoid `0.0.0.0/0` unless you understand the security implications.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 3. Ensure firewall allows port 5432</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>If `ufw` is active:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo ufw allow from 192.0.2.0/24 to any port 5432</span></span>
+<span class="line"><span># or more restrictively:</span></span>
+<span class="line"><span>sudo ufw allow 5432/tcp</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Check status:  </span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo ufw status verbose</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Also verify your **VM network mode** (e.g., in VirtualBox: *Bridged* or *NAT with port forwarding*; in KVM/QEMU: *bridged via br0* or *macvtap*).  </span></span>
+<span class="line"><span>Since you mentioned bridging (`br0`) and static IPs like `192.0.2.108`, your VM likely has a real LAN IP — good.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 4. Restart PostgreSQL</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo systemctl restart postgresql</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Check it’s listening externally:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>ss -tulnp | grep :5432</span></span>
+<span class="line"><span># Should show: 0.0.0.0:5432 or :::5432</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 5. Test connection from another machine</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql -h &#x3C;your-vm-ip> -U &#x3C;username> -d &#x3C;dbname></span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>If you get `Connection refused`, check:</span></span>
+<span class="line"><span>- Is `listen_addresses = '*'` applied? (restart required)</span></span>
+<span class="line"><span>- Is `pg_hba.conf` rule matching the client IP?</span></span>
+<span class="line"><span>- Is VM firewall / host firewall (e.g., Windows Defender) blocking 5432?</span></span>
+<span class="line"><span>- Is the VM really reachable? Try `ping` and `telnet &#x3C;vm-ip> 5432`.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know your PostgreSQL version or if you need help finding the correct config paths.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### USER</span></span>
+<span class="line"><span>how to event allow </span></span>
+<span class="line"><span>what is meaning of like /24 and /32 there</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>Great question! Let’s clarify both parts:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔹 1. **How to "even allow" (i.e. allow *any* IP) — and whether you should**</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>You *can* configure PostgreSQL to accept connections from **any IP address**:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#### ✅ In `pg_hba.conf`:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span>host    all    all    0.0.0.0/0    md5</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>- This allows **all IPv4 addresses**.</span></span>
+<span class="line"><span>- For IPv6 too:</span></span>
+<span class="line"><span>  ```conf</span></span>
+<span class="line"><span>  host    all    all    ::0/0        md5</span></span>
+<span class="line"><span>  ```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>⚠️ **But this is strongly discouraged unless absolutely necessary**, because:</span></span>
+<span class="line"><span>- It exposes your DB to the entire internet if the VM is reachable externally.</span></span>
+<span class="line"><span>- Even on a trusted LAN, it’s better to restrict to your subnet (e.g. `192.0.2.0/24`).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>✅ **Safer alternatives**:</span></span>
+<span class="line"><span>- Allow only your company subnet: `192.0.2.0/24`</span></span>
+<span class="line"><span>- Allow only specific IPs (e.g. dev machines):</span></span>
+<span class="line"><span>  ```conf</span></span>
+<span class="line"><span>  host    all    all    192.0.2.108/32    md5</span></span>
+<span class="line"><span>  host    all    all    192.0.2.114/32    md5</span></span>
+<span class="line"><span>  ```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>> 🔐 Remember: `pg_hba.conf` controls **who can attempt to log in** — the actual login still requires a valid PostgreSQL user + password (if using `md5` or `scram-sha-256`).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔹 2. **What do `/24`, `/32`, etc. mean? → CIDR Notation**</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>It’s **CIDR (Classless Inter-Domain Routing)** notation: `IP_ADDRESS/PREFIX_LENGTH`</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>| Notation        | Meaning | Example Range (for `192.168.13.x`) |</span></span>
+<span class="line"><span>|----------------|---------|-------------------------------------|</span></span>
+<span class="line"><span>| `192.0.2.0/24` | 24-bit network prefix → 32−24 = 8 bits for hosts → **256 IPs** (`.0` to `.255`) | `192.0.2.0` – `192.0.2.255` |</span></span>
+<span class="line"><span>| `192.0.2.108/32` | 32-bit prefix → **exactly one IP** | only `192.0.2.108` |</span></span>
+<span class="line"><span>| `192.0.2.0/16` | 16-bit prefix → 16 host bits → **65,536 IPs** | `192.0.2.0` – `192.0.2.255` |</span></span>
+<span class="line"><span>| `10.0.0.0/8` | 8-bit prefix → 24 host bits → **16.7 million IPs** | `10.0.0.0` – `10.255.255.255` |</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#### 💡 Quick reference for common subnets:</span></span>
+<span class="line"><span>| Prefix | Hosts | Typical Use |</span></span>
+<span class="line"><span>|-------|-------|-------------|</span></span>
+<span class="line"><span>| `/32` | 1     | Single host (e.g., your VM at `192.0.2.108`) |</span></span>
+<span class="line"><span>| `/30` | 4     | Point-to-point links |</span></span>
+<span class="line"><span>| `/24` | 254 usable* | Standard home/company LAN segment |</span></span>
+<span class="line"><span>| `/16` | 65,534 usable* | Larger private networks |</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>> \* `.0` is network address, `.255` is broadcast (not usable for hosts in `/24`), so **254 usable IPs**.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔹 Bonus: Check your VM’s subnet</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Run this on your Ubuntu VM:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>ip -4 addr show</span></span>
+<span class="line"><span># or</span></span>
+<span class="line"><span>ip route</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>You’ll likely see something like:</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>192.0.2.108/24 dev enp1s0 ...</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>→ So your VM is in `192.0.2.0/24`. That’s the safe range to allow.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know if you want help generating the exact `pg_hba.conf` rules for your setup (e.g., allow only `192.0.2.0/24` or specific IPs like `.108`, `.114`).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### USER</span></span>
+<span class="line"><span>well i want less stricter thing please note now i have to use latter'|</span></span>
+<span class="line"><span>fit@fit-VirtualBox:/etc/postgresql/12/main$ psql -U postgres</span></span>
+<span class="line"><span>psql: error: FATAL:  Peer authentication failed for user "postgres"</span></span>
+<span class="line"><span>fit@fit-VirtualBox:/etc/postgresql/12/main$ psql -U postgres -h localhost</span></span>
+<span class="line"><span>Password for user postgres: </span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>You're hitting **PostgreSQL’s default authentication behavior**, and the fact that your `psql -U postgres` (without `-h`) fails while `psql -U postgres -h localhost` *works* (after password) is actually **expected** — here’s why, and how to relax it *safely*.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔍 Why this happens</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>PostgreSQL distinguishes **connection types**:</span></span>
+<span class="line"><span>| Connection      | Method (by default in `pg_hba.conf`) | Auth Used |</span></span>
+<span class="line"><span>|----------------|----------------------------------------|-----------|</span></span>
+<span class="line"><span>| **Local UNIX socket**&#x3C;br>(e.g. `psql -U postgres`) | `local` lines in `pg_hba.conf` | Usually `peer` or `ident` |</span></span>
+<span class="line"><span>| **TCP/IP**&#x3C;br>(e.g. `psql -U postgres -h localhost` or `-h 127.0.0.1`) | `host` lines | Usually `md5` (password) |</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Your error:</span></span>
+<span class="line"><span>```text</span></span>
+<span class="line"><span>FATAL: Peer authentication failed for user "postgres"</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>→ You ran `psql -U postgres` → used **UNIX socket** → `peer` auth → PostgreSQL checked: *"Is the OS user (`fit`) named `postgres`?"* No → ❌</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>But `psql -U postgres -h localhost` → forces **TCP/IP** → uses `md5` → asks for password → ✅</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ Goal: Make local `psql -U postgres` work **without password** (less strict, for dev)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#### ➤ Option 1: Allow `peer` for your user `fit` (recommended for local dev)</span></span>
+<span class="line"><span>Edit `/etc/postgresql/12/main/pg_hba.conf`:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Find the `local` section (top of file), and change:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span># "local" is for Unix domain socket connections only</span></span>
+<span class="line"><span>local   all             postgres                                peer</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>→ to allow your user `fit` as `postgres` via `peer`:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span>local   all             postgres                                peer</span></span>
+<span class="line"><span>local   all             fit                                     peer</span></span>
+<span class="line"><span># OR better: map user 'fit' to DB role 'postgres' with peer:</span></span>
+<span class="line"><span>local   all             postgres                                peer</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>But wait — better: use **role mapping** (cleaner):</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>##### ✅ Best: Use `peer` with user mapping</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>1. Edit `pg_hba.conf`:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span># TYPE  DATABASE  USER      ADDRESS  METHOD</span></span>
+<span class="line"><span>local   all       postgres           peer</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>2. Then create a **user mapping file** (if not exists):</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo nano /etc/postgresql/12/main/pg_ident.conf</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Add:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span># MAPNAME       SYSTEM-USERNAME         PG-USERNAME</span></span>
+<span class="line"><span>local_map       fit                     postgres</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>3. Reference this map in `pg_hba.conf`:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span>local   all       postgres           peer map=local_map</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>4. Restart:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo systemctl restart postgresql</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Now:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql -U postgres    # ✅ works (no password), because OS user `fit` → DB user `postgres`</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#### ➤ Option 2: Less secure but simpler — use `trust` (only for dev VMs!)</span></span>
+<span class="line"><span>Edit `pg_hba.conf`:</span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span># For local socket (no password)</span></span>
+<span class="line"><span>local   all             all                                     trust</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># For localhost TCP (no password)</span></span>
+<span class="line"><span>host    all             all             127.0.0.1/32            trust</span></span>
+<span class="line"><span>host    all             all             ::1/128                 trust</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># For your LAN (still require password — keep md5)</span></span>
+<span class="line"><span>host    all             all             192.0.2.0/24         md5</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>✅ Then:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql -U postgres          # ✅ no password</span></span>
+<span class="line"><span>psql -U postgres -h localhost   # ✅ no password</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>⚠️ **Only use `trust` in isolated dev environments** — never in production or if VM is exposed.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔁 Summary: Your minimal safe dev setup</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```conf</span></span>
+<span class="line"><span># pg_hba.conf</span></span>
+<span class="line"><span>local   all             postgres        peer</span></span>
+<span class="line"><span>local   all             fit             peer   # ← allows `psql -U fit`</span></span>
+<span class="line"><span># OR use the map approach above for postgres role</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>host    all             all             127.0.0.1/32    md5</span></span>
+<span class="line"><span>host    all             all             ::1/128         md5</span></span>
+<span class="line"><span>host    all             all             192.0.2.0/24 md5   # your LAN</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Then set a password for `postgres` (if not done):</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo -u postgres psql</span></span>
+<span class="line"><span>\password postgres</span></span>
+<span class="line"><span># enter new password, twice</span></span>
+<span class="line"><span>\q</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Now both work:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql -U postgres -h localhost      # prompts password (md5)</span></span>
+<span class="line"><span>psql -U postgres                   # peer → fails unless you map `fit`→`postgres`</span></span>
+<span class="line"><span># → so either:</span></span>
+<span class="line"><span>#   - use `psql -U fit` (if you created DB user `fit`), or</span></span>
+<span class="line"><span>#   - use the `pg_ident.conf` mapping, or</span></span>
+<span class="line"><span>#   - use `trust` for dev convenience</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know your preference:  </span></span>
+<span class="line"><span>🔹 Do you want passwordless local access (dev-friendly)? → Use `trust` or `peer` mapping.  </span></span>
+<span class="line"><span>🔹 Or keep passwords everywhere except socket for `postgres`? → Map `fit` → `postgres`.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>I can give you the exact commands to set it up.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### USER</span></span>
+<span class="line"><span>well the one fors postgres work now without need of password but not so for fit, note that this account not exist inside psql, </span></span>
+<span class="line"><span>fit@fit-VirtualBox:/etc/postgresql/12/main$ psql</span></span>
+<span class="line"><span>psql: error: FATAL:  role "fit" does not exist</span></span>
+<span class="line"><span>fit@fit-VirtualBox:/etc/postgresql/12/main$ psql -U postgres</span></span>
+<span class="line"><span>psql (12.22 (Ubuntu 12.22-0ubuntu0.20.04.4))</span></span>
+<span class="line"><span>Type "help" for help.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>fit is the username o fubuntu</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>Perfect — now everything makes sense. Let’s clarify and fix this quickly.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔍 What’s happening</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>- You’re logged in as Ubuntu user `fit`.</span></span>
+<span class="line"><span>- You run `psql` → it tries to connect as PostgreSQL role **`fit`** (default behavior).</span></span>
+<span class="line"><span>- But no PostgreSQL role named `fit` exists → ❌ `role "fit" does not exist`</span></span>
+<span class="line"><span>- `psql -U postgres` works ✅ because role `postgres` exists *and* `peer` auth allows OS user `fit` to log in as DB user `postgres` (thanks to your `pg_hba.conf` config).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ Goal: Let `psql` (no args) just work for user `fit`</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>You have **two clean options** — choose based on your dev workflow:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#### ✅ Option 1: Create PostgreSQL role `fit` (recommended)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>This mirrors your OS user and is standard practice.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span># Switch to postgres user (superuser), then create role 'fit'</span></span>
+<span class="line"><span>sudo -u postgres createuser --interactive fit</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>It will ask:</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>Shall the new role be a superuser? (y/n) </span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>→ For dev, you can say `y`.  </span></span>
+<span class="line"><span>Or safer: say `n`, then grant needed perms later.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>✅ Now:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql               # ✅ connects as role 'fit' (no password, via peer)</span></span>
+<span class="line"><span>psql -U postgres   # ✅ still works</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>> 🔔 Bonus: You can also give it a home DB:</span></span>
+<span class="line"><span>> ```bash</span></span>
+<span class="line"><span>> sudo -u postgres createdb -O fit fit</span></span>
+<span class="line"><span>> ```</span></span>
+<span class="line"><span>> Then `psql` alone connects to DB `fit` as user `fit`.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>#### ✅ Option 2: Alias `psql` → `psql -U postgres` (quick &#x26; dirty)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Add to your `~/.bashrc`:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>echo "alias psql='psql -U postgres'" >> ~/.bashrc</span></span>
+<span class="line"><span>source ~/.bashrc</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Then `psql` becomes shorthand for `psql -U postgres`.  </span></span>
+<span class="line"><span>✅ Works immediately, no DB changes.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>*Downside*: You’re always `postgres` role — not ideal if testing multi-user apps.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔐 Security Note</span></span>
+<span class="line"><span>Since you’re on a **local dev VM**, and using `peer` auth (which only works via local socket), creating user `fit` is **safe and standard**.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>You can verify roles anytime:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo -u postgres psql -c "\du"</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Will show:</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span> Role name | Attributes     | Member of </span></span>
+<span class="line"><span>-----------+----------------+-----------</span></span>
+<span class="line"><span> fit       |                | {}</span></span>
+<span class="line"><span> postgres  | Superuser, ... | {}</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🚀 One-liner to create `fit` as non-superuser (good balance):</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo -u postgres createuser -D -R -S fit &#x26;&#x26; sudo -u postgres createdb -O fit fit</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>- `-D` = no CREATEDB  </span></span>
+<span class="line"><span>- `-R` = no CREATEROLE  </span></span>
+<span class="line"><span>- `-S` = no SUPERUSER  </span></span>
+<span class="line"><span>- Then `createdb -O fit fit` gives them a personal DB.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Now:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql               # ✅ connects to DB 'fit' as user 'fit'</span></span>
+<span class="line"><span>psql template1     # ✅ connects to template1 as user 'fit'</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know if you want `fit` to have full superuser powers (e.g., for dev convenience), or keep it restricted — I’ll give the exact command.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### USER</span></span>
+<span class="line"><span>did what you say but newe error</span></span>
+<span class="line"><span>fit@fit-VirtualBox:/etc/postgresql/12/main$ sudo -u postgres createuser --interactive fit</span></span>
+<span class="line"><span>Shall the new role be a superuser? (y/n) y</span></span>
+<span class="line"><span>fit@fit-VirtualBox:/etc/postgresql/12/main$ psql</span></span>
+<span class="line"><span>psql: error: FATAL:  database "fit" does not exist</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>Perfect — you’re *so close*! 😊</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>The error:</span></span>
+<span class="line"><span>```text</span></span>
+<span class="line"><span>FATAL: database "fit" does not exist</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>means:  </span></span>
+<span class="line"><span>✅ Role `fit` exists (you just created it),  </span></span>
+<span class="line"><span>❌ But PostgreSQL tried to connect to a **database named `fit`** (default behavior: `psql` → user = DB name), and it doesn’t exist yet.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ Fix: Create the database `fit` owned by role `fit`</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Run:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>sudo -u postgres createdb -O fit fit</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Explanation:</span></span>
+<span class="line"><span>- `createdb` = create a new DB</span></span>
+<span class="line"><span>- `-O fit` = owner = role `fit`</span></span>
+<span class="line"><span>- `fit` = database name</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>✅ Now:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql              # connects to DB 'fit' as user 'fit' → ✅ works!</span></span>
+<span class="line"><span>psql -U postgres  # still works → connects to DB 'postgres' (default for user postgres)</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔍 How `psql` chooses the database (by default)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>| Command | DB it tries to connect to | Why |</span></span>
+<span class="line"><span>|--------|----------------------------|-----|</span></span>
+<span class="line"><span>| `psql` | `fit` | same as OS username (and now DB exists ✅) |</span></span>
+<span class="line"><span>| `psql -U postgres` | `postgres` | DB name defaults to username → `postgres` DB exists by default |</span></span>
+<span class="line"><span>| `psql -d somedb` | `somedb` | explicit DB |</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>You can always override:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql -d postgres    # connect as 'fit' to 'postgres' DB</span></span>
+<span class="line"><span>psql -U fit -d postgres  # same</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🎉 You’re done! Summary of what you now have:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>| OS User | DB Role | DB Name | Works? |</span></span>
+<span class="line"><span>|--------|---------|---------|--------|</span></span>
+<span class="line"><span>| `fit` | `fit` (superuser) | `fit` | ✅ `psql` |</span></span>
+<span class="line"><span>| `fit` | `postgres` | `postgres` | ✅ `psql -U postgres` |</span></span>
+<span class="line"><span>| Any machine on `192.0.2.0/24` | `fit`/`postgres`/etc. | any | ✅ `psql -h &#x3C;vm-ip> -U fit -d fit` (with password) |</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know if you want to:</span></span>
+<span class="line"><span>- Remove superuser from `fit` (safer for testing permissions)</span></span>
+<span class="line"><span>- Set up a default DB other than `fit`</span></span>
+<span class="line"><span>- Test remote access from another machine</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Happy PostgreSQLing! 🐘</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### USER</span></span>
+<span class="line"><span>how to make by default psql to use user postgres</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>To make `psql` (with no arguments) **default to user `postgres`** (instead of your OS username `fit`), you have several clean, standard options — pick the one that fits your workflow:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ Option 1: Set environment variable (recommended for per-user, non-intrusive)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Add this to your shell config (`~/.bashrc` or `~/.zshrc`):</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>echo 'export PGUSER=postgres' >> ~/.bashrc</span></span>
+<span class="line"><span>source ~/.bashrc</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>✅ Now:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql                 # → connects as user `postgres` to DB `postgres`</span></span>
+<span class="line"><span>psql -d fit          # → connects as `postgres` to DB `fit`</span></span>
+<span class="line"><span>psql -U fit          # → overrides: uses user `fit`</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>🔹 **Pros**:  </span></span>
+<span class="line"><span>- No DB changes  </span></span>
+<span class="line"><span>- Easy to toggle (just unset `PGUSER`)  </span></span>
+<span class="line"><span>- Follows PostgreSQL convention  </span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>🔹 **Other useful vars** (optional):</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>export PGDATABASE=postgres  # default DB (usually redundant for postgres user)</span></span>
+<span class="line"><span>export PGHOST=localhost      # if you want to force TCP (e.g., test pg_hba.conf host rules)</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ Option 2: Create a shell alias (quick &#x26; simple)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>echo "alias psql='psql -U postgres'" >> ~/.bashrc</span></span>
+<span class="line"><span>source ~/.bashrc</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>✅ Same effect, but less flexible (harder to override).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ Option 3: Configure `~/.psqlrc` + service file (advanced, overkill for this)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>You *could* use `~/.pg_service.conf` and `PGSERVICE`, but for default user, `PGUSER` is simplest.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔁 To temporarily override (e.g., test as `fit`):</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>PGUSER=fit psql          # one-time</span></span>
+<span class="line"><span># or</span></span>
+<span class="line"><span>psql -U fit              # explicit</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔍 Verify it works:</span></span>
+<span class="line"><span>```bash</span></span>
+<span class="line"><span>psql -c "SELECT CURRENT_USER, CURRENT_DATABASE();"</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>Should return:</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span> current_user | current_database </span></span>
+<span class="line"><span>--------------+------------------</span></span>
+<span class="line"><span> postgres     | postgres</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know if you’d like the default DB to also be `fit` (e.g., `psql` → user `postgres`, DB `fit`), or any combo — easy to set with `PGDATABASE`.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### USER</span></span>
+<span class="line"><span>now inside psql how to check what user is it now</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ASSISTANT</span></span>
+<span class="line"><span>Inside `psql`, you can check the **current user** (role), **current database**, and other session info in several ways — here are the most useful and standard ones:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 1. Quick one-liners (most common)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```sql</span></span>
+<span class="line"><span>SELECT CURRENT_USER;</span></span>
+<span class="line"><span>-- or</span></span>
+<span class="line"><span>SELECT USER;</span></span>
+<span class="line"><span>-- or (more explicit)</span></span>
+<span class="line"><span>SELECT SESSION_USER;</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>| Command | Meaning |</span></span>
+<span class="line"><span>|--------|---------|</span></span>
+<span class="line"><span>| `CURRENT_USER` | Effective role (may differ if `SET ROLE` was used) |</span></span>
+<span class="line"><span>| `USER` | Alias for `CURRENT_USER` |</span></span>
+<span class="line"><span>| `SESSION_USER` | Original login role (never changes during session) |</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>💡 In 99% of cases, they’re the same unless you’ve done `SET ROLE`.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Example output:</span></span>
+<span class="line"><span>```text</span></span>
+<span class="line"><span> current_user </span></span>
+<span class="line"><span>--------------</span></span>
+<span class="line"><span> postgres</span></span>
+<span class="line"><span>(1 row)</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 2. Show full connection info at once</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```sql</span></span>
+<span class="line"><span>SELECT CURRENT_USER, CURRENT_DATABASE(), INET_SERVER_ADDR(), INET_CLIENT_ADDR();</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Output:</span></span>
+<span class="line"><span>```text</span></span>
+<span class="line"><span> current_user | current_database | inet_server_addr | inet_client_addr </span></span>
+<span class="line"><span>--------------+------------------+------------------+------------------</span></span>
+<span class="line"><span> postgres     | postgres         | 127.0.0.1        | 127.0.0.1</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>- `INET_SERVER_ADDR()` → IP PostgreSQL is bound to (server side)  </span></span>
+<span class="line"><span>- `INET_CLIENT_ADDR()` → IP you connected *from* (client side)  </span></span>
+<span class="line"><span>  - For local socket: may return `NULL`  </span></span>
+<span class="line"><span>  - For TCP (`-h localhost`): `127.0.0.1`  </span></span>
+<span class="line"><span>  - For remote: e.g. `192.0.2.114`</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>> 🔍 Tip: If `INET_CLIENT_ADDR()` is `NULL`, you’re using **UNIX socket** (local, `peer` auth).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 3. Meta-command (psql internal)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```sql</span></span>
+<span class="line"><span>\conninfo</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Example output:</span></span>
+<span class="line"><span>```text</span></span>
+<span class="line"><span>You are connected to database "postgres" as user "postgres" via socket in "/var/run/postgresql" at port "5432".</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>- Shows user, DB, host (socket vs TCP), port  </span></span>
+<span class="line"><span>- Very human-readable ✅</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### ✅ 4. Check if you’re a superuser</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```sql</span></span>
+<span class="line"><span>SELECT rolsuper FROM pg_roles WHERE rolname = CURRENT_USER;</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Returns `t` (true) or `f` (false).</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Or simpler:</span></span>
+<span class="line"><span>```sql</span></span>
+<span class="line"><span>SHOW is_superuser;</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span>→ Returns `on` or `off`</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>### 🔁 Bonus: Change role temporarily (for testing)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>```sql</span></span>
+<span class="line"><span>SET ROLE fit;          -- switch to role 'fit' (if member or allowed)</span></span>
+<span class="line"><span>SELECT CURRENT_USER;   -- now shows 'fit'</span></span>
+<span class="line"><span>RESET ROLE;            -- go back to original</span></span>
+<span class="line"><span>```</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>(Only works if your current role has `SET ROLE` privilege on the target role.)</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>---</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Let me know if you want to script this (e.g., auto-show user in prompt), or verify remote connections.</span></span></code></pre></figure></div><nav class="path-nav" aria-label="本阶段内容"><div class="path-nav__side"><span class="path-nav__label">← 上一篇</span><a href="/zh/docs/homelab/services/asterisk-audio/">Asterisk 音频处理</a></div><div class="path-nav__side path-nav__side--next"><span class="path-nav__label">下一篇 →</span><a href="/zh/docs/homelab/services/local-git/">Git 本地和局域网服务器使用</a></div></nav></div></article></div><nav class="toc" aria-label="目录"><h2>目录</h2><ol><li><a href="#安装-postgresql-服务器">安装 PostgreSQL 服务器</a></li><li><a href="#仅安装客户端轻量级选项">仅安装客户端（轻量级选项）</a></li><li><a href="#change-config-files">Change Config Files</a></li><li><a href="#set-password">Set Password</a></li><li><a href="#gui-客户端工具">GUI 客户端工具</a></li><li class="toc__l3"><a href="#pgadmin-性能问题">pgAdmin 性能问题</a></li><li class="toc__l3"><a href="#推荐的替代方案">推荐的替代方案</a></li><li class="toc__l3"><a href="#无客户端安装的-web-方案">无客户端安装的 Web 方案</a></li><li><a href="#further-dev">Further Dev</a></li></ol></nav></div></div><script type="module">document.addEventListener(`click`,async e=>{let t=e.target;if(!t)return;let n=t.closest(`[data-copy]`);if(n){let e=n.closest(`.code-viewer`)?.querySelector(`pre code`)?.textContent??``,t=n.textContent;try{await navigator.clipboard.writeText(e),n.textContent=`已复制`}catch{n.textContent=`复制失败`}setTimeout(()=>{n.textContent=t},1400);return}let r=t.closest(`[data-expand]`);if(r){let e=r.closest(`.code-viewer`)?.classList.toggle(`is-collapsed`);r.setAttribute(`aria-expanded`,String(!e)),r.textContent=e?`展开`:`收起`;return}let i=t.closest(`[data-archive-open]`);if(i){let e=i.closest(`.archive-viewer`),t=e?.dataset.src,n=e?.querySelector(`.archive-viewer__body`);if(!e||!t||!n)return;if(e.classList.contains(`is-open`)){e.classList.remove(`is-open`),n.replaceChildren(),i.textContent=`展开存档`;return}let r=document.createElement(`iframe`);r.src=t,r.loading=`lazy`,r.title=e.dataset.title||`第三方页面存档`,r.setAttribute(`sandbox`,``),r.setAttribute(`referrerpolicy`,`no-referrer`),n.replaceChildren(r),e.classList.add(`is-open`),i.textContent=`收起存档`}});</script></main><footer class="site-footer"><div class="container site-footer__row"><p style="margin:0">© 2026 LKM · 本页内容为作者个人观点。</p><p style="margin:0"><a href="/zh/writing/">文章</a><span aria-hidden="true"> · </span><a href="/zh/docs/">文档</a><span aria-hidden="true"> · </span><a href="/zh/projects/">项目</a><span aria-hidden="true"> · </span><a href="/zh/archive/">索引</a><span aria-hidden="true"> · </span><a href="/zh/rss.xml">RSS</a><span aria-hidden="true"> · </span><a href="https://github.com/plae-tljg" rel="me noopener" target="_blank">GitHub</a></p></div></footer><div class="lkm-bot" id="lkm-bot" data-bot-base="/bot/" data-strings="{&quot;chats&quot;:&quot;对话&quot;,&quot;newChat&quot;:&quot;新对话&quot;,&quot;back&quot;:&quot;返回对话&quot;,&quot;placeholder&quot;:&quot;问一个关于作品的问题…&quot;,&quot;send&quot;:&quot;提问&quot;,&quot;you&quot;:&quot;你&quot;,&quot;delete&quot;:&quot;删除这个对话&quot;,&quot;noChats&quot;:&quot;还没有对话&quot;,&quot;note&quot;:&quot;答案来自表格，不经过模型；不知道的会直接说不知道。&quot;,&quot;langNote&quot;:&quot;中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。&quot;,&quot;loading&quot;:&quot;正在加载…&quot;,&quot;failed&quot;:&quot;加载失败&quot;,&quot;retry&quot;:&quot;重试&quot;,&quot;tokens&quot;:&quot;0 tokens&quot;,&quot;selfCheck&quot;:&quot;在这里跑一遍冻结用例&quot;,&quot;static&quot;:&quot;静态页面 · 无需服务器&quot;,&quot;refs&quot;:&quot;指代&quot;,&quot;fromTables&quot;:&quot;来自表格&quot;,&quot;refused&quot;:&quot;已记录这次提问&quot;,&quot;fuzzy&quot;:&quot;近似匹配&quot;,&quot;try&quot;:&quot;试试&quot;}" data-samples="[&quot;你的网站是什么&quot;,&quot;what projects does LKM have?&quot;,&quot;最近在做什么&quot;,&quot;what is dsh-review about?&quot;,&quot;你会哪些编程语言&quot;,&quot;怎么联系你&quot;]"><button class="lkm-bot__launcher" id="lkm-bot-launcher" type="button" aria-expanded="false" aria-controls="lkm-bot-panel" title="问问我的作品 — 按住可拖动"><svg class="lkm-bot__launcher-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-4.3 3.4A1 1 0 0 1 3 19.6V5a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="9" cy="11" r="1.15" fill="currentColor"></circle><circle cx="12.5" cy="11" r="1.15" fill="currentColor"></circle><circle cx="16" cy="11" r="1.15" fill="currentColor"></circle></svg><span class="lkm-bot__launcher-label">问问我的作品</span></button><section class="lkm-bot__panel" id="lkm-bot-panel" role="dialog" aria-label="问问我的作品" aria-modal="false" hidden><header class="lkm-bot__head"><button class="lkm-bot__icon-btn" id="lkm-bot-chats" type="button" aria-label="对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><div class="lkm-bot__titles"><b id="lkm-bot-name">问问我的作品</b><span id="lkm-bot-tagline">静态页面 · 无需服务器</span></div><button class="lkm-bot__icon-btn" id="lkm-bot-new" type="button" aria-label="新对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button><button class="lkm-bot__icon-btn" id="lkm-bot-close" type="button" aria-label="收起"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></header><div class="lkm-bot__log" id="lkm-bot-log"><div class="lkm-bot__inner" id="lkm-bot-inner"></div></div><form class="lkm-bot__form" id="lkm-bot-form" autocomplete="off"><input class="lkm-bot__input" id="lkm-bot-input" type="text" maxlength="500" placeholder="问一个关于作品的问题…" aria-label="问一个关于作品的问题…"><button class="lkm-bot__send" id="lkm-bot-send" type="submit">提问</button></form><div class="lkm-bot__drawer" id="lkm-bot-drawer" hidden><div class="lkm-bot__drawer-head"><b>对话</b><button class="lkm-bot__icon-btn" id="lkm-bot-drawer-close" type="button" aria-label="返回对话"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button></div><div class="lkm-bot__list" id="lkm-bot-list"></div><div class="lkm-bot__drawer-foot" id="lkm-bot-foot"></div></div></section></div><script type="module" src="/_astro/ChatBot.astro_astro_type_script_index_0_lang.Cz2349Zr.js"></script><script>
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-theme-toggle]')
+        if (!button) return
+        var current = document.documentElement.dataset.theme
+        if (!current) {
+          current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        var next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.dataset.theme = next
+        try {
+          localStorage.setItem('theme', next)
+        } catch (e) {}
+      })
+    </script></body></html>
