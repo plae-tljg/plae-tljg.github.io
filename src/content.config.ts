@@ -41,6 +41,8 @@ const posts = defineCollection({
     tags: z.array(z.string()).default([]),
     /** ready | preview */
     status: z.string().default('ready'),
+    /** Translated by a model, and the page says so. */
+    aiTranslated: z.boolean().default(false),
     canonical: z.string().optional(),
     /** Source path inside the writing workspace, for traceability. */
     source: z.string().optional(),
@@ -78,6 +80,8 @@ const docs = defineCollection({
     updated: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
     status: z.string().default('ready'),
+    /** Translated by a model, and the page says so. */
+    aiTranslated: z.boolean().default(false),
     canonical: z.string().optional(),
     source: z.string().optional(),
     syncedAt: z.string().optional(),

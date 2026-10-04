@@ -188,6 +188,8 @@ function readArticle(absPath) {
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     status: String(data.status || 'idea').trim(),
     canonical: data.canonical || undefined,
+    // Carried through so the page can say a model did the translating.
+    aiTranslated: data.aiTranslated === true,
     confidentialityChecked: data.confidentialityChecked,
     body: content.trim(),
     rawHash: sha256(raw),
@@ -375,6 +377,7 @@ function buildOutput(article, options, previousEntry, warnings) {
   frontmatter.tags = article.tags
   frontmatter.status = options.preview ? 'preview' : 'ready'
   if (article.canonical) frontmatter.canonical = article.canonical
+  if (article.aiTranslated) frontmatter.aiTranslated = true
   frontmatter.source = article.relPath
   frontmatter.syncedAt = syncedAt
 

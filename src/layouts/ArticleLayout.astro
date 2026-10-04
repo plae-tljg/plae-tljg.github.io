@@ -104,6 +104,16 @@ if (translationUrl) {
 
           {isPreview(post) && <p class="notice">{t.previewNote}</p>}
 
+      {
+        post.data.aiTranslated && (
+          <p class="notice notice--ai">
+            {lang === 'zh'
+              ? '本文由 AI 翻译自英文原稿，术语和语气可能有偏差。'
+              : 'This article was translated from the Chinese original by an AI. Wording and terminology may be off.'}
+          </p>
+        )
+      }
+
           <div class="prose" data-pagefind-body>
             <slot />
           </div>

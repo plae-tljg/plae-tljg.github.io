@@ -1,8 +1,20 @@
 {
-  "generatedAt": "2026-10-04T12:07:15.207Z",
+  "generatedAt": "2026-10-04T14:43:38.335Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
+    {
+      "key": "why-ai-takes-over-math-00",
+      "lang": "en",
+      "title": "00 Collection Abstract: Why I Already Knew AI Would Take Over Mathematics",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "seasons/01-math/00-abstract.en.md",
+      "sourceHash": "sha256:1f468f5fbd750303",
+      "outputPath": "src/content/posts/en/why-ai-takes-over-math/why-ai-takes-over-math-00.md",
+      "outputHash": "sha256:c5bbc74d05bef3fd",
+      "syncedAt": "2026-10-04T14:43:38.324Z"
+    },
     {
       "key": "why-ai-takes-over-math-00",
       "lang": "zh",
@@ -14,6 +26,18 @@
       "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-00.md",
       "outputHash": "sha256:643286ee4ff10333",
       "syncedAt": "2026-10-01T06:33:35.735Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-01",
+      "lang": "en",
+      "title": "01 Three Principles of Mathematical Learning",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "seasons/01-math/01-three-principles.en.md",
+      "sourceHash": "sha256:700b9698bd07c31b",
+      "outputPath": "src/content/posts/en/why-ai-takes-over-math/why-ai-takes-over-math-01.md",
+      "outputHash": "sha256:d69ba05f432fb38e",
+      "syncedAt": "2026-10-04T14:43:38.326Z"
     },
     {
       "key": "why-ai-takes-over-math-01",
@@ -29,6 +53,18 @@
     },
     {
       "key": "why-ai-takes-over-math-02",
+      "lang": "en",
+      "title": "02 Preparation: Several Ways of Looking at Mathematics",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "seasons/01-math/02-preparation.en.md",
+      "sourceHash": "sha256:76615aa34a97c99c",
+      "outputPath": "src/content/posts/en/why-ai-takes-over-math/why-ai-takes-over-math-02.md",
+      "outputHash": "sha256:10ae5509636a6ba5",
+      "syncedAt": "2026-10-04T14:43:38.327Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-02",
       "lang": "zh",
       "title": "02 准备：几种看数学的方式",
       "series": "why-ai-takes-over-math",
@@ -38,6 +74,18 @@
       "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-02.md",
       "outputHash": "sha256:006e2a949c64417c",
       "syncedAt": "2026-10-01T06:33:35.736Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-03",
+      "lang": "en",
+      "title": "03 Why AI Will Take Over Mathematics",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "seasons/01-math/03-why-ai-takes-over.en.md",
+      "sourceHash": "sha256:b73343e0a1a2e4dc",
+      "outputPath": "src/content/posts/en/why-ai-takes-over-math/why-ai-takes-over-math-03.md",
+      "outputHash": "sha256:23379d771339a451",
+      "syncedAt": "2026-10-04T14:43:38.328Z"
     },
     {
       "key": "why-ai-takes-over-math-03",
@@ -53,6 +101,18 @@
     },
     {
       "key": "why-ai-takes-over-math-04",
+      "lang": "en",
+      "title": "04 Problem-Consciousness: The Layer AI Cannot Take Over",
+      "series": "why-ai-takes-over-math",
+      "status": "preview",
+      "sourcePath": "seasons/01-math/04-problem-consciousness.en.md",
+      "sourceHash": "sha256:d20ec56781e9e02b",
+      "outputPath": "src/content/posts/en/why-ai-takes-over-math/why-ai-takes-over-math-04.md",
+      "outputHash": "sha256:4a037dcbf78a8ec0",
+      "syncedAt": "2026-10-04T14:43:38.329Z"
+    },
+    {
+      "key": "why-ai-takes-over-math-04",
       "lang": "zh",
       "title": "04 问题意识：AI 接管不了的那一层",
       "series": "why-ai-takes-over-math",
@@ -62,6 +122,18 @@
       "outputPath": "src/content/posts/zh/why-ai-takes-over-math/why-ai-takes-over-math-04.md",
       "outputHash": "sha256:996489bcfa6b3c01",
       "syncedAt": "2026-10-01T06:33:35.737Z"
+    },
+    {
+      "key": "rapid-prototypes-and-structure",
+      "lang": "en",
+      "title": "01 After the Rapid Prototype: Code, Data, and Structure",
+      "series": "ai-maintainable-systems",
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/01-rapid-prototypes-and-structure.en.md",
+      "sourceHash": "sha256:6823589d2cf7b7c7",
+      "outputPath": "src/content/posts/en/ai-maintainable-systems/rapid-prototypes-and-structure.md",
+      "outputHash": "sha256:8739bf69207cfff8",
+      "syncedAt": "2026-10-04T14:43:38.330Z"
     },
     {
       "key": "rapid-prototypes-and-structure",
@@ -77,6 +149,18 @@
     },
     {
       "key": "boundary-of-datafication",
+      "lang": "en",
+      "title": "02 When Do You Actually Need a Products Table? The Boundary of Datafication",
+      "series": "ai-maintainable-systems",
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/02-boundary-of-datafication.en.md",
+      "sourceHash": "sha256:4d7a03ae64c23b83",
+      "outputPath": "src/content/posts/en/ai-maintainable-systems/boundary-of-datafication.md",
+      "outputHash": "sha256:1ea0fe8af20f1d4d",
+      "syncedAt": "2026-10-04T14:43:38.330Z"
+    },
+    {
+      "key": "boundary-of-datafication",
       "lang": "zh",
       "title": "02 什么时候才需要一张 products 表？——数据化的边界",
       "series": "ai-maintainable-systems",
@@ -86,6 +170,18 @@
       "outputPath": "src/content/posts/zh/ai-maintainable-systems/boundary-of-datafication.md",
       "outputHash": "sha256:75a67734d18aad42",
       "syncedAt": "2026-10-01T06:33:35.738Z"
+    },
+    {
+      "key": "verification-is-trust",
+      "lang": "en",
+      "title": "03 Verification Is Trust: Tests, Authority, and Wake Cost",
+      "series": "ai-maintainable-systems",
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/03-verification-is-trust.en.md",
+      "sourceHash": "sha256:7df74c3c076ee9c8",
+      "outputPath": "src/content/posts/en/ai-maintainable-systems/verification-is-trust.md",
+      "outputHash": "sha256:f31ff3e584af0a35",
+      "syncedAt": "2026-10-04T14:43:38.331Z"
     },
     {
       "key": "verification-is-trust",
@@ -101,6 +197,18 @@
     },
     {
       "key": "appendix-derivation-and-checklist",
+      "lang": "en",
+      "title": "04 Appendix: Derivation Template, Checklist, and Glossary",
+      "series": "ai-maintainable-systems",
+      "status": "preview",
+      "sourcePath": "seasons/02-systems/04-appendix-derivation-and-checklist.en.md",
+      "sourceHash": "sha256:5635e91b292bf9a7",
+      "outputPath": "src/content/posts/en/ai-maintainable-systems/appendix-derivation-and-checklist.md",
+      "outputHash": "sha256:c86c44df42f0b80d",
+      "syncedAt": "2026-10-04T14:43:38.332Z"
+    },
+    {
+      "key": "appendix-derivation-and-checklist",
       "lang": "zh",
       "title": "04 附录：推导模板、清单与术语表",
       "series": "ai-maintainable-systems",
@@ -113,6 +221,18 @@
     },
     {
       "key": "nvidia-drivers",
+      "lang": "en",
+      "title": "01 Three Ways the NVIDIA Driver Broke on This Machine",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/01-nvidia-drivers.en.md",
+      "sourceHash": "sha256:4b472997307e6bd7",
+      "outputPath": "src/content/posts/en/tinkering-notes/nvidia-drivers.md",
+      "outputHash": "sha256:6f1247250f975ef0",
+      "syncedAt": "2026-10-04T14:43:38.332Z"
+    },
+    {
+      "key": "nvidia-drivers",
       "lang": "zh",
       "title": "01 驱动装好了，但没有渲染：NVIDIA 在这台机器上的三种坏法",
       "series": "tinkering-notes",
@@ -122,6 +242,18 @@
       "outputPath": "src/content/posts/zh/tinkering-notes/nvidia-drivers.md",
       "outputHash": "sha256:affff1b3d41bddd3",
       "syncedAt": "2026-10-04T11:40:53.362Z"
+    },
+    {
+      "key": "android-games",
+      "lang": "en",
+      "title": "02 Twelve Dead Ends and One Image Version",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/02-android-games.en.md",
+      "sourceHash": "sha256:c924ce2889dbffb3",
+      "outputPath": "src/content/posts/en/tinkering-notes/android-games.md",
+      "outputHash": "sha256:04a0d154fc59824d",
+      "syncedAt": "2026-10-04T14:43:38.333Z"
     },
     {
       "key": "android-games",

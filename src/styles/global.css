@@ -1943,3 +1943,10 @@ hr {
   color: var(--link, var(--accent));
   border-bottom-color: currentColor;
 }
+
+/* An AI translation says so, where the reader sees it first. */
+.notice--ai {
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}

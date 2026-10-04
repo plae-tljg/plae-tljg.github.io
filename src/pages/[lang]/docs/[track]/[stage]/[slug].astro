@@ -113,6 +113,16 @@ alternates[other.code as LocaleCode] = translatedPath || otherFallback
 
       {isPreview(page) && <p class="notice">{t.previewNote}</p>}
 
+      {
+        page.data.aiTranslated && (
+          <p class="notice notice--ai">
+            {lang === 'zh'
+              ? '本页由 AI 翻译自英文原稿，术语和语气可能有偏差。'
+              : 'This page was translated from the Chinese original by an AI. Wording and terminology may be off.'}
+          </p>
+        )
+      }
+
       <div class="prose path-content">
         <Content />
       </div>
