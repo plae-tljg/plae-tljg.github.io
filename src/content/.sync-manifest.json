@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T11:31:22.858Z",
+  "generatedAt": "2026-10-04T11:34:23.875Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
@@ -146,18 +146,6 @@
       "outputPath": "src/content/posts/zh/tinkering-notes/houdini-timebomb.md",
       "outputHash": "sha256:ca709d66dd929e65",
       "syncedAt": "2026-10-04T11:31:22.855Z"
-    },
-    {
-      "key": "tinkering-image-fit",
-      "lang": "zh",
-      "title": "04 仪表盘上的脸为什么会变形",
-      "series": "tinkering-notes",
-      "status": "preview",
-      "sourcePath": "seasons/03-tinkering/04-image-fit.zh.md",
-      "sourceHash": "sha256:0ed2223049a3d3c4",
-      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-image-fit.md",
-      "outputHash": "sha256:a16156b2f18f726d",
-      "syncedAt": "2026-10-04T10:26:34.593Z"
     }
   ]
 }

@@ -123,10 +123,15 @@ const MAP = [
 ]
 
 /** Published as articles in the writing workspace instead (see the plan). */
-const ARTICLE_ONLY = [
-  // The one piece with no home in a manual: a visual bug in a dashboard.
-  'dev/web_dev/html.md',
-]
+/**
+ * Source pages that are not published at all.
+ *
+ * `dev/web_dev/html.md` — the HTML-table image-sizing piece — was drafted as an
+ * article (`image-fit`) and then dropped: next to the Android and GPU stories it
+ * read as a stray, and it has no home in a manual. The source stays in the
+ * retired repository if it is ever wanted.
+ */
+const ARTICLE_ONLY = []
 
 // --------------------------------------------------------------- utilities
 
@@ -557,18 +562,19 @@ if (flag('archives')) {
 const WORKSPACE = process.env.CONTENT_SOURCE || path.join(os.homedir(), 'Music/blogs')
 const SERIES_DIR = path.join(WORKSPACE, 'seasons/03-tinkering')
 
-const ARTICLES = [
-  {
-    src: 'dev/web_dev/html.md',
-    slug: 'image-fit',
-    titleZh: '仪表盘上的脸为什么会变形',
-    titleEn: 'Why the Faces in My Dashboard Looked Swollen',
-    summaryEn:
-      'Three attempts at an image cell in an HTML table, and why constraining width and height distorts a photograph until you reach object-fit.',
-    note: '纯叙事，没有对应的文档页。',
-  },
-]
+const ARTICLES = []
 
+/* Kept for reference: the shape a draft used to be written in.
+ *
+ * {
+ *   src: 'dev/web_dev/html.md',
+ *   slug: 'image-fit',
+ *   titleZh: '仪表盘上的脸为什么会变形',
+ *   titleEn: 'Why the Faces in My Dashboard Looked Swollen',
+ *   summaryEn: '…',
+ *   note: '…',
+ * }
+ */
 function writeArticles() {
   const created = []
   for (const [i, spec] of ARTICLES.entries()) {

@@ -44,7 +44,6 @@ const MAP = [
   ['docs/03-TROUBLESHOOTING.md', 'android', 'trouble', 'troubleshooting', 1, { index: true, lang: 'en', title: 'Troubleshooting' }],
 ]
 
-/** Files kept for the articles in the writing workspace, not for the manual. */
 const ARTICLE_SOURCES = ['docs/02-STORY.md']
 
 const warnings = []
