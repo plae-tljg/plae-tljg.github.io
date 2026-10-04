@@ -65,28 +65,50 @@ const tree = await getDocsTree(lang)
               >
                 <summary>
                   <a
-                    href={`/${lang}/docs/${track.id}/${stage.id}/`}
+                    href={
+                      stage.index
+                        ? guidePath(lang, track.id, stage.id, stage.index.page.data.slug).replace(
+                            `/${lang}/`,
+                            `/${stage.index.lang}/`
+                          )
+                        : `/${lang}/docs/${track.id}/${stage.id}/`
+                    }
                     aria-current={onStageIndex ? 'page' : undefined}
                     class={onStageIndex ? 'is-current' : undefined}
                   >
                     {stage.title}
                   </a>
+                  {stage.index?.lang !== lang && (
+                    <span class="docs-nav__lang" title={t.languageSwitch}>
+                      {stage.index?.lang.toUpperCase()}
+                    </span>
+                  )}
                 </summary>
                 <ul>
-                  {stage.items.map((page) => {
+                  {stage.items.map((entry) => {
                     const here =
                       track.id === currentTrack &&
                       stage.id === currentStage &&
-                      page.data.slug === currentSlug
+                      entry.page.data.slug === currentSlug
                     return (
                       <li>
                         <a
-                          href={guidePath(lang, track.id, stage.id, page.data.slug)}
+                          href={guidePath(
+                            entry.lang,
+                            track.id,
+                            stage.id,
+                            entry.page.data.slug
+                          )}
                           aria-current={here ? 'page' : undefined}
-                          class={here ? 'is-current' : undefined}
+                          class:list={[here && 'is-current']}
                         >
-                          {page.data.icon && <span aria-hidden="true">{page.data.icon} </span>}
-                          {page.data.title}
+                          {entry.page.data.icon && (
+                            <span aria-hidden="true">{entry.page.data.icon} </span>
+                          )}
+                          {entry.page.data.title}
+                          {entry.lang !== lang && (
+                            <span class="docs-nav__lang">{entry.lang.toUpperCase()}</span>
+                          )}
                         </a>
                       </li>
                     )
@@ -160,6 +182,18 @@ const tree = await getDocsTree(lang)
   .docs-nav__track[open] > summary::before,
   .docs-nav__stage[open] > summary::before {
     transform: rotate(90deg);
+  }
+
+  /* A page that only exists in the other language: still listed, because a
+     manual with invisible pages is worse than a bilingual one. */
+  .docs-nav__lang {
+    margin-left: 0.35rem;
+    padding: 0 0.25rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 0.62rem;
+    color: var(--text-faint);
+    vertical-align: 0.05em;
   }
 
   .docs-nav__count {

@@ -1,5 +1,12 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
-import { SERIES, TRACKS, DEFAULT_LOCALE, type LocaleCode, type SeriesEntry } from '../site.mjs'
+import {
+  SERIES,
+  TRACKS,
+  LOCALES,
+  DEFAULT_LOCALE,
+  type LocaleCode,
+  type SeriesEntry,
+} from '../site.mjs'
 
 export type Post = CollectionEntry<'posts'>
 export type Note = CollectionEntry<'notes'>
@@ -167,11 +174,18 @@ export async function getGuidePage(
   return pages.find((p) => p.data.stage === stage && p.data.slug === slug)
 }
 
+/** A page as the sidebar needs it: which locale it lives in, and its entry. */
+export interface DocsTreeEntry {
+  page: PathPage
+  /** The locale the page actually exists in — not necessarily the reader's. */
+  lang: LocaleCode
+}
+
 export interface DocsTreeStage {
   id: string
   title: string
-  items: PathPage[]
-  index?: PathPage
+  items: DocsTreeEntry[]
+  index?: DocsTreeEntry
 }
 
 export interface DocsTreeTrack {
@@ -187,25 +201,59 @@ export interface DocsTreeTrack {
  * Built once per page render at build time: the whole point of the sidebar is
  * that any page of the manual is one click from any other, which means the tree
  * has to be present on every page.
+ *
+ * The tree spans **both locales**. A bilingual manual is written in whichever
+ * language the author got to first, so a Chinese reader looking at the Android
+ * track would otherwise see one page of four — the other three being English
+ * was invisible rather than marked. Entries that only exist in the other locale
+ * are listed too, flagged, and link there.
  */
 export async function getDocsTree(lang: LocaleCode): Promise<DocsTreeTrack[]> {
+  const others = LOCALES.map((l) => l.code as LocaleCode).filter((code) => code !== lang)
   const out: DocsTreeTrack[] = []
+
   for (const track of TRACKS) {
-    const stages = await getStageViews(track.id, lang)
-    const tree: DocsTreeStage[] = stages.map((stage) => ({
-      id: stage.id,
-      title:
-        (track.stages || []).find((s) => s.id === stage.id)?.title[lang] || stage.id,
-      items: stage.items,
-      // A stage whose landing page *is* its only page still counts: otherwise a
-      // short track (the Android one, in Chinese) vanishes from the sidebar.
-      index: stage.index,
-    }))
+    const mine = await getStageViews(track.id, lang)
+    const theirs = await Promise.all(others.map((code) => getStageViews(track.id, code)))
+
+    const stages: DocsTreeStage[] = mine.map((stage, i) => {
+      const pickStage = (code: LocaleCode) => theirs[others.indexOf(code)]?.[i]
+
+      // One entry per translationKey, the reader's own language winning.
+      const seen = new Set<string>()
+      const items: DocsTreeEntry[] = []
+      const addAll = (view: Awaited<ReturnType<typeof getStageView>> | undefined, code: LocaleCode) => {
+        for (const page of view?.items || []) {
+          const key = page.data.translationKey
+          if (seen.has(key)) continue
+          seen.add(key)
+          items.push({ page, lang: code })
+        }
+      }
+      addAll(stage, lang)
+      for (const code of others) addAll(pickStage(code), code)
+
+      const ownIndex = stage.index ? { page: stage.index, lang } : undefined
+      const otherIndex = others
+        .map((code) => pickStage(code)?.index)
+        .map((page, idx) => (page ? { page, lang: others[idx] } : undefined))
+        .find(Boolean)
+      const indexEntry = ownIndex || otherIndex
+      if (indexEntry) seen.add(indexEntry.page.data.translationKey)
+
+      return {
+        id: stage.id,
+        title: (track.stages || []).find((s) => s.id === stage.id)?.title[lang] || stage.id,
+        items,
+        index: indexEntry,
+      }
+    })
+
     out.push({
       id: track.id,
       title: track.title[lang],
-      stages: tree.filter((s) => s.items.length + (s.index ? 1 : 0) > 0),
-      total: tree.reduce((n, s) => n + s.items.length + (s.index ? 1 : 0), 0),
+      stages: stages.filter((s) => s.items.length + (s.index ? 1 : 0) > 0),
+      total: stages.reduce((n, s) => n + s.items.length + (s.index ? 1 : 0), 0),
     })
   }
   return out.filter((t) => t.total > 0)
