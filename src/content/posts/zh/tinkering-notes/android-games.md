@@ -1,8 +1,8 @@
 ---
 title: 02 把 FGO 国服搬上 Ubuntu：十二个死胡同和一个版本号
 summary: >-
-  两天里试过 redroid、Waydroid、houdini 移植、十六进制补丁；最后让它跑起来的是一个系统镜像版本。失败的根因是 berberis
-  0.2.3 的一条栈指针断言，FGO 差了 0x10。完整配置与排错在手册里。
+  两天里试过 redroid、Waydroid、houdini 移植、十六进制补丁；最后让它跑起来的是一个系统镜像版本。根因是 berberis 0.2.3
+  的一条栈指针断言，FGO 差了 0x10。而真正的性能杠杆不是内存，是把模拟器钉在 P-core 上：17–23 fps 变成锁 30。
 lang: zh
 translationKey: android-games
 slug: android-games
@@ -16,7 +16,7 @@ tags:
   - Linux
 status: preview
 source: seasons/03-tinkering/02-android-games.zh.md
-syncedAt: '2026-10-04T11:40:53.363Z'
+syncedAt: '2026-10-04T12:07:15.204Z'
 ---
 <!-- 草稿：英文长稿在 android_gaming/docs/02-STORY.md。这一版只留主线 + 可核对的细节，
      命令、参数、自检与 60 条症状索引都在手册里：
@@ -71,7 +71,33 @@ F libc    : Fatal signal 6 (SIGABRT) … pid … (bilibili.fatego)
 
 有个怪癖值得先知道：全新安装、还没有游戏数据时，首启可能仍然崩一次（同样的 `restore sp`，同样的 51 秒）。重开让它继续下载就好，之后几小时运行里 0 次 `restore sp`、0 次致命信号。**一次早崩是首启现象，不是死胡同。**
 
-代价是实测的：模拟器进程约 **107%** 单核占用、常驻内存约 **13 GB**（31 GB 主机、8 GB 的 AVD）、GPU 占用 14%、显存 1.5/16 GB、帧时间 50 分位 16 ms、90 分位 65 ms，66 个采样里 **39%** 判为卡顿。结论是能玩，但瓶颈在 CPU 翻译 ARM64，不在画质设置。
+## 让它更顺：不是内存的问题
+
+跑起来之后我做的第一件事是问：能不能更顺，比如把 AVD 加到 16 GB？这个问题本身是个弯路，答案也不在内存上。
+
+**内存不是这里的杠杆。** 客人侧 8 GB 里还剩约 4 GB，Android 的 `lmkd` 一次都没触发过；紧张的是宿主机（31 GB、没有 swap、已经用掉约 20 GB）。把客人加到 16 GB 会把宿主机推向 OOM，而那种崩溃看起来像随机闪退。何况 FGO 自己锁 30 fps，本来也没有更多帧可追。
+
+真正有用的一步是把模拟器**钉在 P-core（大核）上**。这台 i5-13500 是 6 个 P-core（4.8 GHz）加 8 个 E-core（3.5 GHz），而 qemu 默认的亲和性是 `0-19`：全部 20 个 CPU 都能用。同一场战斗，其他条件不变：
+
+| | fps | 平均帧 | 最差 | 丢 vsync |
+|---|---|---|---|---|
+| 默认（20 个 CPU） | 17–23 | 42–59 ms | 101–117 ms | **30–35%** |
+| 钉在 P-core | **30.0** | 33.3 ms | 50–52 ms | **2–7%** |
+
+```bash
+P=$(lscpu -e=CPU,MAXMHZ | awk 'NR>1 && $2+0>4000{printf "%s,",$1}' | sed 's/,$//')
+taskset -c "$P" emulator -avd api36 -gpu host -accel on -no-boot-anim
+```
+
+已经在跑的模拟器不用重启：`taskset -apc 0-11 $(pgrep -f '[q]emu-system-x86_64' | head -1)`。
+
+**证据的边界要说清楚**：钉住更快是量出来的；**"因为线程落在了 E-core 上"是推断**——整个过程没有采过每核占用（没有 `mpstat`、没有 `perf`），唯一的放置证据是一次 `ps -o psr` 快照，而那还是在钉住之后取的。同样没试过的还有 governor（全程 `powersave`）和 `isolcpus` / `nohz_full`。
+
+还有一件事必须纠正，因为它很容易被后来的我引用：**`dumpsys gfxinfo` 对 FGO 没有意义**。Unity 在自己的 surface 上画，这条命令读到过 66 帧、据此算出过"39% 卡顿"——那是一个完全误导的数字，也读到过 0 帧和 4950 ms 的"百分位"。要量帧就用 `dumpsys SurfaceFlinger --latency '<BLAST layer>'`。
+
+钉核也救不了所有卡顿：跑一段时间会突然掉到 19.1 fps（丢 41%），客人侧 `top` 显示是 ACE 的 `memscan` 在扫内存（翻译后约 204% 的 CPU）。那是反外挂自身的周期性开销，改配置解决不了。
+
+完整的性能表格与自检命令在[方案与配置](/zh/docs/android/solution/)，两条相关故障在[排错](/zh/docs/android/trouble/)的 2.9 与 2.12。
 
 ## 反外挂不是原因
 

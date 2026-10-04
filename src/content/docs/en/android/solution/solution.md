@@ -134,22 +134,36 @@ adb shell am start -n com.bilibili.fatego/com.gsc.phone_login.PhoneLoginActivity
 
 ---
 
-## 5b. What it costs to run (measured, while playing)
+## 5b. Performance — what it actually does, and the one setting that mattered
 
-Numbers taken from this machine while the game sat on the live main menu (42 minutes uptime, 0 crashes).
-They are ballpark figures, not benchmarks — a battle scene will work the CPU harder.
+Measured **in battle** with SurfaceFlinger frame timestamps (`03-TROUBLESHOOTING.md` §10 — `dumpsys gfxinfo`
+is useless for Unity and gave a misleading reading early on).
 
 | Metric | Value |
 |---|---|
-| Emulator process CPU | **~107 %** (≈ one host core pegged; the rest is translation + rendering) |
-| Emulator RSS (RAM) | **≈ 13 GB** of the 31 GB host, for the 8 GB AVD |
-| GPU utilisation | **14 %**, **1.5 GB / 16 GB** VRAM |
-| Guest frame pacing (hwui stats) | 50th percentile **16 ms** (≈60 fps), 90th **65 ms**, 95th **117 ms** |
-| Janky frames | **39 %** of 66 sampled — noticeable stutter in menus, consistent with ARM64-under-translation |
+| Frame rate | **30.0 fps locked** — this is **FGO's own cap** (`Application.targetFrameRate`), not a limit of the emulator |
+| Frame interval | 33.3 ms average, worst 36–54 ms, **0–6 % of frames miss vsync** |
+| Emulator process CPU | ~100 % (≈ one host core, plus bursts) |
+| Emulator RSS (RAM) | ≈13 GB of the 31 GB host, for the 8 GB AVD |
+| GPU | 19 % utilisation, ~1.4 GB VRAM |
+| Guest free memory | ~4 GB available of 8 GB; Android's `lmkd` never fires |
 
-Read that as: **playable, comfortable on this hardware, but not smooth.** The GPU is mostly idle — the
-bottleneck is the CPU translating ARM64, which is exactly what `02-STORY.md` §3 describes. If you want it
-faster the lever is CPU (fewer other processes, more cores to the AVD), not the graphics settings.
+**The fix that mattered: pin the emulator to the P-cores.** On this i5-13500 the 6 P-cores run at 4.8 GHz
+and the 8 E-cores at 3.5 GHz; by default the emulator's threads were allowed on all 20 CPUs and the
+scheduler put them on the slow ones. Same battle scene, same everything else:
+
+| | fps | avg frame | worst | missed vsync |
+|---|---|---|---|---|
+| default (all 20 CPUs) | 17–23 | 42–59 ms | 101–117 ms | **30–35 %** |
+| **pinned to P-cores** | **30.0** | 33.3 ms | 50–52 ms | **2–7 %** |
+
+This is now automatic in `avd` / `avdbg` (`_avd_pcpu` in `~/.bash_env_vars`, disable with `AVD_NO_PIN=1`),
+and the portable equivalent is `taskset -c "$P" emulator …` (see `03-TROUBLESHOOTING.md` 2.9).
+
+**So: RAM is not the lever.** The guest has ~4 GB spare and never hits its OOM killer; the host (31 GB,
+no swap, ~20 GB already used) is the tighter side, and a 16 GB guest would risk host OOM — the very failure
+that looks like random crashes. And because FGO caps at 30 fps, there is no headroom to chase anyway: judge
+the setup by **missed vsync**, not by fps.
 
 ## 6. Why the earlier attempts failed (so nobody repeats them)
 

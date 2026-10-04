@@ -64,6 +64,10 @@ adb logcat -d | grep -cE "restore sp|Fatal signal"   # 5) crash counters (want 0
 | 2.6 | `INSTALL_FAILED_INSUFFICIENT_STORAGE` / `Requested internal only, but not enough space` | Fresh AVDs default to a **2 GB** data partition; FGO's APK alone is 2 GB | Set `disk.dataPartition.size=32G` (and `hw.ramSize=8192`) in `~/.android/avd/<name>.avd/config.ini` |
 | 2.7 | `adb install` → `Failure calling service package: Broken pipe (32)` | `system_server` restarted mid-install: either an unstable image (36.1) or a too-small partition | Use Android **16.0 rev 7** and a 32 GB partition; or `adb push` + `adb shell pm install -r -g /data/local/tmp/x.apk` |
 | 2.8 | `INSTALL_FAILED_DEPRECATED_SDK_VERSION: App package must target at least SDK version 24, but found 0` | An APK (ours: `armtest.apk`) built without `targetSdkVersion` — Android 14+ refuses it | Set `targetSdkVersion` ≥ 24 and rebuild (see `tools/armprobe/` for a correct example) |
+| 2.9 | **The game feels slow**: 17–23 fps, frames 100–120 ms, ~30 % of frames miss vsync | The emulator's threads may run on **any** core, and on a hybrid CPU the scheduler lands them on the **E-cores** — on this i5-13500 the 6 P-cores run at 4.8 GHz while the 8 E-cores only reach 3.5 GHz. ARM64 translation is pure CPU work, so it inherits that penalty | **Pin the emulator to the P-cores.** Detect them, then hand them to `taskset`: <br>`P=$(lscpu -e=CPU,MAXMHZ \| awk 'NR>1 && $2+0>4000{printf "%s,",$1}' \| sed 's/,$//')` <br>`taskset -c "$P" emulator -avd api36 …` <br>Measured in battle: **17–23 fps / 30 % missed → 30.0 fps / 2–7 % missed**. Already wired into `avd`/`avdbg` in `~/.bash_env_vars` (`_avd_pcpu`; disable with `AVD_NO_PIN=1`) |
+| 2.10 | You tune for 60 fps and never reach it | **FGO caps itself at 30 fps** (`Application.targetFrameRate`), so 33.3 ms frame intervals are the game's own design, not a fault. The AVD refreshes at 60 Hz, so a correctly configured setup shows exactly 30.0 fps | Don't chase 60. Judge the setup by **missed-vsync %** instead — see §10 for the `dumpsys SurfaceFlinger --latency` command; intervals should sit at ~33 ms |
+| 2.11 | Adding RAM to the AVD hoping for smoother gameplay | With 8 GB the guest has ~4 GB *available* and Android's `lmkd` never fires, so there is no memory pressure to relieve. The host is the real constraint (this box: 31 GB, **no swap**, ~20 GB already used, emulator RSS ≈13 GB at 8 GB configured) | Don't. Going to 16 GB would push the host toward ~28 GB with no swap → OOM kills that look exactly like "random crashes" (§1.7). Fix CPU pinning (2.9) instead |
+| 2.12 | The game holds a steady 30 fps, then **dips to ~19 fps for a few seconds** and recovers by itself | Not the emulator: it is **ACE's anti-cheat memory scanner**. During a dip the guest shows `ndk_translation_program_runner_binfmt_misc_arm64 ./memscan` burning **~204 % CPU** (two guest cores) — and it is itself translated ARM64 — while the game needs only ~64 % | Nothing to fix; it is a periodic in-game event. Recognise it instead of chasing RAM/GPU: `adb shell "top -n 1 -b \| head -10"` during a dip |
 
 ## 3. System-image layer
 
@@ -176,3 +180,32 @@ later falsified. Carry this table if you read them.
 | "`nvidia-settings` mismatch fixed" | `archive/ANDROID-模拟器-困境与出路.md` §9 | **Still mismatched** (615.71.09 vs 595.91.07) — `04-CLEANUP.md` §6.3 |
 | "FGO can't run on the AVD; the transplanted bridge is the workaround" | `archive/FGO-STATUS-…-round2.md` §9.4, `evidence/fgo-attempts/api36/FINDINGS-LOGIN-PAGE.md` | The **final, working** run used the **stock** Android 16.0 bridge (`fbadc774…`) with **no** `-writable-system`; the transplanted 16.1 set (`af88b2c1…`) is the configuration that **hangs** (4.2). Both statements were true at different moments of the investigation — the FINDINGS file describes an intermediate experiment, not the solution |
 | `Cores = 1` (redroid) / `Cores = 2` (AVD) reported to Unity | `archive/FGO-STATUS-…` §5 | The guest really has 20 CPUs; this is a **native-bridge mis-report** (4.7-adjacent, see 6.5) |
+
+---
+
+## 10. Measuring the frame rate yourself (the metric that actually matters here)
+
+`dumpsys gfxinfo` is **useless for FGO**: Unity draws on its own surface, so the hwui counters report ~0
+frames (an early attempt to measure this way produced a completely misleading "39 % janky" reading from
+66 frames). Use SurfaceFlinger's per-frame timestamps for the game's **BLAST layer** instead:
+
+```bash
+ADB=$ANDROID_SDK/platform-tools/adb
+D=emulator-5554
+# 1) find the layer (Unity's SurfaceView — the one tagged BLAST)
+L=$($ADB -s $D shell "dumpsys SurfaceFlinger --list" | tr -d '\r' \
+    | sed -n 's/.*RequestedLayerState{\(.*\)}$/\1/p' | grep -i fatego | grep -i BLAST | head -1 \
+    | sed 's/ parentId=.*//')
+# 2) the last ~128 frames; each row is "desired  actual  ready" in nanoseconds
+$ADB -s $D shell "dumpsys SurfaceFlinger --latency '$L'" > /tmp/lat.txt
+# 3) fps, worst frame, missed vsync
+awk 'NR>1 && NF==3 && $2>0 {n++; if(!t0)t0=$2; t1=$2
+     if(prev){d=($2-prev)/1e6; s+=d; if(d>mx)mx=d} prev=$2
+     if($2-$1>16666666) late++}
+     END{printf "%.1f fps  avg %.1f ms  worst %.0f ms  missed-vsync %.0f%%\n",
+         (n-1)/((t1-t0)/1e9), s/(n-1), mx, 100*late/n}' /tmp/lat.txt
+```
+
+**How to read it:** `30.0 fps` with a worst frame under ~50 ms is the healthy state for FGO — the game caps
+itself at 30, so more is neither expected nor possible. If you see 17–23 fps with ~30 % missed vsync, the
+emulator is running on the E-cores → fix it per §2.9.
