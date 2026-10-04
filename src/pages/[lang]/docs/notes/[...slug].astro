@@ -3,6 +3,7 @@ import { render } from 'astro:content'
 import { UI, LOCALES, type LocaleCode } from '../../../../site.mjs'
 import { notePath } from '../../../../lib/url'
 import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { docsPath } from '../../../../lib/url'
 import { formatDate, getNotes, type Note } from '../../../../lib/content'
 import Toc from '../../../../components/Toc.astro'
 
@@ -19,11 +20,18 @@ export async function getStaticPaths() {
 
 const { note } = Astro.props as { note: Note }
 const lang = note.data.lang as LocaleCode
+const other = LOCALES.find((l) => l.code !== lang)!
 const t = UI[lang]
 const { Content, headings } = await render(note)
 ---
 
-<BaseLayout lang={lang} title={note.data.title} description={note.data.summary} active="docs">
+<BaseLayout
+  lang={lang}
+  title={note.data.title}
+  description={note.data.summary}
+  active="docs"
+  alternatePath={docsPath(other.code as LocaleCode)}
+>
   <article class="article">
     <div class="container">
       <div class={`article__layout ${headings.length > 2 ? 'article__layout--with-toc' : ''}`}>

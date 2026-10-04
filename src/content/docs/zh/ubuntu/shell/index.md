@@ -27,14 +27,17 @@ source: hand-written
 
 ## 这一段里有什么
 
+中文写的：
+
 - [Bash 技巧](/zh/docs/ubuntu/shell/bash-tricks/)：补全、模块化 `.bashrc`、`source` / `.` / `./` 的区别
 - [systemd 常用命令](/zh/docs/ubuntu/shell/systemd/)
-- [音频命令](/zh/docs/ubuntu/shell/audio-cmd/)：`spd-say`、espeak、转成 Asterisk 要的 8 kHz 单声道
-- [发送邮件脚本](/zh/docs/ubuntu/shell/send-email/)、[重启路由器](/zh/docs/ubuntu/shell/reboot-router/)
-- [代码高亮](/zh/docs/ubuntu/shell/code-highlight/)：给 gedit 加一套 dialplan 语法
-- [光标主题](/zh/docs/ubuntu/shell/cursor-style/)
-- [有趣的命令](/zh/docs/ubuntu/shell/fun-commands/)、[图种](/zh/docs/ubuntu/shell/hidden-images/)
-- [常用目录](/zh/docs/ubuntu/shell/common-dirs/)、[常用链接](/zh/docs/ubuntu/shell/links/)
+- [重启路由器](/zh/docs/ubuntu/shell/reboot-router/)
+- [图种](/zh/docs/ubuntu/shell/hidden-images/)
+- [常用链接](/zh/docs/ubuntu/shell/links/)
+
+只有英文的（侧边栏会给它们标 `EN`）：
+
+- [音频命令](/en/docs/ubuntu/shell/audio-cmd/) · [发送邮件脚本](/en/docs/ubuntu/shell/send-email/) · [代码高亮](/en/docs/ubuntu/shell/code-highlight/) · [光标主题](/en/docs/ubuntu/shell/cursor-style/) · [有趣的命令](/en/docs/ubuntu/shell/fun-commands/) · [常用目录](/en/docs/ubuntu/shell/common-dirs/)
 
 ## 没写的
 

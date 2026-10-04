@@ -5,7 +5,7 @@
  */
 import { render } from 'astro:content'
 import { LOCALES, UI, SERIES, type LocaleCode } from '../../../../../site.mjs'
-import { articlePath, seriesPath } from '../../../../../lib/url'
+import { articlePath, seriesPath, writingPath } from '../../../../../lib/url'
 import BaseLayout from '../../../../../layouts/BaseLayout.astro'
 import {
   getSeriesPosts,
@@ -32,6 +32,7 @@ const { series, posts } = Astro.props as {
   posts: Post[]
 }
 const lang = Astro.params.lang as LocaleCode
+const other = LOCALES.find((l) => l.code !== lang)!
 const t = UI[lang]
 
 const rendered = []
@@ -46,6 +47,7 @@ const totalMinutes = posts.reduce((sum, post) => sum + readingTime(post.body || 
   lang={lang}
   title={`${series.title[lang]} · ${t.readAll}`}
   description={series.description[lang]}
+  alternatePath={writingPath(other.code as LocaleCode)}
   noindex
 >
   <div class="container container--narrow">

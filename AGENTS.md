@@ -70,7 +70,8 @@ output is static, hosting is GitHub Pages from `gh-pages`.
 npm run content:verify
 npm run repos:verify
 npm run bot:verify
-npx astro build      # must finish with no errors
+npm run build        # astro build + the Pagefind index
+npm run links:check  # crawls dist/: every internal link must resolve
 ```
 
 `repos:verify` needs no token: it checks the committed snapshot against its
@@ -90,6 +91,11 @@ manifest. Refreshing the snapshot (`npm run repos:sync`) does need `gh auth`.
   per-question one). `docs/CHATBOT.md` explains the whole path.
 - The chatbot bundle is committed because the deploy runner cannot reach the
   private compiler repository. It is generated — see hard rule 6.
+- `npm run links:check` exists because "the sidebar links 404" shipped twice: a
+  stage landing page renders at the *stage* URL, not at `<stage>/<slug>/`, and a
+  language chip may only swap the locale prefix when the target page actually
+  exists. Both are invisible in review and obvious in a crawl. It runs in CI
+  after the build.
 - Search is Pagefind, run from `npm run build` (`astro build && pagefind --site
   dist`) — so the index always matches what was just built, and `gh-pages` gets
   `dist/pagefind/`. Indexing is limited to pages carrying `data-pagefind-body`

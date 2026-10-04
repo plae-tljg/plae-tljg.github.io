@@ -39,6 +39,11 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # The build is what the link check inspects: a sidebar that points at
+      # URLs which do not exist is invisible in review and obvious here.
+      - name: Check internal links
+        run: npm run links:check
         env:
           # Change to the real domain when it exists.
           SITE_URL: https://plae-tljg.github.io

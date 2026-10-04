@@ -25,7 +25,7 @@ became.
 - **Shell**: bash. Not zsh — everything needed so far fits in `.bashrc`, and if that
   changes it will be written up here.
 - **Completion**: the default Tab completion prints the candidates once and stops, unlike
-  PuTTY's, which cycles. The fix is `menu-complete`; see [Bash tricks](/en/docs/ubuntu/shell/bash-tricks/).
+  PuTTY's, which cycles. The fix is `menu-complete`; see [Bash tricks](/zh/docs/ubuntu/shell/bash-tricks/) (Chinese).
 - **`.bashrc`**: split into environment variables, aliases and completion instead of one
   growing file.
 - **systemd**: the usual `systemctl` verbs, plus the group/permission commands that are
@@ -33,14 +33,18 @@ became.
 
 ## What is in this stage
 
-- [Bash tricks](/en/docs/ubuntu/shell/bash-tricks/)
-- [systemd](/en/docs/ubuntu/shell/systemd/)
+Written in English:
+
 - [Audio commands](/en/docs/ubuntu/shell/audio-cmd/) — `spd-say`, espeak, and converting to the 8 kHz mono that Asterisk wants
-- [Sending mail](/en/docs/ubuntu/shell/send-email/), [rebooting the router](/en/docs/ubuntu/shell/reboot-router/)
+- [Sending mail](/en/docs/ubuntu/shell/send-email/)
 - [Code highlighting](/en/docs/ubuntu/shell/code-highlight/) — a dialplan syntax for gedit
 - [Cursor themes](/en/docs/ubuntu/shell/cursor-style/)
-- [Fun commands](/en/docs/ubuntu/shell/fun-commands/), [hidden images](/en/docs/ubuntu/shell/hidden-images/)
-- [Common directories](/en/docs/ubuntu/shell/common-dirs/), [links](/en/docs/ubuntu/shell/links/)
+- [Fun commands](/en/docs/ubuntu/shell/fun-commands/)
+- [Common directories](/en/docs/ubuntu/shell/common-dirs/)
+
+Chinese only, for now — the sidebar links them with a `ZH` marker:
+
+- [Bash tricks](/zh/docs/ubuntu/shell/bash-tricks/) · [systemd](/zh/docs/ubuntu/shell/systemd/) · [rebooting the router](/zh/docs/ubuntu/shell/reboot-router/) · [links](/zh/docs/ubuntu/shell/links/) · [hidden images](/zh/docs/ubuntu/shell/hidden-images/)
 
 ## Not here
 

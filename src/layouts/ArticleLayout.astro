@@ -1,5 +1,5 @@
 ---
-import { SITE, SERIES, UI, type LocaleCode } from '../site.mjs'
+import { LOCALES, SITE, SERIES, UI, type LocaleCode } from '../site.mjs'
 import { articlePath, localePath, seriesPath, tagPath, writingPath } from '../lib/url'
 import { formatDate, isPreview, readingTime, type Post } from '../lib/content'
 import BaseLayout from './BaseLayout.astro'
@@ -20,6 +20,7 @@ interface Props {
 }
 
 const { post, headings, lang, translationUrl, previous, next, embedded = false } = Astro.props
+const other = LOCALES.find((l) => l.code !== lang)!
 const t = UI[lang]
 const series = post.data.series ? SERIES.find((s) => s.id === post.data.series) : undefined
 const minutes = post.body ? readingTime(post.body, lang) : 1
@@ -37,7 +38,7 @@ if (translationUrl) {
   description={post.data.summary}
   noindex={isPreview(post)}
   alternates={alternates}
-  alternatePath={translationUrl}
+  alternatePath={translationUrl || writingPath(other.code as LocaleCode)}
   active="writing"
 >
   <article class="article">

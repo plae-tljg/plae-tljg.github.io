@@ -65,14 +65,7 @@ const tree = await getDocsTree(lang)
               >
                 <summary>
                   <a
-                    href={
-                      stage.index
-                        ? guidePath(lang, track.id, stage.id, stage.index.page.data.slug).replace(
-                            `/${lang}/`,
-                            `/${stage.index.lang}/`
-                          )
-                        : `/${lang}/docs/${track.id}/${stage.id}/`
-                    }
+                    href={`/${stage.index?.lang || lang}/docs/${track.id}/${stage.id}/`}
                     aria-current={onStageIndex ? 'page' : undefined}
                     class={onStageIndex ? 'is-current' : undefined}
                   >

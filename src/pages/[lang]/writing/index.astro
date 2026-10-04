@@ -1,6 +1,8 @@
 ---
 import { UI, type LocaleCode } from '../../../site.mjs'
 import { localePaths } from '../../../lib/url'
+import { LOCALES, type LocaleCode } from '../../../site.mjs'
+import { seriesPath } from '../../../lib/url'
 import BaseLayout from '../../../layouts/BaseLayout.astro'
 import SeriesCard from '../../../components/SeriesCard.astro'
 import { getSeriesViews } from '../../../lib/content'
@@ -11,6 +13,7 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: LocaleCode }
 const t = UI[lang]
+const other = LOCALES.find((l) => l.code !== lang)!
 const views = await getSeriesViews(lang)
 ---
 
@@ -24,9 +27,23 @@ const views = await getSeriesViews(lang)
     <section class="section">
       <div class="card-grid">
         {
-          views.map(({ series, posts }) => (
-            <SeriesCard series={series} posts={posts} lang={lang} />
-          ))
+          views.map(({ series, posts }) =>
+            // A series page only exists where the series has posts. Listing an
+            // empty one produced a card that linked straight to a 404.
+            posts.length > 0 ? (
+              <SeriesCard series={series} posts={posts} lang={lang} />
+            ) : (
+              <a class="card card--series card--empty" href={seriesPath(other.code as LocaleCode, series.id)}>
+                <div class="card__body">
+                  <h3>{series.title[lang]}</h3>
+                  <p>{series.description[lang]}</p>
+                  <div class="card__meta">
+                    <span>{other.label}</span>
+                  </div>
+                </div>
+              </a>
+            )
+          )
         }
       </div>
     </section>

@@ -56,10 +56,24 @@ const translated = (await getStageView(track.id, stageId, other.code as LocaleCo
 const translatedPath = translated
   ? guidePath(other.code as LocaleCode, track.id, stageId, translated.data.slug)
   : undefined
+/**
+ * Where the language chip should go.
+ *
+ * Most of this manual exists in one language only, so swapping the prefix on the
+ * current path produced a 404 on every untranslated page. Fall back to the same
+ * stage, then the same track, then the section index — somewhere real in the
+ * other language, never a dead end.
+ */
+const otherStage = await getStageView(track.id, stageId, other.code as LocaleCode)
+const otherHasStage = otherStage.items.length > 0 || Boolean(otherStage.index)
+const otherFallback = otherHasStage
+  ? stagePath(other.code as LocaleCode, track.id, stageId)
+  : trackPath(other.code as LocaleCode, track.id)
+
 const alternates: Partial<Record<LocaleCode, string>> = {
   [lang]: guidePath(lang, track.id, stageId, page.data.slug),
 }
-if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
+alternates[other.code as LocaleCode] = translatedPath || otherFallback
 ---
 
 <DocsLayout
@@ -72,7 +86,7 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
   slug={page.data.slug}
   headings={headings}
   alternates={alternates}
-  alternatePath={translatedPath}
+  alternatePath={translatedPath || otherFallback}
 >
   <article class="article">
     <div class="docs-page">

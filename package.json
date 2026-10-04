@@ -23,7 +23,8 @@
     "repos:sync": "node scripts/repos.mjs sync",
     "repos:verify": "node scripts/repos.mjs verify",
     "start": "astro dev",
-    "search:index": "pagefind --site dist"
+    "search:index": "pagefind --site dist",
+    "links:check": "node scripts/links.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
