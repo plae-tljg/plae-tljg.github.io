@@ -37,21 +37,40 @@ const tree = await getDocsTree(lang)
     {
       tree.map((track) => {
         const trackOpen = currentTrack ? track.id === currentTrack : true
+        const onTrackIndex = track.id === currentTrack && !currentStage
         return (
           <details class="docs-nav__track" data-nav-key={`track:${track.id}`} open={trackOpen}>
             <summary>
-              <a href={`/${lang}/docs/${track.id}/`}>{track.title}</a>
+              <a
+                href={`/${lang}/docs/${track.id}/`}
+                aria-current={onTrackIndex ? 'page' : undefined}
+                class={onTrackIndex ? 'is-current' : undefined}
+              >
+                {track.title}
+              </a>
               <span class="docs-nav__count">{track.total}</span>
             </summary>
 
-            {track.stages.map((stage) => (
+            {track.stages.map((stage) => {
+              // A stage landing page is a page: when it is the one being read,
+              // it has to look like it. Both Android stages are exactly this
+              // shape, which is how the gap showed up.
+              const onStageIndex =
+                track.id === currentTrack && stage.id === currentStage && !currentSlug
+              return (
               <details
                 class="docs-nav__stage"
                 data-nav-key={`stage:${track.id}/${stage.id}`}
                 open={track.id === currentTrack && stage.id === currentStage}
               >
                 <summary>
-                  <a href={`/${lang}/docs/${track.id}/${stage.id}/`}>{stage.title}</a>
+                  <a
+                    href={`/${lang}/docs/${track.id}/${stage.id}/`}
+                    aria-current={onStageIndex ? 'page' : undefined}
+                    class={onStageIndex ? 'is-current' : undefined}
+                  >
+                    {stage.title}
+                  </a>
                 </summary>
                 <ul>
                   {stage.items.map((page) => {
@@ -74,7 +93,8 @@ const tree = await getDocsTree(lang)
                   })}
                 </ul>
               </details>
-            ))}
+              )
+            })}
           </details>
         )
       })
@@ -184,11 +204,21 @@ const tree = await getDocsTree(lang)
     background: var(--surface-soft, rgba(127 127 127 / 8%));
   }
 
+  /* The current page has to be obvious at a glance — that was the whole point
+     of the sidebar. Accent text, a soft accent wash, and a bar on the edge. */
   .docs-nav a.is-current {
-    color: var(--link, var(--accent));
-    font-weight: 600;
-    border-left-color: var(--link, var(--accent));
-    background: var(--surface-soft, rgba(127 127 127 / 8%));
+    color: var(--accent);
+    font-weight: 650;
+    background: var(--accent-soft);
+    border-left-color: var(--accent);
+  }
+
+  .docs-nav__track > summary > a.is-current,
+  .docs-nav__stage > summary > a.is-current {
+    display: inline-block;
+    padding: 0.05rem 0.4rem;
+    margin-left: -0.4rem;
+    border-radius: 4px;
   }
 
   .docs-nav__foot {
