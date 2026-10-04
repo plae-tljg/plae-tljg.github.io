@@ -89,6 +89,12 @@ manifest. Refreshing the snapshot (`npm run repos:sync`) does need `gh auth`.
   per-question one). `docs/CHATBOT.md` explains the whole path.
 - The chatbot bundle is committed because the deploy runner cannot reach the
   private compiler repository. It is generated — see hard rule 6.
+- Search is Pagefind, run from `npm run build` (`astro build && pagefind --site
+  dist`) — so the index always matches what was just built, and `gh-pages` gets
+  `dist/pagefind/`. Indexing is limited to pages carrying `data-pagefind-body`
+  (docs and article bodies, the repository index); the archived third-party
+  pages are stamped `data-pagefind-ignore` by the importer, because 1125 of
+  somebody else's pages would otherwise be the whole index.
 - `public/archives/ubuntu-setup/**` is ~85 MB of **third-party** pages (NVIDIA
   docs, Ask Ubuntu, forums) snapshotted from the retired `plae-lkm/ubuntu_setup`
   site, kept so the manual's citations keep working. Each one carries a

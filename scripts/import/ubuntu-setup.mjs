@@ -464,7 +464,10 @@ function walkMd(dir) {
 }
 
 function stampArchive(html) {
-  let out = html.replace(
+  // `data-pagefind-ignore` keeps somebody else's page out of our search index:
+  // 1125 archived files would otherwise dominate it.
+  let out = html.replace(/<html([^>]*)>/i, '<html$1 data-pagefind-ignore>')
+  out = out.replace(
     /<head([^>]*)>/i,
     `<head$1>\n<meta name="robots" content="noindex, nofollow">`
   )

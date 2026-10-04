@@ -1,0 +1,288 @@
+---
+/**
+ * Ctrl-K search over the built site.
+ *
+ * Pagefind indexes `dist/` after the build (see the `build` script) and ships a
+ * static bundle — no server, no API key, and it works on Pages. The widget is
+ * loaded from the bundle at runtime (`/pagefind/pagefind.js`), so this component
+ * only draws the button and the dialog.
+ *
+ * The index deliberately excludes `public/archives/**`: 1125 snapshots of other
+ * people's pages would drown out everything of ours.
+ */
+import { UI, type LocaleCode } from '../site.mjs'
+
+interface Props {
+  lang: LocaleCode
+}
+
+const { lang } = Astro.props
+const t = UI[lang]
+---
+
+<div class="search" data-search>
+  <button class="chip search__trigger" type="button" data-search-open>
+    <span aria-hidden="true">⌕</span>
+    <span class="search__label">{t.search}</span>
+    <kbd class="search__kbd">⌘K</kbd>
+  </button>
+
+  <dialog class="search__dialog" data-search-dialog aria-label={t.search}>
+    <form method="dialog" class="search__form">
+      <input
+        type="search"
+        name="q"
+        class="search__input"
+        placeholder={t.searchPlaceholder}
+        autocomplete="off"
+        spellcheck="false"
+        data-search-input
+      />
+      <button class="search__close" type="button" data-search-close aria-label={t.close}>✕</button>
+    </form>
+    <div class="search__status" data-search-status></div>
+    <ol class="search__results" data-search-results></ol>
+  </dialog>
+</div>
+
+<script>
+  type PagefindResult = {
+    id: string
+    data: () => Promise<{
+      url: string
+      meta: { title?: string; section?: string }
+      excerpt: string
+    }>
+  }
+  type Pagefind = {
+    search: (query: string) => Promise<{ results: PagefindResult[] }>
+    options?: (options: Record<string, unknown>) => Promise<void>
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-search]')
+  const dialog = root?.querySelector<HTMLDialogElement>('[data-search-dialog]')
+  const input = root?.querySelector<HTMLInputElement>('[data-search-input]')
+  const results = root?.querySelector<HTMLOListElement>('[data-search-results]')
+  const status = root?.querySelector<HTMLElement>('[data-search-status]')
+
+  if (!root || !dialog || !input || !results || !status) {
+    // Nothing to do; the button simply does not respond.
+    document.querySelector('[data-search-open]')?.remove()
+  } else {
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+    let pagefind: Pagefind | null = null
+    let loading: Promise<Pagefind | null> | null = null
+    let timer = 0
+    let active = -1
+
+    const load = async (): Promise<Pagefind | null> => {
+      if (pagefind) return pagefind
+      loading ||= (async () => {
+        try {
+          const mod = (await import(/* @vite-ignore */ `${base}/pagefind/pagefind.js`)) as Pagefind
+          await mod.options?.({ excerptLength: 24 })
+          pagefind = mod
+          return mod
+        } catch {
+          status.textContent =
+            document.documentElement.lang === 'zh'
+              ? '搜索索引未找到：请先运行 npm run build。'
+              : 'Search index not found — run npm run build first.'
+          return null
+        }
+      })()
+      return loading
+    }
+
+    const open = async () => {
+      dialog.showModal()
+      input.focus()
+      await load()
+    }
+
+    const render = (items: PagefindResult[], query: string) => {
+      results.replaceChildren()
+      active = -1
+
+      if (!query.trim()) {
+        status.textContent = ''
+        return
+      }
+      if (!items.length) {
+        status.textContent = document.documentElement.lang === 'zh' ? '没有结果' : 'No results'
+        return
+      }
+      status.textContent =
+        (document.documentElement.lang === 'zh' ? '结果 ' : 'Results ') + items.length
+
+      for (const item of items) {
+        item.data().then((data) => {
+          const li = document.createElement('li')
+          const link = document.createElement('a')
+          link.href = data.url
+          link.className = 'search__hit'
+          const section = data.meta.section ? `<span>${data.meta.section}</span>` : ''
+          link.innerHTML = `${section}<strong>${data.meta.title || data.url}</strong><p>${data.excerpt}</p>`
+          li.append(link)
+          results.append(li)
+        })
+      }
+    }
+
+    const run = async (query: string) => {
+      const pf = await load()
+      if (!pf) return
+      const found = await pf.search(query)
+      render(found.results.slice(0, 12), query)
+    }
+
+    root.querySelector('[data-search-open]')?.addEventListener('click', open)
+    root.querySelector('[data-search-close]')?.addEventListener('click', () => dialog.close())
+
+    input.addEventListener('input', () => {
+      clearTimeout(timer)
+      timer = window.setTimeout(() => run(input.value), 140)
+    })
+
+    dialog.addEventListener('keydown', (event) => {
+      const hits = Array.from(results.querySelectorAll<HTMLAnchorElement>('a'))
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault()
+        active = Math.min(hits.length - 1, Math.max(0, active + (event.key === 'ArrowDown' ? 1 : -1)))
+        hits[active]?.focus()
+      }
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        dialog.open ? dialog.close() : open()
+      }
+      if (event.key === '/' && !dialog.open) {
+        const tag = (event.target as HTMLElement)?.tagName
+        if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
+          event.preventDefault()
+          open()
+        }
+      }
+    })
+  }
+</script>
+
+<style is:global>
+  .search__trigger {
+    gap: 0.35rem;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .search__kbd {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0 0.25rem;
+  }
+
+  .search__dialog {
+    width: min(44rem, calc(100vw - 2rem));
+    margin: 12vh auto auto;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg, #fff);
+    color: var(--text);
+    box-shadow: 0 18px 60px rgb(0 0 0 / 22%);
+  }
+
+  .search__dialog::backdrop {
+    background: rgb(15 23 42 / 45%);
+    backdrop-filter: blur(2px);
+  }
+
+  .search__form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search__input {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 1.05rem;
+    padding: 0.35rem 0.25rem;
+    outline: none;
+  }
+
+  .search__close {
+    border: 0;
+    background: transparent;
+    color: var(--text-faint);
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .search__status {
+    padding: 0.4rem 0.95rem;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  .search__results {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0.5rem;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  .search__hit {
+    display: block;
+    padding: 0.6rem 0.95rem;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search__hit:focus-visible,
+  .search__hit:hover {
+    background: var(--surface-soft, rgba(127 127 127 / 8%));
+    outline: none;
+  }
+
+  .search__hit span {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    margin-bottom: 0.15rem;
+  }
+
+  .search__hit strong {
+    font-size: 0.95rem;
+    font-weight: 620;
+  }
+
+  .search__hit p {
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+
+  .search__hit mark {
+    background: color-mix(in srgb, var(--link, var(--accent)) 22%, transparent);
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 0.1rem;
+  }
+
+  @media (max-width: 640px) {
+    .search__label,
+    .search__kbd {
+      display: none;
+    }
+  }
+</style>

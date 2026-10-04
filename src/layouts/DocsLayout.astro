@@ -60,7 +60,7 @@ const withToc = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 
   <div class="container container--docs">
     <div class:list={['docs-shell', withToc && 'docs-shell--with-toc']}>
       <DocsNav lang={lang} currentTrack={track} currentStage={stage} currentSlug={slug} />
-      <div class="docs-main">
+      <div class="docs-main" data-pagefind-body>
         <slot />
       </div>
       {withToc && <Toc headings={headings} lang={lang} />}

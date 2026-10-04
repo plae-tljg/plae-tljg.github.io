@@ -9,7 +9,7 @@
     "bot:status": "node scripts/bot.mjs status",
     "bot:sync": "node scripts/bot.mjs sync",
     "bot:verify": "node scripts/bot.mjs verify",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "content": "node scripts/content.mjs",
     "content:new": "node scripts/content.mjs new",
     "content:status": "node scripts/content.mjs status",
@@ -22,7 +22,8 @@
     "repos:status": "node scripts/repos.mjs status",
     "repos:sync": "node scripts/repos.mjs sync",
     "repos:verify": "node scripts/repos.mjs verify",
-    "start": "astro dev"
+    "start": "astro dev",
+    "search:index": "pagefind --site dist"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
@@ -33,5 +34,8 @@
     "katex": "^0.16.22",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
   }
 }

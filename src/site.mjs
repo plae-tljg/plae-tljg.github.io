@@ -45,6 +45,9 @@ export const DEFAULT_LOCALE = 'zh'
 
 export const UI = {
   zh: {
+    search: '搜索',
+    searchPlaceholder: '搜索文档、文章与项目…',
+    close: '关闭',
     home: '首页',
     writing: '文章',
     docs: '文档',
@@ -136,6 +139,9 @@ export const UI = {
       '中英文都能问：每条问句都有两种语言的入口。答案本身是英文写成的（一个问句形状只对应一句答案）。',
   },
   en: {
+    search: 'Search',
+    searchPlaceholder: 'Search docs, articles and projects…',
+    close: 'Close',
     home: 'Home',
     writing: 'Writing',
     docs: 'Docs',

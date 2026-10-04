@@ -1,4 +1,5 @@
 ---
+import SearchBox from './SearchBox.astro'
 import { SITE, LOCALES, UI, type LocaleCode } from '../site.mjs'
 import { withBase, switchLocalePath } from '../lib/url'
 
@@ -40,6 +41,7 @@ const otherHref = alternatePath ? withBase(alternatePath) : switchLocalePath(pat
     </nav>
 
     <div class="header-tools">
+      <SearchBox lang={lang} />
       <a class="chip" href={otherHref} title={t.languageSwitch} hreflang={other.code}>
         {other.short}
         <span class="chip--label">{other.label}</span>
