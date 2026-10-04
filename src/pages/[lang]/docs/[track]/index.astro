@@ -8,8 +8,8 @@ import { Image } from 'astro:assets'
 import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
 import { docsPath, stagePath, trackPath } from '../../../../lib/url'
 import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { heroFor } from '../../../../lib/assets'
 import { getStageViews } from '../../../../lib/content'
-import heroImage from '../../../../assets/paths/math-path-hero.jpeg'
 import '../../../../styles/path.css'
 
 export async function getStaticPaths() {
@@ -30,6 +30,7 @@ const { track, stages } = Astro.props as {
 }
 const lang = Astro.params.lang as LocaleCode
 const t = UI[lang]
+const hero = heroFor(track.id)
 const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
 ---
 
@@ -54,11 +55,11 @@ const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
 
       {/* The joke image is Chinese-only, matching the source site. */}
       {
-        lang === 'zh' && (
+        hero && lang === 'zh' && (
           <Image
             class="path-hero__image"
-            src={heroImage}
-            alt="这和坐牢有什么区别"
+            src={hero}
+            alt={track.title[lang]}
             widths={[300, 600]}
             sizes="300px"
             loading="eager"

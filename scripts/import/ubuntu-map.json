@@ -1,0 +1,677 @@
+{
+  "generatedFrom": "plae-lkm/ubuntu_setup",
+  "date": "2026-01-04",
+  "pages": [
+    {
+      "src": "dev/headless.md",
+      "out": "src/content/docs/en/ubuntu/base/headless.md",
+      "track": "ubuntu",
+      "stage": "base",
+      "slug": "headless",
+      "lang": "en",
+      "title": "Running Linux in Headless Mode"
+    },
+    {
+      "src": "dev/multiple_ssds.md",
+      "out": "src/content/docs/zh/ubuntu/base/multiple-ssds.md",
+      "track": "ubuntu",
+      "stage": "base",
+      "slug": "multiple-ssds",
+      "lang": "zh",
+      "title": "多 SSD 存储管理与快捷访问"
+    },
+    {
+      "src": "utils/structure/README.md",
+      "out": "src/content/docs/zh/ubuntu/apps/index.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "index",
+      "lang": "zh",
+      "title": "Ubuntu 应用清单"
+    },
+    {
+      "src": "apps/common/quick_apps.md",
+      "out": "src/content/docs/en/ubuntu/apps/quick-install.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "quick-install",
+      "lang": "en",
+      "title": "Common Apps Installation"
+    },
+    {
+      "src": "apps/common/browsers.md",
+      "out": "src/content/docs/zh/ubuntu/apps/browsers.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "browsers",
+      "lang": "zh",
+      "title": "浏览器"
+    },
+    {
+      "src": "apps/common/firefox.md",
+      "out": "src/content/docs/zh/ubuntu/apps/firefox.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "firefox",
+      "lang": "zh",
+      "title": "Firefox"
+    },
+    {
+      "src": "apps/common/editors.md",
+      "out": "src/content/docs/zh/ubuntu/apps/editors.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "editors",
+      "lang": "zh",
+      "title": "编辑器与 IDE"
+    },
+    {
+      "src": "apps/common/ide.md",
+      "out": "src/content/docs/en/ubuntu/apps/ide.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "ide",
+      "lang": "en",
+      "title": "IDE Installation"
+    },
+    {
+      "src": "apps/common/image_editors.md",
+      "out": "src/content/docs/zh/ubuntu/apps/image-editors.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "image-editors",
+      "lang": "zh",
+      "title": "图像编辑工具"
+    },
+    {
+      "src": "apps/common/audio.md",
+      "out": "src/content/docs/zh/ubuntu/apps/audio.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "audio",
+      "lang": "zh",
+      "title": "音频工具"
+    },
+    {
+      "src": "apps/common/multimedia.md",
+      "out": "src/content/docs/zh/ubuntu/apps/multimedia.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "multimedia",
+      "lang": "zh",
+      "title": "多媒体工具"
+    },
+    {
+      "src": "apps/common/office.md",
+      "out": "src/content/docs/zh/ubuntu/apps/office.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "office",
+      "lang": "zh",
+      "title": "办公软件"
+    },
+    {
+      "src": "apps/common/games.md",
+      "out": "src/content/docs/zh/ubuntu/apps/games.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "games",
+      "lang": "zh",
+      "title": "游戏"
+    },
+    {
+      "src": "apps/common/network.md",
+      "out": "src/content/docs/zh/ubuntu/apps/network-tools.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "network-tools",
+      "lang": "zh",
+      "title": "网络工具"
+    },
+    {
+      "src": "apps/common/database.md",
+      "out": "src/content/docs/zh/ubuntu/apps/database-tools.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "database-tools",
+      "lang": "zh",
+      "title": "数据库工具"
+    },
+    {
+      "src": "apps/common/dev_tools.md",
+      "out": "src/content/docs/zh/ubuntu/apps/dev-tools.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "dev-tools",
+      "lang": "zh",
+      "title": "开发工具"
+    },
+    {
+      "src": "apps/common/system.md",
+      "out": "src/content/docs/zh/ubuntu/apps/system-tools.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "system-tools",
+      "lang": "zh",
+      "title": "系统工具"
+    },
+    {
+      "src": "apps/common/user_config.md",
+      "out": "src/content/docs/zh/ubuntu/apps/user-config.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "user-config",
+      "lang": "zh",
+      "title": "用户配置工具"
+    },
+    {
+      "src": "apps/common/vm/virtual_machines.md",
+      "out": "src/content/docs/en/ubuntu/apps/virtual-machines.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "virtual-machines",
+      "lang": "en",
+      "title": "Virtual Machine"
+    },
+    {
+      "src": "apps/common/vm/kvm_qemu.md",
+      "out": "src/content/docs/zh/ubuntu/apps/kvm-qemu.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "kvm-qemu",
+      "lang": "zh",
+      "title": "KVM/QEMU 虚拟机配置与迁移"
+    },
+    {
+      "src": "apps/common/old/sogou_input.md",
+      "out": "src/content/docs/zh/ubuntu/apps/sogou-input.md",
+      "track": "ubuntu",
+      "stage": "apps",
+      "slug": "sogou-input",
+      "lang": "zh",
+      "title": "Sogou Input"
+    },
+    {
+      "src": "apps/gpu/cuda.md",
+      "out": "src/content/docs/zh/ubuntu/gpu/cuda.md",
+      "track": "ubuntu",
+      "stage": "gpu",
+      "slug": "cuda",
+      "lang": "zh",
+      "title": "NVIDIA GPU 与 CUDA 环境配置"
+    },
+    {
+      "src": "apps/gpu/old_igpu_problems.md",
+      "out": "src/content/docs/zh/ubuntu/gpu/igpu-postmortem.md",
+      "track": "ubuntu",
+      "stage": "gpu",
+      "slug": "igpu-postmortem",
+      "lang": "zh",
+      "title": "旧版 iGPU 问题记录（复盘）"
+    },
+    {
+      "src": "dev/ssh/README.md",
+      "out": "src/content/docs/zh/ubuntu/remote/index.md",
+      "track": "ubuntu",
+      "stage": "remote",
+      "slug": "index",
+      "lang": "zh",
+      "title": "SSH 配置和使用"
+    },
+    {
+      "src": "dev/ssh/basics.md",
+      "out": "src/content/docs/zh/ubuntu/remote/basics.md",
+      "track": "ubuntu",
+      "stage": "remote",
+      "slug": "basics",
+      "lang": "zh",
+      "title": "SSH 基础命令"
+    },
+    {
+      "src": "dev/ssh/authentication.md",
+      "out": "src/content/docs/zh/ubuntu/remote/authentication.md",
+      "track": "ubuntu",
+      "stage": "remote",
+      "slug": "authentication",
+      "lang": "zh",
+      "title": "SSH 认证问题解决"
+    },
+    {
+      "src": "dev/ssh/sftp.md",
+      "out": "src/content/docs/zh/ubuntu/remote/sftp.md",
+      "track": "ubuntu",
+      "stage": "remote",
+      "slug": "sftp",
+      "lang": "zh",
+      "title": "SFTP 使用"
+    },
+    {
+      "src": "dev/ssh/proxy_jump.md",
+      "out": "src/content/docs/zh/ubuntu/remote/proxy-jump.md",
+      "track": "ubuntu",
+      "stage": "remote",
+      "slug": "proxy-jump",
+      "lang": "zh",
+      "title": "SSH 跳板和代理"
+    },
+    {
+      "src": "dev/ssh/android_access.md",
+      "out": "src/content/docs/zh/ubuntu/remote/android-access.md",
+      "track": "ubuntu",
+      "stage": "remote",
+      "slug": "android-access",
+      "lang": "zh",
+      "title": "Android 本地文件访问"
+    },
+    {
+      "src": "dev/internet/static_ip.md",
+      "out": "src/content/docs/zh/ubuntu/net/static-ip.md",
+      "track": "ubuntu",
+      "stage": "net",
+      "slug": "static-ip",
+      "lang": "zh",
+      "title": "Ubuntu 设置静态 IP（临时与永久方法）说明"
+    },
+    {
+      "src": "dev/https.md",
+      "out": "src/content/docs/zh/ubuntu/net/local-https.md",
+      "track": "ubuntu",
+      "stage": "net",
+      "slug": "local-https",
+      "lang": "zh",
+      "title": "HTTPS 配置"
+    },
+    {
+      "src": "dev/internet/wifi_reconnect.md",
+      "out": "src/content/docs/zh/ubuntu/net/wifi-reconnect.md",
+      "track": "ubuntu",
+      "stage": "net",
+      "slug": "wifi-reconnect",
+      "lang": "zh",
+      "title": "Windows 下无法自动重连 Wi-Fi 的问题与解决方法"
+    },
+    {
+      "src": "utils/structure/common_dir.md",
+      "out": "src/content/docs/en/ubuntu/shell/common-dirs.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "common-dirs",
+      "lang": "en",
+      "title": "Common Directory of Ubuntu"
+    },
+    {
+      "src": "utils/common_cmd/bash_tricks.md",
+      "out": "src/content/docs/zh/ubuntu/shell/bash-tricks.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "bash-tricks",
+      "lang": "zh",
+      "title": "Bash 技巧"
+    },
+    {
+      "src": "utils/common_cmd/README.md",
+      "out": "src/content/docs/zh/ubuntu/shell/systemd.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "systemd",
+      "lang": "zh",
+      "title": "systemd 常用命令"
+    },
+    {
+      "src": "utils/common_cmd/audio_cmd.md",
+      "out": "src/content/docs/en/ubuntu/shell/audio-cmd.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "audio-cmd",
+      "lang": "en",
+      "title": "Common Command for Audio"
+    },
+    {
+      "src": "utils/common_cmd/reboot_router.md",
+      "out": "src/content/docs/zh/ubuntu/shell/reboot-router.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "reboot-router",
+      "lang": "zh",
+      "title": "Reboot Router"
+    },
+    {
+      "src": "utils/common_cmd/send_email.md",
+      "out": "src/content/docs/en/ubuntu/shell/send-email.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "send-email",
+      "lang": "en",
+      "title": "Scripts to Send Emails"
+    },
+    {
+      "src": "utils/user_config/code_highlight.md",
+      "out": "src/content/docs/en/ubuntu/shell/code-highlight.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "code-highlight",
+      "lang": "en",
+      "title": "Code Highlighting"
+    },
+    {
+      "src": "utils/user_config/cursor_style.md",
+      "out": "src/content/docs/en/ubuntu/shell/cursor-style.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "cursor-style",
+      "lang": "en",
+      "title": "Cursor Style"
+    },
+    {
+      "src": "utils/interesting_cmd/README.md",
+      "out": "src/content/docs/en/ubuntu/shell/fun-commands.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "fun-commands",
+      "lang": "en",
+      "title": "Interesting Commands"
+    },
+    {
+      "src": "utils/useful_links.md",
+      "out": "src/content/docs/zh/ubuntu/shell/links.md",
+      "track": "ubuntu",
+      "stage": "shell",
+      "slug": "links",
+      "lang": "zh",
+      "title": "常用链接"
+    },
+    {
+      "src": "dev/asterisk/README.md",
+      "out": "src/content/docs/zh/homelab/services/index.md",
+      "track": "homelab",
+      "stage": "services",
+      "slug": "index",
+      "lang": "zh",
+      "title": "Asterisk 电话服务器配置"
+    },
+    {
+      "src": "dev/asterisk/basics.md",
+      "out": "src/content/docs/zh/homelab/services/asterisk-basics.md",
+      "track": "homelab",
+      "stage": "services",
+      "slug": "asterisk-basics",
+      "lang": "zh",
+      "title": "Asterisk 基础命令和配置"
+    },
+    {
+      "src": "dev/asterisk/trunk_config.md",
+      "out": "src/content/docs/zh/homelab/services/asterisk-trunk.md",
+      "track": "homelab",
+      "stage": "services",
+      "slug": "asterisk-trunk",
+      "lang": "zh",
+      "title": "SIP Trunk 配置指南"
+    },
+    {
+      "src": "dev/asterisk/audio.md",
+      "out": "src/content/docs/zh/homelab/services/asterisk-audio.md",
+      "track": "homelab",
+      "stage": "services",
+      "slug": "asterisk-audio",
+      "lang": "zh",
+      "title": "Asterisk 音频处理"
+    },
+    {
+      "src": "apps/db/psql.md",
+      "out": "src/content/docs/zh/homelab/services/postgresql.md",
+      "track": "homelab",
+      "stage": "services",
+      "slug": "postgresql",
+      "lang": "zh",
+      "title": "PostgreSQL"
+    },
+    {
+      "src": "dev/git/local_git_server.md",
+      "out": "src/content/docs/zh/homelab/services/local-git.md",
+      "track": "homelab",
+      "stage": "services",
+      "slug": "local-git",
+      "lang": "zh",
+      "title": "Git 本地和局域网服务器使用"
+    },
+    {
+      "src": "household/ip_cam/ip_cam.md",
+      "out": "src/content/docs/zh/homelab/home/ip-cam.md",
+      "track": "homelab",
+      "stage": "home",
+      "slug": "ip-cam",
+      "lang": "zh",
+      "title": "IP Camera - CameraLink App"
+    },
+    {
+      "src": "household/ip_cam/old/camera_monitoring.md",
+      "out": "src/content/docs/zh/homelab/home/ip-cam-old.md",
+      "track": "homelab",
+      "stage": "home",
+      "slug": "ip-cam-old",
+      "lang": "zh",
+      "title": "IP Camera"
+    },
+    {
+      "src": "household/ip_cam/old/ip_cam_install.md",
+      "out": "src/content/docs/en/homelab/home/ip-cam-old-install.md",
+      "track": "homelab",
+      "stage": "home",
+      "slug": "ip-cam-old-install",
+      "lang": "en",
+      "title": "IP Camera Project - Setup Guide"
+    }
+  ],
+  "redirects": [
+    {
+      "from": "/dev/headless.html",
+      "to": "/en/docs/ubuntu/base/headless/"
+    },
+    {
+      "from": "/dev/multiple_ssds.html",
+      "to": "/zh/docs/ubuntu/base/multiple-ssds/"
+    },
+    {
+      "from": "/utils/structure/README.html",
+      "to": "/zh/docs/ubuntu/apps/index/"
+    },
+    {
+      "from": "/apps/common/quick_apps.html",
+      "to": "/en/docs/ubuntu/apps/quick-install/"
+    },
+    {
+      "from": "/apps/common/browsers.html",
+      "to": "/zh/docs/ubuntu/apps/browsers/"
+    },
+    {
+      "from": "/apps/common/firefox.html",
+      "to": "/zh/docs/ubuntu/apps/firefox/"
+    },
+    {
+      "from": "/apps/common/editors.html",
+      "to": "/zh/docs/ubuntu/apps/editors/"
+    },
+    {
+      "from": "/apps/common/ide.html",
+      "to": "/en/docs/ubuntu/apps/ide/"
+    },
+    {
+      "from": "/apps/common/image_editors.html",
+      "to": "/zh/docs/ubuntu/apps/image-editors/"
+    },
+    {
+      "from": "/apps/common/audio.html",
+      "to": "/zh/docs/ubuntu/apps/audio/"
+    },
+    {
+      "from": "/apps/common/multimedia.html",
+      "to": "/zh/docs/ubuntu/apps/multimedia/"
+    },
+    {
+      "from": "/apps/common/office.html",
+      "to": "/zh/docs/ubuntu/apps/office/"
+    },
+    {
+      "from": "/apps/common/games.html",
+      "to": "/zh/docs/ubuntu/apps/games/"
+    },
+    {
+      "from": "/apps/common/network.html",
+      "to": "/zh/docs/ubuntu/apps/network-tools/"
+    },
+    {
+      "from": "/apps/common/database.html",
+      "to": "/zh/docs/ubuntu/apps/database-tools/"
+    },
+    {
+      "from": "/apps/common/dev_tools.html",
+      "to": "/zh/docs/ubuntu/apps/dev-tools/"
+    },
+    {
+      "from": "/apps/common/system.html",
+      "to": "/zh/docs/ubuntu/apps/system-tools/"
+    },
+    {
+      "from": "/apps/common/user_config.html",
+      "to": "/zh/docs/ubuntu/apps/user-config/"
+    },
+    {
+      "from": "/apps/common/vm/virtual_machines.html",
+      "to": "/en/docs/ubuntu/apps/virtual-machines/"
+    },
+    {
+      "from": "/apps/common/vm/kvm_qemu.html",
+      "to": "/zh/docs/ubuntu/apps/kvm-qemu/"
+    },
+    {
+      "from": "/apps/common/old/sogou_input.html",
+      "to": "/zh/docs/ubuntu/apps/sogou-input/"
+    },
+    {
+      "from": "/apps/gpu/cuda.html",
+      "to": "/zh/docs/ubuntu/gpu/cuda/"
+    },
+    {
+      "from": "/apps/gpu/old_igpu_problems.html",
+      "to": "/zh/docs/ubuntu/gpu/igpu-postmortem/"
+    },
+    {
+      "from": "/dev/ssh/README.html",
+      "to": "/zh/docs/ubuntu/remote/index/"
+    },
+    {
+      "from": "/dev/ssh/basics.html",
+      "to": "/zh/docs/ubuntu/remote/basics/"
+    },
+    {
+      "from": "/dev/ssh/authentication.html",
+      "to": "/zh/docs/ubuntu/remote/authentication/"
+    },
+    {
+      "from": "/dev/ssh/sftp.html",
+      "to": "/zh/docs/ubuntu/remote/sftp/"
+    },
+    {
+      "from": "/dev/ssh/proxy_jump.html",
+      "to": "/zh/docs/ubuntu/remote/proxy-jump/"
+    },
+    {
+      "from": "/dev/ssh/android_access.html",
+      "to": "/zh/docs/ubuntu/remote/android-access/"
+    },
+    {
+      "from": "/dev/internet/static_ip.html",
+      "to": "/zh/docs/ubuntu/net/static-ip/"
+    },
+    {
+      "from": "/dev/https.html",
+      "to": "/zh/docs/ubuntu/net/local-https/"
+    },
+    {
+      "from": "/dev/internet/wifi_reconnect.html",
+      "to": "/zh/docs/ubuntu/net/wifi-reconnect/"
+    },
+    {
+      "from": "/utils/structure/common_dir.html",
+      "to": "/en/docs/ubuntu/shell/common-dirs/"
+    },
+    {
+      "from": "/utils/common_cmd/bash_tricks.html",
+      "to": "/zh/docs/ubuntu/shell/bash-tricks/"
+    },
+    {
+      "from": "/utils/common_cmd/README.html",
+      "to": "/zh/docs/ubuntu/shell/systemd/"
+    },
+    {
+      "from": "/utils/common_cmd/audio_cmd.html",
+      "to": "/en/docs/ubuntu/shell/audio-cmd/"
+    },
+    {
+      "from": "/utils/common_cmd/reboot_router.html",
+      "to": "/zh/docs/ubuntu/shell/reboot-router/"
+    },
+    {
+      "from": "/utils/common_cmd/send_email.html",
+      "to": "/en/docs/ubuntu/shell/send-email/"
+    },
+    {
+      "from": "/utils/user_config/code_highlight.html",
+      "to": "/en/docs/ubuntu/shell/code-highlight/"
+    },
+    {
+      "from": "/utils/user_config/cursor_style.html",
+      "to": "/en/docs/ubuntu/shell/cursor-style/"
+    },
+    {
+      "from": "/utils/interesting_cmd/README.html",
+      "to": "/en/docs/ubuntu/shell/fun-commands/"
+    },
+    {
+      "from": "/utils/useful_links.html",
+      "to": "/zh/docs/ubuntu/shell/links/"
+    },
+    {
+      "from": "/dev/asterisk/README.html",
+      "to": "/zh/docs/homelab/services/index/"
+    },
+    {
+      "from": "/dev/asterisk/basics.html",
+      "to": "/zh/docs/homelab/services/asterisk-basics/"
+    },
+    {
+      "from": "/dev/asterisk/trunk_config.html",
+      "to": "/zh/docs/homelab/services/asterisk-trunk/"
+    },
+    {
+      "from": "/dev/asterisk/audio.html",
+      "to": "/zh/docs/homelab/services/asterisk-audio/"
+    },
+    {
+      "from": "/apps/db/psql.html",
+      "to": "/zh/docs/homelab/services/postgresql/"
+    },
+    {
+      "from": "/dev/git/local_git_server.html",
+      "to": "/zh/docs/homelab/services/local-git/"
+    },
+    {
+      "from": "/household/ip_cam/ip_cam.html",
+      "to": "/zh/docs/homelab/home/ip-cam/"
+    },
+    {
+      "from": "/household/ip_cam/old/camera_monitoring.html",
+      "to": "/zh/docs/homelab/home/ip-cam-old/"
+    },
+    {
+      "from": "/household/ip_cam/old/ip_cam_install.html",
+      "to": "/en/docs/homelab/home/ip-cam-old-install/"
+    }
+  ],
+  "articleOnly": [
+    "dev/git/github_pages.md",
+    "dev/git/breaking_change.md",
+    "dev/web_dev/html.md",
+    "utils/interesting_cmd/hidden_img.md"
+  ]
+}

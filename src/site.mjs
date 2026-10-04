@@ -333,6 +333,48 @@ export const TRACKS = [
       pets: ['pet01.gif', 'pet02.gif', 'pet03.gif', 'pet04.gif', 'pet05.gif'],
     },
   },
+  {
+    id: 'ubuntu',
+    order: 2,
+    title: { zh: 'Ubuntu 环境', en: 'My Ubuntu Setup' },
+    subtitle: {
+      zh: '一台机器从装完到顺手',
+      en: 'From a fresh install to a machine that fits',
+    },
+    description: {
+      zh: '这台机器上装了什么、怎么配的，以及踩过的坑。从安装与磁盘开始，到应用、GPU、远程访问、网络和命令行。',
+      en: 'What is installed on this machine, how it is configured, and what went wrong on the way: installation and disks, applications, GPU, remote access, networking, and the shell.',
+    },
+    state: 'ongoing',
+    languages: ['zh', 'en'],
+    stages: [
+      { id: 'base', title: { zh: '安装与磁盘', en: 'Install & Disks' }, description: { zh: '无头启动、多块 SSD 的挂载与快捷访问。', en: 'Headless boot, mounting extra SSDs.' } },
+      { id: 'apps', title: { zh: '应用', en: 'Applications' }, description: { zh: '浏览器、编辑器、虚拟机，以及那份装完清单。', en: 'Browsers, editors, virtual machines, and the full app inventory.' } },
+      { id: 'gpu', title: { zh: 'GPU 与 CUDA', en: 'GPU & CUDA' }, description: { zh: '驱动、CUDA 工具链，以及内核升级把驱动打回原形的复盘。', en: 'Drivers, the CUDA toolchain, and the post-mortem of a kernel update breaking them.' } },
+      { id: 'remote', title: { zh: '远程访问', en: 'Remote Access' }, description: { zh: 'SSH 的认证、跳板、SFTP，以及从 Ubuntu 访问手机文件。', en: 'SSH authentication, jump hosts, SFTP, and reaching a phone from the desktop.' } },
+      { id: 'net', title: { zh: '网络', en: 'Networking' }, description: { zh: '静态 IP、本地 HTTPS，以及一个 Windows 端的重连问题。', en: 'Static IPs, local HTTPS, and one Windows reconnection problem.' } },
+      { id: 'shell', title: { zh: '命令行与配置', en: 'Shell & Config' }, description: { zh: '补全、输入法、光标主题、目录约定，以及一些没用的有趣命令。', en: 'Completion, TTS, cursor themes, directory conventions, and a few useless fun commands.' } },
+    ],
+  },
+  {
+    id: 'homelab',
+    order: 3,
+    title: { zh: '家庭网络与自托管', en: 'Homelab & Self-hosting' },
+    subtitle: {
+      zh: '家里那几台机器在跑什么',
+      en: 'What the machines at home actually run',
+    },
+    description: {
+      zh: '自建的服务：Asterisk 电话系统、PostgreSQL、局域网 Git 服务器，以及门口的摄像头。',
+      en: 'Services I run myself: an Asterisk phone system, PostgreSQL, a LAN Git server, and the camera at the door.',
+    },
+    state: 'ongoing',
+    languages: ['zh', 'en'],
+    stages: [
+      { id: 'services', title: { zh: '自托管服务', en: 'Services' }, description: { zh: '电话、数据库、Git：装在自己机器上的东西。', en: 'Telephony, database, Git: the software that lives on my own machines.' } },
+      { id: 'home', title: { zh: '家居设备', en: 'Home Devices' }, description: { zh: 'IP 摄像头，包括被替换掉的旧方案。', en: 'IP cameras, including the design they replaced.' } },
+    ],
+  },
 ]
 
 /**
