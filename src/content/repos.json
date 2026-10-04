@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T04:32:35.853Z",
+  "generatedAt": "2026-10-04T10:29:50.387Z",
   "accounts": [
     {
       "login": "plae-tljg",
@@ -315,7 +315,7 @@
         "web"
       ],
       "createdAt": "2026-08-08",
-      "pushedAt": "2026-09-30",
+      "pushedAt": "2026-10-04",
       "isFork": false,
       "parent": "",
       "license": "",
@@ -894,8 +894,8 @@
       "archived": false,
       "hasPages": true,
       "note": {
-        "zh": "63 页的 Ubuntu 安装与配置手册，VuePress 构建。",
-        "en": "A 63-page Ubuntu setup manual, built with VuePress."
+        "zh": "Ubuntu 安装与配置手册的来源仓库。手册已迁移到本站的 [Ubuntu 环境](/zh/docs/ubuntu/) 与 [家庭网络](/zh/docs/homelab/)。",
+        "en": "Where the Ubuntu setup manual came from. It is maintained here now, under [Ubuntu](/en/docs/ubuntu/) and [Homelab](/en/docs/homelab/)."
       }
     },
     {
@@ -1059,7 +1059,7 @@
       "forks": 0,
       "topics": [],
       "createdAt": "2026-09-29",
-      "pushedAt": "2026-09-30",
+      "pushedAt": "2026-10-01",
       "isFork": false,
       "parent": "",
       "license": "MIT",
@@ -1090,7 +1090,7 @@
         "readme"
       ],
       "createdAt": "2025-12-23",
-      "pushedAt": "2026-02-20",
+      "pushedAt": "2026-10-01",
       "isFork": false,
       "parent": "",
       "license": "",
@@ -1104,7 +1104,7 @@
       "url": "https://github.com/plae-tljg/plae-tljg.github.io",
       "homepage": "https://plae-tljg.github.io/",
       "description": "LKM personal page",
-      "language": "JavaScript",
+      "language": "HTML",
       "stars": 1,
       "forks": 0,
       "topics": [
@@ -1113,7 +1113,7 @@
         "web"
       ],
       "createdAt": "2025-11-12",
-      "pushedAt": "2026-10-01",
+      "pushedAt": "2026-10-04",
       "isFork": false,
       "parent": "",
       "license": "",

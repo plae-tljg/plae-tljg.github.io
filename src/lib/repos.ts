@@ -79,6 +79,23 @@ export function repoNote(repo: Repo, lang: LocaleCode): string {
   return repo.note?.[lang] || ''
 }
 
+/**
+ * A note may point somewhere (`[文档](/zh/docs/ubuntu/)`); everything else in it
+ * is text. Escape first, then allow exactly one link form — the config is ours,
+ * but a card that renders raw HTML is a habit worth not having.
+ */
+export function noteHtml(note: string): string {
+  const escaped = note
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+  return escaped.replace(
+    /\[([^\]]+)\]\(([^)\s]+)\)/g,
+    (_m, text, href) =>
+      `<a href="${href}"${/^https?:/.test(href) ? ' rel="noopener"' : ''}>${text}</a>`
+  )
+}
+
 export function repoImportedAt(repo: Repo): string | undefined {
   return repo.importedAt || IMPORTED_HERE[repo.fullName as keyof typeof IMPORTED_HERE]
 }

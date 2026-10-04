@@ -216,8 +216,10 @@ export const OVERRIDES = {
   },
   'plae-lkm/ubuntu_setup': {
     note: {
-      zh: '63 页的 Ubuntu 安装与配置手册，VuePress 构建。',
-      en: 'A 63-page Ubuntu setup manual, built with VuePress.',
+      // The manual lives here now: the VuePress repo is frozen, and this note
+      // should send readers to the copy that gets maintained.
+      zh: 'Ubuntu 安装与配置手册的来源仓库。手册已迁移到本站的 [Ubuntu 环境](/zh/docs/ubuntu/) 与 [家庭网络](/zh/docs/homelab/)。',
+      en: 'Where the Ubuntu setup manual came from. It is maintained here now, under [Ubuntu](/en/docs/ubuntu/) and [Homelab](/en/docs/homelab/).',
     },
   },
 }

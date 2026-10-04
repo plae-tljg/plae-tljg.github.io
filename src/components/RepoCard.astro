@@ -1,6 +1,6 @@
 ---
 import { UI, type LocaleCode } from '../site.mjs'
-import { repoDescription, repoImportedAt, repoNote, type Repo } from '../lib/repos'
+import { noteHtml, repoDescription, repoImportedAt, repoNote, type Repo } from '../lib/repos'
 
 interface Props {
   repo: Repo
@@ -26,7 +26,7 @@ const imported = repoImportedAt(repo)
   </header>
 
   {description && <p>{description}</p>}
-  {note && <p class="repo-card__note">{note}</p>}
+  {note && <p class="repo-card__note" set:html={noteHtml(note)} />}
 
   <div class="repo-card__badges">
     {repo.isFork && (
