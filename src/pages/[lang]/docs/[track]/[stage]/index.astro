@@ -6,7 +6,7 @@
 import { render } from 'astro:content'
 import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../../site.mjs'
 import { guidePath, stagePath, trackPath } from '../../../../../lib/url'
-import BaseLayout from '../../../../../layouts/BaseLayout.astro'
+import DocsLayout from '../../../../../layouts/DocsLayout.astro'
 import { getStageViews, isPreview } from '../../../../../lib/content'
 import type { PathPage } from '../../../../../lib/content'
 import '../../../../../styles/path.css'
@@ -41,13 +41,15 @@ const nextStage = (track.stages || [])[stagePosition + 1]
 const prevStage = (track.stages || [])[stagePosition - 1]
 ---
 
-<BaseLayout
+<DocsLayout
   lang={lang}
   title={`${stageMeta?.title[lang] || stage.id} · ${track.title[lang]}`}
   description={stageMeta?.description[lang]}
-  active="docs"
+  track={track.id}
+  stage={stage.id}
+  headings={rendered?.headings}
 >
-  <div class="container">
+  <div class="docs-page">
     <nav class="breadcrumb" style="margin-top:2rem">
       <a href={trackPath(lang, track.id)}>{track.title[lang]}</a>
       <span aria-hidden="true">/</span>
@@ -124,4 +126,4 @@ const prevStage = (track.stages || [])[stagePosition - 1]
       </div>
     </nav>
   </div>
-</BaseLayout>
+</DocsLayout>

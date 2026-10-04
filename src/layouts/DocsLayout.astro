@@ -1,0 +1,100 @@
+---
+/**
+ * The docs shell: sidebar │ content │ table of contents.
+ *
+ * Guide pages are reference material — the reader arrives with a problem, not
+ * at chapter one — so they get a tree on the left and the page's own headings on
+ * the right, and the sidebar is present on all four docs routes.
+ */
+import BaseLayout from './BaseLayout.astro'
+import DocsNav from '../components/DocsNav.astro'
+import Toc from '../components/Toc.astro'
+import { UI, type LocaleCode } from '../site.mjs'
+
+interface Heading {
+  depth: number
+  slug: string
+  text: string
+}
+
+interface Props {
+  lang: LocaleCode
+  title: string
+  description?: string
+  headings?: Heading[]
+  track?: string
+  stage?: string
+  slug?: string
+  noindex?: boolean
+  alternates?: Partial<Record<LocaleCode, string>>
+  alternatePath?: string
+}
+
+const {
+  lang,
+  title,
+  description,
+  headings = [],
+  track,
+  stage,
+  slug,
+  noindex,
+  alternates,
+  alternatePath,
+} = Astro.props
+
+const t = UI[lang]
+const withToc = headings.filter((h) => h.depth === 2 || h.depth === 3).length > 2
+---
+
+<BaseLayout
+  lang={lang}
+  title={title}
+  description={description}
+  noindex={noindex}
+  active="docs"
+  alternates={alternates}
+  alternatePath={alternatePath}
+>
+  <div class="container container--docs">
+    <div class:list={['docs-shell', withToc && 'docs-shell--with-toc']}>
+      <DocsNav lang={lang} currentTrack={track} currentStage={stage} currentSlug={slug} />
+      <div class="docs-main">
+        <slot />
+      </div>
+      {withToc && <Toc headings={headings} lang={lang} />}
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* Docs are wider than the article column: sidebar + prose + TOC do not fit in
+     68rem without wrapping every code block. */
+  .container--docs {
+    max-width: 82rem;
+  }
+
+  .docs-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding-top: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .docs-shell {
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: 3rem;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .docs-shell--with-toc {
+      grid-template-columns: 15rem minmax(0, 1fr) 12rem;
+    }
+  }
+
+  .docs-main {
+    min-width: 0;
+  }
+</style>

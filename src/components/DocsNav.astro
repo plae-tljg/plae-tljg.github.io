@@ -1,0 +1,259 @@
+---
+/**
+ * The docs sidebar.
+ *
+ * The old VuePress manual had every page listed on every page, which is the
+ * whole reason it felt navigable; this site's docs had a three-card-deep ladder
+ * instead (section → track → stage → page). This restores the tree, and it is
+ * the same tree on all four docs routes, so any page is one click from any
+ * other.
+ *
+ * Groups are <details>, so it works with JavaScript disabled; the script only
+ * remembers what you collapsed and scrolls the current page into view.
+ */
+import { UI, type LocaleCode } from '../site.mjs'
+import { guidePath } from '../lib/url'
+import { getDocsTree } from '../lib/content'
+
+interface Props {
+  lang: LocaleCode
+  currentTrack?: string
+  currentStage?: string
+  currentSlug?: string
+}
+
+const { lang, currentTrack, currentStage, currentSlug } = Astro.props
+const t = UI[lang]
+const tree = await getDocsTree(lang)
+---
+
+<nav class="docs-nav" aria-label={t.docs} data-docs-nav>
+  <button class="docs-nav__toggle" type="button" aria-expanded="false" data-docs-nav-toggle>
+    <span>{t.toc}</span>
+    <span aria-hidden="true">▾</span>
+  </button>
+
+  <div class="docs-nav__body">
+    {
+      tree.map((track) => {
+        const trackOpen = currentTrack ? track.id === currentTrack : true
+        return (
+          <details class="docs-nav__track" data-nav-key={`track:${track.id}`} open={trackOpen}>
+            <summary>
+              <a href={`/${lang}/docs/${track.id}/`}>{track.title}</a>
+              <span class="docs-nav__count">{track.total}</span>
+            </summary>
+
+            {track.stages.map((stage) => (
+              <details
+                class="docs-nav__stage"
+                data-nav-key={`stage:${track.id}/${stage.id}`}
+                open={track.id === currentTrack && stage.id === currentStage}
+              >
+                <summary>
+                  <a href={`/${lang}/docs/${track.id}/${stage.id}/`}>{stage.title}</a>
+                </summary>
+                <ul>
+                  {stage.items.map((page) => {
+                    const here =
+                      track.id === currentTrack &&
+                      stage.id === currentStage &&
+                      page.data.slug === currentSlug
+                    return (
+                      <li>
+                        <a
+                          href={guidePath(lang, track.id, stage.id, page.data.slug)}
+                          aria-current={here ? 'page' : undefined}
+                          class={here ? 'is-current' : undefined}
+                        >
+                          {page.data.icon && <span aria-hidden="true">{page.data.icon} </span>}
+                          {page.data.title}
+                        </a>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </details>
+            ))}
+          </details>
+        )
+      })
+    }
+
+    <p class="docs-nav__foot">
+      <a href={`/${lang}/archive/`}>{t.archive}</a>
+    </p>
+  </div>
+</nav>
+
+<style is:global>
+  .docs-nav {
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
+  .docs-nav__toggle {
+    display: none;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--surface, transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .docs-nav__track > summary,
+  .docs-nav__stage > summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .docs-nav__track > summary::-webkit-details-marker,
+  .docs-nav__stage > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .docs-nav__track > summary {
+    font-weight: 620;
+    color: var(--text);
+  }
+
+  .docs-nav__track > summary::before,
+  .docs-nav__stage > summary::before {
+    content: '▸';
+    color: var(--text-faint);
+    font-size: 0.7em;
+    margin-right: 0.35rem;
+    transition: transform 0.15s ease;
+    display: inline-block;
+  }
+
+  .docs-nav__track[open] > summary::before,
+  .docs-nav__stage[open] > summary::before {
+    transform: rotate(90deg);
+  }
+
+  .docs-nav__count {
+    margin-left: auto;
+    color: var(--text-faint);
+    font-size: 0.78em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .docs-nav__stage {
+    margin-left: 0.55rem;
+    border-left: 1px solid var(--border);
+    padding-left: 0.7rem;
+  }
+
+  .docs-nav__stage > summary {
+    color: var(--text-soft);
+    font-size: 0.95em;
+  }
+
+  .docs-nav ul {
+    list-style: none;
+    margin: 0.1rem 0 0.5rem;
+    padding: 0 0 0 1.1rem;
+  }
+
+  .docs-nav li {
+    margin: 0.1rem 0;
+  }
+
+  .docs-nav a {
+    color: var(--text-soft);
+    text-decoration: none;
+    display: block;
+    padding: 0.12rem 0.4rem;
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+  }
+
+  .docs-nav a:hover {
+    color: var(--link, var(--accent));
+    background: var(--surface-soft, rgba(127 127 127 / 8%));
+  }
+
+  .docs-nav a.is-current {
+    color: var(--link, var(--accent));
+    font-weight: 600;
+    border-left-color: var(--link, var(--accent));
+    background: var(--surface-soft, rgba(127 127 127 / 8%));
+  }
+
+  .docs-nav__foot {
+    margin: 1rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 1024px) {
+    .docs-nav {
+      position: sticky;
+      top: 5rem;
+      align-self: start;
+      max-height: calc(100vh - 7rem);
+      overflow-y: auto;
+      padding-right: 0.75rem;
+      border-right: 1px solid var(--border);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .docs-nav__toggle {
+      display: flex;
+    }
+
+    .docs-nav__body {
+      display: none;
+      margin-top: 0.75rem;
+      padding: 0.75rem 0.9rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .docs-nav[data-open] .docs-nav__body {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const KEY = 'docs-nav:open'
+  const nav = document.querySelector<HTMLElement>('[data-docs-nav]')
+
+  if (nav) {
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}') as Record<string, boolean>
+    const groups = Array.from(nav.querySelectorAll<HTMLDetailsElement>('details[data-nav-key]'))
+
+    for (const group of groups) {
+      const key = group.dataset.navKey || ''
+      // Saved state wins, except that the current page's own groups stay open —
+      // collapsing the page you are reading is never what you meant.
+      if (key in saved && !group.querySelector('[aria-current="page"]')) {
+        group.open = saved[key]
+      }
+      group.addEventListener('toggle', () => {
+        saved[key] = group.open
+        localStorage.setItem(KEY, JSON.stringify(saved))
+      })
+    }
+
+    nav.querySelector('[data-docs-nav-toggle]')?.addEventListener('click', (event) => {
+      const open = nav.toggleAttribute('data-open')
+      ;(event.currentTarget as HTMLElement).setAttribute('aria-expanded', String(open))
+    })
+
+    nav.querySelector('[aria-current="page"]')?.scrollIntoView({ block: 'center' })
+  }
+</script>

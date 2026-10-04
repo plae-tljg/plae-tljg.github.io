@@ -6,7 +6,7 @@
  */
 import { TRACKS, UI, type LocaleCode } from '../../../site.mjs'
 import { localePaths, notePath, trackPath } from '../../../lib/url'
-import BaseLayout from '../../../layouts/BaseLayout.astro'
+import DocsLayout from '../../../layouts/DocsLayout.astro'
 import { getStageViews, getNotes, formatDateShort } from '../../../lib/content'
 
 export function getStaticPaths() {
@@ -27,8 +27,8 @@ for (const track of TRACKS) {
 const notes = await getNotes(lang)
 ---
 
-<BaseLayout lang={lang} title={t.docs} description={t.sectionDocs} active="docs">
-  <div class="container">
+<DocsLayout lang={lang} title={t.docs} description={t.sectionDocs}>
+  <div class="docs-page">
     <header class="page-header">
       <h1>{t.docs}</h1>
       <p>{t.sectionDocs}</p>
@@ -86,4 +86,4 @@ const notes = await getNotes(lang)
       )
     }
   </div>
-</BaseLayout>
+</DocsLayout>

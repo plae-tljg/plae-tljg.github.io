@@ -54,7 +54,9 @@ output is static, hosting is GitHub Pages from `gh-pages`.
 | Which statuses publish | `src/site.mjs` (`CONTENT_SYNC`) |
 | Where the chatbot bundle comes from, launcher label, samples | `src/site.mjs` (`BOT_SYNC`) |
 | Post/doc/page schema | `src/content.config.ts` |
-| Guide/track pages (the learning path) | `src/content/docs/**` — hand-written, not synced |
+| Guide/track pages (the learning path, the Ubuntu manual) | `src/content/docs/**` — hand-written, not synced |
+| The docs shell: sidebar tree, TOC, prev/next across a track | `src/layouts/DocsLayout.astro`, `src/components/DocsNav.astro` |
+| The docs tree itself (what the sidebar shows) | `src/lib/content.ts` (`getDocsTree`, `trackSequence`) |
 | Layout, routes, components | `src/layouts`, `src/pages`, `src/components` |
 | The learning-path look (cards, route steps) | `src/styles/path.css` |
 | The chatbot widget (launcher, panel, sessions) | `src/components/ChatBot.astro` |

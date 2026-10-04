@@ -167,6 +167,55 @@ export async function getGuidePage(
   return pages.find((p) => p.data.stage === stage && p.data.slug === slug)
 }
 
+export interface DocsTreeStage {
+  id: string
+  title: string
+  items: PathPage[]
+}
+
+export interface DocsTreeTrack {
+  id: string
+  title: string
+  stages: DocsTreeStage[]
+  total: number
+}
+
+/**
+ * Every track with its stages and pages, for the docs sidebar.
+ *
+ * Built once per page render at build time: the whole point of the sidebar is
+ * that any page of the manual is one click from any other, which means the tree
+ * has to be present on every page.
+ */
+export async function getDocsTree(lang: LocaleCode): Promise<DocsTreeTrack[]> {
+  const out: DocsTreeTrack[] = []
+  for (const track of TRACKS) {
+    const stages = await getStageViews(track.id, lang)
+    const tree: DocsTreeStage[] = stages.map((stage) => ({
+      id: stage.id,
+      title:
+        (track.stages || []).find((s) => s.id === stage.id)?.title[lang] || stage.id,
+      items: stage.items,
+    }))
+    out.push({
+      id: track.id,
+      title: track.title[lang],
+      stages: tree.filter((s) => s.items.length > 0),
+      total: tree.reduce((n, s) => n + s.items.length, 0),
+    })
+  }
+  return out.filter((t) => t.total > 0)
+}
+
+/** Every page of one track in reading order — the sidebar's order. */
+export async function trackSequence(
+  trackId: string,
+  lang: LocaleCode
+): Promise<PathPage[]> {
+  const stages = await getStageViews(trackId, lang)
+  return stages.flatMap((stage) => stage.items)
+}
+
 /** Prev/next inside a stage, following `order`. */
 export function stageSiblings(items: PathPage[], current: PathPage) {
   const index = items.findIndex((p) => p.id === current.id)

@@ -6,10 +6,10 @@
  */
 import { Image } from 'astro:assets'
 import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../site.mjs'
-import { docsPath, stagePath, trackPath } from '../../../../lib/url'
-import BaseLayout from '../../../../layouts/BaseLayout.astro'
+import { docsPath, guidePath, stagePath, trackPath } from '../../../../lib/url'
+import DocsLayout from '../../../../layouts/DocsLayout.astro'
 import { heroFor } from '../../../../lib/assets'
-import { getStageViews } from '../../../../lib/content'
+import { getStageViews, isPreview } from '../../../../lib/content'
 import '../../../../styles/path.css'
 
 export async function getStaticPaths() {
@@ -34,13 +34,13 @@ const hero = heroFor(track.id)
 const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
 ---
 
-<BaseLayout
+<DocsLayout
   lang={lang}
   title={track.title[lang]}
   description={track.description[lang]}
-  active="docs"
+  track={track.id}
 >
-  <div class="container">
+  <div class="docs-page">
     <nav class="breadcrumb" style="margin-top:2rem">
       <a href={docsPath(lang)}>{t.docs}</a>
       <span aria-hidden="true">/</span>
@@ -97,23 +97,46 @@ const stageMeta = (id: string) => (track.stages || []).find((s) => s.id === id)
   </section>
 
   <section class="section">
-    <div class="container">
+    <div class="docs-page">
       <div class="section__head">
         <h2>{t.browseStages}</h2>
       </div>
-      <div class="path-stages">
+
+      {/* The stage cards are a summary; the list under each one means a reader
+          who knows which page they want does not have to open the stage first. */}
+      <div class="track-index">
         {
           stages.map((stage) => (
-            <a class="stage-card" href={stagePath(lang, track.id, stage.id)}>
-              <h3>{stageMeta(stage.id)?.title[lang]}</h3>
-              <p>{stageMeta(stage.id)?.description[lang]}</p>
-              <div class="stage-card__meta">
-                {stage.items.length + (stage.index ? 1 : 0)} {t.posts}
-              </div>
-            </a>
+            <section class="track-index__stage">
+              <h3>
+                <a href={stagePath(lang, track.id, stage.id)}>
+                  {stageMeta(stage.id)?.title[lang]}
+                </a>
+                <span class="track-index__count">
+                  {stage.items.length + (stage.index ? 1 : 0)} {t.posts}
+                </span>
+              </h3>
+              <p class="track-index__description">{stageMeta(stage.id)?.description[lang]}</p>
+              <ul>
+                {stage.index && (
+                  <li>
+                    <a href={stagePath(lang, track.id, stage.id)}>{stage.index.data.title}</a>
+                  </li>
+                )}
+                {stage.items.map((page) => (
+                  <li>
+                    <a href={guidePath(lang, track.id, stage.id, page.data.slug)}>
+                      {page.data.icon && <span aria-hidden="true">{page.data.icon} </span>}
+                      {page.data.title}
+                    </a>
+                    {isPreview(page) && <span class="badge badge--warn">{t.preview}</span>}
+                  </li>
+                ))}
+              </ul>
+            </section>
           ))
         }
       </div>
     </div>
   </section>
-</BaseLayout>
+</DocsLayout>

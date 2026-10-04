@@ -6,8 +6,8 @@
 import { render } from 'astro:content'
 import { LOCALES, TRACKS, UI, type LocaleCode } from '../../../../../site.mjs'
 import { guidePath, stagePath, trackPath } from '../../../../../lib/url'
-import BaseLayout from '../../../../../layouts/BaseLayout.astro'
-import { getStageView, getStageViews, isPreview, readingTime, stageSiblings } from '../../../../../lib/content'
+import DocsLayout from '../../../../../layouts/DocsLayout.astro'
+import { getStageView, getStageViews, isPreview, readingTime, trackSequence } from '../../../../../lib/content'
 import type { PathPage } from '../../../../../lib/content'
 import '../../../../../styles/path.css'
 
@@ -40,7 +40,12 @@ const lang = Astro.params.lang as LocaleCode
 const t = UI[lang]
 const stageMeta = (track.stages || []).find((s) => s.id === stageId)
 const { Content, headings } = await render(page)
-const { previous, next } = stageSiblings(items, page)
+// Reading order across the *track*: a stage boundary should not feel like the
+// end of the manual.
+const sequence = await trackSequence(track.id, lang)
+const position = sequence.findIndex((p) => p.data.translationKey === page.data.translationKey)
+const previous = position > 0 ? sequence[position - 1] : undefined
+const next = position >= 0 && position < sequence.length - 1 ? sequence[position + 1] : undefined
 const minutes = page.body ? readingTime(page.body, lang) : 1
 
 // The other-language URL for this same page, when it exists.
@@ -57,17 +62,20 @@ const alternates: Partial<Record<LocaleCode, string>> = {
 if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
 ---
 
-<BaseLayout
+<DocsLayout
   lang={lang}
   title={page.data.title}
   description={page.data.summary}
   noindex={isPreview(page)}
-  active="docs"
+  track={track.id}
+  stage={stageId}
+  slug={page.data.slug}
+  headings={headings}
   alternates={alternates}
   alternatePath={translatedPath}
 >
   <article class="article">
-    <div class="container">
+    <div class="docs-page">
       <nav class="breadcrumb" style="margin-top:2rem">
         <a href={trackPath(lang, track.id)}>{track.title[lang]}</a>
         <span aria-hidden="true">/</span>
@@ -101,7 +109,9 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
             previous && (
               <>
                 <span class="path-nav__label">← {t.prev}</span>
-                <a href={guidePath(lang, track.id, stageId, previous.data.slug)}>{previous.data.title}</a>
+                <a href={guidePath(lang, track.id, previous.data.stage || stageId, previous.data.slug)}>
+                {previous.data.title}
+              </a>
               </>
             )
           }
@@ -111,7 +121,9 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
             next && (
               <>
                 <span class="path-nav__label">{t.next} →</span>
-                <a href={guidePath(lang, track.id, stageId, next.data.slug)}>{next.data.title}</a>
+                <a href={guidePath(lang, track.id, next.data.stage || stageId, next.data.slug)}>
+                {next.data.title}
+              </a>
               </>
             )
           }
@@ -119,4 +131,4 @@ if (translatedPath) alternates[other.code as LocaleCode] = translatedPath
       </nav>
     </div>
   </article>
-</BaseLayout>
+</DocsLayout>
