@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T06:33:35.742Z",
+  "generatedAt": "2026-10-04T10:26:58.855Z",
   "source": "/home/lkm/Music/blogs",
   "preview": true,
   "entries": [
@@ -110,6 +110,102 @@
       "outputPath": "src/content/posts/zh/ai-maintainable-systems/appendix-derivation-and-checklist.md",
       "outputHash": "sha256:50931a535e657e14",
       "syncedAt": "2026-10-01T06:33:35.738Z"
+    },
+    {
+      "key": "tinkering-local-git-server",
+      "lang": "zh",
+      "title": "01 Git 不需要 GitHub：局域网上的服务器",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/01-local-git-server.zh.md",
+      "sourceHash": "sha256:ebddf31d500d1ce4",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-local-git-server.md",
+      "outputHash": "sha256:f9c93d4570b77718",
+      "syncedAt": "2026-10-04T10:26:34.592Z"
+    },
+    {
+      "key": "tinkering-hidden-images",
+      "lang": "zh",
+      "title": "02 图种：把文件藏进图片里",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/02-hidden-images.zh.md",
+      "sourceHash": "sha256:71bd6d7bd3d6b10c",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-hidden-images.md",
+      "outputHash": "sha256:859884e85d336a64",
+      "syncedAt": "2026-10-04T10:26:34.592Z"
+    },
+    {
+      "key": "tinkering-github-pages-paths",
+      "lang": "zh",
+      "title": "03 两个仓库，一个域名：一次 GitHub Pages 路径实验",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/03-github-pages-paths.zh.md",
+      "sourceHash": "sha256:10a44f1719a1c121",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-github-pages-paths.md",
+      "outputHash": "sha256:5d0609e0dad390d7",
+      "syncedAt": "2026-10-04T10:26:34.592Z"
+    },
+    {
+      "key": "tinkering-image-fit",
+      "lang": "zh",
+      "title": "04 仪表盘上的脸为什么会变形",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/04-image-fit.zh.md",
+      "sourceHash": "sha256:0ed2223049a3d3c4",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-image-fit.md",
+      "outputHash": "sha256:a16156b2f18f726d",
+      "syncedAt": "2026-10-04T10:26:34.593Z"
+    },
+    {
+      "key": "tinkering-bash-completion",
+      "lang": "zh",
+      "title": "05 Ubuntu 的 Tab 补全不如 PuTTY",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/05-bash-completion.zh.md",
+      "sourceHash": "sha256:6450612ed43cefa2",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-bash-completion.md",
+      "outputHash": "sha256:0589c6796507a1b4",
+      "syncedAt": "2026-10-04T10:26:34.593Z"
+    },
+    {
+      "key": "tinkering-pgadmin-too-heavy",
+      "lang": "zh",
+      "title": "06 pgAdmin 4 把整个桌面拖慢了",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/06-pgadmin-too-heavy.zh.md",
+      "sourceHash": "sha256:69fb1935971e66b9",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-pgadmin-too-heavy.md",
+      "outputHash": "sha256:ddf40c54c8e35649",
+      "syncedAt": "2026-10-04T10:26:34.594Z"
+    },
+    {
+      "key": "tinkering-snap-firefox",
+      "lang": "zh",
+      "title": "07 Snap 版 Firefox 的问题",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/07-snap-firefox.zh.md",
+      "sourceHash": "sha256:86df43eae769fb72",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-snap-firefox.md",
+      "outputHash": "sha256:83c9b6a13c3707f9",
+      "syncedAt": "2026-10-04T10:26:34.594Z"
+    },
+    {
+      "key": "tinkering-rewrite-history",
+      "lang": "zh",
+      "title": "08 有意识地重写仓库历史",
+      "series": "tinkering-notes",
+      "status": "preview",
+      "sourcePath": "seasons/03-tinkering/08-rewrite-history.zh.md",
+      "sourceHash": "sha256:142fc5020ca422e3",
+      "outputPath": "src/content/posts/zh/tinkering-notes/tinkering-rewrite-history.md",
+      "outputHash": "sha256:c23360a769ff6990",
+      "syncedAt": "2026-10-04T10:26:34.594Z"
     }
   ]
 }

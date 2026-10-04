@@ -267,6 +267,30 @@ function copyAsset(srcFile, ref, key, copies) {
   return { url: `${CONTENT_SYNC.assetUrlBase}/${key}/${name}` }
 }
 
+/**
+ * Fenced code blocks, so the passes below can leave examples alone.
+ *
+ * An HTML snippet showing `<img src="example.com">` is an illustration, not a
+ * missing file: rewriting or warning about it is noise at best.
+ */
+function codeSpans(body) {
+  return body.match(/^```[\s\S]*?^```/gm) || []
+}
+
+function withCodeFenced(body, transform) {
+  const spans = codeSpans(body)
+  const placeholder = (i) => `\u0000CODE${i}\u0000`
+  let masked = body
+  spans.forEach((span, i) => {
+    masked = masked.replace(span, placeholder(i))
+  })
+  let out = transform(masked)
+  spans.forEach((span, i) => {
+    out = out.replace(placeholder(i), span)
+  })
+  return out
+}
+
 /** Rewrite relative image links to copied assets; strip a leading H1. */
 function normalizeBody(article, copies, warnings) {
   let body = article.body
@@ -284,10 +308,9 @@ function normalizeBody(article, copies, warnings) {
     return `${pre}${result.url}${title || ''}${post}`
   }
 
-  body = body.replace(IMAGE_RE, rewrite)
-  body = body.replace(HTML_IMAGE_RE, (m, pre, ref, post) => {
-    const r = rewrite(m, pre, ref, '', post)
-    return r
+  body = withCodeFenced(body, (text) => {
+    text = text.replace(IMAGE_RE, rewrite)
+    return text.replace(HTML_IMAGE_RE, (m, pre, ref, post) => rewrite(m, pre, ref, '', post))
   })
 
   return body.replace(/\s+$/, '') + '\n'

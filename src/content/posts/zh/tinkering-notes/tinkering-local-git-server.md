@@ -1,17 +1,26 @@
 ---
-title: "Git 本地和局域网服务器使用"
-summary: "Git 是一个分布式版本控制系统，不依赖于 GitHub、GitLab 等平台。你可以在本地机器、局域网内的服务器，或任何支持 Git 的服务器上使用 Git。"
+title: 01 Git 不需要 GitHub：局域网上的服务器
+summary: >-
+  Git 是一个分布式版本控制系统，不依赖于 GitHub、GitLab 等平台。你可以在本地机器、局域网内的服务器，或任何支持 Git 的服务器上使用
+  Git。
 lang: zh
-translationKey: "homelab-services-local-git"
-slug: local-git
-track: homelab
-stage: services
-order: 5
-date: 2026-01-04
-tags: []
-status: zh draft
-source: plae-lkm/ubuntu_setup:docs/dev/git/local_git_server.md
+translationKey: tinkering-local-git-server
+slug: tinkering-local-git-server
+date: '2026-10-01'
+series: tinkering-notes
+seriesOrder: 1
+tags:
+  - 折腾
+  - Ubuntu
+status: preview
+source: seasons/03-tinkering/01-local-git-server.zh.md
+syncedAt: '2026-10-04T10:26:34.592Z'
 ---
+<!-- 草稿：从 plae-lkm/ubuntu_setup 的 docs/dev/git/local_git_server.md 导入，等待重写。
+     命令部分已经作为文档页保留（/zh/docs/homelab/services/local-git/）。文章要留的是"我为什么要把 Git 从 GitHub 上拿下来"和踩坑过程。
+     命令与截图先不删，重写时再决定留哪些。 -->
+# Git 本地和局域网服务器使用
+
 Git 是一个分布式版本控制系统，**不依赖于 GitHub、GitLab 等平台**。你可以在本地机器、局域网内的服务器，或任何支持 Git 的服务器上使用 Git。
 
 ## 核心概念
@@ -380,9 +389,3 @@ git clone http://192.0.2.10:8000
 Git 的核心功能完全独立于任何特定的托管平台。GitHub 只是你可以与 Git 一起使用的众多可能的远程仓库之一！
 
 通过上述测试用例，你可以证明 Git 可以在本地、局域网或任何支持 Git 的服务器上正常工作，无需依赖任何第三方 Git 托管服务。
-
-```
-
----
-
-> **延伸阅读**：[Git 不需要 GitHub：局域网上的服务器](/zh/writing/tinkering-local-git-server/)——同一件事的来龙去脉，收在《折腾笔记》里。

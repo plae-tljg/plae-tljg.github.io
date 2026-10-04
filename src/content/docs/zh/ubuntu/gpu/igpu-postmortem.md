@@ -99,27 +99,21 @@ NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Ma
 
 <!--ref:/assets/cuda/use_integrated_graphics/Use integrated graphics for display and NVIDIA GPU for CUDA on Ubuntu 14.04.html-->
 > 参考（第三方页面）：[Use integrated graphics for display and NVIDIA GPU for CUDA on Ubuntu 14.04](https://gist.github.com/alexlee-gk/76a409f62a53883971a18a11af93241b?permalink_comment_id=3102545)
-> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/use_integrated_graphics/Use%20integrated%20graphics%20for%20display%20and%20NVIDIA%20GPU%20for%20CUDA%20on%20Ubuntu%2014.04.html)
 
 <!--ref:/assets/cuda/use_integrated_graphics/osdf's log _ Intel Integrated Graphics, dedicated GPU for CUDA and Ubuntu 13.10 and 14.04.html-->
 > 参考（第三方页面）：[Intel Integrated Graphics, dedicated GPU for CUDA and Ubuntu 13.10 and 14.04](https://osdf.github.io/blog/intel-integrated-graphics-dedicated-gpu-for-cuda-and-ubuntu-1310.html)
-> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/use_integrated_graphics/osdf's%20log%20_%20Intel%20Integrated%20Graphics,%20dedicated%20GPU%20for%20CUDA%20and%20Ubuntu%2013.10%20and%2014.04.html)
 
 <!--ref:/assets/cuda/use_integrated_graphics/[SOLVED] Run CUDA on dedicated NVIDIA GPU while connecting monitors to Intel HD graphics, is this possible_ - CUDA _ CUDA Setup and Installation - NVIDIA Developer Forums.html-->
 > 参考（第三方页面）：[[SOLVED] Run CUDA on dedicated NVIDIA GPU while connecting monitors to Intel HD graphics, is this possible?](https://forums.developer.nvidia.com/t/solved-run-cuda-on-dedicated-nvidia-gpu-while-connecting-monitors-to-intel-hd-graphics-is-this-possible/47690)
-> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/use_integrated_graphics/%5BSOLVED%5D%20Run%20CUDA%20on%20dedicated%20NVIDIA%20GPU%20while%20connecting%20monitors%20to%20Intel%20HD%20graphics,%20is%20this%20possible_%20-%20CUDA%20_%20CUDA%20Setup%20and%20Installation%20-%20NVIDIA%20Developer%20Forums.html)
 
 <!--ref:/assets/cuda/use_integrated_graphics/drivers - How to configure iGPU for xserver and nvidia GPU for CUDA work - Ask Ubuntu.html-->
 > 参考（第三方页面）：[Ask Ubuntu - How to configure iGPU for xserver and nvidia GPU for CUDA work](https://askubuntu.com/questions/1061551/how-to-configure-igpu-for-xserver-and-nvidia-gpu-for-cuda-work)
-> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/use_integrated_graphics/drivers%20-%20How%20to%20configure%20iGPU%20for%20xserver%20and%20nvidia%20GPU%20for%20CUDA%20work%20-%20Ask%20Ubuntu.html)
 
 <!--ref:/assets/cuda/use_integrated_graphics/Using GPU for CUDA and integrated graphics for display - can't make it work - CUDA _ CUDA Setup and Installation - NVIDIA Developer Forums.html-->
 > 参考（第三方页面）：[Using GPU for CUDA and integrated graphics for display - can't make it work ](https://forums.developer.nvidia.com/t/using-gpu-for-cuda-and-integrated-graphics-for-display-cant-make-it-work/49820)
-> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/use_integrated_graphics/Using%20GPU%20for%20CUDA%20and%20integrated%20graphics%20for%20display%20-%20can't%20make%20it%20work%20-%20CUDA%20_%20CUDA%20Setup%20and%20Installation%20-%20NVIDIA%20Developer%20Forums.html)
 
 <!--ref:/assets/cuda/How to make desktop Ubuntu boot in headless mode_ - Deep Learning - fast.ai Course Forums-->
 > 参考（第三方页面）：[Using GPU for CUDA and integrated graphics for display - can't make it work ](https://forums.fast.ai/t/how-to-make-desktop-ubuntu-boot-in-headless-mode/19582/4?replies_to_post_number=4)
-> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/How%20to%20make%20desktop%20Ubuntu%20boot%20in%20headless%20mode_%20-%20Deep%20Learning%20-%20fast.ai%20Course%20Forums)
 
 ## 之前的问题总结
 

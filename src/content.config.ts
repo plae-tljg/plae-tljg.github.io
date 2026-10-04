@@ -29,8 +29,15 @@ const posts = defineCollection({
     series: z.string().optional(),
     /** Position inside the series (0 = abstract / preface). */
     seriesOrder: z.number().optional(),
-    /** Human label for the part, e.g. "第三篇 — 操作". */
-    partLabel: z.string().optional(),
+    /**
+     * Human label for the part, e.g. "第三篇 — 操作". A bare number is accepted
+     * and stringified: YAML writes `08` unquoted, and a parser that reads it
+     * back as an integer should not fail the build.
+     */
+    partLabel: z
+      .union([z.string(), z.number()])
+      .transform((v) => String(v))
+      .optional(),
     tags: z.array(z.string()).default([]),
     /** ready | preview */
     status: z.string().default('ready'),

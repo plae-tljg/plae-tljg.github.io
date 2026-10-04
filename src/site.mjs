@@ -285,6 +285,23 @@ export const SERIES = [
       'Programming Structure in the AI Era',
     ],
   },
+  {
+    id: 'tinkering-notes',
+    order: 3,
+    title: {
+      zh: '折腾笔记',
+      en: 'Tinkering Notes',
+    },
+    description: {
+      zh: '那些不属于手册的部分：把 Git 从 GitHub 上拿下来、图片里藏一个文件、pgAdmin 为什么这么重。手册说该敲什么，这里说事情为什么会变成这样。',
+      en: 'The parts that are not a manual: taking Git off GitHub, hiding a file inside a picture, why pgAdmin feels so heavy. The guides say what to type; these say why it went that way.',
+    },
+    state: 'ongoing',
+    languages: ['zh', 'en'],
+    /** Where `content new --series` puts a new draft. */
+    dir: 'seasons/03-tinkering',
+    aliases: ['折腾笔记', 'Tinkering Notes', 'tinkering-notes', 'tinkering'],
+  },
 ]
 
 /**

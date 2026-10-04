@@ -1,17 +1,24 @@
 ---
-title: "PostgreSQL"
-summary: "如果需要完整的 PostgreSQL 服务器："
+title: 06 pgAdmin 4 把整个桌面拖慢了
+summary: 如果需要完整的 PostgreSQL 服务器：
 lang: zh
-translationKey: "homelab-services-postgresql"
-slug: postgresql
-track: homelab
-stage: services
-order: 4
-date: 2026-01-04
-tags: []
-status: zh draft
-source: plae-lkm/ubuntu_setup:docs/apps/db/psql.md
+translationKey: tinkering-pgadmin-too-heavy
+slug: tinkering-pgadmin-too-heavy
+date: '2026-10-01'
+series: tinkering-notes
+seriesOrder: 6
+tags:
+  - 折腾
+  - Ubuntu
+status: preview
+source: seasons/03-tinkering/06-pgadmin-too-heavy.zh.md
+syncedAt: '2026-10-04T10:26:34.594Z'
 ---
+<!-- 草稿：从 plae-lkm/ubuntu_setup 的 docs/apps/db/psql.md 导入，等待重写。
+     安装与 pg_hba 部分保留在文档页（/zh/docs/homelab/services/postgresql/）。文章只写 GUI 客户端的比较与取舍，不要重复安装步骤。
+     命令与截图先不删，重写时再决定留哪些。 -->
+# PostgreSQL
+
 ## 安装 PostgreSQL 服务器
 
 如果需要完整的 PostgreSQL 服务器：
@@ -239,7 +246,7 @@ For further allowing accessing remotely and easily, we can do more:
 
 **AI chat for modifying config**（`/lib/psql/chat-PostgreSQL Network Access Setup.txt`）
 
-````conf
+```conf
 ### USER
 in my ubutnu vm, i want the pgsql be accessible by any machine on same network, tell me how to change the conf
 
@@ -940,8 +947,4 @@ RESET ROLE;            -- go back to original
 ---
 
 Let me know if you want to script this (e.g., auto-show user in prompt), or verify remote connections.
-````
-
----
-
-> **延伸阅读**：[pgAdmin 4 把整个桌面拖慢了](/zh/writing/tinkering-pgadmin-too-heavy/)——同一件事的来龙去脉，收在《折腾笔记》里。
+```

@@ -21,6 +21,7 @@
  *   - LAN addresses are scrubbed to documentation examples
  */
 import fs from 'node:fs'
+import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -56,7 +57,7 @@ const MAP = [
   ['utils/structure/README.md', 'ubuntu', 'apps', 'index', 0, { index: true, title: 'Ubuntu 应用清单' }],
   ['apps/common/quick_apps.md', 'ubuntu', 'apps', 'quick-install', 1, {}],
   ['apps/common/browsers.md', 'ubuntu', 'apps', 'browsers', 2, {}],
-  ['apps/common/firefox.md', 'ubuntu', 'apps', 'firefox', 3, {}],
+  ['apps/common/firefox.md', 'ubuntu', 'apps', 'firefox', 3, { related: { url: '/zh/writing/tinkering-snap-firefox/', title: 'Snap 版 Firefox 的问题' } }],
   ['apps/common/editors.md', 'ubuntu', 'apps', 'editors', 4, {}],
   ['apps/common/ide.md', 'ubuntu', 'apps', 'ide', 5, {}],
   ['apps/common/image_editors.md', 'ubuntu', 'apps', 'image-editors', 6, {}],
@@ -94,7 +95,7 @@ const MAP = [
 
   // ---- ubuntu · shell: commands and configuration ------------------------
   ['utils/structure/common_dir.md', 'ubuntu', 'shell', 'common-dirs', 1, {}],
-  ['utils/common_cmd/bash_tricks.md', 'ubuntu', 'shell', 'bash-tricks', 2, {}],
+  ['utils/common_cmd/bash_tricks.md', 'ubuntu', 'shell', 'bash-tricks', 2, { related: { url: '/zh/writing/tinkering-bash-completion/', title: 'Ubuntu 的 Tab 补全不如 PuTTY' } }],
   ['utils/common_cmd/README.md', 'ubuntu', 'shell', 'systemd', 3, { title: 'systemd 常用命令' }],
   ['utils/common_cmd/audio_cmd.md', 'ubuntu', 'shell', 'audio-cmd', 4, {}],
   ['utils/common_cmd/reboot_router.md', 'ubuntu', 'shell', 'reboot-router', 5, {}],
@@ -109,8 +110,8 @@ const MAP = [
   ['dev/asterisk/basics.md', 'homelab', 'services', 'asterisk-basics', 1, {}],
   ['dev/asterisk/trunk_config.md', 'homelab', 'services', 'asterisk-trunk', 2, {}],
   ['dev/asterisk/audio.md', 'homelab', 'services', 'asterisk-audio', 3, {}],
-  ['apps/db/psql.md', 'homelab', 'services', 'postgresql', 4, {}],
-  ['dev/git/local_git_server.md', 'homelab', 'services', 'local-git', 5, {}],
+  ['apps/db/psql.md', 'homelab', 'services', 'postgresql', 4, { related: { url: '/zh/writing/tinkering-pgadmin-too-heavy/', title: 'pgAdmin 4 把整个桌面拖慢了' } }],
+  ['dev/git/local_git_server.md', 'homelab', 'services', 'local-git', 5, { related: { url: '/zh/writing/tinkering-local-git-server/', title: 'Git 不需要 GitHub：局域网上的服务器' } }],
 
   // ---- homelab · home ----------------------------------------------------
   ['household/ip_cam/ip_cam.md', 'homelab', 'home', 'ip-cam', 1, {}],
@@ -200,7 +201,12 @@ function expandCodeViewers(body, srcFile) {
     }
     const content = fs.readFileSync(abs, 'utf8').replace(/\s+$/, '')
     const head = title ? `**${title}**（\`${filePath}\`）\n\n` : `\`${filePath}\`\n\n`
-    return `${head}\`\`\`${language}\n${content}\n\`\`\`\n`
+    // Some of the inlined files are themselves markdown full of ``` fences.
+    // A three-backtick fence around them would end at the first one and swallow
+    // everything after it — including the 延伸阅读 link at the bottom.
+    const longest = Math.max(0, ...[...content.matchAll(/`{3,}/g)].map((m) => m[0].length))
+    const fence = '`'.repeat(Math.max(3, longest + 1))
+    return `${head}${fence}${language}\n${content}\n${fence}\n`
   })
 }
 
@@ -231,6 +237,33 @@ function expandReferenceViewers(body, srcFile) {
     const link = origin ? `[${title}](${origin})` : title
     return `${marker}\n> 参考（第三方页面）：${link}\n`
   })
+}
+
+/**
+ * Close a fence the author left open.
+ *
+ * `local_git_server.md` ends inside a ```bash block, which the VuePress page
+ * survived (the rest of the file *was* the block) but which swallows anything
+ * appended after it — including the 延伸阅读 link. Repair it, and say so.
+ */
+function repairFences(body, srcFile) {
+  let depth = 0
+  let opener = 0
+  const lines = body.split('\n')
+  lines.forEach((line, i) => {
+    const m = line.match(/^ {0,3}(`{3,})(.*)$/)
+    if (!m) return
+    const ticks = m[1].length
+    if (depth === 0) {
+      depth = ticks
+      opener = i + 1
+    } else if (ticks >= depth && !m[2].trim()) {
+      depth = 0
+    }
+  })
+  if (depth === 0) return body
+  warnings.push(`${srcFile}: code fence opened at line ${opener} was never closed`)
+  return `${body}\n${'`'.repeat(depth)}`
 }
 
 function rewriteLinks(body, urlFor, srcFile) {
@@ -288,7 +321,7 @@ for (const [src, track, stage, slug] of MAP) urlFor.set(src, `__LANG__/docs/${tr
 const written = []
 const redirects = []
 
-for (const [src, track, stage, slug, order, opts] of flag('archives') ? [] : MAP) {
+for (const [src, track, stage, slug, order, opts] of flag('archives') || flag('articles') ? [] : MAP) {
   const abs = path.join(SRC_DOCS, src)
   if (!fs.existsSync(abs)) {
     warnings.push(`missing source file: ${src}`)
@@ -316,9 +349,15 @@ for (const [src, track, stage, slug, order, opts] of flag('archives') ? [] : MAP
   body = copyImages(body, src)
   body = rewriteLinks(body, new Map([...urlFor].map(([k, v]) => [k, localise(v)])), src)
   body = scrub(body)
+  body = repairFences(body, src)
   // A visible marker, not frontmatter: these pages stay published because the
   // commands still work, but the reader should know which way the wind blew.
   if (opts.note) body = `> ⚠️ **${opts.note}**：这一页记录的是当时的做法，可能已经不适用。\n\n${body}`
+  // The shortcut the author asked for: a guide says what to type, the article
+  // says why it went that way. Declared here so a re-run keeps the link.
+  if (opts.related) {
+    body = `${body}\n\n---\n\n> **延伸阅读**：[${opts.related.title}](${opts.related.url})——同一件事的来龙去脉，收在《折腾笔记》里。`
+  }
   body = body.replace(/\n{3,}/g, '\n\n').trim()
 
   const front = [
@@ -475,6 +514,151 @@ function copyArchive() {
 
 if (flag('archives')) {
   copyArchive()
+  if (warnings.length) {
+    log(`  ${warnings.length} warning(s):`)
+    for (const w of warnings) log(`    - ${w}`)
+  }
+}
+
+// ------------------------------------------------------------------ articles
+//
+// The pages that are arguments rather than procedures belong in the writing
+// workspace as a series ("折腾笔记"), not in the manual — a reader follows a
+// guide with a terminal open, and reads an article on the train. Four of them
+// are *also* still guides, so the draft carries a note saying which half the
+// article should keep.
+//
+//   node scripts/import/ubuntu-setup.mjs --articles [--source DIR]
+
+const WORKSPACE = process.env.CONTENT_SOURCE || path.join(os.homedir(), 'Music/blogs')
+const SERIES_DIR = path.join(WORKSPACE, 'seasons/03-tinkering')
+
+const ARTICLES = [
+  {
+    src: 'dev/git/local_git_server.md',
+    slug: 'local-git-server',
+    titleZh: 'Git 不需要 GitHub：局域网上的服务器',
+    titleEn: 'Git Does Not Need GitHub: A Server on the LAN',
+    summaryEn: 'Bare versus normal repositories, cloning over the local network, and the test cases that proved it worked.',
+    note: '命令部分已经作为文档页保留（/zh/docs/homelab/services/local-git/）。文章要留的是"我为什么要把 Git 从 GitHub 上拿下来"和踩坑过程。',
+  },
+  {
+    src: 'utils/interesting_cmd/hidden_img.md',
+    slug: 'hidden-images',
+    titleZh: '图种：把文件藏进图片里',
+    titleEn: 'A File Hidden Inside a Picture',
+    summaryEn: '图种 and polyglot files: spotting a smuggled archive by doing the byte arithmetic, then binwalk, unzip and steghide.',
+    note: '原文的示例图片有 31 MB，没有随站点发布。文章里要换成一张小图或直接给命令与判断方法。',
+  },
+  {
+    src: 'dev/git/github_pages.md',
+    slug: 'github-pages-paths',
+    titleZh: '两个仓库，一个域名：一次 GitHub Pages 路径实验',
+    titleEn: 'Two Repositories, One Domain: A GitHub Pages Routing Experiment',
+    summaryEn: 'A project page shadowed by a personal-site repository, with and without a trailing slash, and what the browser actually did.',
+    note: '六张截图还在原仓库的 assets/github_pages/ 里，写文章时再挑两张搬过来。',
+  },
+  {
+    src: 'dev/web_dev/html.md',
+    slug: 'image-fit',
+    titleZh: '仪表盘上的脸为什么会变形',
+    titleEn: 'Why the Faces in My Dashboard Looked Swollen',
+    summaryEn: 'Three attempts at an image cell in an HTML table, and why constraining width and height distorts a photograph until you reach object-fit.',
+    note: '纯叙事，没有对应的文档页。',
+  },
+  {
+    src: 'utils/common_cmd/bash_tricks.md',
+    slug: 'bash-completion',
+    titleZh: 'Ubuntu 的 Tab 补全不如 PuTTY',
+    titleEn: "Ubuntu's Tab Completion Is Worse Than PuTTY's",
+    summaryEn: 'menu-complete, a modular .bashrc, Python module completion, and what source versus . versus ./ actually does.',
+    note: '命令已作为文档页保留（/zh/docs/ubuntu/shell/bash-tricks/）。文章里留"为什么 PuTTY 的补全更好用"这条线。',
+  },
+  {
+    src: 'apps/db/psql.md',
+    slug: 'pgadmin-too-heavy',
+    titleZh: 'pgAdmin 4 把整个桌面拖慢了',
+    titleEn: 'pgAdmin 4 Dragged My Desktop Down',
+    summaryEn: 'A desktop-class GUI shipped as a web app, why it feels heavy, and the lighter clients I compared instead.',
+    note: '安装与 pg_hba 部分保留在文档页（/zh/docs/homelab/services/postgresql/）。文章只写 GUI 客户端的比较与取舍，不要重复安装步骤。',
+  },
+  {
+    src: 'apps/common/firefox.md',
+    slug: 'snap-firefox',
+    titleZh: 'Snap 版 Firefox 的问题',
+    titleEn: 'The Snap Firefox Problem',
+    summaryEn: 'Input-method and cursor bugs under snap, why the package comes back after updates, and the pin that stops it.',
+    note: '安装命令保留在文档页（/zh/docs/ubuntu/apps/firefox/）。文章写"为什么 snap 版会这样"，以及 apt 版与 pin 的取舍。',
+  },
+  {
+    src: 'dev/git/breaking_change.md',
+    slug: 'rewrite-history',
+    titleZh: '有意识地重写仓库历史',
+    titleEn: 'Rewriting a Repository History on Purpose',
+    summaryEn: 'Three steps to wipe and force-rewrite a branch, and the question you should answer first: is anyone else holding this history?',
+    note: '原文开头写着"AI 推荐的可行步骤"。写文章时要把前提条件补上：什么时候可以重写、什么时候不可以。',
+  },
+]
+
+function writeArticles() {
+  const created = []
+  for (const [i, spec] of ARTICLES.entries()) {
+    const abs = path.join(SRC_DOCS, spec.src)
+    if (!fs.existsSync(abs)) {
+      warnings.push(`article source missing: ${spec.src}`)
+      continue
+    }
+    let raw = fs.readFileSync(abs, 'utf8').replace(/\r\n/g, '\n')
+    const h1 = raw.match(/^#\s+(.+)$/m)
+    const titleZh = spec.titleZh || (h1 ? h1[1].trim() : spec.slug)
+    let body = raw
+    body = expandCodeViewers(body, spec.src)
+    body = expandReferenceViewers(body, spec.src)
+    body = copyImages(body, spec.src)
+    body = rewriteLinks(body, new Map([...urlFor].map(([k, v]) => [k, v.replace('__LANG__', '/zh')])), spec.src)
+    body = scrub(body)
+    body = repairFences(body, spec.src)
+    body = body.replace(/\n{3,}/g, '\n\n').trim()
+
+    const num = String(i + 1).padStart(2, '0')
+    const head = [
+      '---',
+      `translationKey: tinkering-${spec.slug}`,
+      `titleZh: ${JSON.stringify(titleZh)}`,
+      `titleEn: ${JSON.stringify(spec.titleEn)}`,
+      `summaryZh: ${JSON.stringify(firstParagraph(body))}`,
+      `summaryEn: ${JSON.stringify(spec.summaryEn)}`,
+      `date: "2026-10-01"`,
+      `series: "折腾笔记"`,
+      'tags:',
+      '  - 折腾',
+      '  - Ubuntu',
+      'status: "zh draft"',
+      'languagePair: ["zh", "en"]',
+      'canonical: ""',
+      'publicProof: []',
+      'confidentialityChecked: true',
+      '---',
+      '',
+      `<!-- 草稿：从 plae-lkm/ubuntu_setup 的 docs/${spec.src} 导入，等待重写。`,
+      `     ${spec.note}`,
+      '     命令与截图先不删，重写时再决定留哪些。 -->',
+      '',
+    ]
+    const outPath = path.join(SERIES_DIR, `${num}-${spec.slug}.zh.md`)
+    if (!DRY) {
+      fs.mkdirSync(SERIES_DIR, { recursive: true })
+      fs.writeFileSync(outPath, head.join('\n') + body + '\n')
+    }
+    created.push({ src: spec.src, out: outPath.replace(WORKSPACE + '/', ''), titleZh })
+  }
+  log(`\narticles ${DRY ? '(dry run) ' : ''}`)
+  for (const a of created) log(`  ${a.out}`)
+  log('')
+}
+
+if (flag('articles')) {
+  writeArticles()
   if (warnings.length) {
     log(`  ${warnings.length} warning(s):`)
     for (const w of warnings) log(`    - ${w}`)

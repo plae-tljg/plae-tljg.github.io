@@ -1,17 +1,26 @@
 ---
-title: "Firefox"
-summary: "建议使用 apt 方式安装 Firefox，而不是 snap 版本。因为 snap 版 Firefox 可能会遇到一些兼容性问题，例如搜狗拼音输入法无法正常使用，或者鼠标指针样式无法显示等。"
+title: 07 Snap 版 Firefox 的问题
+summary: >-
+  建议使用 apt 方式安装 Firefox，而不是 snap 版本。因为 snap 版 Firefox
+  可能会遇到一些兼容性问题，例如搜狗拼音输入法无法正常使用，或者鼠标指针样式无法显示等。
 lang: zh
-translationKey: "ubuntu-apps-firefox"
-slug: firefox
-track: ubuntu
-stage: apps
-order: 3
-date: 2026-01-04
-tags: []
-status: zh draft
-source: plae-lkm/ubuntu_setup:docs/apps/common/firefox.md
+translationKey: tinkering-snap-firefox
+slug: tinkering-snap-firefox
+date: '2026-10-01'
+series: tinkering-notes
+seriesOrder: 7
+tags:
+  - 折腾
+  - Ubuntu
+status: preview
+source: seasons/03-tinkering/07-snap-firefox.zh.md
+syncedAt: '2026-10-04T10:26:34.594Z'
 ---
+<!-- 草稿：从 plae-lkm/ubuntu_setup 的 docs/apps/common/firefox.md 导入，等待重写。
+     安装命令保留在文档页（/zh/docs/ubuntu/apps/firefox/）。文章写"为什么 snap 版会这样"，以及 apt 版与 pin 的取舍。
+     命令与截图先不删，重写时再决定留哪些。 -->
+# Firefox
+
 建议使用 apt 方式安装 Firefox，而不是 snap 版本。因为 snap 版 Firefox 可能会遇到一些兼容性问题，例如搜狗拼音输入法无法正常使用，或者鼠标指针样式无法显示等。
 
 需要注意的是，即使你通过 apt 安装了 Firefox，如果不按照下述方法操作，有时在 Ubuntu 或系统更新后，apt 版 Firefox 仍可能会被自动替换为 snap 版。
@@ -59,7 +68,3 @@ source: plae-lkm/ubuntu_setup:docs/apps/common/firefox.md
 
 <!--ref:/assets/apt_firefox/Completely Remove Snap from Ubuntu Linux [Tutorial].html-->
 > 参考（第三方页面）：[Remove Snap from Ubuntu](https://www.debugpoint.com/remove-snap-ubuntu/)
-
----
-
-> **延伸阅读**：[Snap 版 Firefox 的问题](/zh/writing/tinkering-snap-firefox/)——同一件事的来龙去脉，收在《折腾笔记》里。
