@@ -87,3 +87,10 @@ manifest. Refreshing the snapshot (`npm run repos:sync`) does need `gh auth`.
   per-question one). `docs/CHATBOT.md` explains the whole path.
 - The chatbot bundle is committed because the deploy runner cannot reach the
   private compiler repository. It is generated — see hard rule 6.
+- `public/archives/ubuntu-setup/**` is ~85 MB of **third-party** pages (NVIDIA
+  docs, Ask Ubuntu, forums) snapshotted from the retired `plae-lkm/ubuntu_setup`
+  site, kept so the manual's citations keep working. Each one carries a
+  noindex/nofollow meta tag and an attribution banner injected by
+  `scripts/import/ubuntu-setup.mjs --archives`. Do not remove the banner, do not
+  add pages here that are not somebody else's archive, and prefer linking out
+  for anything new.

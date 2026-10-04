@@ -288,7 +288,7 @@ for (const [src, track, stage, slug] of MAP) urlFor.set(src, `__LANG__/docs/${tr
 const written = []
 const redirects = []
 
-for (const [src, track, stage, slug, order, opts] of MAP) {
+for (const [src, track, stage, slug, order, opts] of flag('archives') ? [] : MAP) {
   const abs = path.join(SRC_DOCS, src)
   if (!fs.existsSync(abs)) {
     warnings.push(`missing source file: ${src}`)
@@ -370,3 +370,113 @@ if (warnings.length) {
   for (const w of warnings) log(`    - ${w}`)
 }
 log('')
+
+// ---------------------------------------------------------------- archives
+//
+// The source site republished ~19 third-party pages (NVIDIA docs and forums,
+// Ask Ubuntu, fast.ai, …) through its own <ReferenceViewer>. Those snapshots
+// move here so the citations keep working after the source repo is frozen.
+//
+// Two rules for other people's pages: they are marked noindex/nofollow and they
+// carry a banner saying where they came from, because a copy that looks like
+// your own page is a lie about authorship.
+//
+//   node scripts/import/ubuntu-setup.mjs --archives [--source DIR]
+
+const ARCHIVE_DIR = path.join(ROOT, 'public/archives/ubuntu-setup')
+/** One payload image is a 31 MB puzzle artifact, not a reference page. */
+const ARCHIVE_SKIP = [/image_seeds\/hybrid\.png$/]
+
+const BANNER = `<div style="all:initial;display:block;font:14px/1.6 system-ui,sans-serif;background:#fff8e1;border-bottom:1px solid #e0c98a;color:#4a3b00;padding:10px 16px">
+<strong>第三方页面存档</strong> — 这是他人页面的本地快照，版权归原作者，仅作参考。
+<a href="https://github.com/plae-lkm/ubuntu_setup" style="color:#8a6d00">来源仓库</a>
+</div>
+`
+
+/** Every .md under a directory, recursively. */
+function walkMd(dir) {
+  const out = []
+  for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, item.name)
+    if (item.isDirectory()) out.push(...walkMd(full))
+    else if (item.name.endsWith('.md')) out.push(full)
+  }
+  return out
+}
+
+function stampArchive(html) {
+  let out = html.replace(
+    /<head([^>]*)>/i,
+    `<head$1>\n<meta name="robots" content="noindex, nofollow">`
+  )
+  out = out.replace(/<body([^>]*)>/i, `<body$1>\n${BANNER}`)
+  return out
+}
+
+function copyArchive() {
+  const src = path.join(SRC_PUBLIC, 'assets')
+  let files = 0
+  let bytes = 0
+  const walk = (dir) => {
+    for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+      const from = path.join(dir, item.name)
+      const rel = path.relative(src, from)
+      if (ARCHIVE_SKIP.some((re) => re.test(rel))) {
+        warnings.push(`archive: skipped ${rel}`)
+        continue
+      }
+      const to = path.join(ARCHIVE_DIR, 'assets', rel)
+      if (item.isDirectory()) {
+        walk(from)
+        continue
+      }
+      if (DRY) {
+        files += 1
+        continue
+      }
+      fs.mkdirSync(path.dirname(to), { recursive: true })
+      if (item.name.endsWith('.html')) {
+        fs.writeFileSync(to, stampArchive(fs.readFileSync(from, 'utf8')))
+      } else {
+        fs.copyFileSync(from, to)
+      }
+      files += 1
+      bytes += fs.statSync(from).size
+    }
+  }
+  walk(src)
+
+  // Point the reference lines at the local copy as well as the original.
+  const linkFor = (htmlPath) => {
+    const rel = htmlPath.replace(/^\//, '')
+    return `/archives/ubuntu-setup/${encodeURI(rel)}`
+  }
+  let patched = 0
+  for (const dir of [path.join(OUT_DOCS, 'zh'), path.join(OUT_DOCS, 'en')]) {
+    if (!fs.existsSync(dir)) continue
+    for (const file of walkMd(dir)) {
+      const before = fs.readFileSync(file, 'utf8')
+      const after = before.replace(
+        /<!--ref:(.+?)-->\n(> 参考（第三方页面）：[^\n]*)/g,
+        (whole, htmlPath, line) =>
+          `${whole}\n> 本地存档：[快照](${linkFor(htmlPath)})`
+      )
+      if (after !== before) {
+        patched += 1
+        if (!DRY) fs.writeFileSync(file, after)
+      }
+    }
+  }
+  log(`\narchives ${DRY ? '(dry run) ' : ''}`)
+  log(`  files copied  : ${files} (${(bytes / 1e6).toFixed(1)} MB)`)
+  log(`  pages updated : ${patched}`)
+  log(`  served at     : /archives/ubuntu-setup/assets/…\n`)
+}
+
+if (flag('archives')) {
+  copyArchive()
+  if (warnings.length) {
+    log(`  ${warnings.length} warning(s):`)
+    for (const w of warnings) log(`    - ${w}`)
+  }
+}

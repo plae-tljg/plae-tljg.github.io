@@ -59,3 +59,4 @@ source: plae-lkm/ubuntu_setup:docs/apps/common/firefox.md
 
 <!--ref:/assets/apt_firefox/Completely Remove Snap from Ubuntu Linux [Tutorial].html-->
 > 参考（第三方页面）：[Remove Snap from Ubuntu](https://www.debugpoint.com/remove-snap-ubuntu/)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/apt_firefox/Completely%20Remove%20Snap%20from%20Ubuntu%20Linux%20%5BTutorial%5D.html)

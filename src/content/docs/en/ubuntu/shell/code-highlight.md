@@ -441,3 +441,4 @@ Remember the file name has to be same as its `id` inside, if not, will not be re
 
 <!--ref:/assets/code_highlight/Asterisk dialplan syntax highlighting for gedit.html-->
 > 参考（第三方页面）：[Asterisk dialplan syntax highlighting for gedit](https://www.frigon.info/posts/asterisk/asterisk-dialplan-highlight/)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/code_highlight/Asterisk%20dialplan%20syntax%20highlighting%20for%20gedit.html)

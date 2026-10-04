@@ -49,9 +49,11 @@ nvidia-smi  # 验证安装
 
 <!--ref:/assets/cuda/CUDA Installation Guide for Linux — Installation Guide for Linux 13.0 documentation.html-->
 > 参考（第三方页面）：[Official CUDA Installation Guide for Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/CUDA%20Installation%20Guide%20for%20Linux%20%E2%80%94%20Installation%20Guide%20for%20Linux%2013.0%20documentation.html)
 
 <!--ref:/assets/cuda/CUDA Toolkit 13.0 - Release Notes — Release Notes 13.0 documentation.html-->
 > 参考（第三方页面）：[Official CUDA Release Note](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/CUDA%20Toolkit%2013.0%20-%20Release%20Notes%20%E2%80%94%20Release%20Notes%2013.0%20documentation.html)
 
 ### 安装步骤（以 CUDA 13.0 为例）
 
@@ -89,6 +91,7 @@ source ~/.bashrc
 
 <!--ref:/assets/cuda/CUDA Toolkit 13.0 Downloads _ NVIDIA Developer.html-->
 > 参考（第三方页面）：[CUDA Download and Installation](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_local)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/CUDA%20Toolkit%2013.0%20Downloads%20_%20NVIDIA%20Developer.html)
 
 ## CUDA 安装测试
 
@@ -259,6 +262,7 @@ sudo reboot
 
 <!--ref:/assets/cuda/What's the process for fixing NVIDIA drivers after kernel updates in Ubuntu 20.04 - Graphics _ Linux _ Linux - NVIDIA Developer Forums.html-->
 > 参考（第三方页面）：[What's the process for fixing NVIDIA drivers after kernel updates in Ubuntu 20.04](https://forums.developer.nvidia.com/t/whats-the-process-for-fixing-nvidia-drivers-after-kernel-updates-in-ubuntu-20-04/208870/3)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/cuda/What's%20the%20process%20for%20fixing%20NVIDIA%20drivers%20after%20kernel%20updates%20in%20Ubuntu%2020.04%20-%20Graphics%20_%20Linux%20_%20Linux%20-%20NVIDIA%20Developer%20Forums.html)
 
 ## 历史问题参考
 

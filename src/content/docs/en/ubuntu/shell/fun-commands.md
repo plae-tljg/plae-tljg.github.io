@@ -25,3 +25,4 @@ calc 123*123    # calculator
 
 <!--ref:/assets/interesting_cmd/24 Hilarious Linux Commands That Will Make You Laugh.html-->
 > 参考（第三方页面）：[Funny Linux Commands](https://www.tecmint.com/funny-linux-commands/)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/interesting_cmd/24%20Hilarious%20Linux%20Commands%20That%20Will%20Make%20You%20Laugh.html)

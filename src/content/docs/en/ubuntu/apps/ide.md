@@ -18,6 +18,7 @@ Just get its `.deb` file and `dpkg -i` install it.
 
 <!--ref:/assets/vs_code/Visual Studio Code on Linux.html-->
 > 参考（第三方页面）：[Official VS Code Installation](https://code.visualstudio.com/docs/setup/linux)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/vs_code/Visual%20Studio%20Code%20on%20Linux.html)
 
 ## Android Studio
 
@@ -44,6 +45,7 @@ Terminal=false
 
 <!--ref:/assets/android_studio/Install Android Studio _ Android Developers.html-->
 > 参考（第三方页面）：[Official Android Studio Installation](https://developer.android.com/studio/install)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/android_studio/Install%20Android%20Studio%20_%20Android%20Developers.html)
 
 ## Anaconda
 

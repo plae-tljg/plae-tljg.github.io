@@ -25,6 +25,7 @@ Try install espeak and do TTS:
 
 <!--ref:/assets/espeak/解决espeak编译的一些问题 - inss!w! - 博客园.html-->
 > 参考（第三方页面）：[Compile for Espeak](https://www.cnblogs.com/Hfolsvh/p/15057694.html)
+> 本地存档：[快照](/archives/ubuntu-setup/assets/espeak/%E8%A7%A3%E5%86%B3espeak%E7%BC%96%E8%AF%91%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98%20-%20inss!w!%20-%20%E5%8D%9A%E5%AE%A2%E5%9B%AD.html)
 
 ```bash
 espeak -v en-us -s 150 -p 50 -w my_speech.wav "This is a custom voice with adjusted speed and pitch."
